@@ -4,32 +4,34 @@
 struct Node;
 struct Route;
 struct Pos;
+struct Urban;
 
 struct Vehicle
 {
-	Vehicle(const int& _nowNodeID);
+	Vehicle(const int& _nowUrbanID);
 
 
-	Node&	getNowNode() const;
+	Urban&	getNowUrban() const;
 	Route&	getRoute() const;
 	Vec2	getPos() const;
 	double	getAngle() const;
+	bool	inRoute() const;
+	void	draw() const;
 
-	Triangle	getShape() const;
-
-	int		nowNodeID;
+	int		nowUrbanID;
 	int		routeID;
 	double	routeProgress;
 	Item	item;
 };
 
-struct Company
+struct Group
 {
-	Company(const int& _id);
+	Group();
 
 	int		id;
 	String	name;
 	Color	color;
 	Array<Vehicle> vehicles;
 };
-extern Array<Company> companies;
+extern Array<Group> groups;
+void makeGroupsRandom();

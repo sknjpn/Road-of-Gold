@@ -9,7 +9,12 @@ Node::Node(const int& _id, const Pos& _pos)
 {
 	paths.clear();
 }
-bool	Node::isCoast() const { return !isSea && paths.any([](const Path& n) {return n.getChild().isSea; }); }
+
+bool	Node::isCoast() const
+{
+	return !isSea && paths.any([](const Path& n) {return n.getChild().isSea; });
+}
+
 void	Node::draw(const Color& _color) const
 {
 	if (!Rect(Point(0, 0), Window::Size()).intersects(Graphics2D::GetTransform().transform(pos.mPos))) return;
@@ -17,7 +22,12 @@ void	Node::draw(const Color& _color) const
 	for (const auto& p : paths)
 		if (p.getChild().joinedRegionID == joinedRegionID) p.getLine().draw(0.002, _color);
 }
-Region&	Node::getJoinedRegion() const { return regions[joinedRegionID]; }
+
+Region&	Node::getJoinedRegion() const 
+{
+	return regions[joinedRegionID];
+}
+
 void	loadNodeMap(const FilePath& _filePath)
 {
 	nodes.clear();
@@ -52,6 +62,7 @@ void	loadNodeMap(const FilePath& _filePath)
 		}
 	}
 }
+
 void	setPlanetToNodes()
 {
 	//isSeaÇÃê›íË
@@ -87,8 +98,16 @@ void	setPlanetToNodes()
 Array<Path*> paths;
 Path::Path(const int& _parentNodeID, const int& _childNodeID)
 	: id(0), len(0.0), parentNodeID(_parentNodeID), childNodeID(_childNodeID) {}
-Node&	Path::getChild() const { return nodes[childNodeID]; }
-Node&	Path::getParent() const { return nodes[parentNodeID]; }
+Node&	Path::getChild() const
+{
+	return nodes[childNodeID]; 
+}
+
+Node&	Path::getParent() const
+{
+	return nodes[parentNodeID];
+}
+
 Line	Path::getLine() const
 {
 	auto p1 = getParent().pos.mPos;

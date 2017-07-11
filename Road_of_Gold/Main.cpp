@@ -1,18 +1,18 @@
-﻿# include "Planet.h"
-# include "Node.h"
-# include "Pi.h"
-# include "Urban.h"
-# include "Route.h"
-# include "Item.h"
-# include "CData.h"
+﻿#include "Planet.h"
+#include "Node.h"
+#include "Pi.h"
+#include "Urban.h"
+#include "Route.h"
+#include "Item.h"
+#include "CData.h"
+#include "Group.h"
 
 Planet planet;
 
 void Main()
 {
-
 	Window::Resize(1280, 720);
-	Window::SetTitle(L"Marketplace Game");
+	Window::SetTitle(L"Road of Gold");
 
 	const Font font12(12, Typeface::Bold);
 	const Font font16(16);
@@ -20,9 +20,9 @@ void Main()
 	const Font font36(36);
 	const Font font48(48);
 
-	enum struct DrawingType 
+	enum struct DrawingType
 	{
-		
+
 		Market, Towner, News, Vehicle
 	}
 	drawingType = DrawingType::Market;
@@ -53,8 +53,7 @@ void Main()
 
 	makeRoute();
 
-
-
+	makeGroupsRandom();
 
 	while (System::Update())
 	{
@@ -138,19 +137,39 @@ void Main()
 			}
 		}
 
-		planet.updateTransform();
-
+		//Vehicleの更新
+		for (auto& g : groups)
 		{
-			const Transformer2D t1(planet.getTransform(), true);
-			planet.draw();
+			for (auto& v : g.vehicles)
+			{
+				if (v.inRoute())
+				{
+					v.routeProgress += 0.01;
+					if (v.routeProgress >= v.getRoute().totalLength)
+					{
+						v.nowUrbanID = v.getRoute().destinationUrbanID;
+						v.routeID = -1;
+					}
+				}
+				else
+				{
+					v.routeProgress = 0.0;
+					const auto rs = v.getNowUrban().getRoutes();
+					v.routeID = rs[Random(int(rs.size()-1))]->id;
+				}
+			}
 		}
+
+		planet.updateTransform();
+		planet.draw();
+
 
 		if (MouseL.down() && (selectedUrban == NULL || !Rect(32, 32, 320, 640).mouseOver()))
 		{
 			selectedUrban = NULL;
 			for (int i = 0; i < 2; i++)
 			{
-				const Transformer2D t1(planet.getTransform(i), true);
+				const auto t1 = planet.createTransformer(i);
 				for (auto& u : urbans)
 					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
@@ -158,7 +177,7 @@ void Main()
 
 		for (int i = 0; i < 2; i++)
 		{
-			const Transformer2D t1(planet.getTransform(i), true);
+			const auto t1 = planet.createTransformer(i);
 
 			//Node
 			if (KeyT.pressed())
@@ -169,6 +188,11 @@ void Main()
 				for (const auto& r : routes)
 					if (r.isSeaRoute) r.draw(Palette::Red);
 
+			//Vehicle
+			for (const auto& g : groups)
+				for (const auto& v : g.vehicles)
+					v.draw();
+
 			//Urban
 			for (const auto& u : urbans) u.draw();
 
@@ -176,7 +200,7 @@ void Main()
 		//影
 		if (timeSpeed < 0.1)
 		{
-			const Transformer2D t1(planet.getTransform());
+			const auto t1 = planet.createTransformer();
 			RectF((0.25 - worldTimer)*TwoPi - TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
@@ -190,16 +214,16 @@ void Main()
 			auto& u = *selectedUrban;
 
 			//全体の枠
-			Rect(32, 32, 320, 660).drawFrame(2, fColor);
+			Rect(32, 32, 320, 660).draw(bColor).drawFrame(2, fColor);
 
 			//都市の名前の描画
-			Rect(32, 32, 240, 36).draw(bColor).drawFrame(2, fColor);
+			Rect(32, 32, 240, 36).drawFrame(2, fColor);
 			font24(selectedUrban->name).drawAt(152, 50);
 
 			//都市の時刻の描画
 			{
 				const Transformer2D t1(Mat3x2::Translate(272, 32));
-				Rect(0, 0, 80, 36).draw(bColor).drawFrame(2, fColor);
+				Rect(0, 0, 80, 36).drawFrame(2, fColor);
 				font24(selectedUrban->getTimeAsString()).drawAt(40, 18);
 			}
 
@@ -230,13 +254,8 @@ void Main()
 				//都市の販売物の描画
 				{
 					const Transformer2D t1(Mat3x2::Translate(32, 92));
-					Rect(0, 0, 128, 24).draw(bColor).drawFrame(2, fColor);
+					Rect(0, 0, 128, 24).drawFrame(2, fColor);
 					font16(L"販売物").drawAt(64, 12);
-				}
-
-				{
-					const Transformer2D t1(Mat3x2::Translate(32, 116));
-					Rect(0, 0, 128, 36 * 16).draw(bColor).drawFrame(2, fColor);
 				}
 				for (int i = 0; i < 36; i++)
 				{
@@ -265,7 +284,7 @@ void Main()
 				//基本情報
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, 92));
-					Rect(0, 0, 192, 600).draw(bColor).drawFrame(2, fColor);
+					Rect(0, 0, 192, 600).drawFrame(2, fColor);
 					Rect(0, 0, 192, 24).drawFrame(2, fColor);
 					font16(b.getItemName(), L" ストック数:", u.ItemStock[b.itemType]).draw(16, 0);
 					//font16(!b.rings.isEmpty() ? Format(b.rings.front().price) : L"").draw(16, 0);
@@ -286,16 +305,11 @@ void Main()
 				//都市の販売物の描画
 				{
 					const Transformer2D t1(Mat3x2::Translate(32, 92));
-					Rect(0, 0, 128, 24).draw(bColor).drawFrame(2, fColor);
+					Rect(0, 0, 128, 24).drawFrame(2, fColor);
 					font16(L"市民").drawAt(64, 12);
 				}
 
 				//市民リスト
-				{
-					const Transformer2D t1(Mat3x2::Translate(32, 116));
-					Rect(0, 0, 128, 24 * 24).draw(bColor).drawFrame(2, fColor);
-				}
-
 				for (int i = 0; i < 24; i++)
 				{
 					if (i < int(cData.size()))
@@ -322,7 +336,7 @@ void Main()
 				//市民情報
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, 92));
-					Rect(0, 0, 192, 600).draw(bColor).drawFrame(2, fColor);
+					Rect(0, 0, 192, 600).drawFrame(2, fColor);
 					Rect(0, 0, 192, 48).drawFrame(2, fColor);
 					font16(cd.name).draw(16, 0);
 					font16(L"人口:", u.citizens.count_if([&](const Citizen& c) {return c.citizenType == selectedCitizen; })).draw(16, 24);

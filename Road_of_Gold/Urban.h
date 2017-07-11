@@ -1,15 +1,16 @@
 ﻿#pragma once
 
-struct Company;
+struct Group;
 struct Node;
 struct Pos;
+struct Route;
 
 /*
 商品の値札
 */
 struct Ring
 {
-	Ring(const int& _price, const int& _num = 1, const Company* _owner = NULL);
+	Ring(const int& _price, const int& _num = 1, const Group* _owner = NULL);
 
 	int price;
 	int num;
@@ -25,7 +26,7 @@ struct Basket
 {
 	Basket(const int& _itemType);
 	String&	getItemName() const;
-	void	addRing(const int& _price, const int& _num = 1, const Company* _owner = NULL);
+	void	addRing(const int& _price, const int& _num = 1, const Group* _owner = NULL);
 	int		getCost(const int& _num) const;
 	int		getNumItem() const;
 
@@ -54,6 +55,7 @@ struct Urban
 	void	draw() const;
 	Pos&	getPos() const;
 	String	Urban::getTimeAsString() const;
+	Array<Route*>	getRoutes() const;
 
 	int		id;
 	String	name;

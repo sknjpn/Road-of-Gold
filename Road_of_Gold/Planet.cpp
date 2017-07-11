@@ -8,19 +8,26 @@ Planet::Planet()
 	, heightNoise(Random(UINT32_MAX - 1))
 	, gazePoint(none)
 {}
+
 double Planet::getHeight(const Pos& _pos, const int& _octave) const
 {
 	return Min(Max((heightNoise.octaveNoise(_pos.ePos, _octave) + 1.0) / 2.0, 0.0), 1.0);
 }
-bool	Planet::isSea(const Pos& _pos) const { return getHeight(_pos) < 0.60; }
-Mat3x2	Planet::getTransform(const int& _delta) const
+
+bool	Planet::isSea(const Pos& _pos) const 
 {
-	return Mat3x2::Identity().translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center());
+	return getHeight(_pos) < 0.60;
 }
+
+Transformer2D Planet::createTransformer(const int& _delta) const
+{
+	return Transformer2D(Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()), true);
+}
+
 void	Planet::updateTransform()
 {
 	//Ž‹“_ˆÚ“®ˆ—
-	const Transformer2D t1(getTransform(), true);
+	const auto t1 = createTransformer();
 	drawingRegion = drawingRegion.scaledAt(Cursor::PosF(), 1.0 + 0.1*double(Mouse::Wheel()));
 	if (gazePoint)	//’Ž‹“_
 	{
@@ -45,6 +52,7 @@ void	Planet::updateTransform()
 	smoothDrawingRegion.pos = smoothDrawingRegion.pos*(1.0 - followingSpeed) + drawingRegion.pos*followingSpeed;
 	smoothDrawingRegion.size = smoothDrawingRegion.size*(1.0 - followingSpeed) + drawingRegion.size*followingSpeed;
 }
+
 void	Planet::updateViewPointSliding()
 {
 	const double slidingSpeed = (drawingRegion.size.y / Pi)*0.05;
@@ -54,6 +62,7 @@ void	Planet::updateViewPointSliding()
 	if (Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
 
 }
+
 void	Planet::makeNewWorld(const int& _sizeX)
 {
 	heightNoise = PerlinNoise(Random(UINT32_MAX - 1));
@@ -69,4 +78,11 @@ void	Planet::makeNewWorld(const int& _sizeX)
 	}
 	mapTexture = Texture(image);
 }
-void	Planet::draw() const { for (int i = 0; i < 2; i++) mapTexture.resize(TwoPi, Pi).drawAt(i*TwoPi, 0); }
+
+void	Planet::draw() const
+{
+	for (int i = 0; i < 2; i++) {
+		const auto t1 = planet.createTransformer(i);
+		mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
+	}
+}
