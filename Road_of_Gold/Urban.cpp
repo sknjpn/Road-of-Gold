@@ -4,7 +4,8 @@
 #include"Item.h"
 #include"Group.h"
 #include"CData.h"
-#include "Pi.h"
+#include"Pi.h"
+#include"Route.h"
 
 Ring::Ring(const int& _price, const int& _num, const Group* _owner)
 	: price(_price), num(_num), ownerCompanyID(_owner == NULL ? -1 : _owner->id)
@@ -67,6 +68,13 @@ void	Urban::draw() const
 		(circle.mouseOver() ? Palette::Orange : Palette::Red);
 	circle.draw(color).drawFrame(0.005, Palette::Black);
 }
+Array<Route*>	Urban::getRoutes() const
+{
+	Array<Route*> rArray;
+	for (auto& r : routes)
+		if (r.originUrbanID == id) rArray.emplace_back(&r);
+	return rArray;
+}
 Pos&	Urban::getPos() const { return nodes[joinedNodeID].pos; }
 String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, '0') + L":" + Format(int(timer * 24 * 60) % 60).lpad(2, '0'); }
 bool	setUrban(Node& _node)
@@ -74,7 +82,7 @@ bool	setUrban(Node& _node)
 	if (_node.isSea || _node.ownUrbanID != -1) return false;
 	for (const auto& p : _node.paths) if (p.getChild().ownUrbanID != -1) return false;
 	_node.ownUrbanID = int(urbans.size());
-	urbans.push_back(Urban(_node.id));
+	urbans.emplace_back(_node.id);
 	auto& u = urbans.back();
 	u.timer = 0.5 + u.getPos().mPos.x / TwoPi;
 	u.ItemStock.resize(iData.size());

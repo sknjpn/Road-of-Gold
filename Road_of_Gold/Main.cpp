@@ -5,6 +5,7 @@
 #include "Route.h"
 #include "Item.h"
 #include "CData.h"
+#include "Group.h"
 
 Planet planet;
 
@@ -51,6 +52,8 @@ void Main()
 		if (setUrban(nodes[Random(int(nodes.size() - 1))])) numUrbans--;
 
 	makeRoute();
+
+	makeGroupsRandom();
 
 	while (System::Update())
 	{
@@ -134,6 +137,29 @@ void Main()
 			}
 		}
 
+		//Vehicleの更新
+		for (auto& g : groups)
+		{
+			for (auto& v : g.vehicles)
+			{
+				if (v.inRoute())
+				{
+					v.routeProgress += 0.01;
+					if (v.routeProgress >= v.getRoute().totalLength)
+					{
+						v.nowUrbanID = v.getRoute().destinationUrbanID;
+						v.routeID = -1;
+					}
+				}
+				else
+				{
+					v.routeProgress = 0.0;
+					const auto rs = v.getNowUrban().getRoutes();
+					v.routeID = rs[Random(int(rs.size()-1))]->id;
+				}
+			}
+		}
+
 		planet.updateTransform();
 		planet.draw();
 
@@ -161,6 +187,11 @@ void Main()
 			if (KeyY.pressed())
 				for (const auto& r : routes)
 					if (r.isSeaRoute) r.draw(Palette::Red);
+
+			//Vehicle
+			for (const auto& g : groups)
+				for (const auto& v : g.vehicles)
+					v.draw();
 
 			//Urban
 			for (const auto& u : urbans) u.draw();

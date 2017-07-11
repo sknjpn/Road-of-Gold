@@ -3,6 +3,7 @@
 struct Group;
 struct Node;
 struct Pos;
+struct Route;
 
 /*
 商品の値札
@@ -54,6 +55,7 @@ struct Urban
 	void	draw() const;
 	Pos&	getPos() const;
 	String	Urban::getTimeAsString() const;
+	Array<Route*>	getRoutes() const;
 
 	int		id;
 	String	name;
