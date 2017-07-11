@@ -13,14 +13,14 @@ double Planet::getHeight(const Pos& _pos, const int& _octave) const
 	return Min(Max((heightNoise.octaveNoise(_pos.ePos, _octave) + 1.0) / 2.0, 0.0), 1.0);
 }
 bool	Planet::isSea(const Pos& _pos) const { return getHeight(_pos) < 0.60; }
-Mat3x2	Planet::getTransform(const int& _delta) const
+Transformer2D Planet::createTransformer(const int& _delta) const
 {
-	return Mat3x2::Identity().translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center());
+	return Transformer2D(Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()), true);
 }
 void	Planet::updateTransform()
 {
 	//Ž‹“_ˆÚ“®ˆ—
-	const Transformer2D t1(getTransform(), true);
+	const auto t1 = createTransformer();
 	drawingRegion = drawingRegion.scaledAt(Cursor::PosF(), 1.0 + 0.1*double(Mouse::Wheel()));
 	if (gazePoint)	//’Ž‹“_
 	{

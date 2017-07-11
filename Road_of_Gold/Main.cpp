@@ -1,18 +1,17 @@
-﻿# include "Planet.h"
-# include "Node.h"
-# include "Pi.h"
-# include "Urban.h"
-# include "Route.h"
-# include "Item.h"
-# include "CData.h"
+﻿#include "Planet.h"
+#include "Node.h"
+#include "Pi.h"
+#include "Urban.h"
+#include "Route.h"
+#include "Item.h"
+#include "CData.h"
 
 Planet planet;
 
 void Main()
 {
-
 	Window::Resize(1280, 720);
-	Window::SetTitle(L"Marketplace Game");
+	Window::SetTitle(L"Road of Gold");
 
 	const Font font12(12, Typeface::Bold);
 	const Font font16(16);
@@ -52,9 +51,6 @@ void Main()
 		if (setUrban(nodes[Random(int(nodes.size() - 1))])) numUrbans--;
 
 	makeRoute();
-
-
-
 
 	while (System::Update())
 	{
@@ -141,7 +137,7 @@ void Main()
 		planet.updateTransform();
 
 		{
-			const Transformer2D t1(planet.getTransform(), true);
+			const auto t1 = planet.createTransformer();
 			planet.draw();
 		}
 
@@ -150,7 +146,7 @@ void Main()
 			selectedUrban = NULL;
 			for (int i = 0; i < 2; i++)
 			{
-				const Transformer2D t1(planet.getTransform(i), true);
+				const auto t1 = planet.createTransformer(i);
 				for (auto& u : urbans)
 					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
@@ -158,7 +154,7 @@ void Main()
 
 		for (int i = 0; i < 2; i++)
 		{
-			const Transformer2D t1(planet.getTransform(i), true);
+			const auto t1 = planet.createTransformer(i);
 
 			//Node
 			if (KeyT.pressed())
@@ -176,7 +172,7 @@ void Main()
 		//影
 		if (timeSpeed < 0.1)
 		{
-			const Transformer2D t1(planet.getTransform());
+			const auto t1 = planet.createTransformer();
 			RectF((0.25 - worldTimer)*TwoPi - TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
