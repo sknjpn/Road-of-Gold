@@ -1,4 +1,4 @@
-#include "Company.h"
+#include "Group.h"
 #include "Item.h"
 
 Item::Item()
@@ -13,8 +13,8 @@ Vehicle::Vehicle(const int& _nowNodeID)
 	, item()
 {}
 
-Array<Company> companies;
-Company::Company(const int& _id)
+Array<Group> groups;
+Group::Group(const int& _id)
 	: id(_id)
 	, name(L"hoge")
 	, color(RandomHSV())

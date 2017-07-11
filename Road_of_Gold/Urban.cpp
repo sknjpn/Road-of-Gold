@@ -2,11 +2,11 @@
 #include"Node.h"
 #include"Pos.h"
 #include"Item.h"
-#include"Company.h"
+#include"Group.h"
 #include"CData.h"
 #include "Pi.h"
 
-Ring::Ring(const int& _price, const int& _num, const Company* _owner)
+Ring::Ring(const int& _price, const int& _num, const Group* _owner)
 	: price(_price), num(_num), ownerCompanyID(_owner == NULL ? -1 : _owner->id)
 {}
 bool	operator<(const Ring& _left, const Ring& _right)
@@ -24,7 +24,7 @@ Basket::Basket(const int& _itemType) : itemType(_itemType), minimumPrice(10000)
 	chart.resize(1024);
 }
 String&	Basket::getItemName() const { return iData[itemType].name; }
-void	Basket::addRing(const int& _price, const int& _num, const Company* _owner)
+void	Basket::addRing(const int& _price, const int& _num, const Group* _owner)
 {
 	rings.push_back({ _price, _num, _owner });
 	rings.sort();
@@ -88,7 +88,7 @@ bool	setUrban(Node& _node)
 		Random(1,5),	//•óÎEl
 		Random(5,10),	//‹M‘°
 		Random(50,100),	//ƒpƒ“El
-		Random(1,5),	//“¹‹ïEl
+		Random(5,10),	//“¹‹ïEl
 	};
 
 	for (int i = 0; i < int(iData.size()); i++) u.baskets.push_back(i);

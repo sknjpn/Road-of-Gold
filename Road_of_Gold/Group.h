@@ -23,13 +23,13 @@ struct Vehicle
 	Item	item;
 };
 
-struct Company
+struct Group
 {
-	Company(const int& _id);
+	Group(const int& _id);
 
 	int		id;
 	String	name;
 	Color	color;
 	Array<Vehicle> vehicles;
 };
-extern Array<Company> companies;
+extern Array<Group> groups;
