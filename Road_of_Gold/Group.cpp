@@ -40,13 +40,13 @@ void	Vehicle::draw() const
 
 			if (len > p->len)
 			{
-				line.draw(0.01, Palette::Red);
+				line.draw(0.005, Palette::Red);
 				len -= p->len;
 			}
 			else
 			{
 				const auto pos = line.begin.lerp(line.end, len / p->len);
-				Line(line.begin,pos).draw(0.01, Palette::Red);
+				Line(line.begin,pos).draw(0.005, Palette::Red);
 				shape.movedBy(pos).draw(Palette::Yellow);
 				break;
 			}
@@ -69,7 +69,6 @@ void makeGroupsRandom()
 	{
 		groups.emplace_back();
 		auto& g = groups.back();
-		Log(g.id);
 		auto& u = urbans[Random(int(urbans.size() - 1))];
 		for (int i = 0; i < 10; i++) g.vehicles.emplace_back(u.id);
 	}

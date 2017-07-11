@@ -1,7 +1,6 @@
 #pragma once
 #include "Item.h"
 
-struct Node;
 struct Route;
 struct Pos;
 struct Urban;
