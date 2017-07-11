@@ -14,6 +14,24 @@ void Main()
 	Window::Resize(1280, 720);
 	Window::SetTitle(L"Marketplace Game");
 
+	const Font font12(12, Typeface::Bold);
+	const Font font16(16);
+	const Font font24(24);
+	const Font font36(36);
+	const Font font48(48);
+
+	enum struct DrawingType 
+	{
+		
+		Market, Towner, News, Vehicle
+	}
+	drawingType = DrawingType::Market;
+
+	double timeSpeed = 0.01;
+	double worldTimer = 0.0;
+	int selectedBasket = 0;
+	int selectedCitizen = 0;
+
 	planet.makeNewWorld();
 	loadNodeMap(L"authcode.bin");
 	setPlanetToNodes();
@@ -35,22 +53,7 @@ void Main()
 
 	makeRoute();
 
-	Font font12(12, Typeface::Bold);
-	Font font16(16);
-	Font font24(24);
-	Font font36(36);
-	Font font48(48);
 
-	double timeSpeed = 0.01;
-	double worldTimer = 0.0;
-
-	int selectedBasket = 0;
-	int selectedCitizen = 0;
-
-	enum DrawingType
-	{
-		Market, Towner, News, Vehicle
-	} drawingType = Market;
 
 
 	while (System::Update())
@@ -203,26 +206,26 @@ void Main()
 			//メニュー選択
 			{
 				auto t1 = Transformer2D::Transformer2D(Mat3x2::Translate(32, 68), true);
-				Rect(0, 0, 80, 24).draw(drawingType == Market ? Palette::Red : Rect(0, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(0, 0, 80, 24).leftClicked()) drawingType = Market;
+				Rect(0, 0, 80, 24).draw(drawingType == DrawingType::Market ? Palette::Red : Rect(0, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
+				if (Rect(0, 0, 80, 24).leftClicked()) drawingType = DrawingType::Market;
 				font16(L"💹").drawAt(40, 12);
 
-				Rect(80, 0, 80, 24).draw(drawingType == Towner ? Palette::Red : Rect(80, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(80, 0, 80, 24).leftClicked()) drawingType = Towner;
+				Rect(80, 0, 80, 24).draw(drawingType == DrawingType::Towner ? Palette::Red : Rect(80, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
+				if (Rect(80, 0, 80, 24).leftClicked()) drawingType = DrawingType::Towner;
 				font16(L"👪").drawAt(120, 12);
 
-				Rect(160, 0, 80, 24).draw(drawingType == News ? Palette::Red : Rect(160, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(160, 0, 80, 24).leftClicked()) drawingType = News;
+				Rect(160, 0, 80, 24).draw(drawingType == DrawingType::News ? Palette::Red : Rect(160, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
+				if (Rect(160, 0, 80, 24).leftClicked()) drawingType = DrawingType::News;
 				font16(L"📰").drawAt(200, 12);
 
-				Rect(240, 0, 80, 24).draw(drawingType == Vehicle ? Palette::Red : Rect(240, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(240, 0, 80, 24).leftClicked()) drawingType = Vehicle;
+				Rect(240, 0, 80, 24).draw(drawingType == DrawingType::Vehicle ? Palette::Red : Rect(240, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
+				if (Rect(240, 0, 80, 24).leftClicked()) drawingType = DrawingType::Vehicle;
 				font16(L"🚢").drawAt(280, 12);
 			}
 
 			switch (drawingType)
 			{
-			case Market:
+			case DrawingType::Market:
 			{
 				//都市の販売物の描画
 				{
@@ -278,7 +281,7 @@ void Main()
 
 				break;
 			}
-			case Towner:
+			case DrawingType::Towner:
 			{
 				//都市の販売物の描画
 				{
