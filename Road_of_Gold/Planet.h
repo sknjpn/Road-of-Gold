@@ -10,6 +10,7 @@ struct Planet
 	void	updateTransform();
 	void	updateViewPointSliding();
 	void	makeNewWorld(const int& _sizeX = 2048);
+	void	makeVoronoiMap(const int& _sizeX = 2048);
 	void	draw() const;
 	Transformer2D createTransformer(const int& _delta = 0) const;
 

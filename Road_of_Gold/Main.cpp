@@ -55,6 +55,8 @@ void Main()
 
 	makeGroupsRandom();
 
+	planet.makeVoronoiMap();
+
 	while (System::Update())
 	{
 		if (KeyF1.down()) timeSpeed = Max(0.0001, timeSpeed*0.5);
@@ -144,7 +146,7 @@ void Main()
 			{
 				if (v.inRoute())
 				{
-					v.routeProgress += 0.01;
+					v.routeProgress += timeSpeed;
 					if (v.routeProgress >= v.getRoute().totalLength)
 					{
 						v.nowUrbanID = v.getRoute().destinationUrbanID;
