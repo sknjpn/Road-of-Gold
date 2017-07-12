@@ -197,6 +197,7 @@ void Main()
 					v.routeProgress += timeSpeed;
 					if (v.routeProgress >= 0.0)
 					{
+						v.routeProgress = 0.0;
 						const auto rs = v.getNowUrban().getRoutes();
 						if (!rs.isEmpty()) v.routeID = rs[Random(int(rs.size() - 1))]->id;
 						else v.routeProgress = -100.0;

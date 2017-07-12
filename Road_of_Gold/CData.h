@@ -22,7 +22,6 @@ struct Consume
 	{
 		for (auto& i : iData)
 			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
-		Log(itemID);
 	}
 	int	itemID;
 	int numConsume;
@@ -36,7 +35,6 @@ struct Product
 	{
 		for (auto& i : iData)
 			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
-		Log(itemID);
 	}
 	int	itemID;
 	int numProduct;
