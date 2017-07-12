@@ -1,7 +1,6 @@
 #include"Urban.h"
 #include"Node.h"
 #include"Pos.h"
-#include"Item.h"
 #include"Group.h"
 #include"CData.h"
 #include"Pi.h"
@@ -89,14 +88,12 @@ bool	setUrban(Node& _node)
 	u.ItemStock.fill(0);
 
 	const Array<int> numCitizen = {
-		Random(10,50),	//–Ø‚±‚è
-		Random(10,50),	//“SzR˜J“­Ò
-		Random(1,5),	//•ŠíEl
-		Random(1,5),	//‹Rm
-		Random(1,5),	//•óÎEl
-		Random(5,10),	//‹M‘°
-		Random(50,100),	//ƒpƒ“El
-		Random(5,10),	//“¹‹ïEl
+		Random(1,10),	//–Ø‚±‚è
+		Random(1,10),	//“SzR˜J“­Ò
+		Random(1,10),	//•ŠíEl
+		Random(1,10),	//‹Rm
+		Random(1,10),	//•óÎEl
+		Random(1,10),	//‹M‘°
 	};
 
 	for (int i = 0; i < int(iData.size()); i++) u.baskets.push_back(i);

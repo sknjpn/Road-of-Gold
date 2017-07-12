@@ -41,8 +41,13 @@ struct Basket
 */
 struct Citizen
 {
-	Citizen(const int& _citizenType, const double& _timer) : citizenType(_citizenType), timer(_timer) {}
+	Citizen(const int& _citizenType, const double& _timer) 
+		: citizenType(_citizenType)
+		, money(1000)
+		, timer(_timer)
+	{}
 	int		citizenType;
+	int		money;
 	double	timer;
 };
 
@@ -54,7 +59,7 @@ struct Urban
 	Urban(const int& _joinedNodeID);
 	void	draw() const;
 	Pos&	getPos() const;
-	String	Urban::getTimeAsString() const;
+	String	getTimeAsString() const;
 	Array<Route*>	getRoutes() const;
 
 	int		id;

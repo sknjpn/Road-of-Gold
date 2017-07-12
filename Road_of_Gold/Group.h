@@ -1,5 +1,4 @@
 #pragma once
-#include "Item.h"
 
 struct Route;
 struct Pos;
@@ -20,7 +19,6 @@ struct Vehicle
 	int		nowUrbanID;
 	int		routeID;
 	double	routeProgress;
-	Item	item;
 };
 
 struct Group

@@ -153,11 +153,11 @@
     <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst">
       <Filter>Resource Files\engine\font\noto</Filter>
     </None>
+    <None Include="Assets\EconomicData.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Item.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="CData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -200,9 +200,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="IData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="CData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UrbanNames.cpp">
