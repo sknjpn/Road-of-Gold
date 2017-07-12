@@ -48,6 +48,7 @@ struct Job
 		: name(_json[L"JobName"].getOr<String>(L"hoge"))
 		, description(_json[L"JobDescription"].getOr<String>(L"hoge"))
 		, wage(_json[L"Wage"].getOr<int>(0))
+		, cost(_json[L"Cost"].getOr<int>(0))
 	{
 		for (auto c : _json[L"Consume"].arrayView())
 			consume.emplace_back(c);
@@ -57,6 +58,7 @@ struct Job
 
 	String	name;
 	String	description;
+	int		cost;
 	int		wage;
 	Array<Consume> consume;
 	Array<Product> product;

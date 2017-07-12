@@ -3,32 +3,32 @@
     {
       "ItemName": "木炭",
       "ItemDescription": "暖を取るために重宝されます。重いので移動に適しません。",
-      "Volume": 10,
-      "Value": 5
+      "Volume": 10.0,
+      "Value": 10.0
     },
     {
       "ItemName": "陶器",
       "ItemDescription": "食べ物を食べるときには欠かせません。",
-      "Volume": 10,
-      "Value": 100
+      "Volume": 10.0,
+      "Value": 100.0
     },
     {
       "ItemName": "毛皮",
       "ItemDescription": "イタチ科の小動物の毛皮です。",
-      "Volume": 5,
-      "Value": 10
+      "Volume": 5.0,
+      "Value": 25.0
     },
     {
-      "ItemName": "毛皮のコート",
+      "ItemName": "コート",
       "ItemDescription": "上質で暖かい毛皮です。",
-      "Volume": 10,
-      "Value": 500
+      "Volume": 10.0,
+      "Value": 200.0
     },
     {
       "ItemName": "魚介類",
       "ItemDescription": "栄養不足気味な市民にとって貴重な動物性たんぱく質です。",
-      "Volume": 1,
-      "Value": 10
+      "Volume": 1.0,
+      "Value": 10.0
     }
   ],
   "CData": [
@@ -45,6 +45,7 @@
       "Job": {
         "JobName": "炭焼き",
         "JobDescription": "沢山の薪から木炭を作ります。",
+        "Cost": 50,
         "Product": [{"ItemName": "木炭", "NumProduct": 10}]
       }
     },
@@ -53,8 +54,9 @@
       "Job": {
         "JobName": "陶芸",
         "JobDescription": "木炭と粘土から陶器を作ります。",
-        "Consume": [{"ItemName": "木炭","NumConsume": 10}],
-        "Product": [{"ItemName": "陶器","NumProduct": 10}]
+        "Cost": 100,
+        "Consume": [{"ItemName": "木炭","NumConsume": 1}],
+        "Product": [{"ItemName": "陶器","NumProduct": 1}]
       }
     },
     {
@@ -62,8 +64,8 @@
       "Job": {
         "JobName": "狩猟",
         "JobDescription": "キツネやテンの毛皮を得ます。",
-        "Product": [{"ItemName": "毛皮","NumProduct": 5}],
-        "Wage": -100
+        "Cost": 100,
+        "Product": [{"ItemName": "毛皮","NumProduct": 2}]
       }
     },
     {
@@ -71,8 +73,9 @@
       "Job": {
         "JobName": "仕立て",
         "JobDescription": "毛皮から毛皮のコートを作ります。",
-        "Consume": [{"ItemName": "毛皮","NumConsume": 2}],
-        "Product": [{"ItemName": "毛皮のコート","NumProduct": 1}]
+        "Cost": 200,
+        "Consume": [{"ItemName": "毛皮","NumConsume": 5}],
+        "Product": [{"ItemName": "コート","NumProduct": 1}]
       }
     },
     {
@@ -80,8 +83,8 @@
       "Job": {
         "JobName": "漁業",
         "JobDescription": "魚を釣ります。",
-        "Wage":25,
-        "Product":[{"ItemName": "魚介類","NumProduct": 10}]
+        "Cost": 50,
+        "Product":[{"ItemName": "魚介類","NumProduct": 5}]
       }
     }
   ]

@@ -53,6 +53,7 @@ Group::Group()
 	: id(int(groups.size()))
 	, name(L"hoge")
 	, color(RandomHSV())
+	, money(0)
 {}
 
 void makeGroupsRandom()

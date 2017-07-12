@@ -4,6 +4,7 @@ struct Group;
 struct Node;
 struct Pos;
 struct Route;
+struct Citizen;
 
 /*
 商品の値札
@@ -11,10 +12,12 @@ struct Route;
 struct Ring
 {
 	Ring(const int& _price, const int& _num = 1, const Group* _owner = NULL);
+	Ring(const int& _price, const int& _num = 1, const Citizen* _owner = NULL);
 
 	int price;
 	int num;
-	int ownerCompanyID;
+	int ownerGroupID;
+	int ownerCitizenID;
 };
 bool operator<(const Ring& _left, const Ring& _right);
 bool operator>(const Ring& _left, const Ring& _right);
@@ -27,11 +30,13 @@ struct Basket
 	Basket(const int& _itemType);
 	String&	getItemName() const;
 	void	addRing(const int& _price, const int& _num = 1, const Group* _owner = NULL);
+	void	addRing(const int& _price, const int& _num = 1, const Citizen* _owner = NULL);
 	int		getCost(const int& _num) const;
 	int		getNumItem() const;
 
 	int itemType;
-	int minimumPrice;
+	int mpt;	//当日取引最低価格
+	int mpy;	//前日取引最低価格
 	Array<int>	chart;
 	Array<Ring> rings;
 };
@@ -41,11 +46,14 @@ struct Basket
 */
 struct Citizen
 {
-	Citizen(const int& _citizenType, const double& _timer) 
+	Citizen(const int& _id,const int& _citizenType, const double& _timer) 
 		: citizenType(_citizenType)
 		, money(1000)
 		, timer(_timer)
+		, id(_id)
 	{}
+
+	int		id;
 	int		citizenType;
 	int		money;
 	double	timer;
@@ -67,8 +75,6 @@ struct Urban
 	int		joinedNodeID;
 	double	timer;
 
-	Array<int>		ItemStock;
-	Array<int>		numProduct;
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
 };

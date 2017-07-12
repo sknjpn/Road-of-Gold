@@ -7,7 +7,17 @@
 #include"Route.h"
 
 Ring::Ring(const int& _price, const int& _num, const Group* _owner)
-	: price(_price), num(_num), ownerCompanyID(_owner == NULL ? -1 : _owner->id)
+	: price(_price)
+	, num(_num)
+	, ownerGroupID(_owner == NULL ? -1 : _owner->id)
+	, ownerCitizenID(-1)
+{}
+
+Ring::Ring(const int& _price, const int& _num, const Citizen* _owner)
+	: price(_price)
+	, num(_num)
+	, ownerCitizenID(_owner == NULL ? -1 : _owner->id)
+	, ownerGroupID(-1)
 {}
 bool	operator<(const Ring& _left, const Ring& _right)
 {
@@ -19,12 +29,18 @@ bool	operator>(const Ring& _left, const Ring& _right)
 	return _left.price > _right.price;
 }
 
-Basket::Basket(const int& _itemType) : itemType(_itemType), minimumPrice(10000)
+Basket::Basket(const int& _itemType) : itemType(_itemType), mpy(100), mpt(mpy)
 {
 	chart.resize(1024);
+	chart.fill(mpy);
 }
 String&	Basket::getItemName() const { return iData[itemType].name; }
 void	Basket::addRing(const int& _price, const int& _num, const Group* _owner)
+{
+	rings.push_back({ _price, _num, _owner });
+	rings.sort();
+}
+void	Basket::addRing(const int& _price, const int& _num, const Citizen* _owner)
 {
 	rings.push_back({ _price, _num, _owner });
 	rings.sort();
@@ -84,20 +100,18 @@ bool	setUrban(Node& _node)
 	urbans.emplace_back(_node.id);
 	auto& u = urbans.back();
 	u.timer = 0.5 + u.getPos().mPos.x / TwoPi;
-	u.ItemStock.resize(iData.size());
-	u.ItemStock.fill(0);
 
 	const Array<int> numCitizen = {
-		Random(1,10),	//–Ø‚±‚è
-		Random(1,10),	//“SzR˜J“­Ò
-		Random(1,10),	//•ŠíEl
-		Random(1,10),	//‹Rm
-		Random(1,10),	//•óÎEl
-		Random(1,10),	//‹M‘°
+		30,	//˜J“­Ò
+		2,	//–Ø‚±‚è
+		2,	//“©Œ|El
+		2,	//ël
+		2,	//d—§‚Ä‰®
+		5,	//‹™t
 	};
 
 	for (int i = 0; i < int(iData.size()); i++) u.baskets.push_back(i);
 	for (int i = 0; i<int(numCitizen.size()); i++)
-		for (int j = 0; j < numCitizen[i]; j++) u.citizens.push_back(Citizen(i, Random(0.25, 0.75) + u.timer));
+		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, Random(0.25, 0.75) + u.timer);
 	return true;
 }
