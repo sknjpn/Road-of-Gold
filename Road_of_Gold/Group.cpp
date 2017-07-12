@@ -1,18 +1,12 @@
 #include "Group.h"
-#include "Item.h"
 #include "Node.h"
 #include "Urban.h"
 #include "Route.h"
-Item::Item()
-	: itemType(-1)
-	, num(0)
-{}
 
 Vehicle::Vehicle(const int& _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
-	, item()
 {}
 bool	Vehicle::inRoute() const
 {

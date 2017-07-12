@@ -3,7 +3,6 @@
 #include "Pi.h"
 #include "Urban.h"
 #include "Route.h"
-#include "Item.h"
 #include "CData.h"
 #include "Group.h"
 
@@ -22,7 +21,6 @@ void Main()
 
 	enum struct DrawingType
 	{
-
 		Market, Towner, News, Vehicle
 	}
 	drawingType = DrawingType::Market;
@@ -31,6 +29,8 @@ void Main()
 	double worldTimer = 0.0;
 	int selectedBasket = 0;
 	int selectedCitizen = 0;
+
+	loadEconomicData();
 
 	planet.makeNewWorld();
 	loadNodeMap(L"authcode.bin");
@@ -55,7 +55,7 @@ void Main()
 
 	makeGroupsRandom();
 
-	planet.makeVoronoiMap();
+	//planet.makeVoronoiMap();
 
 	while (System::Update())
 	{
@@ -97,33 +97,46 @@ void Main()
 				if (c.timer >= 1.0)
 				{
 					c.timer -= 1.0;
-					auto& cd = cData[c.citizenType];
-
-					if (cd.product.itemType != -1)
+					auto& cJob = cData[c.citizenType].job;
+					
+					for (auto& p : cJob.product) u.baskets[p.itemID].addRing(1000);
+					for (auto& c : cJob.consume)
 					{
-						int cost = Random(cd.product.costMin, cd.product.costMax);
+						auto& b = u.baskets[c.itemID];
+						int num = c.numConsume;
+						for (;;)
+						{
+							if (b.rings.isEmpty()) break;
+							auto& r = b.rings.front();
+							if (r.num < num) { num -= r.num; b.rings.pop_front(); }
+							else if (r.num == num) { b.rings.pop_front(); break; }
+							else { r.num -= num; break; }
+						}
+					}
+					/*
+					int cost = Random(cd.product.costMin, cd.product.costMax);
+					for (auto& m : cd.product.material)
+					{
+						if (m.num > u.baskets[m.itemtype].getNumItem()) { cost = -1; break; }
+						cost += u.baskets[m.itemtype].getCost(m.num);
+					}
+					if (cost != -1 && cost <= u.baskets[cd.product.itemType].minimumPrice)
+					{
+						u.ItemStock[cd.product.itemType] += cd.product.num;
 						for (auto& m : cd.product.material)
 						{
-							if (m.num > u.baskets[m.itemtype].getNumItem()) { cost = -1; break; }
-							cost += u.baskets[m.itemtype].getCost(m.num);
-						}
-						if (cost != -1 && cost <= u.baskets[cd.product.itemType].minimumPrice)
-						{
-							u.ItemStock[cd.product.itemType] += cd.product.num;
-							for (auto& m : cd.product.material)
+							auto& b = u.baskets[m.itemtype];
+							int num = m.num;
+							for (;;)
 							{
-								auto& b = u.baskets[m.itemtype];
-								int num = m.num;
-								for (;;)
-								{
-									auto& r = b.rings.front();
-									if (r.num < num) { num -= r.num; b.rings.pop_front(); }
-									else if (r.num == num) { b.rings.pop_front(); break; }
-									else { r.num -= num; break; }
-								}
+								auto& r = b.rings.front();
+								if (r.num < num) { num -= r.num; b.rings.pop_front(); }
+								else if (r.num == num) { b.rings.pop_front(); break; }
+								else { r.num -= num; break; }
 							}
 						}
 					}
+
 
 					for (auto& n : cd.need)
 					{
@@ -134,7 +147,7 @@ void Main()
 							r.num--;
 							if (r.num == 0) b.rings.pop_front();
 						}
-					}
+					}*/
 				}
 			}
 		}
@@ -157,7 +170,7 @@ void Main()
 				{
 					v.routeProgress = 0.0;
 					const auto rs = v.getNowUrban().getRoutes();
-					v.routeID = rs[Random(int(rs.size()-1))]->id;
+					v.routeID = rs[Random(int(rs.size() - 1))]->id;
 				}
 			}
 		}
@@ -206,6 +219,7 @@ void Main()
 			RectF((0.25 - worldTimer)*TwoPi - TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
+			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 		}
 		//Interface
 		if (selectedUrban != NULL)
@@ -223,30 +237,21 @@ void Main()
 			font24(selectedUrban->name).drawAt(152, 50);
 
 			//都市の時刻の描画
-			{
-				const Transformer2D t1(Mat3x2::Translate(272, 32));
-				Rect(0, 0, 80, 36).drawFrame(2, fColor);
-				font24(selectedUrban->getTimeAsString()).drawAt(40, 18);
-			}
+			Rect(272, 32, 80, 36).drawFrame(2, fColor);
+			font24(selectedUrban->getTimeAsString()).drawAt(312, 50);
+
 
 			//メニュー選択
 			{
-				auto t1 = Transformer2D::Transformer2D(Mat3x2::Translate(32, 68), true);
-				Rect(0, 0, 80, 24).draw(drawingType == DrawingType::Market ? Palette::Red : Rect(0, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(0, 0, 80, 24).leftClicked()) drawingType = DrawingType::Market;
-				font16(L"💹").drawAt(40, 12);
-
-				Rect(80, 0, 80, 24).draw(drawingType == DrawingType::Towner ? Palette::Red : Rect(80, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(80, 0, 80, 24).leftClicked()) drawingType = DrawingType::Towner;
-				font16(L"👪").drawAt(120, 12);
-
-				Rect(160, 0, 80, 24).draw(drawingType == DrawingType::News ? Palette::Red : Rect(160, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(160, 0, 80, 24).leftClicked()) drawingType = DrawingType::News;
-				font16(L"📰").drawAt(200, 12);
-
-				Rect(240, 0, 80, 24).draw(drawingType == DrawingType::Vehicle ? Palette::Red : Rect(240, 0, 80, 24).mouseOver() ? Palette::Orange : bColor).drawFrame(2, fColor);
-				if (Rect(240, 0, 80, 24).leftClicked()) drawingType = DrawingType::Vehicle;
-				font16(L"🚢").drawAt(280, 12);
+				const Array<String> ns = { L"💹",L"👪",L"📰",L"🚢", };
+				const Array<DrawingType> ts = { DrawingType::Market,DrawingType::Towner,DrawingType::News,DrawingType::Vehicle, };
+				for (int i = 0; i<int(ns.size()); i++)
+				{
+					const RectF rect(32 + i * 320 / double(ns.size()), 68, 320 / double(ns.size()), 24);
+					rect.draw(drawingType == ts[i] ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, fColor);
+					if (rect.leftClicked()) drawingType = ts[i];
+					font16(ns[i]).drawAt(rect.center());
+				}
 			}
 
 			switch (drawingType)
@@ -256,7 +261,7 @@ void Main()
 				//都市の販売物の描画
 				{
 					const Transformer2D t1(Mat3x2::Translate(32, 92));
-					Rect(0, 0, 128, 24).drawFrame(2, fColor);
+					Rect(128, 24).drawFrame(2, fColor);
 					font16(L"販売物").drawAt(64, 12);
 				}
 				for (int i = 0; i < 36; i++)
@@ -265,7 +270,7 @@ void Main()
 					{
 						auto& b = u.baskets[i];
 						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 16), true);
-						const auto rect = Rect(0, 0, 128, 16);
+						const auto rect = Rect(128, 16);
 						if (rect.leftClicked()) selectedBasket = b.itemType;
 						const Color color = selectedBasket == b.itemType ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(Palette::White, 0));
 						rect.draw(color).drawFrame(2, fColor);
@@ -275,7 +280,7 @@ void Main()
 					else
 					{
 						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 16), true);
-						const auto rect = Rect(0, 0, 128, 16);
+						const auto rect = Rect(128, 16);
 						const Color color = rect.mouseOver() ? Color(Palette::Orange, 128) : Color(Palette::White, 0);
 						rect.draw(color).drawFrame(2, fColor);
 						font12(L"---").drawAt(64, 8);
@@ -286,15 +291,15 @@ void Main()
 				//基本情報
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, 92));
-					Rect(0, 0, 192, 600).drawFrame(2, fColor);
-					Rect(0, 0, 192, 24).drawFrame(2, fColor);
+					Rect(192, 600).drawFrame(2, fColor);
+					Rect(192, 24).drawFrame(2, fColor);
 					font16(b.getItemName(), L" ストック数:", u.ItemStock[b.itemType]).draw(16, 0);
 					//font16(!b.rings.isEmpty() ? Format(b.rings.front().price) : L"").draw(16, 0);
 				}
 				//チャートの描画
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, 116));
-					Rect(0, 0, 192, 64).drawFrame(2, fColor);
+					Rect(192, 64).drawFrame(2, fColor);
 					int max = 1; for (int i = 0; i < 191; i++) max = Max(max, b.chart[i]);
 					for (int i = 0; i < 191; i++)
 						Line(191 - i, 63 - b.chart[i] * 62 / max, 190 - i, 63 - b.chart[i + 1] * 62 / max).draw(1, Palette::Yellow);
@@ -307,7 +312,7 @@ void Main()
 				//都市の販売物の描画
 				{
 					const Transformer2D t1(Mat3x2::Translate(32, 92));
-					Rect(0, 0, 128, 24).drawFrame(2, fColor);
+					Rect(128, 24).drawFrame(2, fColor);
 					font16(L"市民").drawAt(64, 12);
 				}
 
@@ -317,7 +322,7 @@ void Main()
 					if (i < int(cData.size()))
 					{
 						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 24), true);
-						const auto rect = Rect(0, 0, 128, 24);
+						const auto rect = Rect(128, 24);
 						if (rect.leftClicked()) selectedCitizen = i;
 						const Color color = selectedCitizen == i ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(Palette::White, 0));
 						rect.draw(color).drawFrame(2, fColor);
@@ -326,7 +331,7 @@ void Main()
 					else
 					{
 						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 24), true);
-						const auto rect = Rect(0, 0, 128, 24);
+						const auto rect = Rect(128, 24);
 						const Color color = rect.mouseOver() ? Color(Palette::Orange, 128) : Color(Palette::White, 0);
 						rect.draw(color).drawFrame(2, fColor);
 						font16(L"---").drawAt(64, 12);
@@ -338,17 +343,16 @@ void Main()
 				//市民情報
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, 92));
-					Rect(0, 0, 192, 600).drawFrame(2, fColor);
-					Rect(0, 0, 192, 48).drawFrame(2, fColor);
+					Rect(192, 48).drawFrame(2, fColor);
 					font16(cd.name).draw(16, 0);
 					font16(L"人口:", u.citizens.count_if([&](const Citizen& c) {return c.citizenType == selectedCitizen; })).draw(16, 24);
 				}
-
+				/*
 				//Need
 				if (!cd.need.isEmpty())
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, 140));
-					Rect(0, 0, 192, 16 + 16 * int(cd.need.size())).drawFrame(2, fColor);
+					Rect(192, 16 + 16 * int(cd.need.size())).drawFrame(2, fColor);
 					Rect(12, 16, 180, 16 * int(cd.need.size())).drawFrame(2, fColor);
 					font12(L"消費").draw(4, 0);
 					for (int i = 0; i<int(cd.need.size()); i++)
@@ -362,7 +366,7 @@ void Main()
 				if (cd.product.itemType != -1)
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, !cd.need.isEmpty() ? 156 : 140 + 16 * int(cd.need.size())));
-					Rect(0, 0, 192, 16 + 16 * int(cd.product.material.size())).drawFrame(2, fColor);
+					Rect(192, 16 + 16 * int(cd.product.material.size())).drawFrame(2, fColor);
 					Rect(12, 16, 180, 16 * int(cd.product.material.size())).drawFrame(2, fColor);
 					font12(L"生産:", iData[cd.product.itemType].name, L"x", cd.product.num).draw(4, 0);
 					for (int i = 0; i<int(cd.product.material.size()); i++)
@@ -370,10 +374,9 @@ void Main()
 						auto& m = cd.product.material[i];
 						font12(iData[m.itemtype].name, L"x", m.num).draw(16, 16 + i * 16);
 					}
-				}
+				}*/
 				break;
 			}
-
 			}
 		}
 

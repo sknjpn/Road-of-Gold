@@ -196,6 +196,7 @@
     <Text Include="example\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\EconomicData.json" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />
@@ -220,7 +221,6 @@
   <ItemGroup>
     <ClInclude Include="CData.h" />
     <ClInclude Include="Group.h" />
-    <ClInclude Include="Item.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pi.h" />
     <ClInclude Include="Planet.h" />
@@ -230,7 +230,6 @@
     <ClInclude Include="Urban.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="CData.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="IData.cpp" />
     <ClCompile Include="Main.cpp" />
