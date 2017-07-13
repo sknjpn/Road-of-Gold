@@ -75,17 +75,13 @@ void Main()
 				{
 
 					//価格低下
-					for (auto& r : b.rings) r.price = int(r.price*0.95);
-					//商品追加
-					const int sell = Min(100 - u.baskets[b.itemType].getNumItem(), u.ItemStock[b.itemType]);
-					if (sell > 0)
-						b.addRing(1 + int(b.minimumPrice*1.05*Random(1.0, 1.2)), sell);
-					u.ItemStock[b.itemType] = 0;
-
-					if (!b.rings.isEmpty()) b.minimumPrice = b.rings.front().price;
-
+					for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));
+					if (!b.rings.isEmpty()) b.mpy = b.rings.front().price;
+					else if (b.mpt != -1) b.mpy = b.mpt;
+					b.mpt = -1;
 					//チャートの更新
-					b.chart.push_front(b.minimumPrice);
+					//b.chart.push_front(b.rings.isEmpty() ? b.chart.front() : b.rings.front().price);
+					b.chart.push_front(b.mpy);
 					b.chart.pop_back();
 				}
 			}
@@ -97,57 +93,88 @@ void Main()
 				if (c.timer >= 1.0)
 				{
 					c.timer -= 1.0;
+
 					auto& cJob = cData[c.citizenType].job;
-					
-					for (auto& p : cJob.product) u.baskets[p.itemID].addRing(1000);
-					for (auto& c : cJob.consume)
+
+					//仕事が達成可能かどうか判定
+					int totalCost = cJob.cost - cJob.wage + 50;
+					bool flag = true;
+					for (auto& p : cJob.consume)
 					{
-						auto& b = u.baskets[c.itemID];
-						int num = c.numConsume;
+						if (u.baskets[p.itemID].getNumItem() < p.numConsume) { flag = false; break; }
+						totalCost += u.baskets[p.itemID].getCost(p.numConsume);
+					}
+					//仕事の実行
+					if (totalCost < c.money)
+					{
+						if (flag)
+						{
+							for (auto& p : cJob.product)
+							{
+								auto& b = u.baskets[p.itemID];
+								const int price = 1 + int(b.mpy*1.2*Random(1.0, 1.2));
+								b.addRing(price, p.numProduct, &c);
+								b.mpt = price;
+							}
+							for (auto& p : cJob.consume)
+							{
+								auto& b = u.baskets[p.itemID];
+								int num = p.numConsume;
+								for (;;)
+								{
+									auto& r = b.rings.front();
+									if (r.num < num) {
+										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
+										else groups[r.ownerGroupID].money += r.num*r.price;
+										num -= r.num; b.rings.pop_front();
+									}
+									else if (r.num == num) {
+										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
+										else groups[r.ownerGroupID].money += r.num*r.price;
+										b.rings.pop_front();
+										break;
+									}
+									else {
+										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += num*r.price;
+										else groups[r.ownerGroupID].money += num*r.price;
+										r.num -= num; break;
+									}
+								}
+							}
+							c.money -= totalCost;
+						}
+
+						//購買
+						Array<Basket*> buyList;	//購買履歴
 						for (;;)
 						{
-							if (b.rings.isEmpty()) break;
-							auto& r = b.rings.front();
-							if (r.num < num) { num -= r.num; b.rings.pop_front(); }
-							else if (r.num == num) { b.rings.pop_front(); break; }
-							else { r.num -= num; break; }
-						}
-					}
-					/*
-					int cost = Random(cd.product.costMin, cd.product.costMax);
-					for (auto& m : cd.product.material)
-					{
-						if (m.num > u.baskets[m.itemtype].getNumItem()) { cost = -1; break; }
-						cost += u.baskets[m.itemtype].getCost(m.num);
-					}
-					if (cost != -1 && cost <= u.baskets[cd.product.itemType].minimumPrice)
-					{
-						u.ItemStock[cd.product.itemType] += cd.product.num;
-						for (auto& m : cd.product.material)
-						{
-							auto& b = u.baskets[m.itemtype];
-							int num = m.num;
-							for (;;)
+							if (c.money <= 0) break;
+
+							Basket* best = NULL;
+							double	earn = 0.0;
+							for (int i = 0; i<int(iData.size()); i++)
 							{
-								auto& r = b.rings.front();
-								if (r.num < num) { num -= r.num; b.rings.pop_front(); }
-								else if (r.num == num) { b.rings.pop_front(); break; }
-								else { r.num -= num; break; }
+								auto& b = u.baskets[i];
+								if (!b.rings.isEmpty() && /*b.rings.front().price <= c.money &&*/ (best == NULL || iData[i].value / double(b.rings.front().price) > earn))
+								{
+									earn = iData[i].value / double(b.rings.front().price);
+									best = &b;
+								}
 							}
+							if (best != NULL && best->rings.front().price <= c.money) {
+								auto& r = best->rings.front();
+								if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.price;
+								else groups[r.ownerGroupID].money += r.price;
+								c.money -= r.price;
+								r.num--;
+								if (r.num == 0) best->rings.pop_front();
+							}
+							else break;
 						}
 					}
+					else c.money += 50;	//出稼ぎ
 
 
-					for (auto& n : cd.need)
-					{
-						auto& b = u.baskets[n.itemType];
-						if (!b.rings.isEmpty() && b.rings.front().price <= Random(n.priceMin, n.priceMax))
-						{
-							auto& r = b.rings.front();
-							r.num--;
-							if (r.num == 0) b.rings.pop_front();
-						}
-					}*/
 				}
 			}
 		}
@@ -168,9 +195,14 @@ void Main()
 				}
 				else
 				{
-					v.routeProgress = 0.0;
-					const auto rs = v.getNowUrban().getRoutes();
-					v.routeID = rs[Random(int(rs.size() - 1))]->id;
+					v.routeProgress += timeSpeed;
+					if (v.routeProgress >= 0.0)
+					{
+						v.routeProgress = 0.0;
+						const auto rs = v.getNowUrban().getRoutes();
+						if (!rs.isEmpty()) v.routeID = rs[Random(int(rs.size() - 1))]->id;
+						else v.routeProgress = -100.0;
+					}
 				}
 			}
 		}
@@ -275,7 +307,7 @@ void Main()
 						const Color color = selectedBasket == b.itemType ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(Palette::White, 0));
 						rect.draw(color).drawFrame(2, fColor);
 						font12(iData[i].name).draw(0, 0);
-						font12(Format(b.getNumItem()).lpad(4, '0'), L":", Format(b.minimumPrice).lpad(5, '0')).draw(48, 0);
+						font12(Format(b.getNumItem()).lpad(4, '0'), L":", Format(b.chart.front()).lpad(5, '0')).draw(48, 0);
 					}
 					else
 					{
@@ -293,7 +325,7 @@ void Main()
 					const Transformer2D t1(Mat3x2::Translate(160, 92));
 					Rect(192, 600).drawFrame(2, fColor);
 					Rect(192, 24).drawFrame(2, fColor);
-					font16(b.getItemName(), L" ストック数:", u.ItemStock[b.itemType]).draw(16, 0);
+					font16(b.getItemName()).draw(16, 0);
 					//font16(!b.rings.isEmpty() ? Format(b.rings.front().price) : L"").draw(16, 0);
 				}
 				//チャートの描画

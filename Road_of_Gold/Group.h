@@ -25,6 +25,7 @@ struct Group
 {
 	Group();
 
+	int		money;
 	int		id;
 	String	name;
 	Color	color;

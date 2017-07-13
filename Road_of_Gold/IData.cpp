@@ -15,6 +15,6 @@ IData::IData(const JSONValue _json)
 	: id(int(iData.size()))
 	, name(_json[L"ItemName"].getOr<String>(L"hoge"))
 	, description(_json[L"ItemDescription"].getOr<String>(L"hoge"))
-	, volume(_json[L"Volume"].getOr<double>(10))
-	, value(_json[L"Value"].getOr<double>(0))
+	, volume(_json[L"Volume"].getOr<int>(10))
+	, value(_json[L"Value"].getOr<int>(0))
 {}

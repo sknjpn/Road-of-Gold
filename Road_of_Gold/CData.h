@@ -9,8 +9,8 @@ struct IData
 	int		id;
 	String	name;
 	String	description;
-	double	volume;
-	double	value;
+	int		volume;
+	int		value;
 };
 extern Array<IData> iData;
 
@@ -22,7 +22,6 @@ struct Consume
 	{
 		for (auto& i : iData)
 			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
-		Log(itemID);
 	}
 	int	itemID;
 	int numConsume;
@@ -36,7 +35,6 @@ struct Product
 	{
 		for (auto& i : iData)
 			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
-		Log(itemID);
 	}
 	int	itemID;
 	int numProduct;
@@ -48,6 +46,7 @@ struct Job
 		: name(_json[L"JobName"].getOr<String>(L"hoge"))
 		, description(_json[L"JobDescription"].getOr<String>(L"hoge"))
 		, wage(_json[L"Wage"].getOr<int>(0))
+		, cost(_json[L"Cost"].getOr<int>(0))
 	{
 		for (auto c : _json[L"Consume"].arrayView())
 			consume.emplace_back(c);
@@ -57,6 +56,7 @@ struct Job
 
 	String	name;
 	String	description;
+	int		cost;
 	int		wage;
 	Array<Consume> consume;
 	Array<Product> product;
