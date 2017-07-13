@@ -94,9 +94,57 @@ void Main()
 				{
 					c.timer -= 1.0;
 
-					//購買
-					if (c.citizenType == 0)
+					auto& cJob = cData[c.citizenType].job;
+
+					//仕事が達成可能かどうか判定
+					int totalCost = cJob.cost - cJob.wage + 50;
+					bool flag = true;
+					for (auto& p : cJob.consume)
 					{
+						if (u.baskets[p.itemID].getNumItem() < p.numConsume) { flag = false; break; }
+						totalCost += u.baskets[p.itemID].getCost(p.numConsume);
+					}
+					//仕事の実行
+					if (totalCost < c.money)
+					{
+						if (flag)
+						{
+							for (auto& p : cJob.product)
+							{
+								auto& b = u.baskets[p.itemID];
+								const int price = 1 + int(b.mpy*1.2*Random(1.0, 1.2));
+								b.addRing(price, p.numProduct, &c);
+								b.mpt = price;
+							}
+							for (auto& p : cJob.consume)
+							{
+								auto& b = u.baskets[p.itemID];
+								int num = p.numConsume;
+								for (;;)
+								{
+									auto& r = b.rings.front();
+									if (r.num < num) {
+										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
+										else groups[r.ownerGroupID].money += r.num*r.price;
+										num -= r.num; b.rings.pop_front();
+									}
+									else if (r.num == num) {
+										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
+										else groups[r.ownerGroupID].money += r.num*r.price;
+										b.rings.pop_front();
+										break;
+									}
+									else {
+										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += num*r.price;
+										else groups[r.ownerGroupID].money += num*r.price;
+										r.num -= num; break;
+									}
+								}
+							}
+							c.money -= totalCost;
+						}
+
+						//購買
 						Array<Basket*> buyList;	//購買履歴
 						for (;;)
 						{
@@ -113,7 +161,7 @@ void Main()
 									best = &b;
 								}
 							}
-							if (best != NULL) {
+							if (best != NULL && best->rings.front().price <= c.money) {
 								auto& r = best->rings.front();
 								if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.price;
 								else groups[r.ownerGroupID].money += r.price;
@@ -124,55 +172,8 @@ void Main()
 							else break;
 						}
 					}
-
-					auto& cJob = cData[c.citizenType].job;
-
-					//仕事が達成可能かどうか判定
-					int totalCost = cJob.cost - cJob.wage;
-					bool flag = true;
-					for (auto& p : cJob.consume)
-					{
-						if (u.baskets[p.itemID].getNumItem() < p.numConsume) { flag = false; break; }
-						totalCost += u.baskets[p.itemID].getCost(p.numConsume);
-					}
-					//仕事の実行
-					if (totalCost < c.money && flag)
-					{
-						for (auto& p : cJob.product)
-						{
-							auto& b = u.baskets[p.itemID];
-							const int price = 1 + int(b.mpy*1.2*Random(1.0, 1.2));
-							b.addRing(price, p.numProduct, &c);
-							b.mpt = price;
-						}
-						for (auto& p : cJob.consume)
-						{
-							auto& b = u.baskets[p.itemID];
-							int num = p.numConsume;
-							for (;;)
-							{
-								auto& r = b.rings.front();
-								if (r.num < num) {
-									if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
-									else groups[r.ownerGroupID].money += r.num*r.price;
-									num -= r.num; b.rings.pop_front();
-								}
-								else if (r.num == num) {
-									if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
-									else groups[r.ownerGroupID].money += r.num*r.price;
-									b.rings.pop_front();
-									break;
-								}
-								else {
-									if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += num*r.price;
-									else groups[r.ownerGroupID].money += num*r.price;
-									r.num -= num; break;
-								}
-							}
-						}
-						c.money -= totalCost;
-					}
 					else c.money += 50;	//出稼ぎ
+
 
 				}
 			}
