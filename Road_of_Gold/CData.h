@@ -9,8 +9,8 @@ struct IData
 	int		id;
 	String	name;
 	String	description;
-	double	volume;
-	double	value;
+	int		volume;
+	int		value;
 };
 extern Array<IData> iData;
 
