@@ -29,10 +29,11 @@ bool	operator>(const Ring& _left, const Ring& _right)
 	return _left.price > _right.price;
 }
 
-Basket::Basket(const int& _itemType) : itemType(_itemType), mpy(100), mpt(mpy)
+Basket::Basket(const int& _itemType, const int& _joinedUrbanID)
+	: itemType(_itemType)
+	, joinedUrbanID(_joinedUrbanID)
 {
 	chart.resize(1024);
-	chart.fill(mpy);
 }
 String&	Basket::getItemName() const { return iData[itemType].name; }
 void	Basket::addRing(const int& _price, const int& _num, const Group* _owner)
@@ -65,6 +66,46 @@ int		Basket::getNumItem() const
 	int num = 0;
 	for (auto& r : rings) num += r.num;
 	return num;
+}
+void	Basket::buyItem(const int& _num)
+{
+	int num = _num;
+	auto& u = urbans[joinedUrbanID];
+	for (;;)
+	{
+		auto& r = rings.front();
+		if (r.num < num) {
+			if (r.ownerCitizenID != -1)
+			{
+				u.citizens[r.ownerCitizenID].money += r.num*r.price;
+				u.citizens[r.ownerCitizenID].price = r.price;
+			}
+			else groups[r.ownerGroupID].money += r.num*r.price;
+			for (int i = 0; i < r.num; i++) tradeLog.emplace_back(r.price);
+			num -= r.num; rings.pop_front();
+		}
+		else if (r.num == num) {
+			if (r.ownerCitizenID != -1)
+			{
+				u.citizens[r.ownerCitizenID].money += r.num*r.price;
+				u.citizens[r.ownerCitizenID].price = r.price;
+			}
+			else groups[r.ownerGroupID].money += r.num*r.price;
+			for (int i = 0; i < r.num; i++) tradeLog.emplace_back(r.price);
+			rings.pop_front();
+			return;
+		}
+		else {
+			if (r.ownerCitizenID != -1)
+			{
+				u.citizens[r.ownerCitizenID].money += num*r.price;
+				u.citizens[r.ownerCitizenID].price = r.price;
+			}
+			else groups[r.ownerGroupID].money += num*r.price;
+			for (int i = 0; i < num; i++) tradeLog.emplace_back(r.price);
+			r.num -= num; return;
+		}
+	}
 }
 
 Array<Urban> urbans;
@@ -110,7 +151,7 @@ bool	setUrban(Node& _node)
 		10,	//‹™Žt
 	};
 
-	for (int i = 0; i < int(iData.size()); i++) u.baskets.push_back(i);
+	for (int i = 0; i < int(iData.size()); i++) u.baskets.emplace_back(i, u.id);
 	for (int i = 0; i<int(numCitizen.size()); i++)
 		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, Random(0.25, 0.75) + u.timer);
 	return true;

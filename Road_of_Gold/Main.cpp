@@ -73,15 +73,11 @@ void Main()
 				u.timer -= 1.0;
 				for (auto& b : u.baskets)
 				{
-
 					//価格低下
 					for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));
-					if (!b.rings.isEmpty()) b.mpy = b.rings.front().price;
-					else if (b.mpt != -1) b.mpy = b.mpt;
-					b.mpt = -1;
 					//チャートの更新
-					//b.chart.push_front(b.rings.isEmpty() ? b.chart.front() : b.rings.front().price);
-					b.chart.push_front(b.mpy);
+					b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
+					b.tradeLog.clear();
 					b.chart.pop_back();
 				}
 			}
@@ -93,11 +89,10 @@ void Main()
 				if (c.timer >= 1.0)
 				{
 					c.timer -= 1.0;
-
+					c.money -= 50;	//生活費の支払い
 					auto& cJob = cData[c.citizenType].job;
-
 					//仕事が達成可能かどうか判定
-					int totalCost = cJob.cost - cJob.wage + 50;
+					int totalCost = cJob.cost - cJob.wage;
 					bool flag = true;
 					for (auto& p : cJob.consume)
 					{
@@ -112,35 +107,12 @@ void Main()
 							for (auto& p : cJob.product)
 							{
 								auto& b = u.baskets[p.itemID];
-								const int price = 1 + int(b.mpy*1.2*Random(1.0, 1.2));
+								const int price = 1 + int(c.price*Random(1.1, 1.2));
 								b.addRing(price, p.numProduct, &c);
-								b.mpt = price;
 							}
 							for (auto& p : cJob.consume)
-							{
-								auto& b = u.baskets[p.itemID];
-								int num = p.numConsume;
-								for (;;)
-								{
-									auto& r = b.rings.front();
-									if (r.num < num) {
-										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
-										else groups[r.ownerGroupID].money += r.num*r.price;
-										num -= r.num; b.rings.pop_front();
-									}
-									else if (r.num == num) {
-										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.num*r.price;
-										else groups[r.ownerGroupID].money += r.num*r.price;
-										b.rings.pop_front();
-										break;
-									}
-									else {
-										if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += num*r.price;
-										else groups[r.ownerGroupID].money += num*r.price;
-										r.num -= num; break;
-									}
-								}
-							}
+								u.baskets[p.itemID].buyItem(p.numConsume);
+
 							c.money -= totalCost;
 						}
 
@@ -148,33 +120,25 @@ void Main()
 						Array<Basket*> buyList;	//購買履歴
 						for (;;)
 						{
-							if (c.money <= 0) break;
-
 							Basket* best = NULL;
 							double	earn = 0.0;
-							for (int i = 0; i<int(iData.size()); i++)
+							for (int i = 0; i < int(iData.size()); i++)
 							{
 								auto& b = u.baskets[i];
-								if (!b.rings.isEmpty() && /*b.rings.front().price <= c.money &&*/ (best == NULL || iData[i].value / double(b.rings.front().price) > earn))
+								if (!b.rings.isEmpty() && (best == NULL || iData[i].value / double(b.rings.front().price) > earn))
 								{
 									earn = iData[i].value / double(b.rings.front().price);
 									best = &b;
 								}
 							}
 							if (best != NULL && best->rings.front().price <= c.money) {
-								auto& r = best->rings.front();
-								if (r.ownerCitizenID != -1) u.citizens[r.ownerCitizenID].money += r.price;
-								else groups[r.ownerGroupID].money += r.price;
-								c.money -= r.price;
-								r.num--;
-								if (r.num == 0) best->rings.pop_front();
+								c.money -= best->rings.front().price;
+								best->buyItem(1);
 							}
 							else break;
 						}
 					}
-					else c.money += 50;	//出稼ぎ
-
-
+					else c.money += 100;	//労働者として働く
 				}
 			}
 		}

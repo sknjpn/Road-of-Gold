@@ -27,16 +27,17 @@ bool operator>(const Ring& _left, const Ring& _right);
 */
 struct Basket
 {
-	Basket(const int& _itemType);
+	Basket(const int& _itemType,const int& _joinedUrbanID);
 	String&	getItemName() const;
 	void	addRing(const int& _price, const int& _num = 1, const Group* _owner = NULL);
 	void	addRing(const int& _price, const int& _num = 1, const Citizen* _owner = NULL);
 	int		getCost(const int& _num) const;
 	int		getNumItem() const;
+	void	buyItem(const int& _num);
 
+	int joinedUrbanID;
 	int itemType;
-	int mpt;	//当日取引最低価格
-	int mpy;	//前日取引最低価格
+	Array<int>	tradeLog;
 	Array<int>	chart;
 	Array<Ring> rings;
 };
@@ -51,12 +52,14 @@ struct Citizen
 		, money(1000)
 		, timer(_timer)
 		, id(_id)
+		, price(100)
 	{}
 
 	int		id;
 	int		citizenType;
 	int		money;
 	double	timer;
+	int		price;
 };
 
 /*
