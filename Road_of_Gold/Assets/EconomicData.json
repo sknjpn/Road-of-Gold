@@ -46,7 +46,7 @@
         "JobName": "炭焼き",
         "JobDescription": "沢山の薪から木炭を作ります。",
         "Cost": 100,
-        "Product": [{"ItemName": "木炭", "NumProduct": 2}]
+        "Product": [{"ItemName": "木炭", "NumProduct": 10}]
       }
     },
     {
@@ -65,7 +65,7 @@
         "JobName": "狩猟",
         "JobDescription": "キツネやテンの毛皮を得ます。",
         "Cost": 50,
-        "Product": [{"ItemName": "毛皮","NumProduct": 2}]
+        "Product": [{"ItemName": "毛皮","NumProduct": 3}]
       }
     },
     {
@@ -84,7 +84,7 @@
         "JobName": "漁業",
         "JobDescription": "魚を釣ります。",
         "Cost": 50,
-        "Product":[{"ItemName": "魚介類","NumProduct": 1}]
+        "Product":[{"ItemName": "魚介類","NumProduct": 10}]
       }
     }
   ]
