@@ -49,10 +49,13 @@ struct Citizen
 {
 	Citizen(const int& _id,const int& _citizenType, const double& _timer) 
 		: citizenType(_citizenType)
-		, money(1000)
+		, money(00)
 		, timer(_timer)
 		, id(_id)
 		, price(100)
+		, hapiness(0)
+		, ths(0)
+		, bhs(0)
 	{}
 
 	int		id;
@@ -60,6 +63,9 @@ struct Citizen
 	int		money;
 	double	timer;
 	int		price;
+	int		hapiness;
+	int		bhs;	//先月の合計幸福度
+	int		ths;	//今月の合計幸福度
 };
 
 /*
@@ -77,6 +83,7 @@ struct Urban
 	String	name;
 	int		joinedNodeID;
 	double	timer;
+	int		day;
 
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;

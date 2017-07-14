@@ -70,6 +70,17 @@ void Main()
 			u.timer += timeSpeed;
 			if (u.timer >= 1.0)
 			{
+				u.day++;
+				if (u.day > 30)
+				{
+					u.day = 0;
+					for (auto& c : u.citizens)
+					{
+						c.bhs = c.ths;
+						c.ths = 0;
+					}
+
+				}
 				u.timer -= 1.0;
 				for (auto& b : u.baskets)
 				{
@@ -125,7 +136,7 @@ void Main()
 							for (int i = 0; i < int(iData.size()); i++)
 							{
 								auto& b = u.baskets[i];
-								if (!b.rings.isEmpty() && (best == NULL || iData[i].value / double(b.rings.front().price) > earn))
+								if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == NULL || iData[i].value / double(b.rings.front().price) > earn))
 								{
 									earn = iData[i].value / double(b.rings.front().price);
 									best = &b;
@@ -133,9 +144,16 @@ void Main()
 							}
 							if (best != NULL && best->rings.front().price <= c.money) {
 								c.money -= best->rings.front().price;
+								buyList.emplace_back(best);
 								best->buyItem(1);
 							}
 							else break;
+						}
+						c.hapiness = 0;
+						for (auto& b : buyList)
+						{
+							c.hapiness += iData[b->itemType].value;
+							c.ths += iData[b->itemType].value;
 						}
 					}
 					else c.money += 100;	//労働者として働く
@@ -339,42 +357,138 @@ void Main()
 				//市民情報
 				{
 					const Transformer2D t1(Mat3x2::Translate(160, 92));
-					Rect(192, 48).drawFrame(2, fColor);
+					Rect(192, 72).drawFrame(2, fColor);
 					font16(cd.name).draw(16, 0);
-					font16(L"人口:", u.citizens.count_if([&](const Citizen& c) {return c.citizenType == selectedCitizen; })).draw(16, 24);
+					const int numCitizen = int(u.citizens.count_if([&](const Citizen& c) {return c.citizenType == selectedCitizen; }));
+					font16(L"人口　　　:", numCitizen).draw(16, 24);
+					int sumHapiness = 0;
+					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumHapiness += c.hapiness;
+					font16(L"幸福:", sumHapiness / double(numCitizen)).draw(16, 48);
+					int sumBhs = 0;
+					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumBhs += c.bhs;
+					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
+
+
+				}
+				//各市民情報
+				{
+					int j = 0;
+					for (int i = 0; i < 33; i++)
+					{
+						for (; j<int(u.citizens.size()); j++)
+						{
+							const auto& c = u.citizens[j];
+							if (c.citizenType == selectedCitizen)
+							{
+								Rect(160, 164 + 16 * i, 192, 16).drawFrame(2, fColor);
+								font12(L"財産:", c.money, L"G").draw(176, 164 + 16 * i);
+								font12(L"幸福:", c.hapiness).draw(176 + 96, 164 + 16 * i);
+								j++;
+								break;
+							}
+						}
+					}
 				}
 				/*
 				//Need
 				if (!cd.need.isEmpty())
 				{
-					const Transformer2D t1(Mat3x2::Translate(160, 140));
-					Rect(192, 16 + 16 * int(cd.need.size())).drawFrame(2, fColor);
-					Rect(12, 16, 180, 16 * int(cd.need.size())).drawFrame(2, fColor);
-					font12(L"消費").draw(4, 0);
-					for (int i = 0; i<int(cd.need.size()); i++)
-					{
-						auto& n = cd.need[i];
-						font12(iData[n.itemType].name).draw(16, 16 + i * 16);
-					}
+				const Transformer2D t1(Mat3x2::Translate(160, 140));
+				Rect(192, 16 + 16 * int(cd.need.size())).drawFrame(2, fColor);
+				Rect(12, 16, 180, 16 * int(cd.need.size())).drawFrame(2, fColor);
+				font12(L"消費").draw(4, 0);
+				for (int i = 0; i<int(cd.need.size()); i++)
+				{
+				auto& n = cd.need[i];
+				font12(iData[n.itemType].name).draw(16, 16 + i * 16);
+				}
 				}
 
 				//Product
 				if (cd.product.itemType != -1)
 				{
-					const Transformer2D t1(Mat3x2::Translate(160, !cd.need.isEmpty() ? 156 : 140 + 16 * int(cd.need.size())));
-					Rect(192, 16 + 16 * int(cd.product.material.size())).drawFrame(2, fColor);
-					Rect(12, 16, 180, 16 * int(cd.product.material.size())).drawFrame(2, fColor);
-					font12(L"生産:", iData[cd.product.itemType].name, L"x", cd.product.num).draw(4, 0);
-					for (int i = 0; i<int(cd.product.material.size()); i++)
-					{
-						auto& m = cd.product.material[i];
-						font12(iData[m.itemtype].name, L"x", m.num).draw(16, 16 + i * 16);
-					}
+				const Transformer2D t1(Mat3x2::Translate(160, !cd.need.isEmpty() ? 156 : 140 + 16 * int(cd.need.size())));
+				Rect(192, 16 + 16 * int(cd.product.material.size())).drawFrame(2, fColor);
+				Rect(12, 16, 180, 16 * int(cd.product.material.size())).drawFrame(2, fColor);
+				font12(L"生産:", iData[cd.product.itemType].name, L"x", cd.product.num).draw(4, 0);
+				for (int i = 0; i<int(cd.product.material.size()); i++)
+				{
+				auto& m = cd.product.material[i];
+				font12(iData[m.itemtype].name, L"x", m.num).draw(16, 16 + i * 16);
+				}
 				}*/
+				break;
+			}
+			case DrawingType::News:
+			{
+				//都市の販売物の描画
+				{
+					const Transformer2D t1(Mat3x2::Translate(32, 92));
+					Rect(128, 24).drawFrame(2, fColor);
+					font16(L"市民").drawAt(64, 12);
+				}
+
+				//市民リスト
+				for (int i = 0; i < 24; i++)
+				{
+					if (i < int(cData.size()))
+					{
+						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 24), true);
+						const auto rect = Rect(128, 24);
+						if (rect.leftClicked()) selectedCitizen = i;
+						const Color color = selectedCitizen == i ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(Palette::White, 0));
+						rect.draw(color).drawFrame(2, fColor);
+						font16(cData[i].name).draw(0, 0);
+					}
+					else
+					{
+						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 24), true);
+						const auto rect = Rect(128, 24);
+						const Color color = rect.mouseOver() ? Color(Palette::Orange, 128) : Color(Palette::White, 0);
+						rect.draw(color).drawFrame(2, fColor);
+						font16(L"---").drawAt(64, 12);
+					}
+				}
+
+				auto& cd = cData[selectedCitizen];
+
+				//市民情報
+				{
+					const Transformer2D t1(Mat3x2::Translate(160, 92));
+					Rect(192, 72).drawFrame(2, fColor);
+					font16(cd.name).draw(16, 0);
+					const int numCitizen = int(u.citizens.count_if([&](const Citizen& c) {return c.citizenType == selectedCitizen; }));
+					font16(L"人口　　　:", numCitizen).draw(16, 24);
+					int sumHapiness = 0;
+					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumHapiness += c.hapiness;
+					font16(L"幸福:", sumHapiness / double(numCitizen)).draw(16, 48);
+					int sumBhs = 0;
+					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumBhs += c.bhs;
+					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
+
+					font12(cd.job.description).draw(4, 72);
+					font16(L"維持費:", 50 + cd.job.cost).draw(4, 72+16);
+					font16(L"賃金　:",  cd.job.wage).draw(4, 72+40);
+					int p = 0;
+					font12(L"消費↓").draw(4, 72 + 64);
+					for (auto& c : cd.job.consume)
+					{
+						font12(L" ",iData[c.itemID].name, L"x", c.numConsume).draw(4, 72 + 80 + p * 16);
+						p++;
+					}
+					font12(L"生産↓").draw(4, 72 + 80 + p * 16);
+					p++;
+					for (auto& c : cd.job.product)
+					{
+						font12(L" ",iData[c.itemID].name, L"x", c.numProduct).draw(4, 72 + 80 + p * 16);
+						p++;
+					}
+				}
 				break;
 			}
 			}
 		}
+		font16(L"F1,F2キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw();
 
 		planet.updateViewPointSliding();
 	}
