@@ -5,6 +5,7 @@
 #include"CData.h"
 #include"Pi.h"
 #include"Route.h"
+#include"GlobalVariables.h"
 
 Array<Urban> urbans;
 Urban* selectedUrban;
@@ -13,7 +14,10 @@ Urban::Urban(int _joinedNodeID)
 	, name(UrbanNames.choice())
 	, joinedNodeID(_joinedNodeID)
 	, timer(0.0)
-{}
+	, day(0)
+{
+	avgBhs.resize(cData.size());
+}
 void	Urban::draw() const
 {
 	const auto drawPos = getPos().mPos;
@@ -56,4 +60,38 @@ bool	setUrban(Node& _node)
 	for (int i = 0; i<int(cData.size()); i++)
 		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, u.id);
 	return true;
+}
+void	Urban::update()
+{
+	timer += timeSpeed;
+	if (timer >= 1.0)
+	{
+		timer -= 1.0;
+		day++;
+		//一か月が経過
+		if (day > 100)
+		{
+			day = 0;
+
+			//BHSの更新
+			avgBhs.fill(0);
+			for (auto& c : citizens) { c.bhs = c.ths; c.ths = 0; avgBhs[c.citizenType] += c.bhs; }
+			for (int i = 0; i<int(cData.size()); i++)
+				avgBhs[i] = int(avgBhs[i] / citizens.count_if([&i](const Citizen& c) {return c.citizenType == i; }));
+		}
+		for (auto& b : baskets)
+		{
+			//価格低下
+			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));
+
+			//チャートの更新
+			b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
+			b.tradeLog.clear();
+			b.chart.pop_back();
+		}
+	}
+
+	//市民の更新
+	for (auto& c : citizens)
+		c.update();
 }

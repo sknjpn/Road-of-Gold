@@ -6,13 +6,10 @@ struct Pos;
 struct Route;
 struct Citizen;
 
-/*
-商品の値札
-*/
 struct Ring
 {
-	Ring(int _price, int _num = 1, const Group* _owner = NULL);
-	Ring(int _price, int _num = 1, const Citizen* _owner = NULL);
+	Ring(int _price, int _num, const Group* _owner);
+	Ring(int _price, int _num, const Citizen* _owner);
 
 	int price;
 	int num;
@@ -22,15 +19,12 @@ struct Ring
 bool operator<(const Ring& _left, const Ring& _right);
 bool operator>(const Ring& _left, const Ring& _right);
 
-/*
-同一商品=Ringの集合体がBasket。ringsはfrontが最も安くなるようソートされる
-*/
 struct Basket
 {
 	Basket(int _itemType,int _joinedUrbanID);
 	String&	getItemName() const;
-	void	addRing(int _price, int _num = 1, const Group* _owner = NULL);
-	void	addRing(int _price, int _num = 1, const Citizen* _owner = NULL);
+	void	addRing(int _price, int _num, const Group* _owner);
+	void	addRing(int _price, int _num, const Citizen* _owner);
 	int		getCost(int _num) const;
 	int		getNumItem() const;
 	void	buyItem(int _num);
@@ -42,9 +36,6 @@ struct Basket
 	Array<Ring> rings;
 };
 
-/*
-住民。timerが1.0を超えると規定されたタイプの行動を行う。
-*/
 struct Citizen
 {
 	Citizen(int _id, int _citizenType, int _joinedUrbanID);
@@ -59,14 +50,13 @@ struct Citizen
 	int		hapiness;
 	int		bhs;	//先月の合計幸福度
 	int		ths;	//今月の合計幸福度
+	int		tmr;	//転職判定までのカウント
 };
 
-/*
-都市。座標はNodeで表す。市場機能と住民をもつ。
-*/
 struct Urban
 {
 	Urban(int _joinedNodeID);
+	void	update();
 	void	draw() const;
 	Pos&	getPos() const;
 	String	getTimeAsString() const;
@@ -80,6 +70,7 @@ struct Urban
 
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
+	Array<int>		avgBhs;	//各職業のBHS
 };
 extern Array<String>	UrbanNames;
 extern Urban*			selectedUrban;

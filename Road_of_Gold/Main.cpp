@@ -68,43 +68,7 @@ void Main()
 
 		//UrbanUpdate
 		for (auto& u : urbans)
-		{
-			u.timer += timeSpeed;
-			if (u.timer >= 1.0)
-			{
-				u.timer -= 1.0;
-				u.day++;
-				//一か月が経過
-				if (u.day > 30)
-				{
-					u.day = 0;
-
-					//BHSの更新
-					for (auto& c : u.citizens) { c.bhs = c.ths; c.ths = 0; }
-
-					//転職
-					int avgBhs = 0;
-					for (auto& c : u.citizens) avgBhs += c.bhs;
-					avgBhs /= int(u.citizens.size());
-					for (auto& c : u.citizens)
-						if (avgBhs > c.bhs && RandomBool(0.05)) c.citizenType = Random(int(cData.size() - 1));
-				}
-				for (auto& b : u.baskets)
-				{
-					//価格低下
-					for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));
-
-					//チャートの更新
-					b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
-					b.tradeLog.clear();
-					b.chart.pop_back();
-				}
-			}
-
-			//市民の更新
-			for (auto& c : u.citizens)
-				c.update();
-		}
+			u.update();
 
 		//Vehicleの更新
 		for (auto& g : groups)

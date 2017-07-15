@@ -6,13 +6,14 @@
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
 	, money(00)
-	, timer(Random(0.0,1.0))
+	, timer(Random(0.0, 1.0))
 	, joinedUrbanID(_joinedUrbanID)
 	, id(_id)
 	, price(100)
 	, hapiness(0)
 	, ths(0)
 	, bhs(0)
+	, tmr(Random(99)+100)
 {}
 void	Citizen::update()
 {
@@ -23,10 +24,22 @@ void	Citizen::update()
 	{
 		timer -= 1.0;
 
+		//ì]êEÇÃîªíË
+		tmr--;
+		if (tmr == 0)
+		{
+			tmr = 100;
+			for (int i = 0; i<int(cData.size()); i++)
+			{
+				if(RandomBool(Max(0.0,double(u.avgBhs[i]-bhs)/1000.0)))
+					citizenType = Random(int(cData.size() - 1));
+			}
+		}
+
 		money -= 50;	//ê∂äàîÔÇÃéxï•Ç¢
-		
+
 		auto& cJob = cData[citizenType].job;
-		
+
 		//édéñÇ™íBê¨â¬î\Ç©Ç«Ç§Ç©îªíË
 		int totalCost = cJob.cost - cJob.wage;
 		bool flag = true;

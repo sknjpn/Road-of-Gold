@@ -5,14 +5,13 @@
 Ring::Ring(int _price, int _num, const Group* _owner)
 	: price(_price)
 	, num(_num)
-	, ownerGroupID(_owner == NULL ? -1 : _owner->id)
+	, ownerGroupID(_owner->id)
 	, ownerCitizenID(-1)
 {}
-
 Ring::Ring(int _price, int _num, const Citizen* _owner)
 	: price(_price)
 	, num(_num)
-	, ownerCitizenID(_owner == NULL ? -1 : _owner->id)
+	, ownerCitizenID(_owner->id)
 	, ownerGroupID(-1)
 {}
 bool	operator<(const Ring& _left, const Ring& _right)
