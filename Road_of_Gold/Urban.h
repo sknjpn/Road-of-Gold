@@ -11,8 +11,8 @@ struct Citizen;
 */
 struct Ring
 {
-	Ring(const int& _price, const int& _num = 1, const Group* _owner = NULL);
-	Ring(const int& _price, const int& _num = 1, const Citizen* _owner = NULL);
+	Ring(int _price, int _num = 1, const Group* _owner = NULL);
+	Ring(int _price, int _num = 1, const Citizen* _owner = NULL);
 
 	int price;
 	int num;
@@ -27,13 +27,13 @@ bool operator>(const Ring& _left, const Ring& _right);
 */
 struct Basket
 {
-	Basket(const int& _itemType,const int& _joinedUrbanID);
+	Basket(int _itemType,int _joinedUrbanID);
 	String&	getItemName() const;
-	void	addRing(const int& _price, const int& _num = 1, const Group* _owner = NULL);
-	void	addRing(const int& _price, const int& _num = 1, const Citizen* _owner = NULL);
-	int		getCost(const int& _num) const;
+	void	addRing(int _price, int _num = 1, const Group* _owner = NULL);
+	void	addRing(int _price, int _num = 1, const Citizen* _owner = NULL);
+	int		getCost(int _num) const;
 	int		getNumItem() const;
-	void	buyItem(const int& _num);
+	void	buyItem(int _num);
 
 	int joinedUrbanID;
 	int itemType;
@@ -47,18 +47,11 @@ struct Basket
 */
 struct Citizen
 {
-	Citizen(const int& _id,const int& _citizenType, const double& _timer) 
-		: citizenType(_citizenType)
-		, money(00)
-		, timer(_timer)
-		, id(_id)
-		, price(100)
-		, hapiness(0)
-		, ths(0)
-		, bhs(0)
-	{}
+	Citizen(int _id, int _citizenType, double _timer);
+	void	update();
 
 	int		id;
+	int		joinedUrbanID;
 	int		citizenType;
 	int		money;
 	double	timer;
@@ -73,7 +66,7 @@ struct Citizen
 */
 struct Urban
 {
-	Urban(const int& _joinedNodeID);
+	Urban(int _joinedNodeID);
 	void	draw() const;
 	Pos&	getPos() const;
 	String	getTimeAsString() const;

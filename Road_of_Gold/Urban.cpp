@@ -6,14 +6,14 @@
 #include"Pi.h"
 #include"Route.h"
 
-Ring::Ring(const int& _price, const int& _num, const Group* _owner)
+Ring::Ring(int _price, int _num, const Group* _owner)
 	: price(_price)
 	, num(_num)
 	, ownerGroupID(_owner == NULL ? -1 : _owner->id)
 	, ownerCitizenID(-1)
 {}
 
-Ring::Ring(const int& _price, const int& _num, const Citizen* _owner)
+Ring::Ring(int _price, int _num, const Citizen* _owner)
 	: price(_price)
 	, num(_num)
 	, ownerCitizenID(_owner == NULL ? -1 : _owner->id)
@@ -29,24 +29,24 @@ bool	operator>(const Ring& _left, const Ring& _right)
 	return _left.price > _right.price;
 }
 
-Basket::Basket(const int& _itemType, const int& _joinedUrbanID)
+Basket::Basket(int _itemType, int _joinedUrbanID)
 	: itemType(_itemType)
 	, joinedUrbanID(_joinedUrbanID)
 {
 	chart.resize(1024);
 }
 String&	Basket::getItemName() const { return iData[itemType].name; }
-void	Basket::addRing(const int& _price, const int& _num, const Group* _owner)
+void	Basket::addRing(int _price, int _num, const Group* _owner)
 {
 	rings.push_back({ _price, _num, _owner });
 	rings.sort();
 }
-void	Basket::addRing(const int& _price, const int& _num, const Citizen* _owner)
+void	Basket::addRing(int _price, int _num, const Citizen* _owner)
 {
 	rings.push_back({ _price, _num, _owner });
 	rings.sort();
 }
-int		Basket::getCost(const int& _num) const
+int		Basket::getCost(int _num) const
 {
 	int cost = 0;
 	int num = _num;
@@ -67,7 +67,7 @@ int		Basket::getNumItem() const
 	for (auto& r : rings) num += r.num;
 	return num;
 }
-void	Basket::buyItem(const int& _num)
+void	Basket::buyItem(int _num)
 {
 	int num = _num;
 	auto& u = urbans[joinedUrbanID];
@@ -110,7 +110,7 @@ void	Basket::buyItem(const int& _num)
 
 Array<Urban> urbans;
 Urban* selectedUrban;
-Urban::Urban(const int& _joinedNodeID)
+Urban::Urban(int _joinedNodeID)
 	: id(int(urbans.size()))
 	, name(UrbanNames.choice())
 	, joinedNodeID(_joinedNodeID)

@@ -3,7 +3,7 @@
 #include "Pi.h"
 
 Array<Node> nodes;
-Node::Node(const int& _id, const Pos& _pos)
+Node::Node(int _id, const Pos& _pos)
 	: id(_id), joinedRegionID(-1), ownUrbanID(-1), isSea(false), pos(_pos)
 	, isScaned(false), isInQueue(false), cost(0.0), fromNodeID(-1)
 {
@@ -96,7 +96,7 @@ void	setPlanetToNodes()
 }
 
 Array<Path*> paths;
-Path::Path(const int& _parentNodeID, const int& _childNodeID)
+Path::Path(int _parentNodeID, int _childNodeID)
 	: id(0), len(0.0), parentNodeID(_parentNodeID), childNodeID(_childNodeID) {}
 Node&	Path::getChild() const
 {
@@ -121,4 +121,4 @@ Line	Path::getLine() const
 }
 
 Array<Region> regions;
-Region::Region(const int& _id) : id(_id), numNodes(0), hasCity(false), color(RandomHSV()) {}
+Region::Region(int _id) : id(_id), numNodes(0), hasCity(false), color(RandomHSV()) {}

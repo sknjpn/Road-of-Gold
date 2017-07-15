@@ -9,7 +9,7 @@ Planet::Planet()
 	, gazePoint(none)
 {}
 
-double Planet::getHeight(const Pos& _pos, const int& _octave) const
+double Planet::getHeight(const Pos& _pos, int _octave) const
 {
 	return Min(Max((heightNoise.octaveNoise(_pos.ePos, _octave) + 1.0) / 2.0, 0.0), 1.0);
 }
@@ -19,7 +19,7 @@ bool	Planet::isSea(const Pos& _pos) const
 	return getHeight(_pos) < 0.60;
 }
 
-Transformer2D Planet::createTransformer(const int& _delta) const
+Transformer2D Planet::createTransformer(int _delta) const
 {
 	return Transformer2D(Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()), true);
 }
@@ -63,7 +63,7 @@ void	Planet::updateViewPointSliding()
 
 }
 
-void	Planet::makeNewWorld(const int& _sizeX)
+void	Planet::makeNewWorld(int _sizeX)
 {
 	heightNoise = PerlinNoise(Random(UINT32_MAX - 1));
 	Image image(_sizeX, _sizeX / 2);

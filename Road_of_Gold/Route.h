@@ -9,7 +9,7 @@ struct Urban;
 
 struct Route
 {
-	Route(const int& _id);
+	Route(int _id);
 	Urban&	getDestinationUrban() const;
 	Urban&	getOriginUrban() const;
 	void	draw(const Color& _color) const;

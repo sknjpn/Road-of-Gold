@@ -3,7 +3,7 @@
 #include "Urban.h"
 #include "Route.h"
 
-Vehicle::Vehicle(const int& _nowUrbanID)
+Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)

@@ -5,6 +5,12 @@
 #include "Route.h"
 #include "CData.h"
 #include "Group.h"
+#include "GlobalVariables.h"
+
+double timeSpeed = 0.01;
+double worldTimer = 0.0;
+int selectedBasket = 0;
+int selectedCitizen = 0;
 
 Planet planet;
 
@@ -25,10 +31,6 @@ void Main()
 	}
 	drawingType = DrawingType::Market;
 
-	double timeSpeed = 0.01;
-	double worldTimer = 0.0;
-	int selectedBasket = 0;
-	int selectedCitizen = 0;
 
 	loadEconomicData();
 

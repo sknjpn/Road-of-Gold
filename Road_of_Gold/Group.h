@@ -6,7 +6,7 @@ struct Urban;
 
 struct Vehicle
 {
-	Vehicle(const int& _nowUrbanID);
+	Vehicle(int _nowUrbanID);
 
 
 	Urban&	getNowUrban() const;

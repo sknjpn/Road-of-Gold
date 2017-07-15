@@ -5,7 +5,7 @@
 Node* nodeTemp[1000000];
 
 Array<Route> routes;
-Route::Route(const int& _id)
+Route::Route(int _id)
 	: id(_id)
 	, destinationUrbanID(-1)
 	, originUrbanID(-1)
