@@ -6,13 +6,10 @@ struct Pos;
 struct Route;
 struct Citizen;
 
-/*
-商品の値札
-*/
 struct Ring
 {
-	Ring(const int& _price, const int& _num = 1, const Group* _owner = NULL);
-	Ring(const int& _price, const int& _num = 1, const Citizen* _owner = NULL);
+	Ring(int _price, int _num, const Group* _owner);
+	Ring(int _price, int _num, const Citizen* _owner);
 
 	int price;
 	int num;
@@ -22,18 +19,15 @@ struct Ring
 bool operator<(const Ring& _left, const Ring& _right);
 bool operator>(const Ring& _left, const Ring& _right);
 
-/*
-同一商品=Ringの集合体がBasket。ringsはfrontが最も安くなるようソートされる
-*/
 struct Basket
 {
-	Basket(const int& _itemType,const int& _joinedUrbanID);
+	Basket(int _itemType,int _joinedUrbanID);
 	String&	getItemName() const;
-	void	addRing(const int& _price, const int& _num = 1, const Group* _owner = NULL);
-	void	addRing(const int& _price, const int& _num = 1, const Citizen* _owner = NULL);
-	int		getCost(const int& _num) const;
+	void	addRing(int _price, int _num, const Group* _owner);
+	void	addRing(int _price, int _num, const Citizen* _owner);
+	int		getCost(int _num) const;
 	int		getNumItem() const;
-	void	buyItem(const int& _num);
+	void	buyItem(int _num);
 
 	int joinedUrbanID;
 	int itemType;
@@ -42,23 +36,13 @@ struct Basket
 	Array<Ring> rings;
 };
 
-/*
-住民。timerが1.0を超えると規定されたタイプの行動を行う。
-*/
 struct Citizen
 {
-	Citizen(const int& _id,const int& _citizenType, const double& _timer) 
-		: citizenType(_citizenType)
-		, money(00)
-		, timer(_timer)
-		, id(_id)
-		, price(100)
-		, hapiness(0)
-		, ths(0)
-		, bhs(0)
-	{}
+	Citizen(int _id, int _citizenType, int _joinedUrbanID);
+	void	update();
 
 	int		id;
+	int		joinedUrbanID;
 	int		citizenType;
 	int		money;
 	double	timer;
@@ -66,14 +50,13 @@ struct Citizen
 	int		hapiness;
 	int		bhs;	//先月の合計幸福度
 	int		ths;	//今月の合計幸福度
+	int		tmr;	//転職判定までのカウント
 };
 
-/*
-都市。座標はNodeで表す。市場機能と住民をもつ。
-*/
 struct Urban
 {
-	Urban(const int& _joinedNodeID);
+	Urban(int _joinedNodeID);
+	void	update();
 	void	draw() const;
 	Pos&	getPos() const;
 	String	getTimeAsString() const;
@@ -87,6 +70,7 @@ struct Urban
 
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
+	Array<int>		avgBhs;	//各職業のBHS
 };
 extern Array<String>	UrbanNames;
 extern Urban*			selectedUrban;

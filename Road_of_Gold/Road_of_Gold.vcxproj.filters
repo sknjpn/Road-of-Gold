@@ -185,6 +185,9 @@
     <ClInclude Include="Group.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="GlobalVariables.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Route.cpp">
@@ -215,6 +218,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VoronoiMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Citizen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Basket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

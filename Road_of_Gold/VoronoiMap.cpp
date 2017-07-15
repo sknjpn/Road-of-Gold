@@ -2,7 +2,7 @@
 #include"Node.h"
 #include"Pi.h"
 
-void	Planet::makeVoronoiMap(const int& _sizeX)
+void	Planet::makeVoronoiMap(int _sizeX)
 {
 	Image image(_sizeX, _sizeX / 2);
 	image.fill(Palette::White);

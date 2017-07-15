@@ -6,7 +6,7 @@ struct Region;
 
 struct Path
 {
-	Path::Path(const int& _parentNodeID, const int& _childNodeID);
+	Path::Path(int _parentNodeID, int _childNodeID);
 	Node&	getChild() const;
 	Node&	getParent() const;
 	Line	getLine() const;
@@ -21,7 +21,7 @@ extern Array<Path*> paths;
 
 struct Node
 {
-	Node::Node(const int& _id, const Pos& _pos);
+	Node::Node(int _id, const Pos& _pos);
 	bool	isCoast() const;
 	void	draw(const Color& _color) const;
 	Region&	getJoinedRegion() const;
@@ -42,7 +42,7 @@ void	setPlanetToNodes();
 
 struct Region
 {
-	Region(const int& _id);
+	Region(int _id);
 
 	Color	color;
 	int		id;

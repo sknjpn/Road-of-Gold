@@ -5,117 +5,19 @@
 #include"CData.h"
 #include"Pi.h"
 #include"Route.h"
-
-Ring::Ring(const int& _price, const int& _num, const Group* _owner)
-	: price(_price)
-	, num(_num)
-	, ownerGroupID(_owner == NULL ? -1 : _owner->id)
-	, ownerCitizenID(-1)
-{}
-
-Ring::Ring(const int& _price, const int& _num, const Citizen* _owner)
-	: price(_price)
-	, num(_num)
-	, ownerCitizenID(_owner == NULL ? -1 : _owner->id)
-	, ownerGroupID(-1)
-{}
-bool	operator<(const Ring& _left, const Ring& _right)
-{
-	return _left.price < _right.price;
-}
-
-bool	operator>(const Ring& _left, const Ring& _right)
-{
-	return _left.price > _right.price;
-}
-
-Basket::Basket(const int& _itemType, const int& _joinedUrbanID)
-	: itemType(_itemType)
-	, joinedUrbanID(_joinedUrbanID)
-{
-	chart.resize(1024);
-}
-String&	Basket::getItemName() const { return iData[itemType].name; }
-void	Basket::addRing(const int& _price, const int& _num, const Group* _owner)
-{
-	rings.push_back({ _price, _num, _owner });
-	rings.sort();
-}
-void	Basket::addRing(const int& _price, const int& _num, const Citizen* _owner)
-{
-	rings.push_back({ _price, _num, _owner });
-	rings.sort();
-}
-int		Basket::getCost(const int& _num) const
-{
-	int cost = 0;
-	int num = _num;
-	for (auto& r : rings)
-	{
-		if (r.num < num)
-		{
-			cost += r.num*r.price;
-			num -= r.num;
-		}
-		else return cost + num*r.price;
-	}
-	return -1;
-}
-int		Basket::getNumItem() const
-{
-	int num = 0;
-	for (auto& r : rings) num += r.num;
-	return num;
-}
-void	Basket::buyItem(const int& _num)
-{
-	int num = _num;
-	auto& u = urbans[joinedUrbanID];
-	for (;;)
-	{
-		auto& r = rings.front();
-		if (r.num < num) {
-			if (r.ownerCitizenID != -1)
-			{
-				u.citizens[r.ownerCitizenID].money += r.num*r.price;
-				u.citizens[r.ownerCitizenID].price = r.price;
-			}
-			else groups[r.ownerGroupID].money += r.num*r.price;
-			for (int i = 0; i < r.num; i++) tradeLog.emplace_back(r.price);
-			num -= r.num; rings.pop_front();
-		}
-		else if (r.num == num) {
-			if (r.ownerCitizenID != -1)
-			{
-				u.citizens[r.ownerCitizenID].money += r.num*r.price;
-				u.citizens[r.ownerCitizenID].price = r.price;
-			}
-			else groups[r.ownerGroupID].money += r.num*r.price;
-			for (int i = 0; i < r.num; i++) tradeLog.emplace_back(r.price);
-			rings.pop_front();
-			return;
-		}
-		else {
-			if (r.ownerCitizenID != -1)
-			{
-				u.citizens[r.ownerCitizenID].money += num*r.price;
-				u.citizens[r.ownerCitizenID].price = r.price;
-			}
-			else groups[r.ownerGroupID].money += num*r.price;
-			for (int i = 0; i < num; i++) tradeLog.emplace_back(r.price);
-			r.num -= num; return;
-		}
-	}
-}
+#include"GlobalVariables.h"
 
 Array<Urban> urbans;
 Urban* selectedUrban;
-Urban::Urban(const int& _joinedNodeID)
+Urban::Urban(int _joinedNodeID)
 	: id(int(urbans.size()))
 	, name(UrbanNames.choice())
 	, joinedNodeID(_joinedNodeID)
 	, timer(0.0)
-{}
+	, day(0)
+{
+	avgBhs.resize(cData.size());
+}
 void	Urban::draw() const
 {
 	const auto drawPos = getPos().mPos;
@@ -143,16 +45,53 @@ bool	setUrban(Node& _node)
 	u.timer = 0.5 + u.getPos().mPos.x / TwoPi;
 
 	const Array<int> numCitizen = {
-		50,	//òJì≠é“
+		100,	//òJì≠é“
 		10,	//ñÿÇ±ÇË
 		10,	//ì©å|êEêl
 		20,	//éÎêl
 		10,	//édóßÇƒâÆ
 		5,	//ãôét
+		5,	//ãôét
+		5,
+		5,
 	};
 
 	for (int i = 0; i < int(iData.size()); i++) u.baskets.emplace_back(i, u.id);
-	for (int i = 0; i<int(numCitizen.size()); i++)
-		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, Random(0.25, 0.75) + u.timer);
+	for (int i = 0; i<int(cData.size()); i++)
+		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, u.id);
 	return true;
+}
+void	Urban::update()
+{
+	timer += timeSpeed;
+	if (timer >= 1.0)
+	{
+		timer -= 1.0;
+		day++;
+		//àÍÇ©åéÇ™åoâﬂ
+		if (day > 100)
+		{
+			day = 0;
+
+			//BHSÇÃçXêV
+			avgBhs.fill(0);
+			for (auto& c : citizens) { c.bhs = c.ths; c.ths = 0; avgBhs[c.citizenType] += c.bhs; }
+			for (int i = 0; i<int(cData.size()); i++)
+				avgBhs[i] = int(avgBhs[i] / citizens.count_if([&i](const Citizen& c) {return c.citizenType == i; }));
+		}
+		for (auto& b : baskets)
+		{
+			//âøäií·â∫
+			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));
+
+			//É`ÉÉÅ[ÉgÇÃçXêV
+			b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
+			b.tradeLog.clear();
+			b.chart.pop_back();
+		}
+	}
+
+	//ésñØÇÃçXêV
+	for (auto& c : citizens)
+		c.update();
 }

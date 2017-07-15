@@ -29,6 +29,24 @@
       "ItemDescription": "栄養不足気味な市民にとって貴重な動物性たんぱく質です。",
       "Volume": 1,
       "Value": 20
+    },
+    {
+      "ItemName": "コーヒー",
+      "ItemDescription": "カフェインで永遠の昼を得られます。",
+      "Volue": 1,
+      "Value": 50
+    },
+    {
+      "ItemName": "茶葉",
+      "ItemDescription": "美味しく水を飲むことが出来ます。",
+      "Volume": 1,
+      "Value": 50
+    },
+    {
+      "ItemName": "香辛料",
+      "ItemDescription": "調味料としても、薬用としても有用です。",
+      "Volume": 1,
+      "Value": 75
     }
   ],
   "CData": [
@@ -37,7 +55,7 @@
       "Job": {
         "JobName": "出稼ぎ労働",
         "JobDescription": "生産的労働活動を行う",
-        "Wage": 100
+        "Wage": 150
       }
     },
     {
@@ -46,7 +64,12 @@
         "JobName": "炭焼き",
         "JobDescription": "沢山の薪から木炭を作ります。",
         "Cost": 100,
-        "Product": [{"ItemName": "木炭", "NumProduct": 10}]
+        "Product": [
+          {
+            "ItemName": "木炭",
+            "NumProduct": 10
+          }
+        ]
       }
     },
     {
@@ -55,8 +78,18 @@
         "JobName": "陶芸",
         "JobDescription": "木炭と粘土から陶器を作ります。",
         "Cost": 20,
-        "Consume": [{"ItemName": "木炭","NumConsume": 4}],
-        "Product": [{"ItemName": "陶器","NumProduct": 2}]
+        "Consume": [
+          {
+            "ItemName": "木炭",
+            "NumConsume": 10
+          }
+        ],
+        "Product": [
+          {
+            "ItemName": "陶器",
+            "NumProduct": 10
+          }
+        ]
       }
     },
     {
@@ -65,7 +98,12 @@
         "JobName": "狩猟",
         "JobDescription": "キツネやテンの毛皮を得ます。",
         "Cost": 50,
-        "Product": [{"ItemName": "毛皮","NumProduct": 3}]
+        "Product": [
+          {
+            "ItemName": "毛皮",
+            "NumProduct": 5
+          }
+        ]
       }
     },
     {
@@ -74,8 +112,18 @@
         "JobName": "仕立て",
         "JobDescription": "毛皮から毛皮のコートを作ります。",
         "Cost": 20,
-        "Consume": [{"ItemName": "毛皮","NumConsume": 2}],
-        "Product": [{"ItemName": "コート","NumProduct": 2}]
+        "Consume": [
+          {
+            "ItemName": "毛皮",
+            "NumConsume": 20
+          }
+        ],
+        "Product": [
+          {
+            "ItemName": "コート",
+            "NumProduct": 10
+          }
+        ]
       }
     },
     {
@@ -84,7 +132,54 @@
         "JobName": "漁業",
         "JobDescription": "魚を釣ります。",
         "Cost": 50,
-        "Product":[{"ItemName": "魚介類","NumProduct": 10}]
+        "Product": [
+          {
+            "ItemName": "魚介類",
+            "NumProduct": 20
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "コーヒー農家",
+      "Job": {
+        "JobName": "コーヒー栽培",
+        "JobDescription": "コーヒー豆を栽培します。",
+        "Cost": 50,
+        "Product": [
+          {
+            "ItemName": "コーヒー",
+            "NumProduct": 10
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "茶葉農家",
+      "Job": {
+        "JobName": "茶葉栽培",
+        "JobDescription": "茶葉を栽培します。",
+        "Cost": 100,
+        "Product": [
+          {
+            "ItemName": "茶葉",
+            "NumProduct": 20
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "香辛料農家",
+      "Job": {
+        "JobName": "香辛料栽培",
+        "JobDescription": "香辛料を栽培します。",
+        "Cost": 100,
+        "Product": [
+          {
+            "ItemName": "香辛料",
+            "NumProduct": 10
+          }
+        ]
       }
     }
   ]

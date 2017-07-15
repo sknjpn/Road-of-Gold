@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CData.h" />
+    <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pi.h" />
@@ -230,6 +231,8 @@
     <ClInclude Include="Urban.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Basket.cpp" />
+    <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="IData.cpp" />
     <ClCompile Include="Main.cpp" />
