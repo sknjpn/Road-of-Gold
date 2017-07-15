@@ -143,16 +143,19 @@ bool	setUrban(Node& _node)
 	u.timer = 0.5 + u.getPos().mPos.x / TwoPi;
 
 	const Array<int> numCitizen = {
-		50,	//˜J“­Ò
+		100,	//˜J“­Ò
 		10,	//–Ø‚±‚è
 		10,	//“©Œ|El
 		20,	//ël
 		10,	//d—§‚Ä‰®
 		5,	//‹™t
+		5,	//‹™t
+		5,
+		5,
 	};
 
 	for (int i = 0; i < int(iData.size()); i++) u.baskets.emplace_back(i, u.id);
-	for (int i = 0; i<int(numCitizen.size()); i++)
+	for (int i = 0; i<int(cData.size()); i++)
 		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, Random(0.25, 0.75) + u.timer);
 	return true;
 }

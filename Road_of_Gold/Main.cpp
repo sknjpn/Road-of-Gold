@@ -70,22 +70,28 @@ void Main()
 			u.timer += timeSpeed;
 			if (u.timer >= 1.0)
 			{
+				u.timer -= 1.0;
 				u.day++;
+				//一か月が経過
 				if (u.day > 30)
 				{
 					u.day = 0;
-					for (auto& c : u.citizens)
-					{
-						c.bhs = c.ths;
-						c.ths = 0;
-					}
 
+					//BHSの更新
+					for (auto& c : u.citizens) { c.bhs = c.ths; c.ths = 0; }
+
+					//転職
+					int avgBhs = 0;
+					for (auto& c : u.citizens) avgBhs += c.bhs;
+					avgBhs /= int(u.citizens.size());
+					for (auto& c : u.citizens)
+						if (avgBhs > c.bhs && RandomBool(0.05)) c.citizenType = Random(int(cData.size() - 1));
 				}
-				u.timer -= 1.0;
 				for (auto& b : u.baskets)
 				{
 					//価格低下
 					for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));
+
 					//チャートの更新
 					b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
 					b.tradeLog.clear();
@@ -272,63 +278,52 @@ void Main()
 			{
 			case DrawingType::Market:
 			{
+				auto& bs = u.baskets[selectedBasket];
+
 				//都市の販売物の描画
-				{
-					const Transformer2D t1(Mat3x2::Translate(32, 92));
-					Rect(128, 24).drawFrame(2, fColor);
-					font16(L"販売物").drawAt(64, 12);
-				}
+				Rect(32, 92, 128, 24).drawFrame(2, fColor);
+				font16(L"販売物").drawAt(96, 104);
+
+				//商品一覧
 				for (int i = 0; i < 36; i++)
 				{
+					const auto rect = Rect(32, 116 + i * 16, 128, 16);
 					if (i < int(iData.size()))
 					{
 						auto& b = u.baskets[i];
-						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 16), true);
-						const auto rect = Rect(128, 16);
 						if (rect.leftClicked()) selectedBasket = b.itemType;
-						const Color color = selectedBasket == b.itemType ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(Palette::White, 0));
+						const Color color = selectedBasket == b.itemType ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(0, 0));
 						rect.draw(color).drawFrame(2, fColor);
-						font12(iData[i].name).draw(0, 0);
-						font12(Format(b.getNumItem()).lpad(4, '0'), L":", Format(b.chart.front()).lpad(5, '0')).draw(48, 0);
+						font12(iData[i].name).draw(32, 116 + i * 16);
+						font12(Format(b.chart.front()).lpad(5, '0'), L"G").draw(108, 116 + i * 16);
 					}
 					else
 					{
-						const Transformer2D t1(Mat3x2::Translate(32, 116 + i * 16), true);
-						const auto rect = Rect(128, 16);
-						const Color color = rect.mouseOver() ? Color(Palette::Orange, 128) : Color(Palette::White, 0);
+						const Color color = rect.mouseOver() ? Color(Palette::Orange, 128) : Color(0, 0);
 						rect.draw(color).drawFrame(2, fColor);
-						font12(L"---").drawAt(64, 8);
+						font12(L"---").drawAt(96, 124 + i * 16);
 					}
 				}
 
-				auto& b = u.baskets[selectedBasket];
 				//基本情報
-				{
-					const Transformer2D t1(Mat3x2::Translate(160, 92));
-					Rect(192, 600).drawFrame(2, fColor);
-					Rect(192, 24).drawFrame(2, fColor);
-					font16(b.getItemName()).draw(16, 0);
-					//font16(!b.rings.isEmpty() ? Format(b.rings.front().price) : L"").draw(16, 0);
-				}
-				//チャートの描画
-				{
-					const Transformer2D t1(Mat3x2::Translate(160, 116));
-					Rect(192, 64).drawFrame(2, fColor);
-					int max = 1; for (int i = 0; i < 191; i++) max = Max(max, b.chart[i]);
-					for (int i = 0; i < 191; i++)
-						Line(191 - i, 63 - b.chart[i] * 62 / max, 190 - i, 63 - b.chart[i + 1] * 62 / max).draw(1, Palette::Yellow);
-				}
+				Rect(160, 92, 192, 600).drawFrame(2, fColor);
+				Rect(160, 92, 192, 24).drawFrame(2, fColor);
+				font16(bs.getItemName()).drawAt(252, 104);
+
+
+				//チャート
+				Rect(160, 180, 192, 64).drawFrame(2, fColor);
+				int max = 1; for (int i = 0; i < 191; i++) max = Max(max, bs.chart[i]);
+				for (int i = 0; i < 191; i++)
+					Line(191 - i, 63 - bs.chart[i] * 62 / max, 190 - i, 63 - bs.chart[i + 1] * 62 / max).movedBy(160, 180).draw(1, Palette::Yellow);
 
 				break;
 			}
 			case DrawingType::Towner:
 			{
 				//都市の販売物の描画
-				{
-					const Transformer2D t1(Mat3x2::Translate(32, 92));
-					Rect(128, 24).drawFrame(2, fColor);
-					font16(L"市民").drawAt(64, 12);
-				}
+				Rect(32, 92, 128, 24).drawFrame(2, fColor);
+				font16(L"市民").drawAt(96, 104);
 
 				//市民リスト
 				for (int i = 0; i < 24; i++)
@@ -363,7 +358,7 @@ void Main()
 					font16(L"人口　　　:", numCitizen).draw(16, 24);
 					int sumHapiness = 0;
 					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumHapiness += c.hapiness;
-					font16(L"幸福:", sumHapiness / double(numCitizen)).draw(16, 48);
+					font16(L"幸福:", int(sumHapiness / double(numCitizen))).draw(16, 48);
 					int sumBhs = 0;
 					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumBhs += c.bhs;
 					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
@@ -389,34 +384,6 @@ void Main()
 						}
 					}
 				}
-				/*
-				//Need
-				if (!cd.need.isEmpty())
-				{
-				const Transformer2D t1(Mat3x2::Translate(160, 140));
-				Rect(192, 16 + 16 * int(cd.need.size())).drawFrame(2, fColor);
-				Rect(12, 16, 180, 16 * int(cd.need.size())).drawFrame(2, fColor);
-				font12(L"消費").draw(4, 0);
-				for (int i = 0; i<int(cd.need.size()); i++)
-				{
-				auto& n = cd.need[i];
-				font12(iData[n.itemType].name).draw(16, 16 + i * 16);
-				}
-				}
-
-				//Product
-				if (cd.product.itemType != -1)
-				{
-				const Transformer2D t1(Mat3x2::Translate(160, !cd.need.isEmpty() ? 156 : 140 + 16 * int(cd.need.size())));
-				Rect(192, 16 + 16 * int(cd.product.material.size())).drawFrame(2, fColor);
-				Rect(12, 16, 180, 16 * int(cd.product.material.size())).drawFrame(2, fColor);
-				font12(L"生産:", iData[cd.product.itemType].name, L"x", cd.product.num).draw(4, 0);
-				for (int i = 0; i<int(cd.product.material.size()); i++)
-				{
-				auto& m = cd.product.material[i];
-				font12(iData[m.itemtype].name, L"x", m.num).draw(16, 16 + i * 16);
-				}
-				}*/
 				break;
 			}
 			case DrawingType::News:
@@ -467,20 +434,20 @@ void Main()
 					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
 
 					font12(cd.job.description).draw(4, 72);
-					font16(L"維持費:", 50 + cd.job.cost).draw(4, 72+16);
-					font16(L"賃金　:",  cd.job.wage).draw(4, 72+40);
+					font16(L"維持費:", 50 + cd.job.cost).draw(4, 72 + 16);
+					font16(L"賃金　:", cd.job.wage).draw(4, 72 + 40);
 					int p = 0;
 					font12(L"消費↓").draw(4, 72 + 64);
 					for (auto& c : cd.job.consume)
 					{
-						font12(L" ",iData[c.itemID].name, L"x", c.numConsume).draw(4, 72 + 80 + p * 16);
+						font12(L" ", iData[c.itemID].name, L"x", c.numConsume).draw(4, 72 + 80 + p * 16);
 						p++;
 					}
 					font12(L"生産↓").draw(4, 72 + 80 + p * 16);
 					p++;
 					for (auto& c : cd.job.product)
 					{
-						font12(L" ",iData[c.itemID].name, L"x", c.numProduct).draw(4, 72 + 80 + p * 16);
+						font12(L" ", iData[c.itemID].name, L"x", c.numProduct).draw(4, 72 + 80 + p * 16);
 						p++;
 					}
 				}
