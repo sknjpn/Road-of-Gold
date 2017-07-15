@@ -231,6 +231,7 @@
     <ClInclude Include="Urban.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Basket.cpp" />
     <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="IData.cpp" />
