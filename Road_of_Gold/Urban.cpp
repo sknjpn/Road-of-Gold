@@ -156,6 +156,6 @@ bool	setUrban(Node& _node)
 
 	for (int i = 0; i < int(iData.size()); i++) u.baskets.emplace_back(i, u.id);
 	for (int i = 0; i<int(cData.size()); i++)
-		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, Random(0.25, 0.75) + u.timer);
+		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, u.id);
 	return true;
 }

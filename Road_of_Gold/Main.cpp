@@ -103,70 +103,7 @@ void Main()
 
 			//市民の更新
 			for (auto& c : u.citizens)
-			{
-				c.timer += timeSpeed;
-				if (c.timer >= 1.0)
-				{
-					c.timer -= 1.0;
-					c.money -= 50;	//生活費の支払い
-					auto& cJob = cData[c.citizenType].job;
-					//仕事が達成可能かどうか判定
-					int totalCost = cJob.cost - cJob.wage;
-					bool flag = true;
-					for (auto& p : cJob.consume)
-					{
-						if (u.baskets[p.itemID].getNumItem() < p.numConsume) { flag = false; break; }
-						totalCost += u.baskets[p.itemID].getCost(p.numConsume);
-					}
-					//仕事の実行
-					if (totalCost < c.money)
-					{
-						if (flag)
-						{
-							for (auto& p : cJob.product)
-							{
-								auto& b = u.baskets[p.itemID];
-								const int price = 1 + int(c.price*Random(1.1, 1.2));
-								b.addRing(price, p.numProduct, &c);
-							}
-							for (auto& p : cJob.consume)
-								u.baskets[p.itemID].buyItem(p.numConsume);
-
-							c.money -= totalCost;
-						}
-
-						//購買
-						Array<Basket*> buyList;	//購買履歴
-						for (;;)
-						{
-							Basket* best = NULL;
-							double	earn = 0.0;
-							for (int i = 0; i < int(iData.size()); i++)
-							{
-								auto& b = u.baskets[i];
-								if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == NULL || iData[i].value / double(b.rings.front().price) > earn))
-								{
-									earn = iData[i].value / double(b.rings.front().price);
-									best = &b;
-								}
-							}
-							if (best != NULL && best->rings.front().price <= c.money) {
-								c.money -= best->rings.front().price;
-								buyList.emplace_back(best);
-								best->buyItem(1);
-							}
-							else break;
-						}
-						c.hapiness = 0;
-						for (auto& b : buyList)
-						{
-							c.hapiness += iData[b->itemType].value;
-							c.ths += iData[b->itemType].value;
-						}
-					}
-					else c.money += 100;	//労働者として働く
-				}
-			}
+				c.update();
 		}
 
 		//Vehicleの更新

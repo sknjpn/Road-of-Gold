@@ -47,7 +47,7 @@ struct Basket
 */
 struct Citizen
 {
-	Citizen(int _id, int _citizenType, double _timer);
+	Citizen(int _id, int _citizenType, int _joinedUrbanID);
 	void	update();
 
 	int		id;

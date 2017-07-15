@@ -3,10 +3,11 @@
 #include"CData.h"
 
 
-Citizen::Citizen(int _id, int _citizenType, double _timer)
+Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
 	, money(00)
-	, timer(_timer)
+	, timer(Random(0.0,1.0))
+	, joinedUrbanID(_joinedUrbanID)
 	, id(_id)
 	, price(100)
 	, hapiness(0)
@@ -15,13 +16,17 @@ Citizen::Citizen(int _id, int _citizenType, double _timer)
 {}
 void	Citizen::update()
 {
-	/*
+	auto& u = urbans[joinedUrbanID];
+
 	timer += timeSpeed;
 	if (timer >= 1.0)
 	{
 		timer -= 1.0;
+
 		money -= 50;	//生活費の支払い
+		
 		auto& cJob = cData[citizenType].job;
+		
 		//仕事が達成可能かどうか判定
 		int totalCost = cJob.cost - cJob.wage;
 		bool flag = true;
@@ -30,29 +35,30 @@ void	Citizen::update()
 			if (u.baskets[p.itemID].getNumItem() < p.numConsume) { flag = false; break; }
 			totalCost += u.baskets[p.itemID].getCost(p.numConsume);
 		}
+
 		//仕事の実行
 		if (totalCost < money)
 		{
-			if (flag)
+			if (flag)	//もし、必要な材料が市場に出ていれば
 			{
-				for (auto& p : cJob.product)
-				{
-					auto& b = u.baskets[p.itemID];
-					const int price = 1 + int(price*Random(1.1, 1.2));
-					b.addRing(price, p.numProduct, &c);
-				}
+				//材料の購入
 				for (auto& p : cJob.consume)
 					u.baskets[p.itemID].buyItem(p.numConsume);
 
+				//商品の販売
+				for (auto& p : cJob.product)
+					u.baskets[p.itemID].addRing(1 + int(price*Random(1.1, 1.2)), p.numProduct, this);
+
+				//費用の支払い
 				money -= totalCost;
 			}
 
-			//購買
+			//娯楽としての購買
 			Array<Basket*> buyList;	//購買履歴
 			for (;;)
 			{
-				Basket* best = NULL;
-				double	earn = 0.0;
+				Basket* best = NULL;	//有力候補
+				double	earn = 0.0;		//コスパ
 				for (int i = 0; i < int(iData.size()); i++)
 				{
 					auto& b = u.baskets[i];
@@ -77,5 +83,5 @@ void	Citizen::update()
 			}
 		}
 		else money += 100;	//労働者として働く
-	}*/
+	}
 }
