@@ -31,7 +31,7 @@ void	Planet::loadVoronoiMap(int _sizeX)
 			for (auto p1 : step(Size(_sizeX, _sizeX / 2))) voronoiMap[p1.y][p1.x] = temp[p1.y][p1.x];	//前回の変更の適用
 			for (int i = 0; i < 2; i++)
 			{
-				for (auto p1 : i==0 ? step(Size(_sizeX, _sizeX / 4 - LastUpdateB)) : step(Point(0, _sizeX / 4 + LastUpdateB), Size(_sizeX, _sizeX / 4 - LastUpdateB)))
+				for (auto p1 : i == 0 ? step(Size(_sizeX, _sizeX / 4 - LastUpdateB)) : step(Point(0, _sizeX / 4 + LastUpdateB), Size(_sizeX, _sizeX / 4 - LastUpdateB)))
 				{
 					for (auto p2 : step(p1.movedBy(-1, -1), Size(3, 3)))
 					{
@@ -72,51 +72,37 @@ void	Planet::loadVoronoiMap(int _sizeX)
 			if (!System::Update()) return;
 		}
 	}
-	for (auto& p : step(Size(_sizeX, _sizeX / 2)))
+	const Array<std::pair<Color, double>> dph = {
+		{ Palette::White,		 2.00 },
+		{ Palette::White,		 0.90 },
+		{ Palette::Sandybrown,	 0.85 },
+		{ Palette::Sandybrown,	 0.80 },
+		{ Palette::Green,		 0.65 },
+		{ Palette::Green,		 0.60 },
+		{ Palette::Blue,		 0.59 },
+		{ Palette::Blue,		 0.40 },
+		{ Palette::Darkblue,	 0.30 },
+		{ Palette::Darkblue,	-1.00 },
+	};
+	for (auto& n : nodes)
 	{
-		if (voronoiMap[p.y][p.x] != -1) image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].isSea ? Palette::Blue : Palette::Green;
+		const auto h = getHeight(n.pos);
+		for (int i = 0; i<int(dph.size()); i++)
+		{
+			if (dph[i].second < h)
+			{
+				n.clr = dph[i - 1].first.lerp(dph[i].first, (dph[i - 1].second - h) / (dph[i - 1].second - dph[i].second));
+				break;
+			}
+		}
+		n.clr = n.clr.lerp(RandomColor(), 0.1);
 	}
+	for (auto& p : step(Size(_sizeX, _sizeX / 2)))
+		if (voronoiMap[p.y][p.x] != -1)
+			image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].clr;
 	mapTexture = Texture(image);
 
 }
 void	Planet::makeMapTexture()
 {
-	/*Image image(_sizeX, _sizeX / 2);
-	image.fill(Palette::White);
-	for (auto& n : nodes)
-	{
-		const auto& p = (n.pos.mPos / TwoPi).movedBy(0.5, 0.25)*_sizeX;
-
-		image[int(p.y)][int(p.x)] = HSV(n.isSea ? Random(200.0, 220.0) : Random(110.0, 130.0), 0.5, 0.5);
-	}
-	Image temp;
-	for (;;)
-	{
-		bool flag = true;
-		temp.assign( image);
-		for (auto& p1 : step(Size(_sizeX, _sizeX / 2)))
-		{
-			for (auto& p2 : step(Point(-1, -1), Size(3, 3)))
-			{
-				auto p3 = p1 + p2;
-				if (p2.x == 0 && p2.y == 0) continue;
-				if (p2.x != 0 && p2.y != 0) continue;
-				if (p3.x < 0) p3.x = _sizeX - 1;
-				if (p3.y < 0) continue;
-				if (p3.x >= _sizeX) p3.x = 0;
-				if (p3.y >= _sizeX / 2) continue;
-				auto& o2 = image[p3.y][p3.x];
-				auto& o1 = image[p1.y][p1.x];
-				if (o1 != o2 && o2 == Palette::White)
-				{
-					temp[p3.y][p3.x] = temp[p1.y][p1.x];
-					flag = false;
-				}
-			}
-		}
-		image = temp;
-		if (flag) break;
-	}
-	mapTexture = Texture(image);
-	*/
 }
