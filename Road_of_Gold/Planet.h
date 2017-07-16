@@ -10,10 +10,12 @@ struct Planet
 	void	updateTransform();
 	void	updateViewPointSliding();
 	void	makeNewWorld(int _sizeX = 2048);
-	void	makeVoronoiMap(int _sizeX = 2048);
+	void	makeMapTexture();
+	void	loadVoronoiMap(int _sizeX = 2048);
 	void	draw() const;
 	Transformer2D createTransformer(int _delta = 0) const;
 
+	Grid<int>	voronoiMap;
 	RectF	drawingRegion;
 	RectF	smoothDrawingRegion;
 	Texture mapTexture;
