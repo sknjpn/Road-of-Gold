@@ -11,8 +11,7 @@ struct Vehicle
 
 	Urban&	getNowUrban() const;
 	Route&	getRoute() const;
-	Vec2	getPos() const;
-	double	getAngle() const;
+	void	update();
 	bool	inRoute() const;
 	void	draw() const;
 
@@ -24,6 +23,7 @@ struct Vehicle
 struct Group
 {
 	Group();
+	void	update();
 
 	int		money;
 	int		id;

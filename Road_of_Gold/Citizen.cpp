@@ -13,7 +13,7 @@ Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	, hapiness(0)
 	, ths(0)
 	, bhs(0)
-	, tmr(Random(99)+100)
+	, tmr(Random(99) + 100)
 {}
 void	Citizen::update()
 {
@@ -31,7 +31,7 @@ void	Citizen::update()
 			tmr = 100;
 			for (int i = 0; i<int(cData.size()); i++)
 			{
-				if(RandomBool(Max(0.0,double(u.avgBhs[i]-bhs)/1000.0)))
+				if (RandomBool(Max(0.0, double(u.avgBhs[i] - bhs) / 1000.0)))
 					citizenType = Random(int(cData.size() - 1));
 			}
 		}

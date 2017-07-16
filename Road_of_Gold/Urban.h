@@ -21,7 +21,7 @@ bool operator>(const Ring& _left, const Ring& _right);
 
 struct Basket
 {
-	Basket(int _itemType,int _joinedUrbanID);
+	Basket(int _itemType, int _joinedUrbanID);
 	String&	getItemName() const;
 	void	addRing(int _price, int _num, const Group* _owner);
 	void	addRing(int _price, int _num, const Citizen* _owner);

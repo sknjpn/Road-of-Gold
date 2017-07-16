@@ -2,6 +2,7 @@
 #include "Node.h"
 #include "Urban.h"
 #include "Route.h"
+#include "GlobalVariables.h"
 
 Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
@@ -67,4 +68,34 @@ void makeGroupsRandom()
 		auto& u = urbans[Random(int(urbans.size() - 1))];
 		for (int i = 0; i < 10; i++) g.vehicles.emplace_back(u.id);
 	}
+}
+
+void Vehicle::update()
+{
+	if (inRoute())
+	{
+		routeProgress += timeSpeed;
+		if (routeProgress >= getRoute().totalLength)
+		{
+			nowUrbanID = getRoute().destinationUrbanID;
+			routeID = -1;
+		}
+	}
+	else
+	{
+		routeProgress += timeSpeed;
+		if (routeProgress >= 0.0)
+		{
+			routeProgress = 0.0;
+			const auto rs = getNowUrban().getRoutes();
+			if (!rs.isEmpty()) routeID = rs[Random(int(rs.size() - 1))]->id;
+			else routeProgress = -100.0;
+		}
+	}
+}
+
+void Group::update()
+{
+	for (auto& v : vehicles)
+		v.update();
 }

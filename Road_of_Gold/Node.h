@@ -34,6 +34,7 @@ struct Node
 	bool	isScaned, isInQueue;
 	double	cost;
 	int		fromNodeID;
+	Color	clr= RandomColor();
 	Array<Path> paths;
 };
 extern Array<Node> nodes;

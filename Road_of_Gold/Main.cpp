@@ -38,6 +38,8 @@ void Main()
 	loadNodeMap(L"authcode.bin");
 	setPlanetToNodes();
 
+	planet.loadVoronoiMap(2048);
+
 	//Urbanの生成
 	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea; })) / 100;
 	for (auto& r : regions)
@@ -61,10 +63,12 @@ void Main()
 
 	while (System::Update())
 	{
-		if (KeyF1.down()) timeSpeed = Max(0.0001, timeSpeed*0.5);
-		if (KeyF2.down()) timeSpeed = Min(1.0000, timeSpeed*2.0);
-		worldTimer = fmod(worldTimer + timeSpeed, 1.0);
+		if (KeyF1.down()) timeSpeed = 0.0001;
+		if (KeyF2.down()) timeSpeed = Max(0.0001, timeSpeed*0.5);
+		if (KeyF3.down()) timeSpeed = Min(1.0000, timeSpeed*2.0);
+		if (KeyF4.down()) timeSpeed = 1.0000;
 
+		worldTimer = fmod(worldTimer + timeSpeed, 1.0);
 
 		//UrbanUpdate
 		for (auto& u : urbans)
@@ -72,31 +76,7 @@ void Main()
 
 		//Vehicleの更新
 		for (auto& g : groups)
-		{
-			for (auto& v : g.vehicles)
-			{
-				if (v.inRoute())
-				{
-					v.routeProgress += timeSpeed;
-					if (v.routeProgress >= v.getRoute().totalLength)
-					{
-						v.nowUrbanID = v.getRoute().destinationUrbanID;
-						v.routeID = -1;
-					}
-				}
-				else
-				{
-					v.routeProgress += timeSpeed;
-					if (v.routeProgress >= 0.0)
-					{
-						v.routeProgress = 0.0;
-						const auto rs = v.getNowUrban().getRoutes();
-						if (!rs.isEmpty()) v.routeID = rs[Random(int(rs.size() - 1))]->id;
-						else v.routeProgress = -100.0;
-					}
-				}
-			}
-		}
+			g.update();
 
 		planet.updateTransform();
 		planet.draw();
@@ -358,7 +338,7 @@ void Main()
 			}
 			}
 		}
-		font16(L"F1,F2キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw();
+		font16(L"F1～F3キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw();
 
 		planet.updateViewPointSliding();
 	}
