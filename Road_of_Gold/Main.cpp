@@ -38,7 +38,7 @@ void Main()
 	loadNodeMap(L"authcode.bin");
 	setPlanetToNodes();
 
-	planet.loadVoronoiMap(2048);
+	planet.loadVoronoiMap(4096);
 
 	//Urbanの生成
 	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea; })) / 100;
