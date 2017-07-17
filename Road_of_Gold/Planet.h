@@ -1,6 +1,7 @@
 #pragma once
 #include "Pos.h"
 
+
 //自然環境の生成とマップ上の視点移動を行う
 struct Planet
 {
@@ -9,9 +10,11 @@ struct Planet
 	bool	isSea(const Pos& _pos) const;
 	void	updateTransform();
 	void	updateViewPointSliding();
-	void	makeNewWorld(int _sizeX = 2048);
 	bool	loadVoronoiMap();
 	void	draw() const;
+	int		getMoistureLevel(const Pos& _pos) const;
+	int		getTemperatureLevel(const Pos& _pos) const;
+	Pos		getCursorPos() const;
 	Transformer2D createTransformer(int _delta = 0) const;
 
 	Grid<int>	voronoiMap;
@@ -19,6 +22,7 @@ struct Planet
 	RectF	smoothDrawingRegion;
 	Texture mapTexture;
 	PerlinNoise	heightNoise;
+	PerlinNoise moistureNoise;
 	Optional<Pos>	gazePoint;
 };
 extern Planet planet;

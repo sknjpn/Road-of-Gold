@@ -4,14 +4,14 @@
 #include"Pos.h"
 void Main()
 {
-	const double k = 0.000001;
+	const double k = 0.0000001;
 	const int s = 30;
 	const Font font(16);
 	Array<Node*> block[s][s][s];
 
 
 	Window::Resize(1280, 720);
-	for (int i = 0; i < 10000; i++)
+	for (int i = 0; i < 20000; i++)
 	{
 		for (;;)
 		{
@@ -217,7 +217,7 @@ void Main()
 	}
 
 	//ファイル書き出し
-	image.save(Format(L"Assets/VoronoiMap", _sizeX, L".png"));
+	image.save(L"Assets/VoronoiMap.png");
 
 	while (System::Update());
 }
