@@ -4,8 +4,18 @@
 
 Array<Node> nodes;
 Node::Node(int _id, const Pos& _pos)
-	: id(_id), joinedRegionID(-1), ownUrbanID(-1), isSea(false), pos(_pos)
-	, isScaned(false), isInQueue(false), cost(0.0), fromNodeID(-1)
+	: id(_id)
+	, joinedRegionID(-1)
+	, ownUrbanID(-1)
+	, isSea(false)
+	, pos(_pos)
+	, isScaned(false)
+	, isInQueue(false)
+	, cost(0.0)
+	, fromNodeID(-1)
+	, biome(Biome::Ice)
+	, moistureLevel(0)
+	, temperatureLevel(0)
 {
 	paths.clear();
 }
@@ -23,25 +33,24 @@ void	Node::draw(const Color& _color) const
 		if (p.getChild().joinedRegionID == joinedRegionID) p.getLine().draw(0.002, _color);
 }
 
-Region&	Node::getJoinedRegion() const 
+Region&	Node::getJoinedRegion() const
 {
 	return regions[joinedRegionID];
 }
 
-void	loadNodeMap(const FilePath& _filePath)
+bool	loadNodeMap()
 {
-	nodes.clear();
-	paths.clear();
-	regions.clear();
 	//NodeÇÃì«Ç›çûÇ›
-	BinaryReader reader(_filePath);
+	BinaryReader reader(L"Assets/NodeMap.bin");
+	if (!reader) return false;	//ì«Ç›çûÇ›é∏îs
+
 	int	nodesSize, pathsSize;
 	reader.read(nodesSize);
 	for (int i = 0; i < nodesSize; i++)
 	{
 		Vec3 ePos;
 		reader.read(ePos);
-		nodes.push_back(Node(i, Pos(ePos)));
+		nodes.emplace_back(i, Pos(ePos));
 	}
 	reader.read(pathsSize);
 	for (int i = 0; i < pathsSize; i++)
@@ -61,12 +70,21 @@ void	loadNodeMap(const FilePath& _filePath)
 			paths.push_back(&p);
 		}
 	}
+	return true;
 }
 
 void	setPlanetToNodes()
 {
-	//isSeaÇÃê›íË
-	for (auto& n : nodes) n.isSea = planet.isSea(n.pos);
+	for (auto& n : nodes)
+	{
+		if (planet.isSea(n.pos)) n.isSea = true;
+		else
+		{
+			n.temperatureLevel = planet.getTemperatureLevel(n.pos);
+			n.moistureLevel = planet.getMoistureLevel(n.pos);
+		}
+	}
+
 
 	//ReigonÇÃê›íË
 	for (auto& n : nodes)
@@ -100,7 +118,7 @@ Path::Path(int _parentNodeID, int _childNodeID)
 	: id(0), len(0.0), parentNodeID(_parentNodeID), childNodeID(_childNodeID) {}
 Node&	Path::getChild() const
 {
-	return nodes[childNodeID]; 
+	return nodes[childNodeID];
 }
 
 Node&	Path::getParent() const

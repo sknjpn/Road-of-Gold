@@ -1,6 +1,39 @@
 #pragma once
 #include "Pos.h"
 
+enum class Biome
+{
+	Ice,
+	Tundra,
+	Grassland,
+	Desert,
+	Savanna,
+	SeasonalForest,
+	TropicalRainforest,
+	TemperateRainforest,
+	BorealForest,
+	Woodland,
+
+	Sea,
+	Ocean,
+};
+
+const Array<String> BiomeName = {
+	L"Ice",
+	L"Tundra",
+	L"Grassland",
+	L"Desert",
+	L"Savanna",
+	L"SeasonalForest",
+	L"TropicalRainforest",
+	L"TemperateRainforest",
+	L"BorealForest",
+	L"Woodland",
+	
+	L"Sea",
+	L"Ocean",
+};
+
 struct Node;
 struct Region;
 
@@ -26,6 +59,10 @@ struct Node
 	void	draw(const Color& _color) const;
 	Region&	getJoinedRegion() const;
 
+	int		temperatureLevel;
+	int		moistureLevel;
+	Biome	biome;
+
 	int		id;
 	int		joinedRegionID;
 	int		ownUrbanID;
@@ -34,11 +71,11 @@ struct Node
 	bool	isScaned, isInQueue;
 	double	cost;
 	int		fromNodeID;
-	Color	clr= RandomColor();
+	Color	clr;
 	Array<Path> paths;
 };
 extern Array<Node> nodes;
-void	loadNodeMap(const FilePath& _filePath);
+bool	loadNodeMap();
 void	setPlanetToNodes();
 
 struct Region

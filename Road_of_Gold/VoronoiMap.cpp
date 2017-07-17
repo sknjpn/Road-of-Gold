@@ -3,106 +3,94 @@
 #include"Pi.h"
 
 
-void	Planet::loadVoronoiMap(int _sizeX)
+bool	Planet::loadVoronoiMap()
 {
-	Grid<int> temp(_sizeX, _sizeX / 2);
-	Image image(_sizeX, _sizeX / 2);
-	DynamicTexture tex;
-	Stopwatch tmr(true);
-	int	LastUpdateA = 0;
-	int	LastUpdateB = 0;
+	const bool useOutlineEnabled = false;
+	Image reader(L"Assets/VoronoiMap.png");
+	if (!reader.isEmpty())
+	{
+		voronoiMap.resize(reader.size());
+		for (auto p : step(reader.size()))
+		{
+			voronoiMap[p.y][p.x] = reader[p.y][p.x].r + (reader[p.y][p.x].g << 8) + (reader[p.y][p.x].b << 16);
+		}
+	}
+	else return false;
 
-	voronoiMap.resize(_sizeX, _sizeX / 2);
-	voronoiMap.fill(-1);
-	temp.fill(-1);
 	for (auto& n : nodes)
 	{
-		const auto& p = (n.pos.mPos / TwoPi).movedBy(0.5, 0.25)*_sizeX;
-		voronoiMap[int(p.y)][int(p.x)] = n.id;
-		temp[int(p.y)][int(p.x)] = n.id;
-	}
-	for (;;)
-	{
-		if (!KeyEnter.pressed())
+		if (n.isSea)
 		{
-			LastUpdateB = LastUpdateA;
-			LastUpdateA = _sizeX / 2;
-			bool flag = true;
-			for (auto p1 : step(Size(_sizeX, _sizeX / 2))) voronoiMap[p1.y][p1.x] = temp[p1.y][p1.x];	//前回の変更の適用
-			for (int i = 0; i < 2; i++)
-			{
-				for (auto p1 : i == 0 ? step(Size(_sizeX, _sizeX / 4 - LastUpdateB)) : step(Point(0, _sizeX / 4 + LastUpdateB), Size(_sizeX, _sizeX / 4 - LastUpdateB)))
-				{
-					for (auto p2 : step(p1.movedBy(-1, -1), Size(3, 3)))
-					{
-						//例外判定
-						if (p2 == p1 || (p1.x - p2.x != 0 && p1.y - p2.y != 0) || p2.y < 0 || p2.y >= _sizeX / 2) continue;
-						if (p2.x < 0) p2.x = _sizeX - 1;
-						if (p2.x >= _sizeX) p2.x = 0;
+			if (getHeight(n.pos) < 0.30) n.biome = Biome::Ocean;
+			else  n.biome = Biome::Sea;
+		}
+		else
+		{
+			const Biome biomeType[6][6]{
+				//COLDEST     //COLDER       //COLD               //HOT                       //HOTTER                    //HOTTEST
+				{ Biome::Ice, Biome::Tundra, Biome::Grassland,    Biome::Desert,              Biome::Desert,              Biome::Desert },              //DRYEST
+				{ Biome::Ice, Biome::Tundra, Biome::Grassland,    Biome::Desert,              Biome::Desert,              Biome::Desert },              //DRYER
+				{ Biome::Ice, Biome::Tundra, Biome::Woodland,     Biome::Woodland,            Biome::Savanna,             Biome::Savanna },             //DRY
+				{ Biome::Ice, Biome::Tundra, Biome::BorealForest, Biome::Woodland,            Biome::Savanna,             Biome::Savanna },             //WET
+				{ Biome::Ice, Biome::Tundra, Biome::BorealForest, Biome::SeasonalForest,      Biome::TropicalRainforest,  Biome::TropicalRainforest },  //WETTER
+				{ Biome::Ice, Biome::Tundra, Biome::BorealForest, Biome::TemperateRainforest, Biome::TropicalRainforest,  Biome::TropicalRainforest }   //WETTEST
+			};
+			n.biome = biomeType[n.moistureLevel][n.temperatureLevel];
+		}
+		switch (n.biome)
+		{
+		case Biome::Ice: n.clr = Color(255, 255, 255); break;
+		case Biome::Desert: n.clr = Color(238, 218, 130); break;
+		case Biome::Savanna: n.clr = Color(177, 209, 110); break;
+		case Biome::TropicalRainforest: n.clr = Color(66, 123, 25); break;
+		case Biome::Tundra: n.clr = Color(96, 131, 112); break;
+		case Biome::TemperateRainforest: n.clr = Color(29, 73, 40); break;
+		case Biome::Grassland: n.clr = Color(164, 225, 99); break;
+		case Biome::SeasonalForest: n.clr = Color(73, 100, 35); break;
+		case Biome::BorealForest: n.clr = Color(95, 115, 62); break;
+		case Biome::Woodland: n.clr = Color(139, 175, 90); break;
+		case Biome::Sea: n.clr = Color(L"#0F285A"); break;
+		case Biome::Ocean: n.clr = Color(L"#0F1E50"); break;
+		}
+	}
 
-						//干渉
-						if (voronoiMap[p1.y][p1.x] != voronoiMap[p2.y][p2.x] && voronoiMap[p2.y][p2.x] != -1)
-						{
-							bool f = false;
-							if (voronoiMap[p1.y][p1.x] == -1) f = true;
-							else
-							{
-								const auto& mPos = (p1 / double(_sizeX / 2)).movedBy(-1, -0.5)*Pi;
-								const auto& ePos = Vec3(cos(mPos.x)*cos(mPos.y), -sin(mPos.y), sin(mPos.x)*cos(mPos.y));
-								if ((nodes[voronoiMap[p1.y][p1.x]].pos.ePos - ePos).length() > (nodes[voronoiMap[p2.y][p2.x]].pos.ePos - (ePos)).length()) f = true;
-							}
-							if (f)
-							{
-								flag = false;
-								temp[p1.y][p1.x] = voronoiMap[p2.y][p2.x];
-								if (LastUpdateA > abs(_sizeX / 4 - p2.y)) LastUpdateA = abs(_sizeX / 4 - p2.y);
-							}
-						}
-					}
-				}
-			}
-			if (flag) break;
-		}
-		if (tmr.ms() > 16)
-		{
-			for (auto& p : step(Size(_sizeX, _sizeX / 2)))
-				if (voronoiMap[p.y][p.x] != -1) image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].clr;
-			tex.fill(image);
-			tex.resize(Window::Size()).draw();
-			if (!System::Update()) return;
-		}
-	}
-	const Array<std::pair<Color, double>> dph = {
-		{ Palette::White,		 2.00 },
-		{ Palette::White,		 0.90 },
-		{ Palette::Sandybrown,	 0.85 },
-		{ Palette::Sandybrown,	 0.80 },
-		{ Palette::Green,		 0.65 },
-		{ Palette::Green,		 0.60 },
-		{ Palette::Blue,		 0.59 },
-		{ Palette::Blue,		 0.40 },
-		{ Palette::Darkblue,	 0.30 },
-		{ Palette::Darkblue,	-1.00 },
-	};
+
+	//色のぼかし
 	for (auto& n : nodes)
 	{
 		const auto h = getHeight(n.pos);
-		for (int i = 0; i<int(dph.size()); i++)
-		{
-			if (dph[i].second < h)
-			{
-				n.clr = dph[i - 1].first.lerp(dph[i].first, (dph[i - 1].second - h) / (dph[i - 1].second - dph[i].second));
-				break;
-			}
-		}
-		n.clr = n.clr.lerp(RandomColor(), 0.1);
+		n.clr = n.clr.lerp(RandomColor(), 0.05);
 	}
-	for (auto& p : step(Size(_sizeX, _sizeX / 2)))
+
+	//Imageに色を転写
+	Image image(reader.size());
+	for (auto& p : step(reader.size()))
 		if (voronoiMap[p.y][p.x] != -1)
 			image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].clr;
-	mapTexture = Texture(image);
 
-}
-void	Planet::makeMapTexture()
-{
+	if (useOutlineEnabled)
+	{
+		for (auto& p1 : step(reader.size()))
+		{
+			for (int m = 0; m < 4; m++)
+			{
+				Point p2 = p1;
+				switch (m)
+				{
+				case 0: p2 = { p1.x - 1,p1.y }; break;
+				case 1: p2 = { p1.x + 1,p1.y }; break;
+				case 2: p2 = { p1.x ,p1.y - 1 }; break;
+				case 3: p2 = { p1.x ,p1.y + 1 }; break;
+				}
+				//例外判定
+				if (p2.y < 0 || p2.y >= reader.size().y) continue;
+				if (p2.x < 0) p2.x = reader.size().x - 1;
+				if (p2.x >= reader.size().x) p2.x = 0;
+				if (voronoiMap[p1.y][p1.x] != voronoiMap[p2.y][p2.x]) image[p1.y][p1.x] = Palette::Black;
+			}
+		}
+	}
+
+	mapTexture = Texture(image);
+	return true;
 }

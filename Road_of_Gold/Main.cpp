@@ -24,6 +24,9 @@ void Main()
 	const Font font24(24);
 	const Font font36(36);
 	const Font font48(48);
+	const Texture ship(L"Assets/Ship.png");
+	const Texture wagon(L"Assets/Wagon.png");
+	Node* nearestNode = NULL;
 
 	enum struct DrawingType
 	{
@@ -34,11 +37,9 @@ void Main()
 
 	loadEconomicData();
 
-	planet.makeNewWorld();
-	loadNodeMap(L"authcode.bin");
+	if (!loadNodeMap()) return;	//読み込みエラー
 	setPlanetToNodes();
-
-	planet.loadVoronoiMap(2048);
+	if (!planet.loadVoronoiMap()) return;	//読み込みエラー
 
 	//Urbanの生成
 	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea; })) / 100;
@@ -58,8 +59,6 @@ void Main()
 	makeRoute();
 
 	makeGroupsRandom();
-
-	//planet.makeVoronoiMap();
 
 	while (System::Update())
 	{
@@ -93,6 +92,11 @@ void Main()
 			}
 		}
 
+		{
+			auto mp = planet.getCursorPos();
+			for (auto& n : nodes)
+				if (nearestNode == NULL || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
+		}
 		for (int i = 0; i < 2; i++)
 		{
 			const auto t1 = planet.createTransformer(i);
@@ -110,12 +114,12 @@ void Main()
 			for (const auto& g : groups)
 				for (const auto& v : g.vehicles)
 					v.draw();
-
 			//Urban
 			for (const auto& u : urbans) u.draw();
 
 		}
 		//影
+		/*
 		if (timeSpeed < 0.1)
 		{
 			const auto t1 = planet.createTransformer();
@@ -123,7 +127,7 @@ void Main()
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
-		}
+		}*/
 		//Interface
 		if (selectedUrban != NULL)
 		{
@@ -338,7 +342,10 @@ void Main()
 			}
 			}
 		}
-		font16(L"F1～F3キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw();
+		Rect(256, 24).draw(Palette::White);
+		font16(BiomeName[int(nearestNode->biome)]).draw(0, 0, Palette::Black);
+
+		font16(L"F1～F3キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw(256, 0);
 
 		planet.updateViewPointSliding();
 	}
