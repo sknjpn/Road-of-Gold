@@ -63,22 +63,6 @@ void	Planet::updateViewPointSliding()
 
 }
 
-void	Planet::makeNewWorld(int _sizeX)
-{
-	heightNoise = PerlinNoise(Random(UINT32_MAX - 1));
-	Image image(_sizeX, _sizeX / 2);
-	for (const auto& p : step(Size(_sizeX, _sizeX / 2)))
-	{
-		auto& o = image[p.y][p.x];
-		const auto pos = Pos(Vec2(TwoPi*double(p.x) / double(_sizeX) - Pi, Pi*double(p.y) / double(_sizeX / 2) - HalfPi));
-		const double height = getHeight(pos);
-		if (height <= 0.60) o = Palette::Blue;
-		else o = Palette::Green;
-		o = Palette::Blue.lerp(Palette::Green, Max(0.0, Min(1.0, (height - 0.59)*50.0)));
-	}
-	mapTexture = Texture(image);
-}
-
 void	Planet::draw() const
 {
 	for (int i = 0; i < 2; i++) {

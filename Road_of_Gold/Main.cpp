@@ -34,11 +34,9 @@ void Main()
 
 	loadEconomicData();
 
-	planet.makeNewWorld();
-	loadNodeMap(L"authcode.bin");
+	if (!loadNodeMap()) return;	//読み込みエラー
 	setPlanetToNodes();
-
-	planet.loadVoronoiMap(4096);
+	if (!planet.loadVoronoiMap()) return;	//読み込みエラー
 
 	//Urbanの生成
 	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea; })) / 100;
@@ -58,8 +56,6 @@ void Main()
 	makeRoute();
 
 	makeGroupsRandom();
-
-	//planet.makeVoronoiMap();
 
 	while (System::Update())
 	{

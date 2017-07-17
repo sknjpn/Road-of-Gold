@@ -38,7 +38,7 @@ struct Node
 	Array<Path> paths;
 };
 extern Array<Node> nodes;
-void	loadNodeMap(const FilePath& _filePath);
+bool	loadNodeMap();
 void	setPlanetToNodes();
 
 struct Region

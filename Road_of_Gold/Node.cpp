@@ -28,20 +28,19 @@ Region&	Node::getJoinedRegion() const
 	return regions[joinedRegionID];
 }
 
-void	loadNodeMap(const FilePath& _filePath)
+bool	loadNodeMap()
 {
-	nodes.clear();
-	paths.clear();
-	regions.clear();
 	//NodeÇÃì«Ç›çûÇ›
-	BinaryReader reader(_filePath);
+	BinaryReader reader(L"Assets/NodeMap.bin");
+	if (!reader) return false;	//ì«Ç›çûÇ›é∏îs
+
 	int	nodesSize, pathsSize;
 	reader.read(nodesSize);
 	for (int i = 0; i < nodesSize; i++)
 	{
 		Vec3 ePos;
 		reader.read(ePos);
-		nodes.push_back(Node(i, Pos(ePos)));
+		nodes.emplace_back(i, Pos(ePos));
 	}
 	reader.read(pathsSize);
 	for (int i = 0; i < pathsSize; i++)
@@ -61,6 +60,7 @@ void	loadNodeMap(const FilePath& _filePath)
 			paths.push_back(&p);
 		}
 	}
+	return true;
 }
 
 void	setPlanetToNodes()
