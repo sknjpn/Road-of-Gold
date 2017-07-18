@@ -224,7 +224,6 @@
     <ClInclude Include="Group.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="Pi.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="Route.h" />
