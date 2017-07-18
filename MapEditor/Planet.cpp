@@ -24,7 +24,7 @@ void	Planet::updateTransform()
 	const auto t1 = createTransformer();
 	if (!KeyControl.pressed())
 		drawingRegion = drawingRegion.scaledAt(Cursor::PosF(), 1.0 + 0.1*double(Mouse::Wheel()));
-	
+
 	if (gazePoint)	//íçéãì_
 	{
 		auto p = gazePoint.value().mPos;
@@ -83,15 +83,14 @@ void	Planet::updateImage(Array<Node*> _nodeList)
 				if (p2.y < 0 || p2.y >= voronoiMap.size().y) continue;
 				if (p2.x < 0) p2.x = voronoiMap.size().x - 1;
 				if (p2.x >= voronoiMap.size().x) p2.x = 0;
-				if (voronoiMap[p1.y][p1.x] == voronoiMap[p2.y][p2.x] && image[p2.y][p2.x] != bData[selectedBiome].color)
+				if (voronoiMap[p1.y][p1.x] == voronoiMap[p2.y][p2.x] && image[p2.y][p2.x] != bData[n->biomeType].color)
 				{
 					temp.emplace_back(p2);
-					image[p2.y][p2.x] = bData[selectedBiome].color;
+					image[p2.y][p2.x] = bData[n->biomeType].color;
 				}
 			}
 			temp.pop_front();
 		}
-		n->biomeType = selectedBiome;
 	}
-	if(!_nodeList.isEmpty()) mapTexture.fill(image);
+	if (!_nodeList.isEmpty()) mapTexture.fill(image);
 }

@@ -232,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Basket.cpp" />
+    <ClCompile Include="BData.cpp" />
     <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="IData.cpp" />

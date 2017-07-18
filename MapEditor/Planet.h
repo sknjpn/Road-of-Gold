@@ -12,6 +12,7 @@ struct Planet
 	bool	loadVoronoiMap();
 	void	updateImage(Array<Node*> _nodeList);
 	Pos		getCursorPos() const;
+	void	generateBiome();
 	Transformer2D createTransformer(int _delta = 0) const;
 
 	Grid<int>	voronoiMap;

@@ -1,6 +1,14 @@
 #pragma once
 #include "Pos.h"
 
+struct BData
+{
+	String	name;
+	Color	color;
+};
+extern const Array<BData> bData;
+
+
 enum class Biome
 {
 	Ice,

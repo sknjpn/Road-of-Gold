@@ -226,5 +226,8 @@
     <ClCompile Include="Basket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
