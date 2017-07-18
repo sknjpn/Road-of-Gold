@@ -18,11 +18,12 @@ bool	Planet::loadVoronoiMap()
 	else return false;
 
 
+
 	//Image‚ÉF‚ğ“]Ê
 	Image image(reader.size());
 	for (auto& p : step(reader.size()))
 		if (voronoiMap[p.y][p.x] != -1)
-			image[p.y][p.x] = bData[nodes[voronoiMap[p.y][p.x]].biomeType].color;
+			image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].color;
 
 	if (useOutlineEnabled)
 	{

@@ -18,8 +18,6 @@ struct Planet
 	RectF	drawingRegion;
 	RectF	smoothDrawingRegion;
 	Texture mapTexture;
-	PerlinNoise	heightNoise;
-	PerlinNoise moistureNoise;
 	Optional<Pos>	gazePoint;
 };
 extern Planet planet;

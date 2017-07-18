@@ -15,6 +15,7 @@ bool	Planet::loadBiome()
 				int t;
 				reader.read(t);
 				n.biomeType = t;
+				n.color = bData[n.biomeType].color.lerp(RandomColor(),0.05);
 			}
 			return true;
 		}

@@ -14,8 +14,8 @@ struct Region;
 struct Path
 {
 	Path::Path(int _parentNodeID, int _childNodeID);
-	Node&	getChild() const;
-	Node&	getParent() const;
+	Node&	getChildNode() const;
+	Node&	getParentNode() const;
 	Line	getLine() const;
 
 	int		id;

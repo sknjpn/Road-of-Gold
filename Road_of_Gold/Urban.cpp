@@ -38,7 +38,7 @@ String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, 
 bool	setUrban(Node& _node)
 {
 	if (_node.isSea() || _node.ownUrbanID != -1) return false;
-	for (const auto& p : _node.paths) if (p.getChild().ownUrbanID != -1) return false;
+	for (const auto& p : _node.paths) if (p.getChildNode().ownUrbanID != -1) return false;
 	_node.ownUrbanID = int(urbans.size());
 	urbans.emplace_back(_node.id);
 	auto& u = urbans.back();

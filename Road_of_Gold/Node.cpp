@@ -16,24 +16,17 @@ Node::Node(int _id, const Pos& _pos)
 {
 	paths.clear();
 }
-
-bool	Node::isCoast() const
-{
-	return !isSea() && paths.any([](const Path& n) {return n.getChild().isSea(); });
-}
+bool	Node::isCoast() const { return !isSea() && paths.any([](const Path& n) {return n.getChildNode().isSea(); }); }
 
 void	Node::draw(const Color& _color) const
 {
 	if (!Rect(Point(0, 0), Window::Size()).intersects(Graphics2D::GetTransform().transform(pos.mPos))) return;
 	Circle(pos.mPos, 0.005).draw(_color);
 	for (const auto& p : paths)
-		if (p.getChild().joinedRegionID == joinedRegionID) p.getLine().draw(0.002, _color);
+		if (p.getChildNode().joinedRegionID == joinedRegionID) p.getLine().draw(0.002, _color);
 }
 
-Region&	Node::getJoinedRegion() const
-{
-	return regions[joinedRegionID];
-}
+Region&	Node::getJoinedRegion() const { return regions[joinedRegionID]; }
 
 bool	loadNodeMap()
 {
@@ -84,7 +77,7 @@ void	Planet::setRegions()
 			{
 				for (auto& p : nodeTemp[w]->paths)
 				{
-					auto& m = p.getChild();
+					auto& m = p.getChildNode();
 					if (!m.isScaned && !m.isSea())
 					{
 						regions.back().numNodes++;
@@ -101,21 +94,18 @@ void	Planet::setRegions()
 
 Array<Path*> paths;
 Path::Path(int _parentNodeID, int _childNodeID)
-	: id(0), len(0.0), parentNodeID(_parentNodeID), childNodeID(_childNodeID) {}
-Node&	Path::getChild() const
-{
-	return nodes[childNodeID];
-}
-
-Node&	Path::getParent() const
-{
-	return nodes[parentNodeID];
-}
+	: id(0)
+	, len(0.0)
+	, parentNodeID(_parentNodeID)
+	, childNodeID(_childNodeID)
+{}
+Node&	Path::getChildNode() const{return nodes[childNodeID];}
+Node&	Path::getParentNode() const{return nodes[parentNodeID];}
 
 Line	Path::getLine() const
 {
-	auto p1 = getParent().pos.mPos;
-	auto p2 = getChild().pos.mPos;
+	auto p1 = getParentNode().pos.mPos;
+	auto p2 = getChildNode().pos.mPos;
 	if (abs(p1.x - p2.x) > Pi)
 	{
 		if (p1.x > 0) p1.x -= TwoPi;
@@ -125,4 +115,9 @@ Line	Path::getLine() const
 }
 
 Array<Region> regions;
-Region::Region(int _id) : id(_id), numNodes(0), hasCity(false), color(RandomHSV()) {}
+Region::Region(int _id)
+	: id(_id)
+	, numNodes(0)
+	, hasCity(false)
+	, color(RandomHSV())
+{}

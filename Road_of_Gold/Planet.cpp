@@ -5,8 +5,6 @@ Planet::Planet()
 	: drawingRegion(-Pi, -HalfPi, TwoPi, Pi)
 	, smoothDrawingRegion(drawingRegion)
 	, mapTexture()
-	, heightNoise(Random(UINT32_MAX - 1))
-	, moistureNoise(Random(UINT32_MAX - 1))
 	, gazePoint(none)
 {}
 Pos		Planet::getCursorPos() const
