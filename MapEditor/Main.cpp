@@ -11,16 +11,27 @@ int		selectedBiome = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
 
+
 void Main()
 {
 	Window::SetTitle(L"MapEditor");
 	Window::Resize(1280, 720);
-	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
-	const Rect uiRect(32, 32, 256, 656);
+
+	const Rect uiRect(32, 32, 320, 720 - 64);
+	const Font font12(12);
 	const Font font16(16);
+	const Font font24(24);
 	const Font textBoxFont(12, Typeface::Bold);
+
+	enum struct UIMode {
+		setBiome,
+		setUrban,
+	} uiMode = UIMode::setBiome;
+
 	bool	drawOutlineEnabled = true;
 	Node*	nearestNode = &nodes[0];
+
+	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
 
 	TextBox textBox(textBoxFont, Vec2(160, 72), 120, L"bio.bin");
 
@@ -136,8 +147,39 @@ void Main()
 		planet.updateViewPointSliding();
 
 		//UIの描画
-		uiRect.draw(Color(Palette::Gray, 128)).drawFrame(4, 0, Palette::Black);
+		uiRect.draw(Color(Palette::Gray, uiRect.mouseOver() ? 192 : 128));
 
+		//UIModeの選択
+		{
+			const Array<String> ns = { L"🌍",L"🏭" };
+			for (auto i : step(int(ns.size())))
+			{
+				const int width = 320 / int(ns.size());
+				Rect rect(32 + width*i, 32, width, 32);
+				if (rect.leftClicked()) uiMode = UIMode(i);
+				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, 0, Palette::Black);
+				font24(ns[i]).drawAt(rect.center());
+			}
+		}
+		switch (uiMode)
+		{
+		case UIMode::setBiome:
+		{
+			for (auto i : step(20))
+			{
+				Rect rect(32, 64 + i * 16, 160, 16);
+				rect.drawFrame(2, 0, Palette::Black);
+				font12(bData[i].name).drawAt(rect.center(), Palette::Black);
+			}
+
+			break;
+		}
+		case UIMode::setUrban:
+			break;
+		default:
+			break;
+		}
+		/*
 		//バイオームセレクト
 		for (int i = 0; i<int(bData.size()); i++)
 		{
@@ -202,6 +244,6 @@ void Main()
 			planet.updateImage(list);
 
 		}
-
+		*/
 	}
 }
