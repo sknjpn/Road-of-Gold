@@ -80,6 +80,9 @@
     <Image Include="engine\texture\box-shadow\32.png">
       <Filter>Resource Files\engine\texture\box-shadow</Filter>
     </Image>
+    <Image Include="..\MapEditor\Assets\VoronoiMap.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
@@ -163,6 +166,12 @@
     </None>
     <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst">
       <Filter>Resource Files\engine\font\noto</Filter>
+    </None>
+    <None Include="..\MapEditor\Assets\BiomeData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\MapEditor\Assets\NodeMap.bin">
+      <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
