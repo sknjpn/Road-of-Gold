@@ -14,15 +14,8 @@ Ring::Ring(int _price, int _num, const Citizen* _owner)
 	, ownerCitizenID(_owner->id)
 	, ownerGroupID(-1)
 {}
-bool	operator<(const Ring& _left, const Ring& _right)
-{
-	return _left.price < _right.price;
-}
-
-bool	operator>(const Ring& _left, const Ring& _right)
-{
-	return _left.price > _right.price;
-}
+bool	operator<(const Ring& _left, const Ring& _right) { return _left.price < _right.price; }
+bool	operator>(const Ring& _left, const Ring& _right) { return _left.price > _right.price; }
 
 Basket::Basket(int _itemType, int _joinedUrbanID)
 	: itemType(_itemType)

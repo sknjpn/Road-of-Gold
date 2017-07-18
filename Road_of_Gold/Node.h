@@ -8,7 +8,7 @@ struct Region;
 struct Path
 {
 	int		id;
-	double	len;
+	double	length;
 	int		parentNodeID;
 	int		childNodeID;
 
@@ -47,7 +47,7 @@ struct Region
 	int		id;
 	int		numNodes;
 	bool	hasCity;
-	
+
 	Region();
 };
 extern Array<Region> regions;

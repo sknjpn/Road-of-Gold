@@ -11,16 +11,13 @@ Node::Node(const Pos& _pos)
 
 Array<Path*> paths;
 Path::Path(int _parentNodeID, int _childNodeID)
-	: id(0), len(0.0), parentNodeID(_parentNodeID), childNodeID(_childNodeID) {}
-Node&	Path::getChild() const
-{
-	return nodes[childNodeID];
-}
-
-Node&	Path::getParent() const
-{
-	return nodes[parentNodeID];
-}
+	: id(0)
+	, length(0.0)
+	, parentNodeID(_parentNodeID)
+	, childNodeID(_childNodeID)
+{}
+Node&	Path::getChild() const { return nodes[childNodeID]; }
+Node&	Path::getParent() const { return nodes[parentNodeID]; }
 
 Line	Path::getLine() const
 {

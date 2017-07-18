@@ -74,7 +74,7 @@ void Main()
 			g.update();
 
 		planet.updateTransform();
-		
+
 		//マップの描画
 		for (int i = 0; i < 2; i++) {
 			const auto t1 = planet.createTransformer(i);

@@ -57,7 +57,7 @@ bool	Planet::loadNodeMap()
 		for (auto& p : n.paths)
 		{
 			p.id = int(paths.size());
-			p.len = nodes[p.childNodeID].pos.ePos.distanceFrom(n.pos.ePos);
+			p.length = nodes[p.childNodeID].pos.ePos.distanceFrom(n.pos.ePos);
 			paths.push_back(&p);
 		}
 	}
@@ -96,12 +96,12 @@ void	Planet::setRegions()
 Array<Path*> paths;
 Path::Path(int _parentNodeID, int _childNodeID)
 	: id(0)
-	, len(0.0)
+	, length(0.0)
 	, parentNodeID(_parentNodeID)
 	, childNodeID(_childNodeID)
 {}
-Node&	Path::getChildNode() const{return nodes[childNodeID];}
-Node&	Path::getParentNode() const{return nodes[parentNodeID];}
+Node&	Path::getChildNode() const { return nodes[childNodeID]; }
+Node&	Path::getParentNode() const { return nodes[parentNodeID]; }
 
 Line	Path::getLine() const
 {

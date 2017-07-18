@@ -21,79 +21,79 @@ void	Route::draw(const Color& _color) const
 	{
 		const auto& p = paths[pID];
 		Circle(p->getChildNode().pos.mPos, width / 2).draw(_color);
-		p->getLine().stretched(-width/2).draw(width,_color);
+		p->getLine().stretched(-width / 2).draw(width, _color);
 	}
 }
 void makeRoute()
 {
 	for (auto& n : nodeTemp) n = nullptr;
-		routes.clear();
-		for (auto& u : urbans)
+	routes.clear();
+	for (auto& u : urbans)
+	{
+		int wPos = 0;
+		nodeTemp[wPos] = &nodes[u.joinedNodeID]; wPos++;
+		nodes[u.joinedNodeID].isScaned = true;
+
+		for (int i = 0; i < wPos; i++)
 		{
-			int wPos = 0;
-			nodeTemp[wPos] = &nodes[u.joinedNodeID]; wPos++;
-			nodes[u.joinedNodeID].isScaned = true;
+			auto& n1 = nodeTemp[i];
 
-			for (int i = 0; i < wPos; i++)
+			if (n1->fromNodeID != -1 && !n1->isSea() && nodes[n1->fromNodeID].isSea()) continue;
+
+			n1->isInQueue = false;
+			for (auto& p : n1->paths)
 			{
-				auto& n1 = nodeTemp[i];
+				auto& n2 = nodes[p.childNodeID];
 
-				if (n1->fromNodeID != -1 && !n1->isSea() && nodes[n1->fromNodeID].isSea()) continue;
+				if (n1->ownUrbanID != u.id && n2.ownUrbanID == -1 && (n1->isSea() != n2.isSea())) continue;
 
-				n1->isInQueue = false;
-				for (auto& p : n1->paths)
+				if (!n2.isScaned || n2.cost > n1->cost + p.length)
 				{
-					auto& n2 = nodes[p.childNodeID];
-
-					if (n1->ownUrbanID != u.id && n2.ownUrbanID == -1 && (n1->isSea() != n2.isSea())) continue;
-
-					if (!n2.isScaned || n2.cost > n1->cost + p.len)
-					{
-						if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
-						n2.isScaned = true;
-						n2.isInQueue = true;
-						n2.cost = n1->cost + p.len;
-						n2.fromNodeID = n1->id;
-					}
+					if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
+					n2.isScaned = true;
+					n2.isInQueue = true;
+					n2.cost = n1->cost + p.length;
+					n2.fromNodeID = n1->id;
 				}
-			}
-
-			for (auto& ut : urbans)
-			{
-				if (&u != &ut && nodes[ut.joinedNodeID].fromNodeID != -1)
-				{
-					routes.push_back(int(routes.size()));
-					auto& r = routes.back();
-
-					auto* n = &nodes[ut.joinedNodeID];
-					for (;;)
-					{
-						for (auto& p : n->paths)
-						{
-							if (n->fromNodeID == p.childNodeID)
-							{
-								r.pathIDs.push_back(p.id);
-								r.totalLength += p.len;
-								n = &nodes[n->fromNodeID];
-								break;
-							}
-						}
-						if (n->id == u.joinedNodeID) break;
-					}
-
-					r.destinationUrbanID = u.id;
-					r.originUrbanID = ut.id;
-					r.isSeaRoute = nodes[paths[r.pathIDs.front()]->childNodeID].isSea();
-				}
-			}
-
-			for (int i = 0; i < wPos; i++)
-			{
-				auto& n = nodeTemp[i];
-				n->cost = 0.0;
-				n->isInQueue = false;
-				n->isScaned = false;
-				n->fromNodeID = -1;
 			}
 		}
+
+		for (auto& ut : urbans)
+		{
+			if (&u != &ut && nodes[ut.joinedNodeID].fromNodeID != -1)
+			{
+				routes.push_back(int(routes.size()));
+				auto& r = routes.back();
+
+				auto* n = &nodes[ut.joinedNodeID];
+				for (;;)
+				{
+					for (auto& p : n->paths)
+					{
+						if (n->fromNodeID == p.childNodeID)
+						{
+							r.pathIDs.push_back(p.id);
+							r.totalLength += p.length;
+							n = &nodes[n->fromNodeID];
+							break;
+						}
+					}
+					if (n->id == u.joinedNodeID) break;
+				}
+
+				r.destinationUrbanID = u.id;
+				r.originUrbanID = ut.id;
+				r.isSeaRoute = nodes[paths[r.pathIDs.front()]->childNodeID].isSea();
+			}
+		}
+
+		for (int i = 0; i < wPos; i++)
+		{
+			auto& n = nodeTemp[i];
+			n->cost = 0.0;
+			n->isInQueue = false;
+			n->isScaned = false;
+			n->fromNodeID = -1;
+		}
+	}
 }

@@ -13,8 +13,8 @@ struct Vehicle
 	Urban&	getNowUrban() const;
 	Route&	getRoute() const;
 	void	update();
-	bool	inRoute() const;
 	void	draw() const;
+	bool	inRoute() const;
 };
 
 struct Group
