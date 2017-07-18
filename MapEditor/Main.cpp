@@ -67,17 +67,16 @@ void Main()
 			{
 				if (MouseL.pressed() && nearestNode->biomeType != selectedBiome)
 				{
-					nearestNode->biomeType = selectedBiome;
-					planet.updateImage(nearestNode);
+					Array<Node*> list = { nearestNode };
+					planet.updateImage(list);
 
-					planet.mapTexture.fill(planet.image);
 				}
 			}
 			else
 			{
 				if (MouseL.pressed())
 				{
-					bool flag = false;
+					Array<Node*> list;
 					auto mp = planet.getCursorPos();
 					for (auto& n : nodes)
 					{
@@ -85,13 +84,11 @@ void Main()
 						{
 							if (n.biomeType != selectedBiome)
 							{
-								n.biomeType = selectedBiome;
-								planet.updateImage(&n);
-								flag = true;
+								list.emplace_back(&n);
 							}
 						}
 					}
-					if(flag) planet.mapTexture.fill(planet.image);
+					planet.updateImage(list);
 				}
 			}
 		}
