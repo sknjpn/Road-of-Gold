@@ -147,7 +147,7 @@ void Main()
 		planet.updateViewPointSliding();
 
 		//UIの描画
-		uiRect.draw(Color(Palette::Darkcyan, uiRect.mouseOver() ? 192 : 128));
+		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(2, 0, Palette::Skyblue);
 
 		//UIModeの選択
 		{
@@ -155,7 +155,7 @@ void Main()
 			for (auto i : step(int(ns.size())))
 			{
 				const int width = 320 / int(ns.size());
-				Rect rect(32 + width*i, 32, width, 32);
+				const Rect rect(32 + width*i, 32, width, 32);
 				if (rect.leftClicked()) uiMode = UIMode(i);
 				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, 0, Palette::Skyblue);
 				font24(ns[i]).drawAt(rect.center());
@@ -167,16 +167,20 @@ void Main()
 		{
 			for (auto i : step(20))
 			{
-				Rect rect(32, 64 + i * 16, 160, 16);
-				rect.drawFrame(1, 0, Palette::Skyblue);
-				if (i<int(bData.size()))
+				const Rect rect(32, 64 + i * 16, 160, 16);
+				const Color color(selectedBiome == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0));
+				if (i < int(bData.size()))
 				{
+					if (rect.leftClicked()) selectedBiome = i;
+					rect.draw(color);
 					font12(bData[i].name).draw(rect.pos.movedBy(12, 0));
 				}
 				else
 				{
+					if (color != Color(0, 0)) rect.draw(Color(color, 128));
 					font12(L"---").draw(rect.pos.movedBy(12, 0));
 				}
+				rect.drawFrame(1, 0, Palette::Skyblue);
 			}
 
 			break;
