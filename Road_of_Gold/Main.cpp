@@ -35,7 +35,7 @@ void Main()
 	drawingType = DrawingType::Market;
 
 
-	if (!loadEconomicData() || !loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
+	if (!loadEconomicData() || !planet.loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
 	planet.setRegions();
 
 	//Urbanの生成

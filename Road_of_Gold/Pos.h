@@ -2,6 +2,13 @@
 
 struct Pos
 {
+	Vec3 ePos;
+	Vec2 mPos;
+
+	Pos() : ePos(0.0, 0.0, 0.0), mPos(0.0, 0.0) {}
+	Pos(const Vec3& _ePos) { set(_ePos); }
+	Pos(const Vec2& _mPos) { set(_mPos); }
+
 	void set(const Vec3& _ePos)
 	{
 		ePos = _ePos.normalized();
@@ -12,11 +19,4 @@ struct Pos
 	{
 		set(Vec3(cos(_mPos.x)*cos(_mPos.y), -sin(_mPos.y), sin(_mPos.x)*cos(_mPos.y)));
 	}
-
-	Pos() : ePos(0.0, 0.0, 0.0), mPos(0.0, 0.0) {}
-	Pos(const Vec3& _ePos) { set(_ePos); }
-	Pos(const Vec2& _mPos) { set(_mPos); }
-
-	Vec3 ePos;
-	Vec2 mPos;
 };

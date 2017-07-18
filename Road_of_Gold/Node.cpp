@@ -3,8 +3,8 @@
 #include "Pi.h"
 
 Array<Node> nodes;
-Node::Node(int _id, const Pos& _pos)
-	: id(_id)
+Node::Node(const Pos& _pos)
+	: id(int(nodes.size()))
 	, joinedRegionID(-1)
 	, ownUrbanID(-1)
 	, biomeType(0)
@@ -28,7 +28,7 @@ void	Node::draw(const Color& _color) const
 
 Region&	Node::getJoinedRegion() const { return regions[joinedRegionID]; }
 
-bool	loadNodeMap()
+bool	Planet::loadNodeMap()
 {
 	//NodeÇÃì«Ç›çûÇ›
 	BinaryReader reader(L"Assets/NodeMap.bin");
@@ -40,7 +40,7 @@ bool	loadNodeMap()
 	{
 		Vec3 ePos;
 		reader.read(ePos);
-		nodes.emplace_back(i, Pos(ePos));
+		nodes.emplace_back(ePos);
 	}
 	reader.read(pathsSize);
 	for (int i = 0; i < pathsSize; i++)
@@ -70,7 +70,7 @@ void	Planet::setRegions()
 	{
 		if (!n.isSea() && n.joinedRegionID == -1)
 		{
-			regions.push_back(int(regions.size()));
+			regions.emplace_back();
 			Array<Node*> nodeTemp;
 			nodeTemp.push_back(&n);
 			for (int w = 0; w < nodeTemp.size(); w++)
@@ -115,8 +115,8 @@ Line	Path::getLine() const
 }
 
 Array<Region> regions;
-Region::Region(int _id)
-	: id(_id)
+Region::Region()
+	: id(int(regions.size()))
 	, numNodes(0)
 	, hasCity(false)
 	, color(RandomHSV())
