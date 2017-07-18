@@ -18,7 +18,7 @@ void Main()
 	Window::Resize(1280, 720);
 
 	const Rect uiRect(32, 32, 320, 720 - 64);
-	const Font font12(12, Typeface::Bold);
+	const Font font12(12);
 	const Font font16(16);
 	const Font font24(24);
 	const Font textBoxFont(12, Typeface::Bold);
@@ -147,7 +147,7 @@ void Main()
 		planet.updateViewPointSliding();
 
 		//UIの描画
-		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(2, 0, Palette::Skyblue);
+		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(1, 0, Palette::Skyblue);
 
 		//UIModeの選択
 		{
@@ -157,7 +157,7 @@ void Main()
 				const int width = 320 / int(ns.size());
 				const Rect rect(32 + width*i, 32, width, 32);
 				if (rect.leftClicked()) uiMode = UIMode(i);
-				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, 0, Palette::Skyblue);
+				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(1, 0, Palette::Skyblue);
 				font24(ns[i]).drawAt(rect.center());
 			}
 		}
@@ -165,6 +165,7 @@ void Main()
 		{
 		case UIMode::setBiome:
 		{
+			//一覧
 			for (auto i : step(20))
 			{
 				const Rect rect(32, 64 + i * 16, 160, 16);
@@ -181,6 +182,27 @@ void Main()
 					font12(L"---").draw(rect.pos.movedBy(12, 0));
 				}
 				rect.drawFrame(1, 0, Palette::Skyblue);
+			}
+			//詳細
+			{
+				Rect(192, 64, 160, 32).drawFrame(1, 0, Palette::Skyblue);
+				font12(L"選択中のバイオーム").draw(204, 64);
+				font12(bData[selectedBiome].name).draw(204, 80);
+			}
+			//ブラシの選択
+			{
+				Rect(192, 96, 160, 128).drawFrame(1, 0, Palette::Skyblue);
+				font16(L"ブラシの選択").draw(192, 96);
+				const Array<String> brushName = { L"鉛筆",L"筆",L"バケツ" };
+				for (auto i : step(int(brushName.size())))
+				{
+					const Rect rect(200, 120 + i * 20, 16, 16);
+					if (rect.leftClicked()) selectedBrush = i;
+					rect.draw(selectedBrush==i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+					font12(brushName[i]).draw(220, 120+i*20);
+				}
+				font12(L"太さ:",brushSize).draw(198, 184);
+				font12(L"太さはCtrl+Wheelで変更可").draw(198, 200);
 			}
 
 			break;
