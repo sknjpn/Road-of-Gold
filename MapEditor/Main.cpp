@@ -50,9 +50,9 @@ void Main()
 			if (Key8.down()) selectedBiome = 7;
 			if (Key9.down()) selectedBiome = 8;
 			if (Key0.down()) selectedBiome = 9;
-			if (KeyQ.down()) selectedBrush = 0;
-			if (KeyW.down()) selectedBrush = 1;
-			if (KeyE.down()) selectedBrush = 2;
+			if (KeyR.down()) selectedBrush = 0;
+			if (KeyF.down()) selectedBrush = 1;
+			if (KeyV.down()) selectedBrush = 2;
 		}
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
