@@ -71,7 +71,7 @@ struct Node
 	bool	isScaned, isInQueue;
 	double	cost;
 	int		fromNodeID;
-	Color	clr;
+	Color	color;
 	Array<Path> paths;
 };
 extern Array<Node> nodes;

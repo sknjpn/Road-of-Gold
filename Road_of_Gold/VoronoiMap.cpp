@@ -39,18 +39,18 @@ bool	Planet::loadVoronoiMap()
 		}
 		switch (n.biome)
 		{
-		case Biome::Ice: n.clr = Color(255, 255, 255); break;
-		case Biome::Desert: n.clr = Color(238, 218, 130); break;
-		case Biome::Savanna: n.clr = Color(177, 209, 110); break;
-		case Biome::TropicalRainforest: n.clr = Color(66, 123, 25); break;
-		case Biome::Tundra: n.clr = Color(96, 131, 112); break;
-		case Biome::TemperateRainforest: n.clr = Color(29, 73, 40); break;
-		case Biome::Grassland: n.clr = Color(164, 225, 99); break;
-		case Biome::SeasonalForest: n.clr = Color(73, 100, 35); break;
-		case Biome::BorealForest: n.clr = Color(95, 115, 62); break;
-		case Biome::Woodland: n.clr = Color(139, 175, 90); break;
-		case Biome::Sea: n.clr = Color(L"#0F285A"); break;
-		case Biome::Ocean: n.clr = Color(L"#0F1E50"); break;
+		case Biome::Ice: n.color = Color(255, 255, 255); break;
+		case Biome::Desert: n.color = Color(238, 218, 130); break;
+		case Biome::Savanna: n.color = Color(177, 209, 110); break;
+		case Biome::TropicalRainforest: n.color = Color(66, 123, 25); break;
+		case Biome::Tundra: n.color = Color(96, 131, 112); break;
+		case Biome::TemperateRainforest: n.color = Color(29, 73, 40); break;
+		case Biome::Grassland: n.color = Color(164, 225, 99); break;
+		case Biome::SeasonalForest: n.color = Color(73, 100, 35); break;
+		case Biome::BorealForest: n.color = Color(95, 115, 62); break;
+		case Biome::Woodland: n.color = Color(139, 175, 90); break;
+		case Biome::Sea: n.color = Color(L"#0F285A"); break;
+		case Biome::Ocean: n.color = Color(L"#0F1E50"); break;
 		}
 	}
 
@@ -59,14 +59,14 @@ bool	Planet::loadVoronoiMap()
 	for (auto& n : nodes)
 	{
 		const auto h = getHeight(n.pos);
-		n.clr = n.clr.lerp(RandomColor(), 0.05);
+		n.color = n.color.lerp(RandomColor(), 0.05);
 	}
 
 	//ImageÇ…êFÇì]é 
 	Image image(reader.size());
 	for (auto& p : step(reader.size()))
 		if (voronoiMap[p.y][p.x] != -1)
-			image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].clr;
+			image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].color;
 
 	if (useOutlineEnabled)
 	{
