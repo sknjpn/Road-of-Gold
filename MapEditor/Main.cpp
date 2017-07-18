@@ -34,7 +34,7 @@ void Main()
 		if (Key9.down()) selectedBiome = 8;
 		if (Key0.down()) selectedBiome = 9;
 
-		if (KeyControl.pressed()) brushSize = Max(0, int(brushSize - Mouse::Wheel()));
+		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
 		planet.updateTransform();
 
@@ -72,7 +72,7 @@ void Main()
 
 				}
 			}
-			else
+			else if (selectedBrush == 1)
 			{
 				if (MouseL.pressed())
 				{
@@ -88,6 +88,29 @@ void Main()
 							}
 						}
 					}
+					planet.updateImage(list);
+				}
+			}
+			else
+			{
+				if (MouseL.down())
+				{
+					Array<Node*> list;
+					list.emplace_back(nearestNode);
+					
+					for (int i = 0; i< int(list.size());i++)
+					{
+						auto& n1 = list[i];
+						for (auto& p : n1->paths)
+						{
+							auto& n2 = p.getChild();
+							if (n1->biomeType == n2.biomeType && !list.any([&n2](Node* _n) {return _n == &n2; }))
+							{
+								list.emplace_back(&n2);
+							}
+						}
+					}
+						
 					planet.updateImage(list);
 				}
 			}
@@ -111,13 +134,14 @@ void Main()
 
 		//ブラシセレクト
 		font16(L"ブラシの選択").draw(44, 616, Palette::Black);
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			auto rect = Rect(44 + i * 64, 640, 18, 18);
 			if (rect.leftClicked()) selectedBrush = i;
 			rect.draw(selectedBrush == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(4, Palette::Black);
 		}
 		font16(L"単品").draw(66, 636, Palette::Black);
-		font16(L"範囲", brushSize).draw(130, 636, Palette::Black);
+		font16(L"範囲").draw(130, 636, Palette::Black);
+		font16(L"塗り").draw(194, 636, Palette::Black);
 	}
 }
