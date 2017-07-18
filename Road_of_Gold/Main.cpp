@@ -1,11 +1,11 @@
-﻿#include "Planet.h"
-#include "Node.h"
-#include "Pi.h"
-#include "Urban.h"
-#include "Route.h"
-#include "CData.h"
-#include "Group.h"
-#include "GlobalVariables.h"
+﻿#include"Planet.h"
+#include"Node.h"
+#include"Pi.h"
+#include"Urban.h"
+#include"Route.h"
+#include"CData.h"
+#include"Group.h"
+#include"GlobalVariables.h"
 
 double timeSpeed = 0.01;
 double worldTimer = 0.0;
@@ -55,7 +55,7 @@ void Main()
 
 	makeRoute();
 
-	makeGroupsRandom();
+	planet.makeGroupsRandom();
 
 	while (System::Update())
 	{

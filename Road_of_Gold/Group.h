@@ -15,7 +15,6 @@ struct Vehicle
 	void	update();
 	bool	inRoute() const;
 	void	draw() const;
-
 };
 
 struct Group
@@ -23,11 +22,9 @@ struct Group
 	int		id;
 	int		money;
 	String	name;
-	Color	color;
 	Array<Vehicle> vehicles;
 
 	Group();
 	void	update();
 };
 extern Array<Group> groups;
-void makeGroupsRandom();

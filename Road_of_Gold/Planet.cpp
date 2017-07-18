@@ -1,5 +1,7 @@
-#include "Planet.h"
-#include "Pi.h"
+#include"Planet.h"
+#include"Group.h"
+#include"Urban.h"
+#include"Pi.h"
 
 Planet::Planet()
 	: drawingRegion(-Pi, -HalfPi, TwoPi, Pi)
@@ -53,5 +55,16 @@ void	Planet::updateViewPointSliding()
 	if (Cursor::Pos().y < 32) { drawingRegion.pos.y -= slidingSpeed; RectF(0, 0, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
 	if (Cursor::Pos().x > Window::Size().x - 32) { drawingRegion.pos.x += slidingSpeed; RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
 	if (Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
+}
+void	Planet::makeGroupsRandom()
+{
+	const int numGroups = 20;
 
+	for (int j = 0; j < numGroups; j++)
+	{
+		groups.emplace_back();
+		auto& g = groups.back();
+		auto& u = urbans[Random(int(urbans.size() - 1))];
+		for (int i = 0; i < 10; i++) g.vehicles.emplace_back(u.id);
+	}
 }
