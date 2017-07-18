@@ -235,7 +235,9 @@ void Main()
 			break;
 		}
 		case UIMode::setUrban:
+		{
 			break;
+		}
 		default:
 			break;
 		}
