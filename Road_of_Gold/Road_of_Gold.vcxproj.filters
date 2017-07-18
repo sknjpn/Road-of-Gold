@@ -156,11 +156,11 @@
     <None Include="Assets\EconomicData.json">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="Assets\BiomeData.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Urban.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -188,6 +188,9 @@
     <ClInclude Include="GlobalVariables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="JSON.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Route.cpp">
@@ -200,9 +203,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="IData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="UrbanNames.cpp">
@@ -226,10 +226,10 @@
     <ClCompile Include="Basket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BData.cpp">
+    <ClCompile Include="LoadBiome.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="LoadBiome.cpp">
+    <ClCompile Include="JSON.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

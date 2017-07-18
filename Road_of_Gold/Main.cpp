@@ -3,7 +3,7 @@
 #include"Pi.h"
 #include"Urban.h"
 #include"Route.h"
-#include"CData.h"
+#include"JSON.h"
 #include"Group.h"
 #include"GlobalVariables.h"
 
@@ -35,7 +35,7 @@ void Main()
 	drawingType = DrawingType::Market;
 
 
-	if (!loadEconomicData() || !planet.loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
+	if (!loadJSONData() || !planet.loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
 	planet.setRegions();
 
 	//Urbanの生成

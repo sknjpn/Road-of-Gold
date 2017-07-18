@@ -1,6 +1,6 @@
 #include"Urban.h"
 #include"Group.h"
-#include"CData.h"
+#include"JSON.h"
 
 Ring::Ring(int _price, int _num, const Group* _owner)
 	: price(_price)

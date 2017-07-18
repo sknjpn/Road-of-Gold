@@ -1,6 +1,15 @@
 #pragma once
 
-bool loadEconomicData(const FilePath& _filePath = L"Assets/EconomicData.json");
+bool loadJSONData();
+
+struct BData
+{
+	String	name;
+	Color	color;
+
+	BData(const JSONValue _json);
+};
+extern Array<BData> bData;
 
 struct IData
 {
