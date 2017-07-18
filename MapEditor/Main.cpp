@@ -17,24 +17,32 @@ void Main()
 	if (!planet.loadVoronoiMap()) return;
 	const Rect uiRect(32, 32, 256, 656);
 	const Font font16(16);
+	const Font textBoxFont(12, Typeface::Bold);
 	bool	drawOutlineEnabled = true;
 	Node*	nearestNode = &nodes[0];
 
+	TextBox textBox(textBoxFont, Vec2(160, 72), 120, L"bio.bin");
+
 	while (System::Update())
 	{
-		if (KeyG.down()) drawOutlineEnabled = !drawOutlineEnabled;
-		if (Key1.down()) selectedBiome = 0;
-		if (Key2.down()) selectedBiome = 1;
-		if (Key3.down()) selectedBiome = 2;
-		if (Key4.down()) selectedBiome = 3;
-		if (Key5.down()) selectedBiome = 4;
-		if (Key6.down()) selectedBiome = 5;
-		if (Key7.down()) selectedBiome = 6;
-		if (Key8.down()) selectedBiome = 7;
-		if (Key9.down()) selectedBiome = 8;
-		if (Key0.down()) selectedBiome = 9;
-
-		if (KeyControl.pressed()) brushSize = Max(0, int(brushSize - Mouse::Wheel()));
+		if (!textBox.isActive())
+		{
+			if (KeyG.down()) drawOutlineEnabled = !drawOutlineEnabled;
+			if (Key1.down()) selectedBiome = 0;
+			if (Key2.down()) selectedBiome = 1;
+			if (Key3.down()) selectedBiome = 2;
+			if (Key4.down()) selectedBiome = 3;
+			if (Key5.down()) selectedBiome = 4;
+			if (Key6.down()) selectedBiome = 5;
+			if (Key7.down()) selectedBiome = 6;
+			if (Key8.down()) selectedBiome = 7;
+			if (Key9.down()) selectedBiome = 8;
+			if (Key0.down()) selectedBiome = 9;
+			if (KeyQ.down()) selectedBrush = 0;
+			if (KeyW.down()) selectedBrush = 1;
+			if (KeyE.down()) selectedBrush = 2;
+		}
+		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
 		planet.updateTransform();
 
@@ -49,6 +57,12 @@ void Main()
 		{
 			planet.createTransformer();
 
+			//色の取得
+			if (MouseR.down())
+			{
+				selectedBiome = nearestNode->biomeType;
+			}
+
 			//nearestNodeの設定
 			{
 				const auto& p = (planet.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
@@ -59,7 +73,7 @@ void Main()
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = planet.createTransformer(i);
-				Circle(nearestNode->pos.mPos, 0.01).draw();
+				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004, Palette::Black);
 			}
 
 			//selectedBiomeの反映
@@ -67,17 +81,16 @@ void Main()
 			{
 				if (MouseL.pressed() && nearestNode->biomeType != selectedBiome)
 				{
+					Array<Node*> list = { nearestNode };
 					nearestNode->biomeType = selectedBiome;
-					planet.updateImage(nearestNode);
-
-					planet.mapTexture.fill(planet.image);
+					planet.updateImage(list);
 				}
 			}
-			else
+			else if (selectedBrush == 1)
 			{
 				if (MouseL.pressed())
 				{
-					bool flag = false;
+					Array<Node*> list;
 					auto mp = planet.getCursorPos();
 					for (auto& n : nodes)
 					{
@@ -86,12 +99,34 @@ void Main()
 							if (n.biomeType != selectedBiome)
 							{
 								n.biomeType = selectedBiome;
-								planet.updateImage(&n);
-								flag = true;
+								list.emplace_back(&n);
 							}
 						}
 					}
-					if(flag) planet.mapTexture.fill(planet.image);
+					planet.updateImage(list);
+				}
+			}
+			else
+			{
+				if (MouseL.down())
+				{
+					Array<Node*> list;
+					list.emplace_back(nearestNode);
+
+					for (int i = 0; i< int(list.size()); i++)
+					{
+						auto& n1 = list[i];
+						for (auto& p : n1->paths)
+						{
+							auto& n2 = p.getChild();
+							if (n1->biomeType == n2.biomeType && !list.any([&n2](Node* _n) {return _n == &n2; }))
+							{
+								list.emplace_back(&n2);
+							}
+						}
+					}
+					for (auto& n : list) n->biomeType = selectedBiome;
+					planet.updateImage(list);
 				}
 			}
 		}
@@ -114,13 +149,58 @@ void Main()
 
 		//ブラシセレクト
 		font16(L"ブラシの選択").draw(44, 616, Palette::Black);
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 3; i++)
 		{
 			auto rect = Rect(44 + i * 64, 640, 18, 18);
 			if (rect.leftClicked()) selectedBrush = i;
 			rect.draw(selectedBrush == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(4, Palette::Black);
 		}
 		font16(L"単品").draw(66, 636, Palette::Black);
-		font16(L"範囲", brushSize).draw(130, 636, Palette::Black);
+		font16(L"範囲").draw(130, 636, Palette::Black);
+		font16(L"塗り").draw(194, 636, Palette::Black);
+
+		//セーブボタン
+		{
+			auto rect = Rect(160, 44, 18, 18);
+			if (rect.leftClicked())
+			{
+				FilePath filePath = textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin";
+				saveBiomeData(filePath);
+			}
+			rect.draw(rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(4, Palette::Black);
+			font16(L"セーブ Path↓").draw(184, 42, Palette::Black);
+		}
+
+		textBox.update();
+		textBox.draw();
+
+		//ランダム生成ボタン
+		{
+			auto rect = Rect(160, 108, 18, 18);
+			if (rect.leftClicked()) planet.generateBiome();
+			rect.draw(rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(4, Palette::Black);
+			font16(L"生成").draw(184, 106, Palette::Black);
+		}
+
+		//ロード
+		auto items = DragDrop::GetDroppedFilePaths();
+		for (auto item : items)
+		{
+			BinaryReader reader(item.path);
+			Array<Node*> list;
+			for (auto& n : nodes)
+			{
+				int t;
+				reader.read(t);
+				if (t != n.biomeType)
+				{
+					n.biomeType = t;
+					list.emplace_back(&n);
+				}
+			}
+			planet.updateImage(list);
+
+		}
+
 	}
 }

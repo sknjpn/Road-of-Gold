@@ -1,44 +1,34 @@
-#include "Node.h"
-#include "Planet.h"
-#include "Pi.h"
+#include"Node.h"
+#include"Planet.h"
+#include"Pi.h"
 
 Array<Node> nodes;
-Node::Node(int _id, const Pos& _pos)
-	: id(_id)
+Node::Node(const Pos& _pos)
+	: id(int(nodes.size()))
 	, joinedRegionID(-1)
 	, ownUrbanID(-1)
-	, isSea(false)
+	, biomeType(0)
 	, pos(_pos)
 	, isScaned(false)
 	, isInQueue(false)
 	, cost(0.0)
 	, fromNodeID(-1)
-	, biome(Biome::Ice)
-	, moistureLevel(0)
-	, temperatureLevel(0)
 {
 	paths.clear();
 }
-
-bool	Node::isCoast() const
-{
-	return !isSea && paths.any([](const Path& n) {return n.getChild().isSea; });
-}
+bool	Node::isCoast() const { return !isSea() && paths.any([](const Path& n) {return n.getChildNode().isSea(); }); }
 
 void	Node::draw(const Color& _color) const
 {
 	if (!Rect(Point(0, 0), Window::Size()).intersects(Graphics2D::GetTransform().transform(pos.mPos))) return;
 	Circle(pos.mPos, 0.005).draw(_color);
 	for (const auto& p : paths)
-		if (p.getChild().joinedRegionID == joinedRegionID) p.getLine().draw(0.002, _color);
+		if (p.getChildNode().joinedRegionID == joinedRegionID) p.getLine().draw(0.002, _color);
 }
 
-Region&	Node::getJoinedRegion() const
-{
-	return regions[joinedRegionID];
-}
+Region&	Node::getJoinedRegion() const { return regions[joinedRegionID]; }
 
-bool	loadNodeMap()
+bool	Planet::loadNodeMap()
 {
 	//NodeÇÃì«Ç›çûÇ›
 	BinaryReader reader(L"Assets/NodeMap.bin");
@@ -50,7 +40,7 @@ bool	loadNodeMap()
 	{
 		Vec3 ePos;
 		reader.read(ePos);
-		nodes.emplace_back(i, Pos(ePos));
+		nodes.emplace_back(ePos);
 	}
 	reader.read(pathsSize);
 	for (int i = 0; i < pathsSize; i++)
@@ -73,33 +63,22 @@ bool	loadNodeMap()
 	return true;
 }
 
-void	setPlanetToNodes()
+void	Planet::setRegions()
 {
-	for (auto& n : nodes)
-	{
-		if (planet.isSea(n.pos)) n.isSea = true;
-		else
-		{
-			n.temperatureLevel = planet.getTemperatureLevel(n.pos);
-			n.moistureLevel = planet.getMoistureLevel(n.pos);
-		}
-	}
-
-
 	//ReigonÇÃê›íË
 	for (auto& n : nodes)
 	{
-		if (!n.isSea && n.joinedRegionID == -1)
+		if (!n.isSea() && n.joinedRegionID == -1)
 		{
-			regions.push_back(int(regions.size()));
+			regions.emplace_back();
 			Array<Node*> nodeTemp;
 			nodeTemp.push_back(&n);
 			for (int w = 0; w < nodeTemp.size(); w++)
 			{
 				for (auto& p : nodeTemp[w]->paths)
 				{
-					auto& m = p.getChild();
-					if (!m.isScaned && !m.isSea)
+					auto& m = p.getChildNode();
+					if (!m.isScaned && !m.isSea())
 					{
 						regions.back().numNodes++;
 						m.joinedRegionID = regions.back().id;
@@ -115,21 +94,18 @@ void	setPlanetToNodes()
 
 Array<Path*> paths;
 Path::Path(int _parentNodeID, int _childNodeID)
-	: id(0), len(0.0), parentNodeID(_parentNodeID), childNodeID(_childNodeID) {}
-Node&	Path::getChild() const
-{
-	return nodes[childNodeID];
-}
-
-Node&	Path::getParent() const
-{
-	return nodes[parentNodeID];
-}
+	: id(0)
+	, len(0.0)
+	, parentNodeID(_parentNodeID)
+	, childNodeID(_childNodeID)
+{}
+Node&	Path::getChildNode() const{return nodes[childNodeID];}
+Node&	Path::getParentNode() const{return nodes[parentNodeID];}
 
 Line	Path::getLine() const
 {
-	auto p1 = getParent().pos.mPos;
-	auto p2 = getChild().pos.mPos;
+	auto p1 = getParentNode().pos.mPos;
+	auto p2 = getChildNode().pos.mPos;
 	if (abs(p1.x - p2.x) > Pi)
 	{
 		if (p1.x > 0) p1.x -= TwoPi;
@@ -139,4 +115,9 @@ Line	Path::getLine() const
 }
 
 Array<Region> regions;
-Region::Region(int _id) : id(_id), numNodes(0), hasCity(false), color(RandomHSV()) {}
+Region::Region()
+	: id(int(regions.size()))
+	, numNodes(0)
+	, hasCity(false)
+	, color(RandomHSV())
+{}

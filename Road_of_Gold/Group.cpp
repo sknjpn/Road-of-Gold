@@ -1,26 +1,17 @@
-#include "Group.h"
-#include "Node.h"
-#include "Urban.h"
-#include "Route.h"
-#include "GlobalVariables.h"
+#include"Group.h"
+#include"Node.h"
+#include"Urban.h"
+#include"Route.h"
+#include"GlobalVariables.h"
 
 Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
 {}
-bool	Vehicle::inRoute() const
-{
-	return routeID != -1;
-}
-Urban&	Vehicle::getNowUrban() const
-{
-	return urbans[nowUrbanID];
-}
-Route&	Vehicle::getRoute() const
-{
-	return routes[routeID];
-}
+bool	Vehicle::inRoute() const{return routeID != -1;}
+Urban&	Vehicle::getNowUrban() const{return urbans[nowUrbanID];}
+Route&	Vehicle::getRoute() const{return routes[routeID];}
 void	Vehicle::draw() const
 {
 	const Circle shape(0.01);
@@ -53,23 +44,8 @@ Array<Group> groups;
 Group::Group()
 	: id(int(groups.size()))
 	, name(L"hoge")
-	, color(RandomHSV())
 	, money(0)
 {}
-
-void makeGroupsRandom()
-{
-	const int numGroups = 20;
-
-	for (int j = 0; j < numGroups; j++)
-	{
-		groups.emplace_back();
-		auto& g = groups.back();
-		auto& u = urbans[Random(int(urbans.size() - 1))];
-		for (int i = 0; i < 10; i++) g.vehicles.emplace_back(u.id);
-	}
-}
-
 void Vehicle::update()
 {
 	if (inRoute())

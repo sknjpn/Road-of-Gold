@@ -1,21 +1,24 @@
 #pragma once
 
-void loadEconomicData(const FilePath& _filePath = L"Assets/EconomicData.json");
+bool loadEconomicData(const FilePath& _filePath = L"Assets/EconomicData.json");
 
 struct IData
 {
-	IData(const JSONValue _json);
-
 	int		id;
 	String	name;
 	String	description;
 	int		volume;
 	int		value;
+
+	IData(const JSONValue _json);
 };
 extern Array<IData> iData;
 
 struct Consume
 {
+	int	itemID;
+	int numConsume;
+
 	Consume(const JSONValue _json)
 		: numConsume(_json[L"NumConsume"].getOr<int>(0))
 		, itemID(-1)
@@ -23,12 +26,13 @@ struct Consume
 		for (auto& i : iData)
 			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
 	}
-	int	itemID;
-	int numConsume;
 };
 
 struct Product
 {
+	int	itemID;
+	int numProduct;
+
 	Product(const JSONValue _json)
 		: numProduct(_json[L"NumProduct"].getOr<int>(0))
 		, itemID(-1)
@@ -36,12 +40,17 @@ struct Product
 		for (auto& i : iData)
 			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
 	}
-	int	itemID;
-	int numProduct;
 };
 
 struct Job
 {
+	String	name;
+	String	description;
+	int		cost;
+	int		wage;
+	Array<Consume> consume;
+	Array<Product> product;
+
 	Job(const JSONValue _json)
 		: name(_json[L"JobName"].getOr<String>(L"hoge"))
 		, description(_json[L"JobDescription"].getOr<String>(L"hoge"))
@@ -53,23 +62,16 @@ struct Job
 		for (auto p : _json[L"Product"].arrayView())
 			product.emplace_back(p);
 	}
-
-	String	name;
-	String	description;
-	int		cost;
-	int		wage;
-	Array<Consume> consume;
-	Array<Product> product;
 };
 
 struct CData
 {
+	String name;
+	Job job;
+
 	CData(const JSONValue _json)
 		: name(_json[L"CitizenName"].getOr<String>(L"hoge"))
 		, job(_json[L"Job"])
 	{}
-
-	String name;
-	Job job;
 };
 extern Array<CData> cData;

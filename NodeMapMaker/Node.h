@@ -23,7 +23,7 @@ struct Node
 {
 	Node::Node(const Pos& _pos);
 
-	Color	clr = RandomColor();
+	Color	color = RandomColor();
 	int		id;
 	Pos		pos;
 	Array<Path> paths;

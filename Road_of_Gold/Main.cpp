@@ -1,11 +1,11 @@
-﻿#include "Planet.h"
-#include "Node.h"
-#include "Pi.h"
-#include "Urban.h"
-#include "Route.h"
-#include "CData.h"
-#include "Group.h"
-#include "GlobalVariables.h"
+﻿#include"Planet.h"
+#include"Node.h"
+#include"Pi.h"
+#include"Urban.h"
+#include"Route.h"
+#include"CData.h"
+#include"Group.h"
+#include"GlobalVariables.h"
 
 double timeSpeed = 0.01;
 double worldTimer = 0.0;
@@ -26,7 +26,7 @@ void Main()
 	const Font font48(48);
 	const Texture ship(L"Assets/Ship.png");
 	const Texture wagon(L"Assets/Wagon.png");
-	Node* nearestNode = NULL;
+	Node* nearestNode = nullptr;
 
 	enum struct DrawingType
 	{
@@ -35,14 +35,11 @@ void Main()
 	drawingType = DrawingType::Market;
 
 
-	loadEconomicData();
-
-	if (!loadNodeMap()) return;	//読み込みエラー
-	setPlanetToNodes();
-	if (!planet.loadVoronoiMap()) return;	//読み込みエラー
+	if (!loadEconomicData() || !planet.loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
+	planet.setRegions();
 
 	//Urbanの生成
-	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea; })) / 100;
+	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 100;
 	for (auto& r : regions)
 	{
 		if (r.numNodes == 0) continue;
@@ -58,7 +55,7 @@ void Main()
 
 	makeRoute();
 
-	makeGroupsRandom();
+	planet.makeGroupsRandom();
 
 	while (System::Update())
 	{
@@ -78,12 +75,17 @@ void Main()
 			g.update();
 
 		planet.updateTransform();
-		planet.draw();
+		
+		//マップの描画
+		for (int i = 0; i < 2; i++) {
+			const auto t1 = planet.createTransformer(i);
+			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
+		}
 
 
-		if (MouseL.down() && (selectedUrban == NULL || !Rect(32, 32, 320, 640).mouseOver()))
+		if (MouseL.down() && (selectedUrban == nullptr || !Rect(32, 32, 320, 640).mouseOver()))
 		{
-			selectedUrban = NULL;
+			selectedUrban = nullptr;
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = planet.createTransformer(i);
@@ -95,7 +97,7 @@ void Main()
 		{
 			auto mp = planet.getCursorPos();
 			for (auto& n : nodes)
-				if (nearestNode == NULL || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
+				if (nearestNode == nullptr || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
 		}
 		for (int i = 0; i < 2; i++)
 		{
@@ -129,7 +131,7 @@ void Main()
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 		}*/
 		//Interface
-		if (selectedUrban != NULL)
+		if (selectedUrban != nullptr)
 		{
 			const Color fColor = Palette::Skyblue;
 			const Color bColor = Color(Palette::Darkcyan, 192);
@@ -343,7 +345,7 @@ void Main()
 			}
 		}
 		Rect(256, 24).draw(Palette::White);
-		font16(BiomeName[int(nearestNode->biome)]).draw(0, 0, Palette::Black);
+		font16(bData[nearestNode->biomeType].name).draw(0, 0, Palette::Black);
 
 		font16(L"F1～F3キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw(256, 0);
 

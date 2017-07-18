@@ -232,9 +232,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Basket.cpp" />
+    <ClCompile Include="BData.cpp" />
     <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Group.cpp" />
     <ClCompile Include="IData.cpp" />
+    <ClCompile Include="LoadBiome.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Planet.cpp" />

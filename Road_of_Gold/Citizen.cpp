@@ -70,18 +70,18 @@ void	Citizen::update()
 			Array<Basket*> buyList;	//購買履歴
 			for (;;)
 			{
-				Basket* best = NULL;	//有力候補
+				Basket* best = nullptr;	//有力候補
 				double	earn = 0.0;		//コスパ
 				for (int i = 0; i < int(iData.size()); i++)
 				{
 					auto& b = u.baskets[i];
-					if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == NULL || iData[i].value / double(b.rings.front().price) > earn))
+					if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == nullptr || iData[i].value / double(b.rings.front().price) > earn))
 					{
 						earn = iData[i].value / double(b.rings.front().price);
 						best = &b;
 					}
 				}
-				if (best != NULL && best->rings.front().price <= money) {
+				if (best != nullptr && best->rings.front().price <= money) {
 					money -= best->rings.front().price;
 					buyList.emplace_back(best);
 					best->buyItem(1);

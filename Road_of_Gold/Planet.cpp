@@ -1,33 +1,17 @@
-#include "Planet.h"
-#include "Pi.h"
+#include"Planet.h"
+#include"Group.h"
+#include"Urban.h"
+#include"Pi.h"
 
 Planet::Planet()
 	: drawingRegion(-Pi, -HalfPi, TwoPi, Pi)
 	, smoothDrawingRegion(drawingRegion)
 	, mapTexture()
-	, heightNoise(Random(UINT32_MAX - 1))
-	, moistureNoise(Random(UINT32_MAX - 1))
 	, gazePoint(none)
 {}
 Pos		Planet::getCursorPos() const
 {
 	return Mat3x2::Translate(-smoothDrawingRegion.center()).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()).inverse().transform(Cursor::PosF());
-}
-
-int		Planet::getMoistureLevel(const Pos& _pos) const {
-	return  Max(Min(int(moistureNoise.octaveNoise(_pos.ePos*2.0, 5) * 3 + 3), 5), 0);
-}
-int		Planet::getTemperatureLevel(const Pos& _pos) const {
-	return 5-Max(Min(int(abs(_pos.mPos.y)*4 + 20 * pow(getHeight(_pos) - 0.6,2)), 5), 0);
-}
-double Planet::getHeight(const Pos& _pos, int _octave) const
-{
-	return Min(Max((heightNoise.octaveNoise(_pos.ePos, _octave) + 1.0) / 2.0, 0.0), 1.0);
-}
-
-bool	Planet::isSea(const Pos& _pos) const
-{
-	return getHeight(_pos) < 0.60;
 }
 
 Transformer2D Planet::createTransformer(int _delta) const
@@ -71,13 +55,16 @@ void	Planet::updateViewPointSliding()
 	if (Cursor::Pos().y < 32) { drawingRegion.pos.y -= slidingSpeed; RectF(0, 0, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
 	if (Cursor::Pos().x > Window::Size().x - 32) { drawingRegion.pos.x += slidingSpeed; RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
 	if (Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
-
 }
-
-void	Planet::draw() const
+void	Planet::makeGroupsRandom()
 {
-	for (int i = 0; i < 2; i++) {
-		const auto t1 = planet.createTransformer(i);
-		mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
+	const int numGroups = 20;
+
+	for (int j = 0; j < numGroups; j++)
+	{
+		groups.emplace_back();
+		auto& g = groups.back();
+		auto& u = urbans[Random(int(urbans.size() - 1))];
+		for (int i = 0; i < 10; i++) g.vehicles.emplace_back(u.id);
 	}
 }

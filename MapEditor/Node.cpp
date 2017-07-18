@@ -41,3 +41,10 @@ Line	Path::getLine() const
 	}
 	return Line(p1, p2);
 }
+
+void	saveBiomeData(const FilePath& _filePath)
+{
+	BinaryWriter writer(_filePath);
+	for (auto& n : nodes) writer.write(n.biomeType);
+	writer.close();
+}

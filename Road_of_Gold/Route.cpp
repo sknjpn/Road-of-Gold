@@ -1,6 +1,6 @@
-#include "Node.h"
-#include "Route.h"
-#include "Urban.h"
+#include"Node.h"
+#include"Route.h"
+#include"Urban.h"
 
 Node* nodeTemp[1000000];
 
@@ -20,13 +20,13 @@ void	Route::draw(const Color& _color) const
 	for (const auto& pID : pathIDs)
 	{
 		const auto& p = paths[pID];
-		Circle(p->getChild().pos.mPos, width / 2).draw(_color);
+		Circle(p->getChildNode().pos.mPos, width / 2).draw(_color);
 		p->getLine().stretched(-width/2).draw(width,_color);
 	}
 }
 void makeRoute()
 {
-	for (auto& n : nodeTemp) n = NULL;
+	for (auto& n : nodeTemp) n = nullptr;
 		routes.clear();
 		for (auto& u : urbans)
 		{
@@ -38,14 +38,14 @@ void makeRoute()
 			{
 				auto& n1 = nodeTemp[i];
 
-				if (n1->fromNodeID != -1 && !n1->isSea && nodes[n1->fromNodeID].isSea) continue;
+				if (n1->fromNodeID != -1 && !n1->isSea() && nodes[n1->fromNodeID].isSea()) continue;
 
 				n1->isInQueue = false;
 				for (auto& p : n1->paths)
 				{
 					auto& n2 = nodes[p.childNodeID];
 
-					if (n1->ownUrbanID != u.id && n2.ownUrbanID == -1 && (n1->isSea != n2.isSea)) continue;
+					if (n1->ownUrbanID != u.id && n2.ownUrbanID == -1 && (n1->isSea() != n2.isSea())) continue;
 
 					if (!n2.isScaned || n2.cost > n1->cost + p.len)
 					{
@@ -83,7 +83,7 @@ void makeRoute()
 
 					r.destinationUrbanID = u.id;
 					r.originUrbanID = ut.id;
-					r.isSeaRoute = nodes[paths[r.pathIDs.front()]->childNodeID].isSea;
+					r.isSeaRoute = nodes[paths[r.pathIDs.front()]->childNodeID].isSea();
 				}
 			}
 

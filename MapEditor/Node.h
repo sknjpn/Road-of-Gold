@@ -35,4 +35,5 @@ struct Node
 	int		biomeType;
 	Array<Path> paths;
 };
+void	saveBiomeData(const FilePath& _filePath);
 extern Array<Node> nodes;
