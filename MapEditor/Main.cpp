@@ -210,6 +210,9 @@ void Main()
 			{
 				const Rect rect(192, 232, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect s(rect.pos.movedBy(136,4), 16, 16);
+				if (s.leftClicked()) planet.generateBiome();
+				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"マップの自動生成").draw(rect.pos.movedBy(4, 0));
 			}
 
