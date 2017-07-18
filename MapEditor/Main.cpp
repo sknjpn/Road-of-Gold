@@ -193,7 +193,7 @@ void Main()
 			{
 				Rect(192, 96, 160, 128).drawFrame(1, 0, Palette::Skyblue);
 				font16(L"ブラシの選択").draw(192, 96);
-				const Array<String> brushName = { L"鉛筆",L"筆",L"バケツ" };
+				const Array<String> brushName = { L"鉛筆:KeyR",L"筆:KeyF",L"バケツ:KeyV" };
 				for (auto i : step(int(brushName.size())))
 				{
 					const Rect rect(200, 120 + i * 20, 16, 16);
