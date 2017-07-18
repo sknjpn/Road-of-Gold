@@ -26,7 +26,7 @@ void Main()
 	const Font font48(48);
 	const Texture ship(L"Assets/Ship.png");
 	const Texture wagon(L"Assets/Wagon.png");
-	Node* nearestNode = NULL;
+	Node* nearestNode = nullptr;
 
 	enum struct DrawingType
 	{
@@ -81,9 +81,9 @@ void Main()
 		planet.draw();
 
 
-		if (MouseL.down() && (selectedUrban == NULL || !Rect(32, 32, 320, 640).mouseOver()))
+		if (MouseL.down() && (selectedUrban == nullptr || !Rect(32, 32, 320, 640).mouseOver()))
 		{
-			selectedUrban = NULL;
+			selectedUrban = nullptr;
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = planet.createTransformer(i);
@@ -95,7 +95,7 @@ void Main()
 		{
 			auto mp = planet.getCursorPos();
 			for (auto& n : nodes)
-				if (nearestNode == NULL || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
+				if (nearestNode == nullptr || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
 		}
 		for (int i = 0; i < 2; i++)
 		{
@@ -129,7 +129,7 @@ void Main()
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 		}*/
 		//Interface
-		if (selectedUrban != NULL)
+		if (selectedUrban != nullptr)
 		{
 			const Color fColor = Palette::Skyblue;
 			const Color bColor = Color(Palette::Darkcyan, 192);

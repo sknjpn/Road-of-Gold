@@ -19,7 +19,7 @@ void Main()
 	const Font font16(16);
 	bool	drawOutlineEnabled = true;
 	Node*	nearestNode = &nodes[0];
-
+	
 	while (System::Update())
 	{
 		if (KeyG.down()) drawOutlineEnabled = !drawOutlineEnabled;
@@ -33,6 +33,9 @@ void Main()
 		if (Key8.down()) selectedBiome = 7;
 		if (Key9.down()) selectedBiome = 8;
 		if (Key0.down()) selectedBiome = 9;
+		if (KeyQ.down()) selectedBrush = 0;
+		if (KeyW.down()) selectedBrush = 1;
+		if (KeyE.down()) selectedBrush = 2;
 
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 

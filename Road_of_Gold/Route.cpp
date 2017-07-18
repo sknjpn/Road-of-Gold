@@ -26,7 +26,7 @@ void	Route::draw(const Color& _color) const
 }
 void makeRoute()
 {
-	for (auto& n : nodeTemp) n = NULL;
+	for (auto& n : nodeTemp) n = nullptr;
 		routes.clear();
 		for (auto& u : urbans)
 		{
