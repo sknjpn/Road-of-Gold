@@ -183,6 +183,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\MapEditor\Assets\VoronoiMap.png" />
     <Image Include="engine\texture\box-shadow\128.png" />
     <Image Include="engine\texture\box-shadow\16.png" />
     <Image Include="engine\texture\box-shadow\256.png" />
@@ -204,6 +205,8 @@
     <Text Include="example\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\MapEditor\Assets\BiomeData.json" />
+    <None Include="..\MapEditor\Assets\NodeMap.bin" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />

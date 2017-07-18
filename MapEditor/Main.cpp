@@ -11,18 +11,29 @@ int		selectedBiome = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
 
+
 void Main()
 {
 	Window::SetTitle(L"MapEditor");
 	Window::Resize(1280, 720);
-	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
-	const Rect uiRect(32, 32, 256, 656);
+
+	const Rect uiRect(32, 32, 320, 720 - 64);
+	const Font font12(12);
 	const Font font16(16);
+	const Font font24(24);
 	const Font textBoxFont(12, Typeface::Bold);
+
+	enum struct UIMode {
+		setBiome,
+		setUrban,
+	} uiMode = UIMode::setBiome;
+
 	bool	drawOutlineEnabled = true;
 	Node*	nearestNode = &nodes[0];
 
-	TextBox textBox(textBoxFont, Vec2(160, 72), 120, L"bio.bin");
+	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
+
+	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
 
 	while (System::Update())
 	{
@@ -39,9 +50,9 @@ void Main()
 			if (Key8.down()) selectedBiome = 7;
 			if (Key9.down()) selectedBiome = 8;
 			if (Key0.down()) selectedBiome = 9;
-			if (KeyQ.down()) selectedBrush = 0;
-			if (KeyW.down()) selectedBrush = 1;
-			if (KeyE.down()) selectedBrush = 2;
+			if (KeyR.down()) selectedBrush = 0;
+			if (KeyF.down()) selectedBrush = 1;
+			if (KeyV.down()) selectedBrush = 2;
 		}
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
@@ -74,7 +85,7 @@ void Main()
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = planet.createTransformer(i);
-				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004, Palette::Black);
+				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004);
 			}
 
 			//selectedBiomeの反映
@@ -136,51 +147,99 @@ void Main()
 		planet.updateViewPointSliding();
 
 		//UIの描画
-		uiRect.draw(Color(Palette::Gray, 128)).drawFrame(4, 0, Palette::Black);
+		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(1, 0, Palette::Skyblue);
 
-		//バイオームセレクト
-		for (int i = 0; i<int(bData.size()); i++)
+		//UIModeの選択
 		{
-			auto rect = Rect(44, 44 + i * 48, 36, 36);
-			rect.draw(bData[i].color).drawFrame(4, i == selectedBiome ? Palette::Red : Palette::Black);
-			if (rect.mouseOver()) rect.draw(Color(Palette::Skyblue, 64)).drawFrame(4, Palette::Orange);
-			if (rect.leftClicked()) selectedBiome = i;
-			font16(bData[i].name).draw(88, 48 + i * 48, Palette::Black);
-		}
-
-		//ブラシセレクト
-		font16(L"ブラシの選択").draw(44, 616, Palette::Black);
-		for (int i = 0; i < 3; i++)
-		{
-			auto rect = Rect(44 + i * 64, 640, 18, 18);
-			if (rect.leftClicked()) selectedBrush = i;
-			rect.draw(selectedBrush == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(4, Palette::Black);
-		}
-		font16(L"単品").draw(66, 636, Palette::Black);
-		font16(L"範囲").draw(130, 636, Palette::Black);
-		font16(L"塗り").draw(194, 636, Palette::Black);
-
-		//セーブボタン
-		{
-			auto rect = Rect(160, 44, 18, 18);
-			if (rect.leftClicked())
+			const Array<String> ns = { L"🌍",L"🏭" };
+			for (auto i : step(int(ns.size())))
 			{
-				FilePath filePath = textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin";
-				saveBiomeData(filePath);
+				const int width = 320 / int(ns.size());
+				const Rect rect(32 + width*i, 32, width, 32);
+				if (rect.leftClicked()) uiMode = UIMode(i);
+				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(1, 0, Palette::Skyblue);
+				font24(ns[i]).drawAt(rect.center());
 			}
-			rect.draw(rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(4, Palette::Black);
-			font16(L"セーブ Path↓").draw(184, 42, Palette::Black);
 		}
-
-		textBox.update();
-		textBox.draw();
-
-		//ランダム生成ボタン
+		switch (uiMode)
 		{
-			auto rect = Rect(160, 108, 18, 18);
-			if (rect.leftClicked()) planet.generateBiome();
-			rect.draw(rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(4, Palette::Black);
-			font16(L"生成").draw(184, 106, Palette::Black);
+		case UIMode::setBiome:
+		{
+			//一覧
+			for (auto i : step(20))
+			{
+				const Rect rect(32, 64 + i * 16, 160, 16);
+				const Color color(selectedBiome == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0));
+				if (i < int(bData.size()))
+				{
+					if (rect.leftClicked()) selectedBiome = i;
+					rect.draw(color);
+					font12(bData[i].name).draw(rect.pos.movedBy(12, 0));
+				}
+				else
+				{
+					if (color != Color(0, 0)) rect.draw(Color(color, 128));
+					font12(L"---").draw(rect.pos.movedBy(12, 0));
+				}
+				rect.drawFrame(1, 0, Palette::Skyblue);
+			}
+			//詳細
+			{
+				const Rect rect(192, 64, 160, 40);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font16(L"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
+				font12(bData[selectedBiome].name).draw(rect.pos.movedBy(4, 22));
+			}
+			//ブラシの選択
+			{
+				const Rect rect(192, 104, 160, 128);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font16(L"ブラシの選択").draw(rect.pos.movedBy(4, 0));
+				const Array<String> brushName = { L"鉛筆:KeyR", L"筆:KeyF", L"バケツ:KeyV" };
+				for (auto i : step(int(brushName.size())))
+				{
+					const Rect s(rect.pos.movedBy(6, 26 + i * 20), 16, 16);
+					if (s.leftClicked()) selectedBrush = i;
+					s.draw(selectedBrush == i ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+					font12(brushName[i]).draw(s.pos.movedBy(24, 0));
+				}
+				font12(L"太さ:", brushSize).draw(rect.pos.movedBy(4, 94));
+				font12(L"太さはCtrl+Wheelで変更可").draw(rect.pos.movedBy(4, 110));
+			}
+			//生成
+			{
+				const Rect rect(192, 232, 160, 24);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect s(rect.pos.movedBy(136,4), 16, 16);
+				if (s.leftClicked()) planet.generateBiome();
+				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				font16(L"マップの自動生成").draw(rect.pos.movedBy(4, 0));
+			}
+			//セーブ
+			{
+				const Rect rect(192, 256, 160, 48);
+				textBox.setPos(rect.pos.movedBy(4, 28));
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
+				if (s.leftClicked())
+				{
+					FilePath filePath = L"Map/"+ (textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin");
+					saveBiomeData(filePath);
+				}
+				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				font16(L"セーブ").draw(rect.pos.movedBy(4, 0));
+				textBox.update();
+				textBox.draw();
+			}
+
+			break;
+		}
+		case UIMode::setUrban:
+		{
+			break;
+		}
+		default:
+			break;
 		}
 
 		//ロード
@@ -200,8 +259,6 @@ void Main()
 				}
 			}
 			planet.updateImage(list);
-
 		}
-
 	}
 }
