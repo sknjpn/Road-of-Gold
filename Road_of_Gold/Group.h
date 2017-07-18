@@ -1,7 +1,6 @@
 #pragma once
 
 struct Route;
-struct Pos;
 struct Urban;
 
 struct Vehicle
