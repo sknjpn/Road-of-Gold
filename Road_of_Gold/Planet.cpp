@@ -57,11 +57,3 @@ void	Planet::updateViewPointSliding()
 	if (Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
 
 }
-
-void	Planet::draw() const
-{
-	for (int i = 0; i < 2; i++) {
-		const auto t1 = planet.createTransformer(i);
-		mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
-	}
-}

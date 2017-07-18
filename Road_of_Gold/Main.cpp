@@ -75,7 +75,12 @@ void Main()
 			g.update();
 
 		planet.updateTransform();
-		planet.draw();
+		
+		//マップの描画
+		for (int i = 0; i < 2; i++) {
+			const auto t1 = planet.createTransformer(i);
+			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
+		}
 
 
 		if (MouseL.down() && (selectedUrban == nullptr || !Rect(32, 32, 320, 640).mouseOver()))

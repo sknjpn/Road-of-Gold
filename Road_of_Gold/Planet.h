@@ -11,7 +11,6 @@ struct Planet
 	void	updateViewPointSliding();
 	bool	loadBiome();
 	bool	loadVoronoiMap();
-	void	draw() const;
 	Pos		getCursorPos() const;
 	Transformer2D createTransformer(int _delta = 0) const;
 
