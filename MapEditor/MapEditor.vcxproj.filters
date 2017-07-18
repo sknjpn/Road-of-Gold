@@ -57,10 +57,10 @@
     <ClCompile Include="Planet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="BData.cpp">
+    <ClCompile Include="GenerateBiome.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GenerateBiome.cpp">
+    <ClCompile Include="JSON.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -191,6 +191,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Pos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
