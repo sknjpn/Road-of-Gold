@@ -175,8 +175,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="BData.cpp" />
     <ClCompile Include="GenerateBiome.cpp" />
+    <ClCompile Include="JSON.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Planet.cpp" />
@@ -230,6 +230,7 @@
     <None Include="example\test.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="JSON.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pi.h" />
     <ClInclude Include="Planet.h" />

@@ -1,6 +1,6 @@
 #include"Urban.h"
 #include"GlobalVariables.h"
-#include"CData.h"
+#include"JSON.h"
 
 
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)

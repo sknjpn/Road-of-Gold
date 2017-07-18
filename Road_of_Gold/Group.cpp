@@ -9,30 +9,30 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
 {}
-bool	Vehicle::inRoute() const{return routeID != -1;}
-Urban&	Vehicle::getNowUrban() const{return urbans[nowUrbanID];}
-Route&	Vehicle::getRoute() const{return routes[routeID];}
+bool	Vehicle::inRoute() const { return routeID != -1; }
+Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
+Route&	Vehicle::getRoute() const { return routes[routeID]; }
 void	Vehicle::draw() const
 {
 	const Circle shape(0.01);
 	if (inRoute())
 	{
 		auto& r = getRoute();
-		double len = routeProgress;
+		double length = routeProgress;
 		for (int i = 0; i < r.pathIDs.size(); i++)
 		{
 			auto& p = paths[r.pathIDs[i]];
 			const auto line = p->getLine();
 
-			if (len > p->len)
+			if (length > p->length)
 			{
 				line.draw(0.005, Palette::Red);
-				len -= p->len;
+				length -= p->length;
 			}
 			else
 			{
-				const auto pos = line.begin.lerp(line.end, len / p->len);
-				Line(line.begin,pos).draw(0.005, Palette::Red);
+				const auto pos = line.begin.lerp(line.end, length / p->length);
+				Line(line.begin, pos).draw(0.005, Palette::Red);
 				shape.movedBy(pos).draw(Palette::Yellow);
 				break;
 			}

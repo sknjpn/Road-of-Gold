@@ -12,7 +12,7 @@ struct Path
 	Line	getLine() const;
 
 	int		id;
-	double	len;
+	double	length;
 	int		parentNodeID;
 	int		childNodeID;
 

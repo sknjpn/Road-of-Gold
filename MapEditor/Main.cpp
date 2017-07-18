@@ -1,6 +1,7 @@
 ﻿#include"Planet.h"
 #include"Node.h"
 #include"Pi.h"
+#include"JSON.h"
 /*
 Road of Gold専用マップエディタ
 */
@@ -14,7 +15,7 @@ void Main()
 {
 	Window::SetTitle(L"MapEditor");
 	Window::Resize(1280, 720);
-	if (!planet.loadVoronoiMap()) return;
+	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
 	const Rect uiRect(32, 32, 256, 656);
 	const Font font16(16);
 	const Font textBoxFont(12, Typeface::Bold);

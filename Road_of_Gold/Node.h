@@ -1,12 +1,6 @@
 #pragma once
 #include "Pos.h"
 
-struct BData
-{
-	String	name;
-	Color	color;
-};
-extern const Array<BData> bData;
 
 struct Node;
 struct Region;
@@ -14,7 +8,7 @@ struct Region;
 struct Path
 {
 	int		id;
-	double	len;
+	double	length;
 	int		parentNodeID;
 	int		childNodeID;
 
@@ -53,7 +47,7 @@ struct Region
 	int		id;
 	int		numNodes;
 	bool	hasCity;
-	
+
 	Region();
 };
 extern Array<Region> regions;

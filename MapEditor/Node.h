@@ -4,13 +4,6 @@
 struct Node;
 struct Region;
 
-struct BData
-{
-	String	name;
-	Color	color;
-};
-extern const Array<BData> bData;
-
 struct Path
 {
 	Path::Path(int _parentNodeID, int _childNodeID);

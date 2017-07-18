@@ -1,7 +1,8 @@
 #include"Planet.h"
 #include"Group.h"
 #include"Urban.h"
-#include"Pi.h"
+#include"GlobalVariables.h"
+
 
 Planet::Planet()
 	: drawingRegion(-Pi, -HalfPi, TwoPi, Pi)
