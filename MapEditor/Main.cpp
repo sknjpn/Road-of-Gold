@@ -185,24 +185,32 @@ void Main()
 			}
 			//詳細
 			{
-				Rect(192, 64, 160, 32).drawFrame(1, 0, Palette::Skyblue);
-				font12(L"選択中のバイオーム").draw(204, 64);
-				font12(bData[selectedBiome].name).draw(204, 80);
+				const Rect rect(192, 64, 160, 40);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font16(L"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
+				font12(bData[selectedBiome].name).draw(rect.pos.movedBy(4, 22));
 			}
 			//ブラシの選択
 			{
-				Rect(192, 96, 160, 128).drawFrame(1, 0, Palette::Skyblue);
-				font16(L"ブラシの選択").draw(192, 96);
-				const Array<String> brushName = { L"鉛筆:KeyR",L"筆:KeyF",L"バケツ:KeyV" };
+				const Rect rect(192, 104, 160, 128);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font16(L"ブラシの選択").draw(rect.pos.movedBy(4, 0));
+				const Array<String> brushName = { L"鉛筆:KeyR", L"筆:KeyF", L"バケツ:KeyV" };
 				for (auto i : step(int(brushName.size())))
 				{
-					const Rect rect(200, 120 + i * 20, 16, 16);
-					if (rect.leftClicked()) selectedBrush = i;
-					rect.draw(selectedBrush==i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
-					font12(brushName[i]).draw(220, 120+i*20);
+					const Rect s(rect.pos.movedBy(6, 26 + i * 20), 16, 16);
+					if (s.leftClicked()) selectedBrush = i;
+					s.draw(selectedBrush == i ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+					font12(brushName[i]).draw(s.pos.movedBy(24, 0));
 				}
-				font12(L"太さ:",brushSize).draw(198, 184);
-				font12(L"太さはCtrl+Wheelで変更可").draw(198, 200);
+				font12(L"太さ:", brushSize).draw(rect.pos.movedBy(4, 94));
+				font12(L"太さはCtrl+Wheelで変更可").draw(rect.pos.movedBy(4, 110));
+			}
+			//生成
+			{
+				const Rect rect(192, 232, 160, 24);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font16(L"マップの自動生成").draw(rect.pos.movedBy(4, 0));
 			}
 
 			break;
