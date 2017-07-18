@@ -37,13 +37,13 @@ void Main()
 
 	loadEconomicData();
 
-	if (!loadNodeMap()) return;	//読み込みエラー
-	setPlanetToNodes();
+	if (!loadNodeMap()) return;
 	if (!planet.loadBiome()) return;
-	if (!planet.loadVoronoiMap()) return;	//読み込みエラー
+	planet.setRegions();
+	if (!planet.loadVoronoiMap()) return;
 
 	//Urbanの生成
-	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea; })) / 100;
+	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 100;
 	for (auto& r : regions)
 	{
 		if (r.numNodes == 0) continue;
@@ -344,7 +344,7 @@ void Main()
 			}
 		}
 		Rect(256, 24).draw(Palette::White);
-		font16(BiomeName[int(nearestNode->biome)]).draw(0, 0, Palette::Black);
+		font16(bData[nearestNode->biomeType].name).draw(0, 0, Palette::Black);
 
 		font16(L"F1～F3キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw(256, 0);
 

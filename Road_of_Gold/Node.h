@@ -8,40 +8,6 @@ struct BData
 };
 extern const Array<BData> bData;
 
-
-enum class Biome
-{
-	Ice,
-	Tundra,
-	Grassland,
-	Desert,
-	Savanna,
-	SeasonalForest,
-	TropicalRainforest,
-	TemperateRainforest,
-	BorealForest,
-	Woodland,
-
-	Sea,
-	Ocean,
-};
-
-const Array<String> BiomeName = {
-	L"Ice",
-	L"Tundra",
-	L"Grassland",
-	L"Desert",
-	L"Savanna",
-	L"SeasonalForest",
-	L"TropicalRainforest",
-	L"TemperateRainforest",
-	L"BorealForest",
-	L"Woodland",
-	
-	L"Sea",
-	L"Ocean",
-};
-
 struct Node;
 struct Region;
 
@@ -66,15 +32,12 @@ struct Node
 	bool	isCoast() const;
 	void	draw(const Color& _color) const;
 	Region&	getJoinedRegion() const;
+	bool	isSea() const { return biomeType == 0 || biomeType == 1; }
 
-	int		temperatureLevel;
-	int		moistureLevel;
-	Biome	biome;
-
+	int		biomeType;
 	int		id;
 	int		joinedRegionID;
 	int		ownUrbanID;
-	bool	isSea;
 	Pos		pos;
 	bool	isScaned, isInQueue;
 	double	cost;
@@ -84,7 +47,6 @@ struct Node
 };
 extern Array<Node> nodes;
 bool	loadNodeMap();
-void	setPlanetToNodes();
 
 struct Region
 {

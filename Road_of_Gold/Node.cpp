@@ -7,22 +7,19 @@ Node::Node(int _id, const Pos& _pos)
 	: id(_id)
 	, joinedRegionID(-1)
 	, ownUrbanID(-1)
-	, isSea(false)
+	, biomeType(0)
 	, pos(_pos)
 	, isScaned(false)
 	, isInQueue(false)
 	, cost(0.0)
 	, fromNodeID(-1)
-	, biome(Biome::Ice)
-	, moistureLevel(0)
-	, temperatureLevel(0)
 {
 	paths.clear();
 }
 
 bool	Node::isCoast() const
 {
-	return !isSea && paths.any([](const Path& n) {return n.getChild().isSea; });
+	return !isSea() && paths.any([](const Path& n) {return n.getChild().isSea(); });
 }
 
 void	Node::draw(const Color& _color) const
@@ -73,23 +70,12 @@ bool	loadNodeMap()
 	return true;
 }
 
-void	setPlanetToNodes()
+void	Planet::setRegions()
 {
-	for (auto& n : nodes)
-	{
-		if (planet.isSea(n.pos)) n.isSea = true;
-		else
-		{
-			n.temperatureLevel = planet.getTemperatureLevel(n.pos);
-			n.moistureLevel = planet.getMoistureLevel(n.pos);
-		}
-	}
-
-
 	//ReigonÇÃê›íË
 	for (auto& n : nodes)
 	{
-		if (!n.isSea && n.joinedRegionID == -1)
+		if (!n.isSea() && n.joinedRegionID == -1)
 		{
 			regions.push_back(int(regions.size()));
 			Array<Node*> nodeTemp;
@@ -99,7 +85,7 @@ void	setPlanetToNodes()
 				for (auto& p : nodeTemp[w]->paths)
 				{
 					auto& m = p.getChild();
-					if (!m.isScaned && !m.isSea)
+					if (!m.isScaned && !m.isSea())
 					{
 						regions.back().numNodes++;
 						m.joinedRegionID = regions.back().id;

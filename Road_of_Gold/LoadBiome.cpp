@@ -14,7 +14,7 @@ bool	Planet::loadBiome()
 			{
 				int t;
 				reader.read(t);
-				n.biome = Biome(t);
+				n.biomeType = t;
 			}
 			return true;
 		}

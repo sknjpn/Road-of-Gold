@@ -14,22 +14,6 @@ Pos		Planet::getCursorPos() const
 	return Mat3x2::Translate(-smoothDrawingRegion.center()).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()).inverse().transform(Cursor::PosF());
 }
 
-int		Planet::getMoistureLevel(const Pos& _pos) const {
-	return  Max(Min(int(moistureNoise.octaveNoise(_pos.ePos*2.0, 5) * 3 + 3), 5), 0);
-}
-int		Planet::getTemperatureLevel(const Pos& _pos) const {
-	return 5-Max(Min(int(abs(_pos.mPos.y)*4 + 20 * pow(getHeight(_pos) - 0.6,2)), 5), 0);
-}
-double Planet::getHeight(const Pos& _pos, int _octave) const
-{
-	return Min(Max((heightNoise.octaveNoise(_pos.ePos, _octave) + 1.0) / 2.0, 0.0), 1.0);
-}
-
-bool	Planet::isSea(const Pos& _pos) const
-{
-	return getHeight(_pos) < 0.60;
-}
-
 Transformer2D Planet::createTransformer(int _delta) const
 {
 	return Transformer2D(Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()), true);
