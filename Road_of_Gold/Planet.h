@@ -10,6 +10,7 @@ struct Planet
 	bool	isSea(const Pos& _pos) const;
 	void	updateTransform();
 	void	updateViewPointSliding();
+	bool	loadBiome();
 	bool	loadVoronoiMap();
 	void	draw() const;
 	int		getMoistureLevel(const Pos& _pos) const;

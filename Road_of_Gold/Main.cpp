@@ -39,6 +39,7 @@ void Main()
 
 	if (!loadNodeMap()) return;	//読み込みエラー
 	setPlanetToNodes();
+	if (!planet.loadBiome()) return;
 	if (!planet.loadVoronoiMap()) return;	//読み込みエラー
 
 	//Urbanの生成
