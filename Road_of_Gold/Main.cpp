@@ -35,12 +35,8 @@ void Main()
 	drawingType = DrawingType::Market;
 
 
-	loadEconomicData();
-
-	if (!loadNodeMap()) return;
-	if (!planet.loadBiome()) return;
+	if (!loadEconomicData() || !loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
 	planet.setRegions();
-	if (!planet.loadVoronoiMap()) return;
 
 	//Urbanの生成
 	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 100;

@@ -2,13 +2,14 @@
 Array<IData> iData;
 Array<CData> cData;
 
-void loadEconomicData(const FilePath& _filePath)
+bool loadEconomicData(const FilePath& _filePath)
 {
 	JSONReader json(_filePath);
 	for (auto i : json[L"IData"].arrayView())
 		iData.emplace_back(i);
 	for (auto c : json[L"CData"].arrayView())
 		cData.emplace_back(c);
+	return !json.isEmpty();
 }
 
 IData::IData(const JSONValue _json)

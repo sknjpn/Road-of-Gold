@@ -1,6 +1,6 @@
 #pragma once
 
-void loadEconomicData(const FilePath& _filePath = L"Assets/EconomicData.json");
+bool loadEconomicData(const FilePath& _filePath = L"Assets/EconomicData.json");
 
 struct IData
 {
