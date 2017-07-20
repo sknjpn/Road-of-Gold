@@ -1,4 +1,6 @@
 #include"JSON.h"
+#include"Planet.h"
+#include"Node.h"
 
 Array<String> UrbanName;
 Array<BData> bData;
@@ -38,3 +40,25 @@ BData::BData(const JSONValue _json)
 	: name(_json[L"Name"].getOr<String>(L"hoge"))
 	, color(_json[L"Color"].getOr<String>(L"#000000"))
 {}
+
+bool	Planet::loadBiome()
+{
+	auto items = FileSystem::DirectoryContents(L"Map/");
+
+	for (auto& item : items)
+	{
+		if (item.indexOf(L".bin") != FilePath::npos)
+		{
+			BinaryReader reader(item);
+			for (auto& n : nodes)
+			{
+				int t;
+				reader.read(t);
+				n.biomeType = t;
+				n.color = bData[n.biomeType].color.lerp(RandomColor(), 0.05);
+			}
+			return true;
+		}
+	}
+	return false;
+}

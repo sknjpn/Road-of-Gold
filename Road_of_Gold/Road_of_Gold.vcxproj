@@ -234,8 +234,7 @@
     <ClCompile Include="Basket.cpp" />
     <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Group.cpp" />
-    <ClCompile Include="JSON.cpp" />
-    <ClCompile Include="LoadBiome.cpp" />
+    <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Planet.cpp" />
