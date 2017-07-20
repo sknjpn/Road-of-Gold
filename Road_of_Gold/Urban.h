@@ -73,7 +73,6 @@ struct Urban
 	Array<Route*>	getRoutes() const;
 
 };
-extern Array<String>	UrbanNames;
 extern Urban*			selectedUrban;
 extern Array<Urban>		urbans;
 bool	setUrban(Node& _node);

@@ -202,9 +202,6 @@
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UrbanNames.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Urban.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -227,6 +224,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="JSON.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UrbanDraw.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

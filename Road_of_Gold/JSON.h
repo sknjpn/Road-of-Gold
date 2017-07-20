@@ -84,3 +84,5 @@ struct CData
 	{}
 };
 extern Array<CData> cData;
+
+extern Array<String> UrbanName;

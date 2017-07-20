@@ -1,11 +1,17 @@
 #include"JSON.h"
 
+Array<String> UrbanName;
 Array<BData> bData;
 Array<IData> iData;
 Array<CData> cData;
 
 bool loadJSONData()
 {
+	{
+		JSONReader json(L"Assets/UrbanName.json");
+		if (json.isEmpty()) return false;
+		for (auto j : json[L"UrbanName"].arrayView()) UrbanName.emplace_back(j.getOr<String>(L"hoge"));
+	}
 	{
 		JSONReader json(L"Assets/EconomicData.json");
 		if (json.isEmpty()) return false;

@@ -245,7 +245,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Urban.cpp" />
-    <ClCompile Include="UrbanNames.cpp" />
+    <ClCompile Include="UrbanDraw.cpp" />
     <ClCompile Include="VoronoiMap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
