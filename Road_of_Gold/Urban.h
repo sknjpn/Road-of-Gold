@@ -64,6 +64,7 @@ struct Urban
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
 	Array<int>		avgBhs;	//各職業のBHS
+	Array<int>		resource;
 
 	Urban(int _joinedNodeID);
 	void	update();
@@ -73,7 +74,6 @@ struct Urban
 	Array<Route*>	getRoutes() const;
 
 };
-extern Array<String>	UrbanNames;
 extern Urban*			selectedUrban;
 extern Array<Urban>		urbans;
 bool	setUrban(Node& _node);

@@ -2,6 +2,15 @@
 
 bool loadJSONData();
 
+struct RData
+{
+	String name;
+	String description;
+
+	RData(const JSONValue _json);
+};
+extern Array<RData> rData;
+
 struct BData
 {
 	String	name;
@@ -84,3 +93,5 @@ struct CData
 	{}
 };
 extern Array<CData> cData;
+
+extern Array<String> UrbanName;

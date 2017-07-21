@@ -208,6 +208,7 @@
     <Text Include="example\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\EconomicData.json" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />
@@ -236,6 +237,7 @@
     <ClInclude Include="Planet.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Urban.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

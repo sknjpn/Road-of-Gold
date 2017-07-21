@@ -52,10 +52,11 @@ void	Planet::updateTransform()
 void	Planet::updateViewPointSliding()
 {
 	const double slidingSpeed = (drawingRegion.size.y / Pi)*0.05;
-	if (Cursor::Pos().x < 32) { drawingRegion.pos.x -= slidingSpeed; RectF(0, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
-	if (Cursor::Pos().y < 32) { drawingRegion.pos.y -= slidingSpeed; RectF(0, 0, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
-	if (Cursor::Pos().x > Window::Size().x - 32) { drawingRegion.pos.x += slidingSpeed; RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
-	if (Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
+	const bool useKeyViewControl = true;
+	if ((useKeyViewControl && KeyA.pressed()) || Cursor::Pos().x < 32) { drawingRegion.pos.x -= slidingSpeed; RectF(0, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
+	if ((useKeyViewControl && KeyW.pressed()) || Cursor::Pos().y < 32) { drawingRegion.pos.y -= slidingSpeed; RectF(0, 0, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
+	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x > Window::Size().x - 32) { drawingRegion.pos.x += slidingSpeed; RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
+	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
 }
 void	Planet::makeGroupsRandom()
 {
