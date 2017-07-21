@@ -71,6 +71,13 @@ void Main()
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
+		for (int i = 0; i < 2; i++) {
+			const auto t1 = planet.createTransformer(i);
+
+			//都市の描画
+			for (auto& u : urbans)
+				Circle(u.getPos().mPos, 0.01).draw(Palette::Red);
+		}
 
 		if (!uiRect.mouseOver())
 		{
@@ -246,7 +253,7 @@ void Main()
 			switch (actionMode)
 			{
 			case ActionMode::setUrban:
-				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID!=-1)
+				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID == -1)
 				{
 					urbans.emplace_back(nearestNode->id);
 				}
