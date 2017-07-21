@@ -2,10 +2,12 @@
 #include"Node.h"
 #include"Pi.h"
 #include"JSON.h"
+#include"Urban.h"
 /*
 Road of Gold専用マップエディタ
 */
 
+Array<Urban> urbans;
 Planet planet;
 int		selectedBiome = 0;
 int		selectedBrush = 0;
@@ -22,6 +24,11 @@ void Main()
 	const Font font16(16);
 	const Font font24(24);
 	const Font textBoxFont(12, Typeface::Bold);
+
+	enum struct ActionMode {
+		setUrban,	//Urbanの配置
+		removeUrban,//Urbanの削除
+	} actionMode = ActionMode::setUrban;
 
 	enum struct UIMode {
 		setBiome,
@@ -236,10 +243,19 @@ void Main()
 		}
 		case UIMode::setUrban:
 		{
+			switch (actionMode)
+			{
+			case ActionMode::setUrban:
+				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID!=-1)
+				{
+					urbans.emplace_back(nearestNode->id);
+				}
+				break;
+			case ActionMode::removeUrban:
+				break;
+			}
 			break;
 		}
-		default:
-			break;
 		}
 
 		//ロード

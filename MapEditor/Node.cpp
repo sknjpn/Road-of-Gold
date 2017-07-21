@@ -8,6 +8,7 @@ Node::Node(const Pos& _pos)
 	: id(int(nodes.size()))
 	, pos(_pos)
 	, biomeType(0)
+	, ownUrbanID(-1)
 {}
 Color	Node::getColor() const
 {

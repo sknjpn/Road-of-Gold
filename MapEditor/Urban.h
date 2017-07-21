@@ -16,3 +16,4 @@ struct Urban
 	String	getTimeAsString() const;
 
 };
+extern Array<Urban> urbans;

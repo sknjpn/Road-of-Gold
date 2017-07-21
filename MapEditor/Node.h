@@ -23,6 +23,7 @@ struct Node
 	Node::Node(const Pos& _pos);
 	Color	getColor() const;
 
+	int		ownUrbanID;
 	int		id;
 	Pos		pos;
 	int		biomeType;
