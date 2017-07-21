@@ -13,6 +13,8 @@ int		selectedBiome = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
 
+Urban*	selectedUrban = NULL;
+
 
 void Main()
 {
