@@ -2,6 +2,12 @@
 
 bool loadJSONData();
 
+struct RData
+{
+	String name;
+	String description;
+};
+
 struct BData
 {
 	String	name;

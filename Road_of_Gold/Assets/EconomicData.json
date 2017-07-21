@@ -1,4 +1,26 @@
 {
+  "RData": [
+    {
+      "ResourceName": "森林",
+      "ResourceDescription": "良質で大規模な森林は有用なエネルギー源です"
+    },
+    {
+      "ResourceName": "漁場",
+      "ResourceDescription": "豊かな漁場は貴重なたんぱく源です。"
+    },
+    {
+      "ResourceName": "キタキツネ",
+      "ResourceDescription":"キタキツネは北の大地に生息し、毛皮を供給します。"
+    },
+    {
+      "ResourceName": "熱帯性土壌",
+      "ResourceDescription":"年中照りつける日光は一部の植物にとって重要です。"
+    },
+    {
+      "ResourceName": "温帯性土壌",
+      "ResourceDescription":"安定した温暖気候は多くの植物が住むのに必要です。"
+    }
+  ],
   "IData": [
     {
       "ItemName": "木炭",
