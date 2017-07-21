@@ -224,7 +224,7 @@ void Main()
 			{
 				const Rect rect(192, 232, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
-				const Rect s(rect.pos.movedBy(136,4), 16, 16);
+				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked()) planet.generateBiome();
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"マップの自動生成").draw(rect.pos.movedBy(4, 0));
@@ -237,7 +237,7 @@ void Main()
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked())
 				{
-					FilePath filePath = L"Map/"+ (textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin");
+					FilePath filePath = L"Map/" + (textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin");
 					saveBiomeData(filePath);
 				}
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -259,6 +259,17 @@ void Main()
 				}
 				break;
 			case ActionMode::removeUrban:
+				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID != -1)
+				{
+					const int targetID = nearestNode->ownUrbanID;
+					urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
+					nearestNode->ownUrbanID = -1;
+					//IDの整合性を取る
+					for (auto& n : nodes)
+						if (n.ownUrbanID > targetID) --n.ownUrbanID;
+					for (auto& u : urbans)
+						if (u.id > targetID) --u.id;
+				}
 				break;
 			}
 			break;
