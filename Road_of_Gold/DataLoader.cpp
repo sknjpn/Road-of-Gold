@@ -21,10 +21,6 @@ bool loadJSONData()
 		for (auto r : json[L"RData"].arrayView()) rData.emplace_back(r);
 		for (auto i : json[L"IData"].arrayView()) iData.emplace_back(i);
 		for (auto c : json[L"CData"].arrayView()) cData.emplace_back(c);
-	}
-	{
-		JSONReader json(L"Assets/BiomeData.json");
-		if (json.isEmpty()) return false;
 		for (auto i : json[L"BData"].arrayView()) bData.emplace_back(i);
 	}
 	return true;

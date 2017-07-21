@@ -4,7 +4,7 @@ Array<BData> bData;
 
 bool loadJSONData()
 {
-	JSONReader json(L"Assets/BiomeData.json");
+	JSONReader json(L"Assets/EconomicData.json");
 	if (json.isEmpty()) return false;
 	for (auto i : json[L"BData"].arrayView()) bData.emplace_back(i);
 	return true;
