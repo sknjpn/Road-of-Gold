@@ -14,6 +14,7 @@ Urban::Urban(int _joinedNodeID)
 	, timer(0.0)
 	, day(0)
 {
+	resource.resize(rData.size());
 	avgBhs.resize(cData.size());
 }
 Array<Route*>	Urban::getRoutes() const
