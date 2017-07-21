@@ -208,6 +208,8 @@
     <Text Include="example\test.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\BiomeData.json" />
+    <None Include="Assets\EconomicData.json" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />

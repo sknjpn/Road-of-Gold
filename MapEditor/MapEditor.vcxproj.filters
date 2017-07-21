@@ -176,6 +176,12 @@
     <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst">
       <Filter>Resource Files\engine\font\noto</Filter>
     </None>
+    <None Include="Assets\EconomicData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Assets\BiomeData.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
