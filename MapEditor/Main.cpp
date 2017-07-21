@@ -78,7 +78,7 @@ void Main()
 
 			//都市の描画
 			for (auto& u : urbans)
-				Circle(u.getPos().mPos, 0.006).draw(Palette::Red);
+				Circle(u.getPos().mPos, 0.006).draw(Palette::Red).drawFrame(0.001, 0.0, Palette::Black);
 		}
 
 		if (!uiRect.mouseOver())
