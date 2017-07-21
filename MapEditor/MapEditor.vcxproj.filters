@@ -199,5 +199,8 @@
     <ClInclude Include="JSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Urban.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
