@@ -6,7 +6,10 @@ struct RData
 {
 	String name;
 	String description;
+
+	RData(const JSONValue _json);
 };
+extern Array<RData> rData;
 
 struct BData
 {
