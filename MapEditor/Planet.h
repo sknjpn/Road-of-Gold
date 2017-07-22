@@ -23,6 +23,19 @@ struct Planet
 	Image	image;
 	Optional<Pos>	gazePoint;
 };
+
+struct TinyCamera2D
+{
+	TinyCamera2D();
+	void update();
+	Mat3x2 getMat3x2() const;
+	Transformer2D createTransformer(int _delta = 0) const;
+
+	RectF	restrictedRegion;
+	RectF	drawingRegion;
+	RectF	smoothDrawingRegion;
+};
+
 extern Planet planet;
 
 extern int		selectedBiome;
