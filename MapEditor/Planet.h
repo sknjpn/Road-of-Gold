@@ -34,6 +34,7 @@ struct TinyCamera2D
 	RectF	restrictedRegion;
 	RectF	drawingRegion;
 	RectF	smoothDrawingRegion;
+	Optional<Pos>	gazePoint;
 };
 
 extern Planet planet;
