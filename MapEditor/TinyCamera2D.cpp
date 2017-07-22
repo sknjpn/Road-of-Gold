@@ -2,8 +2,8 @@
 #include"Pi.h"
 
 TinyCamera2D::TinyCamera2D()
-	: restrictedRegion(-TwoPi, -HalfPi,TwoPi,HalfPi)
-	, drawingRegion(-Pi,-HalfPi,Pi,HalfPi)
+	: restrictedRegion(-TwoPi, -HalfPi, TwoPi, HalfPi)
+	, drawingRegion(-Pi, -HalfPi, Pi, HalfPi)
 	, smoothDrawingRegion(drawingRegion)
 {}
 
@@ -37,4 +37,20 @@ void TinyCamera2D::update()
 	smoothDrawingRegion.pos = smoothDrawingRegion.pos*(1.0 - followingSpeed) + drawingRegion.pos*followingSpeed;
 	smoothDrawingRegion.size = smoothDrawingRegion.size*(1.0 - followingSpeed) + drawingRegion.size*followingSpeed;
 
+	//スライダー
+	const double slidingSpeed = (drawingRegion.size.y / Pi)*0.05;
+	const bool useKeyViewControl = true;
+	if ((useKeyViewControl && KeyA.pressed()) || Cursor::Pos().x < 32) { drawingRegion.pos.x -= slidingSpeed; RectF(0, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
+	if ((useKeyViewControl && KeyW.pressed()) || Cursor::Pos().y < 32) { drawingRegion.pos.y -= slidingSpeed; RectF(0, 0, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
+	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x > Window::Size().x - 32) { drawingRegion.pos.x += slidingSpeed; RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
+	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
+
+}
+Mat3x2 TinyCamera2D::getMat3x2(int _delta) const
+{
+	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center());
+}
+Transformer2D TinyCamera2D::createTransformer(int _delta) const
+{
+	return Transformer2D(getMat3x2(_delta), true);
 }

@@ -28,7 +28,8 @@ struct TinyCamera2D
 {
 	TinyCamera2D();
 	void update();
-	Mat3x2 getMat3x2() const;
+	void draw();
+	Mat3x2 getMat3x2(int _delta = 0) const;
 	Transformer2D createTransformer(int _delta = 0) const;
 
 	RectF	restrictedRegion;
