@@ -67,16 +67,16 @@ void Main()
 		}
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
-		planet.updateTransform();
+		tinyCamera2D.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; i++) {
-			const auto t1 = planet.createTransformer(i);
+			const auto t1 = tinyCamera2D.createTransformer(i);
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 		for (int i = 0; i < 2; i++) {
-			const auto t1 = planet.createTransformer(i);
+			const auto t1 = tinyCamera2D.createTransformer(i);
 
 			//都市の描画
 			for (auto& u : urbans)
@@ -85,7 +85,7 @@ void Main()
 
 		if (!uiRect.mouseOver())
 		{
-			planet.createTransformer();
+			tinyCamera2D.createTransformer();
 
 			//色の取得
 			if (MouseR.down())
@@ -95,14 +95,14 @@ void Main()
 
 			//nearestNodeの設定
 			{
-				const auto& p = (planet.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
+				const auto& p = (tinyCamera2D.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
 				nearestNode = &nodes[planet.voronoiMap[int(p.y)][int(p.x)]];
 			}
 
 			//nearestNodeの描画
 			for (int i = 0; i < 2; i++)
 			{
-				const auto t1 = planet.createTransformer(i);
+				const auto t1 = tinyCamera2D.createTransformer(i);
 				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004);
 			}
 
@@ -121,7 +121,7 @@ void Main()
 				if (MouseL.pressed())
 				{
 					Array<Node*> list;
-					auto mp = planet.getCursorPos();
+					auto mp = tinyCamera2D.getCursorPos();
 					for (auto& n : nodes)
 					{
 						if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
@@ -162,7 +162,7 @@ void Main()
 		}
 
 		//スライドバーの描画
-		planet.updateViewPointSliding();
+		//planet.updateViewPointSliding();
 
 		//UIの描画
 		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(1, 0, Palette::Skyblue);
