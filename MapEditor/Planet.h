@@ -40,6 +40,7 @@ struct TinyCamera2D
 };
 
 extern Planet planet;
+extern TinyCamera2D tinyCamera2D;
 
 extern int		selectedBiome;
 extern int		selectedBrush;
