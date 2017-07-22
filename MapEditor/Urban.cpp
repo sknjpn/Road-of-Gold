@@ -8,7 +8,4 @@ Urban::Urban(int _joinedNodeID)
 	nodes[_joinedNodeID].ownUrbanID = id;
 	//resource.resize(rData.size());
 }
-Pos&	Urban::getPos() const
-{
-	return nodes[joinedNodeID].pos;
-}
+Pos&	Urban::getPos() const { return nodes[joinedNodeID].pos; }
