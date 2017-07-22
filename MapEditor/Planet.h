@@ -12,12 +12,9 @@ struct Planet
 	void	generateBiome();
 
 	Grid<int>	voronoiMap;
-	RectF	drawingRegion;
-	RectF	smoothDrawingRegion;
 	DynamicTexture mapTexture;
 	Texture outlineTexture;
 	Image	image;
-	Optional<Pos>	gazePoint;
 };
 
 struct TinyCamera2D
