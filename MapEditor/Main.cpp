@@ -28,6 +28,7 @@ void Main()
 	const Font textBoxFont(12, Typeface::Bold);
 
 	enum struct ActionMode {
+		none,
 		setUrban,	//Urbanの配置
 		removeUrban,//Urbanの削除
 	} actionMode = ActionMode::setUrban;
@@ -252,6 +253,22 @@ void Main()
 		}
 		case UIMode::setUrban:
 		{
+			{
+				const Rect rect(32, 64, 160, 24);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::setUrban ? ActionMode::none : ActionMode::setUrban;
+				s.draw(actionMode == ActionMode::setUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
+			}
+			{
+				const Rect rect(32, 88, 160, 24);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::removeUrban ? ActionMode::none : ActionMode::removeUrban;
+				s.draw(actionMode == ActionMode::removeUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
+			}
 			switch (actionMode)
 			{
 			case ActionMode::setUrban:
