@@ -51,16 +51,16 @@ void TinyCamera2D::update()
 void TinyCamera2D::draw() const
 {
 	//スライダー
-	const double slidingSpeed = (drawingRegion.size.y / Pi)*0.05;
+	const ColorF color(Palette::White, 0.3);
 	const bool useKeyViewControl = true;
-	if ((useKeyViewControl && KeyA.pressed()) || Cursor::Pos().x < 32) RectF(0, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3));
-	if ((useKeyViewControl && KeyW.pressed()) || Cursor::Pos().y < 32) RectF(0, 0, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3));
-	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x > Window::Size().x - 32) RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3));
-	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y > Window::Size().y - 32) RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3));
+	if ((useKeyViewControl && KeyA.pressed()) || Cursor::Pos().x < 32) RectF(32, Window::Size().y).draw(color);
+	if ((useKeyViewControl && KeyW.pressed()) || Cursor::Pos().y < 32) RectF(Window::Size().x, 32).draw(color);
+	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x > Window::Size().x - 32) RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(color);
+	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y > Window::Size().y - 32) RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(color);
 }
 Pos TinyCamera2D::getCursorPos() const
 {
-	return Mat3x2::Translate(-smoothDrawingRegion.center()).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()).inverse().transform(Cursor::PosF());
+	return getMat3x2().inverse().transform(Cursor::PosF());
 }
 Mat3x2 TinyCamera2D::getMat3x2(int _delta) const
 {
