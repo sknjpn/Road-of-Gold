@@ -1,5 +1,6 @@
 #include"Planet.h"
 #include"Pi.h"
+#include"Pos.h"
 
 TinyCamera2D::TinyCamera2D()
 	: restrictedRegion(-TwoPi, -HalfPi, TwoPi, HalfPi)
@@ -45,6 +46,10 @@ void TinyCamera2D::update()
 	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x > Window::Size().x - 32) { drawingRegion.pos.x += slidingSpeed; RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(ColorF(Palette::White, 0.3)); }
 	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y > Window::Size().y - 32) { drawingRegion.pos.y += slidingSpeed; RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(ColorF(Palette::White, 0.3)); }
 
+}
+Pos TinyCamera2D::getCursorPos() const
+{
+	return Mat3x2::Translate(-smoothDrawingRegion.center()).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center()).inverse().transform(Cursor::PosF());
 }
 Mat3x2 TinyCamera2D::getMat3x2(int _delta) const
 {
