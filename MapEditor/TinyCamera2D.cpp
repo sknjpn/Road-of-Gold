@@ -6,6 +6,7 @@ TinyCamera2D::TinyCamera2D()
 	: restrictedRegion(-TwoPi, -HalfPi, TwoPi, HalfPi)
 	, drawingRegion(-Pi, -HalfPi, Pi, HalfPi)
 	, smoothDrawingRegion(drawingRegion)
+	, gazePoint(none)
 {}
 
 void TinyCamera2D::update()
