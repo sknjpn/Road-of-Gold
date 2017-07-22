@@ -60,10 +60,10 @@
     <ClCompile Include="GenerateBiome.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JSON.cpp">
+    <ClCompile Include="Urban.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Urban.cpp">
+    <ClCompile Include="DataLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
