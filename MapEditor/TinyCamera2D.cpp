@@ -11,34 +11,35 @@ TinyCamera2D::TinyCamera2D()
 
 void TinyCamera2D::update()
 {
-	//視点移動処理
-	const auto t1 = createTransformer();
-	if (!KeyControl.pressed())
-		drawingRegion = drawingRegion.scaledAt(Cursor::PosF(), 1.0 + 0.1*double(Mouse::Wheel()));
-
-	if (gazePoint)	//注視点
 	{
-		auto p = gazePoint.value().mPos;
-		for (int i = -1; i <= 2; i++)
+		//視点移動処理
+		const auto t1 = createTransformer();
+		if (!KeyControl.pressed())
+			drawingRegion = drawingRegion.scaledAt(Cursor::PosF(), 1.0 + 0.1*double(Mouse::Wheel()));
+
+		if (gazePoint)	//注視点
 		{
-			if (p.distanceFrom(drawingRegion.center()) > gazePoint.value().mPos.movedBy(i*TwoPi, 0).distanceFrom(drawingRegion.center()))
-				p = gazePoint.value().mPos.movedBy(i*TwoPi, 0);
+			auto p = gazePoint.value().mPos;
+			for (int i = -1; i <= 2; i++)
+			{
+				if (p.distanceFrom(drawingRegion.center()) > gazePoint.value().mPos.movedBy(i*TwoPi, 0).distanceFrom(drawingRegion.center()))
+					p = gazePoint.value().mPos.movedBy(i*TwoPi, 0);
+			}
+			drawingRegion.setCenter(p);
 		}
-		drawingRegion.setCenter(p);
+
+		//drawingRegionを範囲内に収める
+		if (drawingRegion.size.y > Pi) drawingRegion = drawingRegion.scaledAt(drawingRegion.center(), (Pi / drawingRegion.size.y));
+		if (drawingRegion.pos.y < -HalfPi) drawingRegion.pos.y = -HalfPi;
+		if (drawingRegion.pos.y + drawingRegion.size.y > HalfPi) drawingRegion.pos.y = HalfPi - drawingRegion.size.y;
+		if (drawingRegion.pos.x < -Pi) { drawingRegion.pos.x += TwoPi; smoothDrawingRegion.pos.x += TwoPi; }
+		if (drawingRegion.pos.x > Pi) { drawingRegion.pos.x -= TwoPi; smoothDrawingRegion.pos.x -= TwoPi; }
+
+		//smoothDrawingRegionの追従
+		const double followingSpeed = 0.2;
+		smoothDrawingRegion.pos = smoothDrawingRegion.pos*(1.0 - followingSpeed) + drawingRegion.pos*followingSpeed;
+		smoothDrawingRegion.size = smoothDrawingRegion.size*(1.0 - followingSpeed) + drawingRegion.size*followingSpeed;
 	}
-
-	//drawingRegionを範囲内に収める
-	if (drawingRegion.size.y > Pi) drawingRegion = drawingRegion.scaledAt(drawingRegion.center(), (Pi / drawingRegion.size.y));
-	if (drawingRegion.pos.y < -HalfPi) drawingRegion.pos.y = -HalfPi;
-	if (drawingRegion.pos.y + drawingRegion.size.y > HalfPi) drawingRegion.pos.y = HalfPi - drawingRegion.size.y;
-	if (drawingRegion.pos.x < -Pi) { drawingRegion.pos.x += TwoPi; smoothDrawingRegion.pos.x += TwoPi; }
-	if (drawingRegion.pos.x > Pi) { drawingRegion.pos.x -= TwoPi; smoothDrawingRegion.pos.x -= TwoPi; }
-
-	//smoothDrawingRegionの追従
-	const double followingSpeed = 0.2;
-	smoothDrawingRegion.pos = smoothDrawingRegion.pos*(1.0 - followingSpeed) + drawingRegion.pos*followingSpeed;
-	smoothDrawingRegion.size = smoothDrawingRegion.size*(1.0 - followingSpeed) + drawingRegion.size*followingSpeed;
-
 	//スライダー
 	const double slidingSpeed = (drawingRegion.size.y / Pi)*0.05;
 	const bool useKeyViewControl = true;
