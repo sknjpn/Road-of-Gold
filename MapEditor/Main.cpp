@@ -162,7 +162,7 @@ void Main()
 		}
 
 		//スライドバーの描画
-		//planet.updateViewPointSliding();
+		tinyCamera2D.draw();
 
 		//UIの描画
 		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(1, 0, Palette::Skyblue);

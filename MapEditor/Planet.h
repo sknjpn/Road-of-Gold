@@ -24,7 +24,7 @@ struct TinyCamera2D
 {
 	TinyCamera2D();
 	void	update();
-	void	draw();
+	void	draw() const;
 	Pos		getCursorPos() const;
 	Mat3x2	getMat3x2(int _delta = 0) const;
 	Transformer2D createTransformer(int _delta = 0) const;
