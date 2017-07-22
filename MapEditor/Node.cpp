@@ -4,33 +4,22 @@
 #include"JSON.h"
 
 Array<Node> nodes;
+Array<Path*> paths;
+
 Node::Node(const Pos& _pos)
 	: id(int(nodes.size()))
 	, pos(_pos)
 	, biomeType(0)
+	, ownUrbanID(-1)
 {}
-Color	Node::getColor() const
-{
-	return bData[biomeType].color;
-}
-
-
-Array<Path*> paths;
+Color	Node::getColor() const { return bData[biomeType].color; }
 Path::Path(int _parentNodeID, int _childNodeID)
 	: id(0)
 	, parentNodeID(_parentNodeID)
 	, childNodeID(_childNodeID)
 {}
-Node&	Path::getChild() const
-{
-	return nodes[childNodeID];
-}
-
-Node&	Path::getParent() const
-{
-	return nodes[parentNodeID];
-}
-
+Node&	Path::getChild() const { return nodes[childNodeID]; }
+Node&	Path::getParent() const { return nodes[parentNodeID]; }
 Line	Path::getLine() const
 {
 	auto p1 = getParent().pos.mPos;
@@ -42,7 +31,6 @@ Line	Path::getLine() const
 	}
 	return Line(p1, p2);
 }
-
 void	saveBiomeData(const FilePath& _filePath)
 {
 	BinaryWriter writer(_filePath);

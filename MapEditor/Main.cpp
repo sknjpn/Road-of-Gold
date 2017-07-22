@@ -2,14 +2,19 @@
 #include"Node.h"
 #include"Pi.h"
 #include"JSON.h"
+#include"Urban.h"
 /*
 Road of Gold専用マップエディタ
 */
 
+Array<Urban> urbans;
 Planet planet;
+TinyCamera2D tinyCamera2D;
 int		selectedBiome = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
+
+Urban*	selectedUrban = NULL;
 
 
 void Main()
@@ -22,6 +27,12 @@ void Main()
 	const Font font16(16);
 	const Font font24(24);
 	const Font textBoxFont(12, Typeface::Bold);
+
+	enum struct ActionMode {
+		none,
+		setUrban,	//Urbanの配置
+		removeUrban,//Urbanの削除
+	} actionMode = ActionMode::setUrban;
 
 	enum struct UIMode {
 		setBiome,
@@ -56,18 +67,25 @@ void Main()
 		}
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
-		planet.updateTransform();
+		tinyCamera2D.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; i++) {
-			const auto t1 = planet.createTransformer(i);
+			const auto t1 = tinyCamera2D.createTransformer(i);
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
+		}
+		for (int i = 0; i < 2; i++) {
+			const auto t1 = tinyCamera2D.createTransformer(i);
+
+			//都市の描画
+			for (auto& u : urbans)
+				Circle(u.getPos().mPos, 0.012).draw(Palette::Red).drawFrame(0.002, 0.0, Palette::Black);
 		}
 
 		if (!uiRect.mouseOver())
 		{
-			planet.createTransformer();
+			tinyCamera2D.createTransformer();
 
 			//色の取得
 			if (MouseR.down())
@@ -77,14 +95,14 @@ void Main()
 
 			//nearestNodeの設定
 			{
-				const auto& p = (planet.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
+				const auto& p = (tinyCamera2D.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
 				nearestNode = &nodes[planet.voronoiMap[int(p.y)][int(p.x)]];
 			}
 
 			//nearestNodeの描画
 			for (int i = 0; i < 2; i++)
 			{
-				const auto t1 = planet.createTransformer(i);
+				const auto t1 = tinyCamera2D.createTransformer(i);
 				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004);
 			}
 
@@ -103,7 +121,7 @@ void Main()
 				if (MouseL.pressed())
 				{
 					Array<Node*> list;
-					auto mp = planet.getCursorPos();
+					auto mp = tinyCamera2D.getCursorPos();
 					for (auto& n : nodes)
 					{
 						if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
@@ -144,7 +162,7 @@ void Main()
 		}
 
 		//スライドバーの描画
-		planet.updateViewPointSliding();
+		tinyCamera2D.draw();
 
 		//UIの描画
 		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(1, 0, Palette::Skyblue);
@@ -210,7 +228,7 @@ void Main()
 			{
 				const Rect rect(192, 232, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
-				const Rect s(rect.pos.movedBy(136,4), 16, 16);
+				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked()) planet.generateBiome();
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"マップの自動生成").draw(rect.pos.movedBy(4, 0));
@@ -223,7 +241,7 @@ void Main()
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked())
 				{
-					FilePath filePath = L"Map/"+ (textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin");
+					FilePath filePath = L"Map/" + (textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin");
 					saveBiomeData(filePath);
 				}
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -236,10 +254,46 @@ void Main()
 		}
 		case UIMode::setUrban:
 		{
+			{
+				const Rect rect(32, 64, 160, 24);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::setUrban ? ActionMode::none : ActionMode::setUrban;
+				s.draw(actionMode == ActionMode::setUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
+			}
+			{
+				const Rect rect(32, 88, 160, 24);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::removeUrban ? ActionMode::none : ActionMode::removeUrban;
+				s.draw(actionMode == ActionMode::removeUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
+			}
+			switch (actionMode)
+			{
+			case ActionMode::setUrban:
+				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID == -1)
+				{
+					urbans.emplace_back(nearestNode->id);
+				}
+				break;
+			case ActionMode::removeUrban:
+				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID != -1)
+				{
+					const int targetID = nearestNode->ownUrbanID;
+					urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
+					nearestNode->ownUrbanID = -1;
+					//IDの整合性を取る
+					for (auto& n : nodes)
+						if (n.ownUrbanID > targetID) --n.ownUrbanID;
+					for (auto& u : urbans)
+						if (u.id > targetID) --u.id;
+				}
+				break;
+			}
 			break;
 		}
-		default:
-			break;
 		}
 
 		//ロード

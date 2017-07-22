@@ -60,7 +60,13 @@
     <ClCompile Include="GenerateBiome.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="JSON.cpp">
+    <ClCompile Include="Urban.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataLoader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyCamera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
