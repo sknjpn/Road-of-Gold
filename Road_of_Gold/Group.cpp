@@ -9,7 +9,13 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
 	, progress(0)
-{}
+{
+	chain = {
+		{ 0, Random(int(urbans.size() - 1)) },
+		{ 0, Random(int(urbans.size() - 1)) },
+		{ 1, 0}
+	};
+}
 bool	Vehicle::inRoute() const { return routeID != -1; }
 Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
 Route&	Vehicle::getRoute() const { return routes[routeID]; }
@@ -73,11 +79,14 @@ void Vehicle::update()
 				{
 					if (r->destinationUrbanID == targetUrban.id)
 					{
+						routeProgress = 0.0;
 						routeID = r->id;
 						break;
 					}
 				}
 				++progress;
+
+				if (inRoute()) break;	//ƒ‹[ƒg‚ªŒˆ‚Ü‚Á‚½ê‡
 			}
 			break;
 
@@ -94,6 +103,7 @@ void Vehicle::update()
 			break;
 
 			}
+			break;
 		}
 		/*
 		routeProgress += timeSpeed;
