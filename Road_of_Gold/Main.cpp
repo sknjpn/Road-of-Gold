@@ -12,6 +12,7 @@ int selectedBasket = 0;
 int selectedCitizen = 0;
 
 Planet planet;
+TinyCamera2D tinyCamera2D;
 
 void Main()
 {
