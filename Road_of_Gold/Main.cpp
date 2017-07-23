@@ -74,11 +74,11 @@ void Main()
 		for (auto& g : groups)
 			g.update();
 
-		planet.updateTransform();
+		tinyCamera2D.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; i++) {
-			const auto t1 = planet.createTransformer(i);
+			const auto t1 = tinyCamera2D.createTransformer(i);
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 
@@ -88,20 +88,20 @@ void Main()
 			selectedUrban = nullptr;
 			for (int i = 0; i < 2; i++)
 			{
-				const auto t1 = planet.createTransformer(i);
+				const auto t1 = tinyCamera2D.createTransformer(i);
 				for (auto& u : urbans)
 					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
 		}
 
 		{
-			auto mp = planet.getCursorPos();
+			auto mp = tinyCamera2D.getCursorPos();
 			for (auto& n : nodes)
 				if (nearestNode == nullptr || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
 		}
 		for (int i = 0; i < 2; i++)
 		{
-			const auto t1 = planet.createTransformer(i);
+			const auto t1 = tinyCamera2D.createTransformer(i);
 
 			//Node
 			if (KeyT.pressed())
@@ -349,6 +349,6 @@ void Main()
 
 		font16(L"F1～F3キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw(256, 0);
 
-		planet.updateViewPointSliding();
+		tinyCamera2D.draw();
 	}
 }
