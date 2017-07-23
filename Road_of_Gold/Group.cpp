@@ -3,6 +3,7 @@
 #include"Urban.h"
 #include"Route.h"
 #include"GlobalVariables.h"
+#include"JSON.h"
 
 Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
@@ -14,15 +15,15 @@ Vehicle::Vehicle(int _nowUrbanID)
 	chain = {
 		{ int16(2), int32(0)},
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(3), iData.choice().id },
 		{ int16(1), int32(0)}
 	};
 }
@@ -155,6 +156,14 @@ void Vehicle::update()
 				case 2: //ウェイト命令
 				{
 					sleepTimer += 1.0;
+					++progress;
+				}
+				break;
+
+				case 3: //購買命令
+				{
+					const int numBuy = Min(10,getNowUrban().baskets[chain[progress].second].getNumItem());
+					if (numBuy > 0) getNowUrban().baskets[chain[progress].second].buyItem(numBuy);
 					++progress;
 				}
 				break;
