@@ -9,8 +9,10 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
 	, progress(0)
+	, sleepTimer(0)
 {
 	chain = {
+		{ int16(2), int32(0)},
 		{ int16(0), Random(int32(urbans.size() - 1)) },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
@@ -98,7 +100,7 @@ void Vehicle::update()
 		//スクリプトの実行
 		for (;;)
 		{
-			if (progress >= int(chain.size())) break;
+			if (progress >= int(chain.size()) || sleepTimer > 0) break;
 			switch (chain[progress].first)
 			{
 			case 0:	//都市へ移動
@@ -127,7 +129,8 @@ void Vehicle::update()
 
 			case 2: //ウェイト命令
 			{
-
+				sleepTimer += 1.0;
+				++progress;
 			}
 			break;
 
@@ -138,17 +141,9 @@ void Vehicle::update()
 			break;
 
 			}
-			break;
 		}
-		/*
-		routeProgress += timeSpeed;
-		if (routeProgress >= 0.0)
-		{
-			routeProgress = 0.0;
-			const auto rs = getNowUrban().getRoutes();
-			if (!rs.isEmpty()) routeID = rs[Random(int(rs.size() - 1))]->id;
-			else routeProgress = -100.0;
-		}*/
+
+		if (sleepTimer > 0) sleepTimer -= timeSpeed;
 	}
 }
 
