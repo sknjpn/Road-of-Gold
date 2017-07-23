@@ -35,14 +35,14 @@ void	Vehicle::draw() const
 
 			if (length > p->length)
 			{
-				line.draw(0.005, Palette::Red);
+				line.draw(0.005, Color(color, 64));
 				length -= p->length;
 			}
 			else
 			{
 				const auto pos = line.begin.lerp(line.end, length / p->length);
-				Line(line.begin, pos).draw(0.005, Palette::Red);
-				shape.movedBy(pos).draw(Palette::Yellow);
+				Line(line.begin, pos).draw(0.005, Color(color, 64));
+				shape.movedBy(pos).draw(color).drawFrame(0.005, Palette::Black);
 				break;
 			}
 		}
