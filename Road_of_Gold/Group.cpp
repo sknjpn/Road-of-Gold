@@ -56,46 +56,46 @@ void Vehicle::update()
 		{
 			nowUrbanID = getRoute().destinationUrbanID;
 			routeID = -1;
-
-			//スクリプトの実行
-			for (;;)
-			{
-				if (progress >= int(chain.size())) break;
-				switch (chain[progress].first)
-				{
-				case 0:	//都市へ移動
-				{
-					Urban& targetUrban = urbans[chain[progress].second];
-					for (auto& r : getNowUrban().getRoutes())
-					{
-						if (r->destinationUrbanID == targetUrban.id)
-						{
-							routeID = r->id;
-							break;
-						}
-					}
-					++progress;
-				}
-				break;
-
-				case 1:	//アドレスジャンプ命令
-				{
-					progress = chain[progress].second;
-				}
-				break;
-
-				default://存在しない命令
-				{
-					++progress;
-				}
-				break;
-
-				}
-			}
 		}
 	}
 	else
 	{
+		//スクリプトの実行
+		for (;;)
+		{
+			if (progress >= int(chain.size())) break;
+			switch (chain[progress].first)
+			{
+			case 0:	//都市へ移動
+			{
+				Urban& targetUrban = urbans[chain[progress].second];
+				for (auto& r : getNowUrban().getRoutes())
+				{
+					if (r->destinationUrbanID == targetUrban.id)
+					{
+						routeID = r->id;
+						break;
+					}
+				}
+				++progress;
+			}
+			break;
+
+			case 1:	//アドレスジャンプ命令
+			{
+				progress = chain[progress].second;
+			}
+			break;
+
+			default://存在しない命令
+			{
+				++progress;
+			}
+			break;
+
+			}
+		}
+		/*
 		routeProgress += timeSpeed;
 		if (routeProgress >= 0.0)
 		{
@@ -103,7 +103,7 @@ void Vehicle::update()
 			const auto rs = getNowUrban().getRoutes();
 			if (!rs.isEmpty()) routeID = rs[Random(int(rs.size() - 1))]->id;
 			else routeProgress = -100.0;
-		}
+		}*/
 	}
 }
 
