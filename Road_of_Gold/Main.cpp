@@ -10,6 +10,7 @@ double timeSpeed = 0.01;
 double worldTimer = 0.0;
 int selectedBasket = 0;
 int selectedCitizen = 0;
+Vehicle* selectedVehicle = NULL;
 
 Planet planet;
 TinyCamera2D tinyCamera2D;
