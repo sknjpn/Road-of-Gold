@@ -1,5 +1,5 @@
 #include"Planet.h"
-#include"Pi.h"
+#include"GlobalVariables.h"
 #include"Pos.h"
 
 TinyCamera2D::TinyCamera2D()
