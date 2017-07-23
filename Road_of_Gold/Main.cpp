@@ -10,7 +10,7 @@ double timeSpeed = 0.01;
 double worldTimer = 0.0;
 int selectedBasket = 0;
 int selectedCitizen = 0;
-Vehicle* selectedVehicle = NULL;
+Vehicle* selectedVehicle = nullptr;
 
 Planet planet;
 TinyCamera2D tinyCamera2D;
@@ -94,6 +94,19 @@ void Main()
 					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
 		}
+		if (MouseL.down() && (selectedVehicle == nullptr || !Rect(32, 32, 320, 640).mouseOver()))
+		{
+			selectedVehicle = nullptr;
+			tinyCamera2D.gazePoint = none;
+			for (int i = 0; i < 2; i++)
+			{
+				const auto t1 = tinyCamera2D.createTransformer(i);
+				for (auto& g : groups)
+					for(auto& v : g.vehicles)
+					if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+			}
+		}
+		if (selectedVehicle != nullptr) tinyCamera2D.gazePoint = Pos(selectedVehicle->getMPos());
 
 		{
 			auto mp = tinyCamera2D.getCursorPos();

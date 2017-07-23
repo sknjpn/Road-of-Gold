@@ -21,6 +21,27 @@ Vehicle::Vehicle(int _nowUrbanID)
 bool	Vehicle::inRoute() const { return routeID != -1; }
 Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
 Route&	Vehicle::getRoute() const { return routes[routeID]; }
+Vec2		Vehicle::getMPos() const
+{
+	if (inRoute())
+	{
+		auto& r = getRoute();
+		double length = routeProgress;
+		for (int i = 0; i < r.pathIDs.size(); i++)
+		{
+			auto& p = paths[r.pathIDs[i]];
+			const auto line = p->getLine();
+
+			if (length > p->length) length -= p->length;
+			else
+			{
+				const auto pos = line.begin.lerp(line.end, length / p->length);
+				return pos;
+			}
+		}
+	}
+	return getNowUrban().getPos().mPos;
+}
 void	Vehicle::draw() const
 {
 	const Circle shape(0.01);

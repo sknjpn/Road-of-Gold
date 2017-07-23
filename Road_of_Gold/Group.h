@@ -1,4 +1,5 @@
 #pragma once
+#include"Pos.h"
 
 struct Route;
 struct Urban;
@@ -15,6 +16,7 @@ struct Vehicle
 	Vehicle(int _nowUrbanID);
 	Urban&	getNowUrban() const;
 	Route&	getRoute() const;
+	Vec2	getMPos() const;
 	void	update();
 	void	draw() const;
 	bool	inRoute() const;
