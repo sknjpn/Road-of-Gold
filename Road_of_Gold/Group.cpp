@@ -60,7 +60,7 @@ void Vehicle::update()
 			//スクリプトの実行
 			for (;;)
 			{
-				if (progress < int(chain.size())) break;
+				if (progress >= int(chain.size())) break;
 				switch (chain[progress].first)
 				{
 				case 0:	//都市へ移動
