@@ -16,14 +16,19 @@ Vehicle::Vehicle(int _nowUrbanID)
 	chain = {
 		{ int16(2), int32(0)},
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(4), 0 },
 		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(4), 0 },
 		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(4), 0 },
 		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(4), 0 },
 		{ int16(3), iData.choice().id },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(4), 0 },
 		{ int16(3), iData.choice().id },
 		{ int16(1), int32(0)}
 	};
@@ -92,107 +97,118 @@ Group::Group()
 {}
 void Vehicle::update()
 {
-	double actionTime = timeSpeed;
-
-	for (;;)
-	{
-		if (inRoute())
-		{
-			if (actionTime > getRoute().totalLength - routeProgress)
-			{
-				actionTime -= getRoute().totalLength - routeProgress;
-				nowUrbanID = getRoute().destinationUrbanID;
-				routeProgress = 0.0;
-				routeID = -1;
-			}
-			else
-			{
-				routeProgress += actionTime;
-				actionTime = 0.0;
-				return;
-			}
-		}
-		else if (sleepTimer > 0)
-		{
-			if (actionTime > sleepTimer)
-			{
-				actionTime -= sleepTimer;
-				sleepTimer = 0;
-			}
-			else
-			{
-				sleepTimer -= actionTime;
-				actionTime = 0;
-				break;
-			}
-		}
-		else
-		{
-			//スクリプトの実行
-			for (;;)
-			{
-				if (progress >= int(chain.size()) || sleepTimer > 0) break;
-				switch (chain[progress].first)
-				{
-				case 0:	//都市へ移動
-				{
-					Urban& targetUrban = urbans[chain[progress].second];
-					for (auto& r : getNowUrban().getRoutes())
-					{
-						if (r->destinationUrbanID == targetUrban.id)
-						{
-							routeProgress = 0.0;
-							routeID = r->id;
-							break;
-						}
-					}
-					++progress;
-
-					if (inRoute()) break;	//ルートが決まった場合
-				}
-				break;
-
-				case 1:	//アドレスジャンプ命令
-				{
-					progress = chain[progress].second;
-				}
-				break;
-
-				case 2: //ウェイト命令
-				{
-					sleepTimer += 1.0;
-					++progress;
-				}
-				break;
-
-				case 3: //購買命令
-				{
-					if (stock.num == 0)
-					{
-						const int itemType = chain[progress].second;
-						const int numBuy = Min(10, getNowUrban().baskets[chain[progress].second].getNumItem());
-						if (numBuy > 0) getNowUrban().baskets[itemType].buyItem(numBuy);
-						stock.num = numBuy;
-						stock.itemType = itemType;
-					}
-					++progress;
-				}
-				break;
-
-				default://存在しない命令
-				{
-					++progress;
-				}
-				break;
-
-				}
-			}
-		}
-	}
 }
 
 void Group::update()
 {
 	for (auto& v : vehicles)
-		v.update();
+	{
+		double actionTime = timeSpeed;
+
+		for (;;)
+		{
+			if (v.inRoute())
+			{
+				if (actionTime > v.getRoute().totalLength - v.routeProgress)
+				{
+					actionTime -= v.getRoute().totalLength - v.routeProgress;
+					v.nowUrbanID = v.getRoute().destinationUrbanID;
+					v.routeProgress = 0.0;
+					v.routeID = -1;
+				}
+				else
+				{
+					v.routeProgress += actionTime;
+					actionTime = 0.0;
+					return;
+				}
+			}
+			else if (v.sleepTimer > 0)
+			{
+				if (actionTime > v.sleepTimer)
+				{
+					actionTime -= v.sleepTimer;
+					v.sleepTimer = 0;
+				}
+				else
+				{
+					v.sleepTimer -= actionTime;
+					actionTime = 0;
+					break;
+				}
+			}
+			else
+			{
+				//スクリプトの実行
+				for (;;)
+				{
+					if (v.progress >= int(v.chain.size()) || v.sleepTimer > 0) break;
+					switch (v.chain[v.progress].first)
+					{
+					case 0:	//都市へ移動
+					{
+						Urban& targetUrban = urbans[v.chain[v.progress].second];
+						for (auto& r : v.getNowUrban().getRoutes())
+						{
+							if (r->destinationUrbanID == targetUrban.id)
+							{
+								v.routeProgress = 0.0;
+								v.routeID = r->id;
+								break;
+							}
+						}
+						++v.progress;
+
+						if (v.inRoute()) break;	//ルートが決まった場合
+					}
+					break;
+
+					case 1:	//アドレスジャンプ命令
+					{
+						v.progress = v.chain[v.progress].second;
+					}
+					break;
+
+					case 2: //ウェイト命令
+					{
+						v.sleepTimer += 1.0;
+						++v.progress;
+					}
+					break;
+
+					case 3: //購買命令
+					{
+						if (v.stock.num == 0)
+						{
+							const int itemType = v.chain[v.progress].second;
+							const int numBuy = Min(10, v.getNowUrban().baskets[v.chain[v.progress].second].getNumItem());
+							if (numBuy > 0) v.getNowUrban().baskets[itemType].buyItem(numBuy);
+							v.stock.num = numBuy;
+							v.stock.itemType = itemType;
+						}
+						++v.progress;
+					}
+					break;
+
+					case 4:	//販売命令
+					{
+						if (v.stock.num > 0)
+						{
+							v.getNowUrban().baskets[v.stock.itemType].addRing(10000, v.stock.num, this);
+							v.stock.num = 0;
+						}
+					}
+
+					default://存在しない命令
+					{
+						++v.progress;
+					}
+					break;
+
+					}
+				}
+			}
+		}
+
+	}
 }
