@@ -21,25 +21,6 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, sleepTimer(0)
 	, stock()
 {
-	chain = {
-		{ int16(Command::WAIT), int32(0)},
-		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::JUMP), int32(0)}
-	};
 }
 bool	Vehicle::inRoute() const { return routeID != -1; }
 Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
@@ -111,6 +92,40 @@ void Group::update()
 {
 	for (auto& v : vehicles)
 	{
+		if (v.chain.isEmpty())
+		{
+			auto r = v.getNowUrban().getRoutes().choice();
+			v.chain = {
+				{ int16(Command::WAIT), int32(0) },
+				{ int16(Command::MOVE), r->destinationUrbanID },
+				{ int16(Command::SELL), 100 },
+				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::MOVE), r->originUrbanID },
+				{ int16(Command::SELL), 100 },
+				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::JUMP), int32(0) },
+			};
+			/*
+			v.chain = {
+				{ int16(Command::WAIT), int32(0) },
+				{ int16(Command::MOVE), urbans.choice().id },
+				{ int16(Command::SELL), 100 },
+				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::MOVE), urbans.choice().id },
+				{ int16(Command::SELL), 100 },
+				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::MOVE), urbans.choice().id },
+				{ int16(Command::SELL), 100 },
+				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::MOVE), urbans.choice().id },
+				{ int16(Command::SELL), 100 },
+				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::MOVE), urbans.choice().id },
+				{ int16(Command::SELL), 100 },
+				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::JUMP), int32(0) }
+			};*/
+		}
 		double actionTime = timeSpeed;
 
 		for (;;)
@@ -149,7 +164,7 @@ void Group::update()
 				//スクリプトの実行
 				for (;;)
 				{
-					if (v.progress >= int(v.chain.size()) || v.sleepTimer > 0) break;
+					if (v.progress >= int(v.chain.size()) || v.inRoute() || v.sleepTimer > 0) break;
 					switch (Command(v.chain[v.progress].first))
 					{
 					case Command::MOVE:	//都市へ移動
@@ -165,8 +180,6 @@ void Group::update()
 							}
 						}
 						++v.progress;
-
-						if (v.inRoute()) break;	//ルートが決まった場合
 					}
 					break;
 
@@ -178,7 +191,7 @@ void Group::update()
 
 					case Command::WAIT: //ウェイト命令
 					{
-						v.sleepTimer += 1.0;
+						v.sleepTimer += 1;
 						++v.progress;
 					}
 					break;
