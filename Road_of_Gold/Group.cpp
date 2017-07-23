@@ -66,6 +66,14 @@ void Vehicle::update()
 				case 0:	//“ss‚ÖˆÚ“®
 				{
 					Urban& targetUrban = urbans[chain[progress].second];
+					for (auto& r : getNowUrban().getRoutes())
+					{
+						if (r->destinationUrbanID == targetUrban.id)
+						{
+							routeID = r->id;
+							break;
+						}
+					}
 					break;
 				}
 				default:
