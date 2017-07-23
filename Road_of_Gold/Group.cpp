@@ -11,6 +11,7 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, routeProgress(0.0)
 	, progress(0)
 	, sleepTimer(0)
+	, stock()
 {
 	chain = {
 		{ int16(2), int32(0)},
@@ -76,6 +77,10 @@ void	Vehicle::draw() const
 				break;
 			}
 		}
+	}
+	else
+	{
+		Triangle(-0.02, -0.03, 0.02, -0.03, 0.0, 0.0).movedBy(getMPos()).draw(color);
 	}
 }
 
@@ -162,8 +167,14 @@ void Vehicle::update()
 
 				case 3: //w”ƒ–½—ß
 				{
-					const int numBuy = Min(10,getNowUrban().baskets[chain[progress].second].getNumItem());
-					if (numBuy > 0) getNowUrban().baskets[chain[progress].second].buyItem(numBuy);
+					if (stock.num == 0)
+					{
+						const int itemType = chain[progress].second;
+						const int numBuy = Min(10, getNowUrban().baskets[chain[progress].second].getNumItem());
+						if (numBuy > 0) getNowUrban().baskets[itemType].buyItem(numBuy);
+						stock.num = numBuy;
+						stock.itemType = itemType;
+					}
 					++progress;
 				}
 				break;

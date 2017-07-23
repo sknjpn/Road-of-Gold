@@ -4,8 +4,19 @@
 struct Route;
 struct Urban;
 
+struct Stock
+{
+	Stock() 
+		: itemType(0)
+		, num(0) 
+	{}
+	int		itemType;
+	int		num;
+};
+
 struct Vehicle
 {
+	Stock	stock;
 	int		nowUrbanID;
 	int		routeID;
 	double	routeProgress;
