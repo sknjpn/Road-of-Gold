@@ -99,7 +99,7 @@ void Group::update()
 				{ int16(Command::MOVE), r->destinationUrbanID },
 				{ int16(Command::BUY), iData.choice().id },
 				{ int16(Command::MOVE), r->originUrbanID },
-				{ int16(Command::SELL), 1000 },
+				{ int16(Command::SELL), 10 },
 				{ int16(Command::JUMP), int32(0) },
 			};
 			/*
@@ -203,7 +203,6 @@ void Group::update()
 							v.stock.num = numBuy;
 							v.stock.itemType = itemType;
 						}
-						++v.progress;
 					}
 					break;
 
@@ -214,7 +213,9 @@ void Group::update()
 							v.getNowUrban().baskets[v.stock.itemType].addRing(v.chain[v.progress].second, v.stock.num, this);
 							v.stock.num = 0;
 						}
+						++v.progress;
 					}
+					break;
 
 					default://ë∂ç›ÇµÇ»Ç¢ñΩóﬂ
 					{
