@@ -74,11 +74,22 @@ void Vehicle::update()
 							break;
 						}
 					}
-					break;
-				}
-				default:
 					++progress;
-					break;
+				}
+				break;
+
+				case 1:	//アドレスジャンプ命令
+				{
+					progress = chain[progress].second;
+				}
+				break;
+
+				default://存在しない命令
+				{
+					++progress;
+				}
+				break;
+
 				}
 			}
 		}
