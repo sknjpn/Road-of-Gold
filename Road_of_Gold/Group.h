@@ -9,6 +9,9 @@ struct Vehicle
 	int		routeID;
 	double	routeProgress;
 
+	int		progress;
+	Array<std::pair<int16, int32>> chain;
+
 	Vehicle(int _nowUrbanID);
 	Urban&	getNowUrban() const;
 	Route&	getRoute() const;

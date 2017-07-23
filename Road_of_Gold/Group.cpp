@@ -8,6 +8,7 @@ Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
+	, progress(0)
 {}
 bool	Vehicle::inRoute() const { return routeID != -1; }
 Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
@@ -55,6 +56,23 @@ void Vehicle::update()
 		{
 			nowUrbanID = getRoute().destinationUrbanID;
 			routeID = -1;
+
+			//スクリプトの実行
+			for (;;)
+			{
+				if (progress < int(chain.size())) break;
+				switch (chain[progress].first)
+				{
+				case 0:	//都市へ移動
+				{
+					Urban& targetUrban = urbans[chain[progress].second];
+					break;
+				}
+				default:
+					++progress;
+					break;
+				}
+			}
 		}
 	}
 	else
