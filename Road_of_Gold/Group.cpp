@@ -96,13 +96,10 @@ void Group::update()
 		{
 			auto r = v.getNowUrban().getRoutes().choice();
 			v.chain = {
-				{ int16(Command::WAIT), int32(0) },
 				{ int16(Command::MOVE), r->destinationUrbanID },
-				{ int16(Command::SELL), 100 },
 				{ int16(Command::BUY), iData.choice().id },
 				{ int16(Command::MOVE), r->originUrbanID },
-				{ int16(Command::SELL), 100 },
-				{ int16(Command::BUY), iData.choice().id },
+				{ int16(Command::SELL), 1000 },
 				{ int16(Command::JUMP), int32(0) },
 			};
 			/*
@@ -201,7 +198,7 @@ void Group::update()
 						if (v.stock.num == 0)
 						{
 							const int itemType = v.chain[v.progress].second;
-							const int numBuy = Min(10, v.getNowUrban().baskets[v.chain[v.progress].second].getNumItem());
+							const int numBuy = Min(100, v.getNowUrban().baskets[v.chain[v.progress].second].getNumItem());
 							if (numBuy > 0) v.getNowUrban().baskets[itemType].buyItem(numBuy);
 							v.stock.num = numBuy;
 							v.stock.itemType = itemType;
