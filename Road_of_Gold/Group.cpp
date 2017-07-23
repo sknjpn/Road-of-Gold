@@ -15,6 +15,12 @@ Vehicle::Vehicle(int _nowUrbanID)
 		{ int16(0), Random(int32(urbans.size() - 1)) },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
 		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
 		{ int16(1), int32(0)}
 	};
 }
@@ -116,6 +122,12 @@ void Vehicle::update()
 			case 1:	//アドレスジャンプ命令
 			{
 				progress = chain[progress].second;
+			}
+			break;
+
+			case 2: //ウェイト命令
+			{
+
 			}
 			break;
 
