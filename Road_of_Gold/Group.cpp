@@ -5,6 +5,14 @@
 #include"GlobalVariables.h"
 #include"JSON.h"
 
+enum struct Command {
+	MOVE,	//“sŽs‚ÉˆÚ“®
+	JUMP,	//ŽÀsˆÊ’u‚Ì•ÏX
+	WAIT,	//ŽÀs‹xŽ~
+	BUY,	//w“ü
+	SELL,	//”Ì”„
+};
+
 Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
 	, routeID(-1)
@@ -14,23 +22,23 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, stock()
 {
 	chain = {
-		{ int16(2), int32(0)},
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(4), 0 },
-		{ int16(3), iData.choice().id },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(4), 0 },
-		{ int16(3), iData.choice().id },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(4), 0 },
-		{ int16(3), iData.choice().id },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(4), 0 },
-		{ int16(3), iData.choice().id },
-		{ int16(0), Random(int32(urbans.size() - 1)) },
-		{ int16(4), 0 },
-		{ int16(3), iData.choice().id },
-		{ int16(1), int32(0)}
+		{ int16(Command::WAIT), int32(0)},
+		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
+		{ int16(Command::SELL), 100 },
+		{ int16(Command::BUY), iData.choice().id },
+		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
+		{ int16(Command::SELL), 100 },
+		{ int16(Command::BUY), iData.choice().id },
+		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
+		{ int16(Command::SELL), 100 },
+		{ int16(Command::BUY), iData.choice().id },
+		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
+		{ int16(Command::SELL), 100 },
+		{ int16(Command::BUY), iData.choice().id },
+		{ int16(Command::MOVE), Random(int32(urbans.size() - 1)) },
+		{ int16(Command::SELL), 100 },
+		{ int16(Command::BUY), iData.choice().id },
+		{ int16(Command::JUMP), int32(0)}
 	};
 }
 bool	Vehicle::inRoute() const { return routeID != -1; }
@@ -107,9 +115,10 @@ void Group::update()
 
 		for (;;)
 		{
-			if (v.inRoute())
+			if (actionTime == 0) break;
+			else if (v.inRoute())
 			{
-				if (actionTime > v.getRoute().totalLength - v.routeProgress)
+				if (actionTime >= v.getRoute().totalLength - v.routeProgress)
 				{
 					actionTime -= v.getRoute().totalLength - v.routeProgress;
 					v.nowUrbanID = v.getRoute().destinationUrbanID;
@@ -119,8 +128,7 @@ void Group::update()
 				else
 				{
 					v.routeProgress += actionTime;
-					actionTime = 0.0;
-					return;
+					actionTime = 0;
 				}
 			}
 			else if (v.sleepTimer > 0)
@@ -134,7 +142,6 @@ void Group::update()
 				{
 					v.sleepTimer -= actionTime;
 					actionTime = 0;
-					break;
 				}
 			}
 			else
@@ -143,9 +150,9 @@ void Group::update()
 				for (;;)
 				{
 					if (v.progress >= int(v.chain.size()) || v.sleepTimer > 0) break;
-					switch (v.chain[v.progress].first)
+					switch (Command(v.chain[v.progress].first))
 					{
-					case 0:	//“sŽs‚ÖˆÚ“®
+					case Command::MOVE:	//“sŽs‚ÖˆÚ“®
 					{
 						Urban& targetUrban = urbans[v.chain[v.progress].second];
 						for (auto& r : v.getNowUrban().getRoutes())
@@ -163,20 +170,20 @@ void Group::update()
 					}
 					break;
 
-					case 1:	//ƒAƒhƒŒƒXƒWƒƒƒ“ƒv–½—ß
+					case Command::JUMP:	//ƒAƒhƒŒƒXƒWƒƒƒ“ƒv–½—ß
 					{
 						v.progress = v.chain[v.progress].second;
 					}
 					break;
 
-					case 2: //ƒEƒFƒCƒg–½—ß
+					case Command::WAIT: //ƒEƒFƒCƒg–½—ß
 					{
 						v.sleepTimer += 1.0;
 						++v.progress;
 					}
 					break;
 
-					case 3: //w”ƒ–½—ß
+					case Command::BUY: //w”ƒ–½—ß
 					{
 						if (v.stock.num == 0)
 						{
@@ -190,11 +197,11 @@ void Group::update()
 					}
 					break;
 
-					case 4:	//”Ì”„–½—ß
+					case Command::SELL:	//”Ì”„–½—ß
 					{
 						if (v.stock.num > 0)
 						{
-							v.getNowUrban().baskets[v.stock.itemType].addRing(10000, v.stock.num, this);
+							v.getNowUrban().baskets[v.stock.itemType].addRing(v.chain[v.progress].second, v.stock.num, this);
 							v.stock.num = 0;
 						}
 					}
