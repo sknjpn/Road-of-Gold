@@ -11,9 +11,11 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, progress(0)
 {
 	chain = {
-		{ 0, Random(int(urbans.size() - 1)) },
-		{ 0, Random(int(urbans.size() - 1)) },
-		{ 1, 0}
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(0), Random(int32(urbans.size() - 1)) },
+		{ int16(1), int32(0)}
 	};
 }
 bool	Vehicle::inRoute() const { return routeID != -1; }
