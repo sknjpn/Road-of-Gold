@@ -86,64 +86,88 @@ Group::Group()
 {}
 void Vehicle::update()
 {
-	if (inRoute())
+	double actionTime = timeSpeed;
+
+	for (;;)
 	{
-		routeProgress += timeSpeed;
-		if (routeProgress >= getRoute().totalLength)
+		if (inRoute())
 		{
-			nowUrbanID = getRoute().destinationUrbanID;
-			routeID = -1;
+			if (actionTime > getRoute().totalLength - routeProgress)
+			{
+				actionTime -= getRoute().totalLength - routeProgress;
+				nowUrbanID = getRoute().destinationUrbanID;
+				routeProgress = 0.0;
+				routeID = -1;
+			}
+			else
+			{
+				routeProgress += actionTime;
+				actionTime = 0.0;
+				return;
+			}
 		}
-	}
-	else
-	{
-		//スクリプトの実行
-		for (;;)
+		else if (sleepTimer > 0)
 		{
-			if (progress >= int(chain.size()) || sleepTimer > 0) break;
-			switch (chain[progress].first)
+			if (actionTime > sleepTimer)
 			{
-			case 0:	//都市へ移動
+				actionTime -= sleepTimer;
+				sleepTimer = 0;
+			}
+			else
 			{
-				Urban& targetUrban = urbans[chain[progress].second];
-				for (auto& r : getNowUrban().getRoutes())
+				sleepTimer -= actionTime;
+				actionTime = 0;
+				break;
+			}
+		}
+		else
+		{
+			//スクリプトの実行
+			for (;;)
+			{
+				if (progress >= int(chain.size()) || sleepTimer > 0) break;
+				switch (chain[progress].first)
 				{
-					if (r->destinationUrbanID == targetUrban.id)
+				case 0:	//都市へ移動
+				{
+					Urban& targetUrban = urbans[chain[progress].second];
+					for (auto& r : getNowUrban().getRoutes())
 					{
-						routeProgress = 0.0;
-						routeID = r->id;
-						break;
+						if (r->destinationUrbanID == targetUrban.id)
+						{
+							routeProgress = 0.0;
+							routeID = r->id;
+							break;
+						}
 					}
+					++progress;
+
+					if (inRoute()) break;	//ルートが決まった場合
 				}
-				++progress;
+				break;
 
-				if (inRoute()) break;	//ルートが決まった場合
-			}
-			break;
+				case 1:	//アドレスジャンプ命令
+				{
+					progress = chain[progress].second;
+				}
+				break;
 
-			case 1:	//アドレスジャンプ命令
-			{
-				progress = chain[progress].second;
-			}
-			break;
+				case 2: //ウェイト命令
+				{
+					sleepTimer += 1.0;
+					++progress;
+				}
+				break;
 
-			case 2: //ウェイト命令
-			{
-				sleepTimer += 1.0;
-				++progress;
-			}
-			break;
+				default://存在しない命令
+				{
+					++progress;
+				}
+				break;
 
-			default://存在しない命令
-			{
-				++progress;
-			}
-			break;
-
+				}
 			}
 		}
-
-		if (sleepTimer > 0) sleepTimer -= timeSpeed;
 	}
 }
 
