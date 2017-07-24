@@ -118,16 +118,16 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 
 		n1->isInQueue = false;
 
-		for (auto& r : urbans[n1->ownUrbanID].getRoutes())
+		for (auto& rID : urbans[n1->ownUrbanID].routeIDs)
 		{
-			auto& n2 = nodes[r->getDestinationUrban().joinedNodeID];
+			auto& n2 = nodes[routes[rID].getDestinationUrban().joinedNodeID];
 
-			if (!n2.isScaned || n2.cost > n1->cost + r->totalLength)
+			if (!n2.isScaned || n2.cost > n1->cost + routes[rID].totalLength)
 			{
 				if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
 				n2.isScaned = true;
 				n2.isInQueue = true;
-				n2.cost = n1->cost + r->totalLength;
+				n2.cost = n1->cost + routes[rID].totalLength;
 				n2.fromNodeID = n1->id;
 			}
 		}
@@ -138,11 +138,11 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 		auto* n = &nodes[joinedNodeID];
 		for (;;)
 		{
-			for (auto& r : urbans[n->ownUrbanID].getRoutes())
+			for (auto& rID : urbans[n->ownUrbanID].routeIDs)
 			{
-				if (n->fromNodeID == r->getDestinationUrban().joinedNodeID)
+				if (n->fromNodeID == routes[rID].getDestinationUrban().joinedNodeID)
 				{
-					rs.emplace_back(r);
+					rs.emplace_back(&routes[rID]);
 					n = &nodes[n->fromNodeID];
 					break;
 				}

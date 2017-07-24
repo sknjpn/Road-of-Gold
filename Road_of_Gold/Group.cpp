@@ -188,12 +188,12 @@ void Group::update()
 					case Command::MOVE:	//“sŽs‚ÖˆÚ“®
 					{
 						Urban& targetUrban = urbans[v.chain[v.progress].second];
-						for (auto& r : v.getNowUrban().getRoutes())
+						for (auto& rID : v.getNowUrban().routeIDs)
 						{
-							if (r->destinationUrbanID == targetUrban.id)
+							if (routes[rID].destinationUrbanID == targetUrban.id)
 							{
 								v.routeProgress = 0.0;
-								v.routeID = r->id;
+								v.routeID = routes[rID].id;
 								break;
 							}
 						}
