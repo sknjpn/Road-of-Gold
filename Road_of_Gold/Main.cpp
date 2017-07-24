@@ -83,27 +83,26 @@ void Main()
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 
-
-		if (MouseL.down() && (selectedUrban == nullptr || !Rect(32, 32, 320, 640).mouseOver()))
+		if (MouseL.down() && !Rect(32, 32, 320, 640).mouseOver())
 		{
 			selectedUrban = nullptr;
+			selectedVehicle = nullptr;
+			tinyCamera2D.gazePoint = none;
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
 				for (auto& u : urbans)
 					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
-		}
-		if (MouseL.down() && (selectedVehicle == nullptr || !Rect(32, 32, 320, 640).mouseOver()))
-		{
-			selectedVehicle = nullptr;
-			tinyCamera2D.gazePoint = none;
-			for (int i = 0; i < 2; i++)
+			if (selectedUrban == nullptr)
 			{
-				const auto t1 = tinyCamera2D.createTransformer(i);
-				for (auto& g : groups)
-					for(auto& v : g.vehicles)
-					if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+				for (int i = 0; i < 2; i++)
+				{
+					const auto t1 = tinyCamera2D.createTransformer(i);
+					for (auto& g : groups)
+						for (auto& v : g.vehicles)
+							if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+				}
 			}
 		}
 		if (selectedVehicle != nullptr) tinyCamera2D.gazePoint = Pos(selectedVehicle->getMPos());
