@@ -7,7 +7,7 @@
 #include"GlobalVariables.h"
 
 double timeSpeed = 0.01;
-double worldTimer = 0.0;
+double worldTimer = 0;
 int selectedBasket = 0;
 int selectedCitizen = 0;
 Vehicle* selectedVehicle = nullptr;
@@ -149,7 +149,7 @@ void Main()
 		if (selectedVehicle != nullptr)
 		{
 			const Array<String> commandText = {
-				L"MOVE",L"JUMP",L"WAIT",L"BUY",L"SELL",L"none"
+				L"MOVE", L"JUMP", L"WAIT", L"BUY", L"SELL", L"none"
 			};
 			String text;
 			const Color fColor = Palette::Skyblue;
@@ -196,9 +196,9 @@ void Main()
 				const Rect rect(32, 64 + 32 + 24 * i, 320, 24);
 				if (i == selectedVehicle->progress) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
-				Rect(rect.pos, 64, 24).drawFrame(2, fColor);
+				Rect(rect.pos, 56, 24).drawFrame(2, fColor);
 				font16(commandText[command]).draw(rect.pos.movedBy(4, 0), Palette::White);
-				font16(text).draw(rect.pos.movedBy(68, 0), Palette::White);
+				font16(text).draw(rect.pos.movedBy(64, 0), Palette::White);
 			}
 		}
 		if (selectedUrban != nullptr)
@@ -222,7 +222,7 @@ void Main()
 
 			//メニュー選択
 			{
-				const Array<String> ns = { L"💹",L"👪",L"📰",L"🚢", };
+				const Array<String> ns = { L"💹", L"👪", L"📰", L"🚢" };
 				const Array<DrawingType> ts = { DrawingType::Market,DrawingType::Towner,DrawingType::News,DrawingType::Vehicle, };
 				for (int i = 0; i<int(ns.size()); i++)
 				{
