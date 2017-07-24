@@ -89,6 +89,7 @@ void Main()
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 
+		//オブジェクトの選択
 		if (MouseL.down() && ((selectedVehicle == nullptr && selectedUrban == nullptr) || !Rect(32, 32, 320, 640).mouseOver()))
 		{
 			selectedUrban = nullptr;
@@ -110,6 +111,8 @@ void Main()
 				}
 			}
 		}
+
+		//Vehicleに注視点を設定
 		if (selectedVehicle != nullptr) tinyCamera2D.gazePoint = Pos(selectedVehicle->getMPos());
 
 		{

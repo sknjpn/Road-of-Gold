@@ -103,35 +103,6 @@ void Vehicle::update()
 
 			chain.push_back({ int16(Command::JUMP), int32(0) });
 		}
-		/*
-		auto r = getNowUrban().getRoutes().choice();
-		chain = {
-		//{ int16(Command::WAIT), int32(0) },
-		{ int16(Command::MOVE), r->destinationUrbanID },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), r->originUrbanID },
-		{ int16(Command::SELL), 10 },
-		{ int16(Command::JUMP), int32(0) },
-		};
-		chain = {
-		{ int16(Command::WAIT), int32(0) },
-		{ int16(Command::MOVE), urbans.choice().id },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), urbans.choice().id },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), urbans.choice().id },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), urbans.choice().id },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::MOVE), urbans.choice().id },
-		{ int16(Command::SELL), 100 },
-		{ int16(Command::BUY), iData.choice().id },
-		{ int16(Command::JUMP), int32(0) }
-		};*/
 	}
 	double actionTime = timeSpeed;
 
