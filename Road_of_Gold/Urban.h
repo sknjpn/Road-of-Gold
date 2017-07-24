@@ -72,6 +72,7 @@ struct Urban
 	Pos&	getPos() const;
 	String	getTimeAsString() const;
 	Array<Route*>	getRoutes() const;
+	Array<Route*>	getRoutesToUrban(int _urbanID) const;
 
 };
 extern Urban*			selectedUrban;
