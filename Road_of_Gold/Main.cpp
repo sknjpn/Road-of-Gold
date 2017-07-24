@@ -74,6 +74,10 @@ void Main()
 			u.update();
 
 		//Vehicleの更新
+		for (auto& v : vehicles)
+			v.update();
+
+		//Groupの更新
 		for (auto& g : groups)
 			g.update();
 
@@ -101,9 +105,8 @@ void Main()
 				for (int i = 0; i < 2; i++)
 				{
 					const auto t1 = tinyCamera2D.createTransformer(i);
-					for (auto& g : groups)
-						for (auto& v : g.vehicles)
-							if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+					for (auto& v : vehicles)
+						if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
 				}
 			}
 		}
@@ -128,9 +131,8 @@ void Main()
 					if (r.isSeaRoute) r.draw(Palette::Red);
 
 			//Vehicle
-			for (const auto& g : groups)
-				for (const auto& v : g.vehicles)
-					v.draw();
+			for (auto& v : vehicles)
+				v.draw();
 			//Urban
 			for (const auto& u : urbans) u.draw();
 

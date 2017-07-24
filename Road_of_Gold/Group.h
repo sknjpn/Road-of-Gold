@@ -50,7 +50,6 @@ struct Group
 	int		id;
 	int		money;
 	String	name;
-	Array<Vehicle> vehicles;
 
 	Group();
 	void	update();
