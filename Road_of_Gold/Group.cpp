@@ -12,8 +12,7 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, progress(0)
 	, sleepTimer(0)
 	, stock()
-{
-}
+{}
 bool	Vehicle::inRoute() const { return routeID != -1; }
 Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
 Route&	Vehicle::getRoute() const { return routes[routeID]; }
@@ -214,9 +213,13 @@ void Group::update()
 						{
 							const int itemType = v.chain[v.progress].second;
 							const int numBuy = Min(10, v.getNowUrban().baskets[v.chain[v.progress].second].getNumItem());
-							if (numBuy > 0) v.getNowUrban().baskets[itemType].buyItem(numBuy);
-							v.stock.num = numBuy;
-							v.stock.itemType = itemType;
+							if (numBuy > 0)
+							{
+								money -= v.getNowUrban().baskets[v.chain[v.progress].second].getCost(numBuy);
+								v.getNowUrban().baskets[itemType].buyItem(numBuy);
+								v.stock.num = numBuy;
+								v.stock.itemType = itemType;
+							}
 						}
 						v.sleepTimer = 0.1;
 						//++v.progress;

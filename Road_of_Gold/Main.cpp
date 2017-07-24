@@ -148,6 +148,9 @@ void Main()
 		//Interface
 		if (selectedVehicle != nullptr)
 		{
+			const Array<String> commandText = {
+				L"MOVE",L"JUMP",L"WAIT",L"BUY",L"SELL",L"none"
+			};
 			String text;
 			const Color fColor = Palette::Skyblue;
 			const Color bColor = Color(Palette::Darkcyan, 192);
@@ -159,28 +162,30 @@ void Main()
 				switch (Command(command))
 				{
 				case Command::MOVE:
-					text = Format(L"MOVE:", urbans[data].name,L"に移動");
+					text = Format(urbans[data].name, L"に移動");
 					break;
 				case Command::JUMP:
-					text = Format(L"JUMP:", data, L"番地にジャンプ");
+					text = Format(data, L"番地にジャンプ");
 					break;
 				case Command::WAIT:
-					text = Format(L"WAIT:1日休止");
+					text = Format(L"1日休止");
 					break;
 				case Command::BUY:
-					text = Format(L"BUY :", iData[data].name, L"を購入");
+					text = Format(iData[data].name, L"を購入");
 					break;
 				case Command::SELL:
-					text = Format(L"SELL:保有する商品の売却");
+					text = Format(L"保有する商品の売却");
 					break;
 				default:
-					text = Format(L"none:存在しない命令");
+					text = Format(L"存在しない命令");
 					break;
 				}
 				const Rect rect(32, 32 + 24 * i, 320, 24);
 				if (i == selectedVehicle->progress) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
-				font16(text).draw(rect.pos, Palette::White);
+				Rect(rect.pos, 64, 24).drawFrame(2, fColor);
+				font16(commandText[command]).draw(rect.pos.movedBy(4, 0), Palette::White);
+				font16(text).draw(rect.pos.movedBy(68, 0), Palette::White);
 			}
 		}
 		if (selectedUrban != nullptr)
