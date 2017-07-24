@@ -36,6 +36,7 @@ struct Vehicle
 
 struct Group
 {
+	Color	color;
 	int		id;
 	int		money;
 	String	name;

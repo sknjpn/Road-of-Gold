@@ -17,5 +17,6 @@ void	Planet::makeGroupsRandom()
 		auto& g = groups.back();
 		auto& u = urbans[Random(int(urbans.size() - 1))];
 		for (int i = 0; i < 30; i++) g.vehicles.emplace_back(u.id);
+		for (auto& v : g.vehicles) v.color = g.color;
 	}
 }

@@ -83,6 +83,7 @@ Group::Group()
 	: id(int(groups.size()))
 	, name(L"hoge")
 	, money(0)
+	, color(RandomColor())
 {}
 void Vehicle::update()
 {
