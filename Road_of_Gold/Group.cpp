@@ -12,6 +12,7 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, progress(0)
 	, sleepTimer(0)
 	, stock()
+	, joinedGroupID(-1)
 {}
 bool	Vehicle::inRoute() const { return routeID != -1; }
 Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
@@ -72,7 +73,7 @@ void	Vehicle::draw() const
 Array<Group> groups;
 Group::Group()
 	: id(int(groups.size()))
-	, name(L"hoge")
+	, name(Format(L"‘æ", id, L"–¼–³‚µ¤‰ï"))
 	, money(0)
 	, color(RandomColor())
 {}
@@ -93,14 +94,14 @@ void Group::update()
 				for (auto& r : u1.getRoutesToUrban(u2.id))
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
-				v.chain.push_back({ int16(Command::SELL), int32(0) });
+				v.chain.push_back({ int16(Command::SELL), int32(1000) });
 				v.chain.push_back({ int16(Command::BUY), iData.choice().id });
 				v.chain.push_back({ int16(Command::WAIT), int32(0) });
 
 				for (auto& r : u2.getRoutesToUrban(u1.id))
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
-				v.chain.push_back({ int16(Command::SELL), int32(0) });
+				v.chain.push_back({ int16(Command::SELL), int32(1000) });
 				v.chain.push_back({ int16(Command::BUY), iData.choice().id });
 				v.chain.push_back({ int16(Command::WAIT), int32(0) });
 

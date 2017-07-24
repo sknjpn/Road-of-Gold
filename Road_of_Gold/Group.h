@@ -25,6 +25,7 @@ struct Stock
 
 struct Vehicle
 {
+	int		joinedGroupID;
 	Stock	stock;
 	int		nowUrbanID;
 	int		routeID;

@@ -155,6 +155,19 @@ void Main()
 			const Color fColor = Palette::Skyblue;
 			const Color bColor = Color(Palette::Darkcyan, 192);
 			Rect(32, 32, 320, 660).draw(bColor).drawFrame(2, fColor);
+			{
+				const Rect rect(32, 32, 320, 24);
+				rect.drawFrame(2, fColor);
+				font16(groups[selectedVehicle->joinedGroupID].name, L" 所属交易船").draw(rect.pos.movedBy(4, 0), Palette::White);
+			}
+			{
+				const Rect rect(32, 56, 320, 24);
+				rect.drawFrame(2, fColor);
+				font16(L"資本金", groups[selectedVehicle->joinedGroupID].money, L"G").draw(rect.pos.movedBy(4, 0), Palette::White);
+			}
+			{
+
+			}
 			for (auto i : step(int(selectedVehicle->chain.size())))
 			{
 				const int command = selectedVehicle->chain[i].first;
@@ -180,7 +193,7 @@ void Main()
 					text = Format(L"存在しない命令");
 					break;
 				}
-				const Rect rect(32, 32 + 24 * i, 320, 24);
+				const Rect rect(32, 64 + 32 + 24 * i, 320, 24);
 				if (i == selectedVehicle->progress) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
 				Rect(rect.pos, 64, 24).drawFrame(2, fColor);
