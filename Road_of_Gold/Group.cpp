@@ -99,20 +99,22 @@ void Group::update()
 			auto& u2 = urbans.choice();
 			if (&u1 != &u2)
 			{
-				v.chain.push_back({ int16(Command::WAIT), int32(0) });
+				//v.chain.push_back({ int16(Command::WAIT), int32(0) });
 				for (auto& r : u1.getRoutesToUrban(u2.id))
 				{
 					Log(r->destinationUrbanID);
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 				}
+				v.chain.push_back({ int16(Command::BUY), iData.choice().id });
 				for (auto& r : u2.getRoutesToUrban(u1.id))
 				{
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 				}
+				v.chain.push_back({ int16(Command::SELL), int32(0) });
 				v.chain.push_back({ int16(Command::JUMP), int32(0) });
 			}
-			auto r = v.getNowUrban().getRoutes().choice();
 			/*
+			auto r = v.getNowUrban().getRoutes().choice();
 			v.chain = {
 				//{ int16(Command::WAIT), int32(0) },
 				{ int16(Command::MOVE), r->destinationUrbanID },
