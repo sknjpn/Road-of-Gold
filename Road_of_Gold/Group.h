@@ -1,6 +1,15 @@
 #pragma once
 #include"Pos.h"
 
+
+enum struct Command {
+	MOVE,	//“ss‚ÉˆÚ“®
+	JUMP,	//ÀsˆÊ’u‚Ì•ÏX
+	WAIT,	//Às‹x~
+	BUY,	//w“ü
+	SELL,	//”Ì”„
+};
+
 struct Route;
 struct Urban;
 

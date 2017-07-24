@@ -146,6 +146,43 @@ void Main()
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 		}*/
 		//Interface
+		if (selectedVehicle != nullptr)
+		{
+			String text;
+			const Color fColor = Palette::Skyblue;
+			const Color bColor = Color(Palette::Darkcyan, 192);
+			Rect(32, 32, 320, 660).draw(bColor).drawFrame(2, fColor);
+			for (auto i : step(int(selectedVehicle->chain.size())))
+			{
+				const int command = selectedVehicle->chain[i].first;
+				const int data = selectedVehicle->chain[i].second;
+				switch (Command(command))
+				{
+				case Command::MOVE:
+					text = Format(L"MOVE:", urbans[data].name);
+					break;
+				case Command::JUMP:
+					text = Format(L"JUMP:", data, L"番地にジャンプ");
+					break;
+				case Command::WAIT:
+					text = Format(L"WAIT:1日休止");
+					break;
+				case Command::BUY:
+					text = Format(L"BUY :", iData[data].name, L"を購入");
+					break;
+				case Command::SELL:
+					text = Format(L"SELL:保有する商品の売却");
+					break;
+				default:
+					text = Format(L"none:存在しない命令");
+					break;
+				}
+				const Rect rect(32, 32 + 24 * i, 320, 24);
+				if (i == selectedVehicle->progress) rect.draw(Color(Palette::Orange, 192));
+				rect.drawFrame(2, fColor);
+				font16(text).draw(rect.pos, Palette::White);
+			}
+		}
 		if (selectedUrban != nullptr)
 		{
 			const Color fColor = Palette::Skyblue;

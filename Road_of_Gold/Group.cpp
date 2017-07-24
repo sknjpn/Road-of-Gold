@@ -5,14 +5,6 @@
 #include"GlobalVariables.h"
 #include"JSON.h"
 
-enum struct Command {
-	MOVE,	//“ss‚ÉˆÚ“®
-	JUMP,	//ÀsˆÊ’u‚Ì•ÏX
-	WAIT,	//Às‹x~
-	BUY,	//w“ü
-	SELL,	//”Ì”„
-};
-
 Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
 	, routeID(-1)
