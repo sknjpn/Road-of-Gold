@@ -139,10 +139,9 @@ void Vehicle::update()
 				actionTime = 0;
 			}
 		}
-		else
+		else if (progress < int(chain.size()))
 		{
 			//スクリプトの実行
-			if (progress >= int(chain.size())) break;
 			for (;;)
 			{
 				if (inRoute() || sleepTimer > 0) break;
@@ -202,6 +201,7 @@ void Vehicle::update()
 				}
 			}
 		}
+		else break;
 	}
 
 }
