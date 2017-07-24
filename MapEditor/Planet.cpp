@@ -4,10 +4,7 @@
 #include"JSON.h"
 
 Planet::Planet()
-	: drawingRegion(-Pi, -HalfPi, TwoPi, Pi)
-	, smoothDrawingRegion(drawingRegion)
-	, mapTexture()
-	, gazePoint(none)
+	: mapTexture()
 {}
 
 void	Planet::updateImage(Array<Node*> _nodeList)
