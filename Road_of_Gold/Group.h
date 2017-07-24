@@ -42,6 +42,7 @@ struct Vehicle
 	void	draw() const;
 	bool	inRoute() const;
 };
+extern Array<Vehicle> vehicles;
 
 struct Group
 {

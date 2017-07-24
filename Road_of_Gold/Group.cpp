@@ -5,6 +5,8 @@
 #include"GlobalVariables.h"
 #include"JSON.h"
 
+Array<Vehicle> vehicles;
+
 Vehicle::Vehicle(int _nowUrbanID)
 	: nowUrbanID(_nowUrbanID)
 	, routeID(-1)
