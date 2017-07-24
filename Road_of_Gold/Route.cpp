@@ -131,7 +131,7 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 
 	if (nodes[joinedNodeID].fromNodeID != -1)
 	{
-		auto* n = &nodes[ut.joinedNodeID];
+		auto* n = &nodes[joinedNodeID];
 		for (;;)
 		{
 			for (auto& r : urbans[n->ownUrbanID].getRoutes())
@@ -155,4 +155,5 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 		n->isScaned = false;
 		n->fromNodeID = -1;
 	}
+	return rs;
 }

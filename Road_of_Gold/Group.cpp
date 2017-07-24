@@ -94,7 +94,24 @@ void Group::update()
 	{
 		if (v.chain.isEmpty())
 		{
+			auto& u1 = v.getNowUrban();
+			auto& u2 = urbans.choice();
+			if (&u1 != &u2)
+			{
+				v.chain.push_back({ int16(Command::WAIT), int32(0) });
+				for (auto& r : u1.getRoutesToUrban(u2.id))
+				{
+					Log(r->destinationUrbanID);
+					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
+				}
+				for (auto& r : u2.getRoutesToUrban(u1.id))
+				{
+					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
+				}
+				v.chain.push_back({ int16(Command::JUMP), int32(0) });
+			}
 			auto r = v.getNowUrban().getRoutes().choice();
+			/*
 			v.chain = {
 				//{ int16(Command::WAIT), int32(0) },
 				{ int16(Command::MOVE), r->destinationUrbanID },
@@ -103,7 +120,6 @@ void Group::update()
 				{ int16(Command::SELL), 10 },
 				{ int16(Command::JUMP), int32(0) },
 			};
-			/*
 			v.chain = {
 				{ int16(Command::WAIT), int32(0) },
 				{ int16(Command::MOVE), urbans.choice().id },
@@ -160,9 +176,10 @@ void Group::update()
 			else
 			{
 				//スクリプトの実行
+				if (v.progress >= int(v.chain.size())) break;
 				for (;;)
 				{
-					if (v.progress >= int(v.chain.size()) || v.inRoute() || v.sleepTimer > 0) break;
+					if (v.inRoute() || v.sleepTimer > 0) break;
 					switch (Command(v.chain[v.progress].first))
 					{
 					case Command::MOVE:	//都市へ移動
