@@ -31,7 +31,6 @@ struct Vehicle
 	int		routeID;
 	double	routeProgress;
 	double	sleepTimer;
-	Color	color = RandomColor();
 	int32	progress;
 	Array<std::pair<int16, int32>> chain;
 

@@ -52,21 +52,21 @@ void	Vehicle::draw() const
 
 			if (length > p->cost)
 			{
-				line.draw(0.005, Color(color, 64));
+				line.draw(0.005, Color(groups[joinedGroupID].color, 64));
 				length -= p->cost;
 			}
 			else
 			{
 				const auto pos = line.begin.lerp(line.end, length / p->cost);
-				Line(line.begin, pos).draw(0.005, Color(color, 64));
-				shape.movedBy(pos).draw(color).drawFrame(0.005, Palette::Black);
+				Line(line.begin, pos).draw(0.005, Color(groups[joinedGroupID].color, 64));
+				shape.movedBy(pos).draw(groups[joinedGroupID].color).drawFrame(0.005, Palette::Black);
 				break;
 			}
 		}
 	}
 	else
 	{
-		Triangle(-0.02, -0.03, 0.02, -0.03, 0.0, 0.0).movedBy(getMPos()).draw(color);
+		Triangle(-0.02, -0.03, 0.02, -0.03, 0.0, 0.0).movedBy(getMPos()).draw(groups[joinedGroupID].color);
 	}
 }
 
