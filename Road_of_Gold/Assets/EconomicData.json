@@ -28,7 +28,7 @@
     {
       "BiomeName": "TropicalRainforest",
       "BiomeColor": "#1D4928",
-      "BiomeMovingCost": 100.00
+      "BiomeMovingCost": 50.00
     },
     {
       "BiomeName": "Tundra",
