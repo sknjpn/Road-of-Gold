@@ -149,34 +149,26 @@ void Vehicle::update()
 				switch (Command(chain[progress].first))
 				{
 				case Command::MOVE:	//都市へ移動
-				{
-					Urban& targetUrban = urbans[chain[progress].second];
 					for (auto& rID : getNowUrban().routeIDs)
 					{
-						if (routes[rID].destinationUrbanID == targetUrban.id)
+						if (routes[rID].destinationUrbanID == chain[progress].second)
 						{
 							routeProgress = 0.0;
 							routeID = routes[rID].id;
 							break;
 						}
 					}
-				}
-				break;
+					break;
 
 				case Command::JUMP:	//アドレスジャンプ命令
-				{
 					progress = chain[progress].second;
-				}
-				break;
+					break;
 
 				case Command::WAIT: //ウェイト命令
-				{
 					sleepTimer += 1;
-				}
-				break;
+					break;
 
 				case Command::BUY: //購買命令
-				{
 					if (stock.num == 0)
 					{
 						const int itemType = chain[progress].second;
@@ -188,29 +180,24 @@ void Vehicle::update()
 							stock.num = numBuy;
 							stock.itemType = itemType;
 						}
+						sleepTimer = 0.1;
 					}
-					sleepTimer = 0.1;
-					//++progress;
-				}
-				break;
+					else ++progress;
+					break;
 
 				case Command::SELL:	//販売命令
-				{
 					if (stock.num > 0)
 					{
 						getNowUrban().baskets[stock.itemType].addRing(chain[progress].second, stock.num, &groups[joinedGroupID]);
 						stock.num = 0;
+						sleepTimer = 0.1;
 					}
-					sleepTimer = 0.1;
-					//++progress;
-				}
-				break;
+					else ++progress;
+					break;
 
 				default://存在しない命令
-				{
 					++progress;
-				}
-				break;
+					break;
 
 				}
 			}
