@@ -96,6 +96,10 @@ void makeRoute()
 			n->fromNodeID = -1;
 		}
 	}
+
+	//“sŽs‚ÉRoute‚Ì“o˜^
+	for (auto& r : routes)
+		r.getOriginUrban().routeIDs.emplace_back(r.id);
 }
 Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 {

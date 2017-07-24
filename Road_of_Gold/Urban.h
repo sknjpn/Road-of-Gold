@@ -65,6 +65,7 @@ struct Urban
 	Array<Citizen>	citizens;
 	Array<int>		avgBhs;	//各職業のBHS
 	Array<int>		resource;
+	Array<int>		routeIDs;
 
 	Urban(int _joinedNodeID);
 	void	update();
