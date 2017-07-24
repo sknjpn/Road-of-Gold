@@ -35,12 +35,9 @@ struct Vehicle
 	Array<std::pair<int16, int32>> chain;
 
 	Vehicle(int _nowUrbanID);
-	Urban&	getNowUrban() const;
-	Route&	getRoute() const;
 	Vec2	getMPos() const;
 	void	update();
 	void	draw() const;
-	bool	inRoute() const;
 };
 extern Array<Vehicle> vehicles;
 

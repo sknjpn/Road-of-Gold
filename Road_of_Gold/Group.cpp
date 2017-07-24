@@ -16,14 +16,11 @@ Vehicle::Vehicle(int _nowUrbanID)
 	, stock()
 	, joinedGroupID(-1)
 {}
-bool	Vehicle::inRoute() const { return routeID != -1; }
-Urban&	Vehicle::getNowUrban() const { return urbans[nowUrbanID]; }
-Route&	Vehicle::getRoute() const { return routes[routeID]; }
-Vec2		Vehicle::getMPos() const
+Vec2	Vehicle::getMPos() const
 {
-	if (inRoute())
+	if (routeID != -1)
 	{
-		auto& r = getRoute();
+		auto& r = routes[routeID];
 		double length = routeProgress;
 		for (int i = 0; i < r.pathIDs.size(); i++)
 		{
@@ -38,14 +35,14 @@ Vec2		Vehicle::getMPos() const
 			}
 		}
 	}
-	return getNowUrban().getPos().mPos;
+	return urbans[nowUrbanID].getPos().mPos;
 }
 void	Vehicle::draw() const
 {
 	const Circle shape(0.01);
-	if (inRoute())
+	if (routeID != -1)
 	{
-		auto& r = getRoute();
+		auto& r = routes[routeID];
 		double length = routeProgress;
 		for (int i = 0; i < r.pathIDs.size(); i++)
 		{
@@ -79,11 +76,12 @@ Group::Group()
 	, money(0)
 	, color(RandomColor())
 {}
-void Vehicle::update()
+void	Vehicle::update()
 {
+	auto& g = groups[joinedGroupID];
 	if (chain.isEmpty())
 	{
-		auto& u1 = getNowUrban();
+		auto& u1 = urbans[nowUrbanID];
 		auto& u2 = urbans.choice();
 		if (&u1 != &u2)
 		{
@@ -108,12 +106,12 @@ void Vehicle::update()
 
 	for (;;)
 	{
-		if (inRoute())
+		if (routeID != -1)
 		{
-			if (actionTime >= getRoute().totalLength - routeProgress)
+			if (actionTime >= routes[routeID].totalLength - routeProgress)
 			{
-				actionTime -= getRoute().totalLength - routeProgress;
-				nowUrbanID = getRoute().destinationUrbanID;
+				actionTime -= routes[routeID].totalLength - routeProgress;
+				nowUrbanID = routes[routeID].destinationUrbanID;
 				routeProgress = 0.0;
 				routeID = -1;
 				++progress;
@@ -146,7 +144,7 @@ void Vehicle::update()
 			switch (Command(command))
 			{
 			case Command::MOVE:	//“sŽs‚ÖˆÚ“®
-				for (auto& rID : getNowUrban().routeIDs)
+				for (auto& rID : urbans[nowUrbanID].routeIDs)
 				{
 					if (routes[rID].destinationUrbanID == data)
 					{
@@ -168,11 +166,12 @@ void Vehicle::update()
 			case Command::BUY: //w”ƒ–½—ß
 				if (stock.num == 0)
 				{
-					const int numBuy = Min(10, getNowUrban().baskets[data].getNumItem());
+					Basket& b = urbans[nowUrbanID].baskets[data];
+					const int numBuy = Min(10, b.getNumItem());
 					if (numBuy > 0)
 					{
-						groups[joinedGroupID].money -= getNowUrban().baskets[data].getCost(numBuy);
-						getNowUrban().baskets[data].buyItem(numBuy);
+						g.money -= b.getCost(numBuy);
+						b.buyItem(numBuy);
 						stock.num = numBuy;
 						stock.itemType = data;
 					}
@@ -184,7 +183,8 @@ void Vehicle::update()
 			case Command::SELL:	//”Ì”„–½—ß
 				if (stock.num > 0)
 				{
-					getNowUrban().baskets[stock.itemType].addRing(data, stock.num, &groups[joinedGroupID]);
+					Basket& b = urbans[nowUrbanID].baskets[stock.itemType];
+					b.addRing(data, stock.num, &g);
 					stock.num = 0;
 					sleepTimer = 1 / 24.0;	//1hour
 				}
