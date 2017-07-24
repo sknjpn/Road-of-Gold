@@ -36,10 +36,10 @@ Vec2		Vehicle::getMPos() const
 			auto& p = paths[r.pathIDs[i]];
 			const auto line = p->getLine();
 
-			if (length > p->length) length -= p->length;
+			if (length > p->cost) length -= p->cost;
 			else
 			{
-				const auto pos = line.begin.lerp(line.end, length / p->length);
+				const auto pos = line.begin.lerp(line.end, length / p->cost);
 				return pos;
 			}
 		}
@@ -58,14 +58,14 @@ void	Vehicle::draw() const
 			auto& p = paths[r.pathIDs[i]];
 			const auto line = p->getLine();
 
-			if (length > p->length)
+			if (length > p->cost)
 			{
 				line.draw(0.005, Color(color, 64));
-				length -= p->length;
+				length -= p->cost;
 			}
 			else
 			{
-				const auto pos = line.begin.lerp(line.end, length / p->length);
+				const auto pos = line.begin.lerp(line.end, length / p->cost);
 				Line(line.begin, pos).draw(0.005, Color(color, 64));
 				shape.movedBy(pos).draw(color).drawFrame(0.005, Palette::Black);
 				break;

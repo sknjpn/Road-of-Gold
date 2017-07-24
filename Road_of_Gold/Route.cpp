@@ -47,12 +47,12 @@ void makeRoute()
 
 				if (n1->ownUrbanID != u.id && n2.ownUrbanID == -1 && (n1->isSea() != n2.isSea())) continue;
 
-				if (!n2.isScaned || n2.cost > n1->cost + p.length)
+				if (!n2.isScaned || n2.cost > n1->cost + p.cost)
 				{
 					if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
 					n2.isScaned = true;
 					n2.isInQueue = true;
-					n2.cost = n1->cost + p.length;
+					n2.cost = n1->cost + p.cost;
 					n2.fromNodeID = n1->id;
 				}
 			}
@@ -73,7 +73,7 @@ void makeRoute()
 						if (n->fromNodeID == p.childNodeID)
 						{
 							r.pathIDs.push_back(p.id);
-							r.totalLength += p.length;
+							r.totalLength += p.cost;
 							n = &nodes[n->fromNodeID];
 							break;
 						}

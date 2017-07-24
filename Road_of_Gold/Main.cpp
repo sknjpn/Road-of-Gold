@@ -54,6 +54,7 @@ void Main()
 	while (numUrbans > 0)
 		if (setUrban(nodes[Random(int(nodes.size() - 1))])) numUrbans--;
 
+	for (auto& p : paths) p->cost = p->length * (bData[p->getChildNode().biomeType].movingCost + bData[p->getParentNode().biomeType].movingCost) / 2.0;
 	makeRoute();
 
 	planet.makeGroupsRandom();
