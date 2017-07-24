@@ -15,6 +15,7 @@ struct BData
 {
 	String	name;
 	Color	color;
+	double	movingCost;
 
 	BData(const JSONValue _json);
 };
@@ -95,3 +96,4 @@ struct CData
 extern Array<CData> cData;
 
 extern Array<String> UrbanName;
+extern Array<String> GroupName;

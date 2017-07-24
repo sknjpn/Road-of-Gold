@@ -3,6 +3,7 @@
 #include"Node.h"
 
 Array<String> UrbanName;
+Array<String> GroupName;
 Array<BData> bData;
 Array<IData> iData;
 Array<CData> cData;
@@ -14,6 +15,11 @@ bool loadJSONData()
 		JSONReader json(L"Assets/UrbanName.json");
 		if (json.isEmpty()) return false;
 		for (auto j : json[L"UrbanName"].arrayView()) UrbanName.emplace_back(j.getOr<String>(L"hoge"));
+	}
+	{
+		JSONReader json(L"Assets/GroupName.json");
+		if (json.isEmpty()) return false;
+		for (auto j : json[L"GroupName"].arrayView()) GroupName.emplace_back(j.getOr<String>(L"hoge"));
 	}
 	{
 		JSONReader json(L"Assets/EconomicData.json");
@@ -40,8 +46,9 @@ RData::RData(const JSONValue _json)
 {}
 
 BData::BData(const JSONValue _json)
-	: name(_json[L"Name"].getOr<String>(L"hoge"))
-	, color(_json[L"Color"].getOr<String>(L"#000000"))
+	: name(_json[L"BiomeName"].getOr<String>(L"hoge"))
+	, color(_json[L"BiomeColor"].getOr<String>(L"#000000"))
+	, movingCost(_json[L"BiomeMovingCost"].getOr<double>(1.00))
 {}
 
 bool	Planet::loadBiome()

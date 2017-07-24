@@ -96,7 +96,8 @@ void	Planet::setRegions()
 Array<Path*> paths;
 Path::Path(int _parentNodeID, int _childNodeID)
 	: id(0)
-	, length(0.0)
+	, cost(0)
+	, length(0)
 	, parentNodeID(_parentNodeID)
 	, childNodeID(_childNodeID)
 {}

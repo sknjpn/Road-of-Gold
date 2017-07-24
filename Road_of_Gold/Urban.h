@@ -65,13 +65,14 @@ struct Urban
 	Array<Citizen>	citizens;
 	Array<int>		avgBhs;	//各職業のBHS
 	Array<int>		resource;
+	Array<int>		routeIDs;
 
 	Urban(int _joinedNodeID);
 	void	update();
 	void	draw() const;
 	Pos&	getPos() const;
 	String	getTimeAsString() const;
-	Array<Route*>	getRoutes() const;
+	Array<Route*>	getRoutesToUrban(int _urbanID) const;
 
 };
 extern Urban*			selectedUrban;

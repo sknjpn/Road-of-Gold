@@ -47,12 +47,12 @@ void makeRoute()
 
 				if (n1->ownUrbanID != u.id && n2.ownUrbanID == -1 && (n1->isSea() != n2.isSea())) continue;
 
-				if (!n2.isScaned || n2.cost > n1->cost + p.length)
+				if (!n2.isScaned || n2.cost > n1->cost + p.cost)
 				{
 					if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
 					n2.isScaned = true;
 					n2.isInQueue = true;
-					n2.cost = n1->cost + p.length;
+					n2.cost = n1->cost + p.cost;
 					n2.fromNodeID = n1->id;
 				}
 			}
@@ -73,7 +73,7 @@ void makeRoute()
 						if (n->fromNodeID == p.childNodeID)
 						{
 							r.pathIDs.push_back(p.id);
-							r.totalLength += p.length;
+							r.totalLength += p.cost;
 							n = &nodes[n->fromNodeID];
 							break;
 						}
@@ -96,4 +96,68 @@ void makeRoute()
 			n->fromNodeID = -1;
 		}
 	}
+
+	//“sŽs‚ÉRoute‚Ì“o˜^
+	for (auto& r : routes)
+		r.getOriginUrban().routeIDs.emplace_back(r.id);
+}
+Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
+{
+	auto& ut = urbans[_urbanID];
+	for (auto& n : nodeTemp) n = nullptr;
+	Array<Route*> rs;
+	int wPos = 0;
+	nodeTemp[wPos] = &nodes[ut.joinedNodeID]; wPos++;
+	nodes[ut.joinedNodeID].isScaned = true;
+
+	for (int i = 0; i < wPos; i++)
+	{
+		auto& n1 = nodeTemp[i];
+
+		if (n1->fromNodeID != -1 && !n1->isSea() && nodes[n1->fromNodeID].isSea()) continue;
+
+		n1->isInQueue = false;
+
+		for (auto& rID : urbans[n1->ownUrbanID].routeIDs)
+		{
+			auto& n2 = nodes[routes[rID].getDestinationUrban().joinedNodeID];
+
+			if (!n2.isScaned || n2.cost > n1->cost + routes[rID].totalLength)
+			{
+				if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
+				n2.isScaned = true;
+				n2.isInQueue = true;
+				n2.cost = n1->cost + routes[rID].totalLength;
+				n2.fromNodeID = n1->id;
+			}
+		}
+	}
+
+	if (nodes[joinedNodeID].fromNodeID != -1)
+	{
+		auto* n = &nodes[joinedNodeID];
+		for (;;)
+		{
+			for (auto& rID : urbans[n->ownUrbanID].routeIDs)
+			{
+				if (n->fromNodeID == routes[rID].getDestinationUrban().joinedNodeID)
+				{
+					rs.emplace_back(&routes[rID]);
+					n = &nodes[n->fromNodeID];
+					break;
+				}
+			}
+			if (n->id == ut.joinedNodeID) break;
+		}
+	}
+
+	for (int i = 0; i < wPos; i++)
+	{
+		auto& n = nodeTemp[i];
+		n->cost = 0.0;
+		n->isInQueue = false;
+		n->isScaned = false;
+		n->fromNodeID = -1;
+	}
+	return rs;
 }

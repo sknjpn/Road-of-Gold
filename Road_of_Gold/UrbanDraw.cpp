@@ -3,7 +3,7 @@
 #include"Pos.h"
 void	Urban::draw() const
 {
-	const Circle circle(getPos().mPos, 0.01);
+	const Circle circle(getPos().mPos, 0.015);
 	const Color color = selectedUrban == this ? Palette::Yellow : (circle.mouseOver() ? Palette::Orange : Palette::Red);
 	circle.draw(color).drawFrame(0.005, Palette::Black);
 }

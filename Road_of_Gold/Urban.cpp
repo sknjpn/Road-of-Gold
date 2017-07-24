@@ -17,13 +17,6 @@ Urban::Urban(int _joinedNodeID)
 	resource.resize(rData.size());
 	avgBhs.resize(cData.size());
 }
-Array<Route*>	Urban::getRoutes() const
-{
-	Array<Route*> rArray;
-	for (auto& r : routes)
-		if (r.originUrbanID == id) rArray.emplace_back(&r);
-	return rArray;
-}
 String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, '0') + L":" + Format(int(timer * 24 * 60) % 60).lpad(2, '0'); }
 bool	setUrban(Node& _node)
 {

@@ -7,7 +7,7 @@
 #include"GlobalVariables.h"
 
 double timeSpeed = 0.01;
-double worldTimer = 0.0;
+double worldTimer = 0;
 int selectedBasket = 0;
 int selectedCitizen = 0;
 Vehicle* selectedVehicle = nullptr;
@@ -25,8 +25,6 @@ void Main()
 	const Font font24(24);
 	const Font font36(36);
 	const Font font48(48);
-	const Texture ship(L"Assets/Ship.png");
-	const Texture wagon(L"Assets/Wagon.png");
 	Node* nearestNode = nullptr;
 
 	enum struct DrawingType
@@ -40,20 +38,24 @@ void Main()
 	planet.setRegions();
 
 	//Urbanの生成
-	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 100;
+	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 50;
 	for (auto& r : regions)
 	{
 		if (r.numNodes == 0) continue;
-		for (;;)
+		for (int i = 0; i < r.numNodes / 200 + 1; i++)
 		{
-			auto& n = nodes[Random(int(nodes.size() - 1))];
-			if (n.joinedRegionID == r.id && n.isCoast() && setUrban(n)) break;
+			for (;;)
+			{
+				auto& n = nodes[Random(int(nodes.size() - 1))];
+				if (n.ownUrbanID == -1 && n.joinedRegionID == r.id && n.isCoast() && setUrban(n)) break;
+			}
 		}
 	}
 	numUrbans -= int(regions.size());
 	while (numUrbans > 0)
 		if (setUrban(nodes[Random(int(nodes.size() - 1))])) numUrbans--;
 
+	for (auto& p : paths) p->cost = p->length * (bData[p->getChildNode().biomeType].movingCost + bData[p->getParentNode().biomeType].movingCost) / 2.0;
 	makeRoute();
 
 	planet.makeGroupsRandom();
@@ -72,6 +74,10 @@ void Main()
 			u.update();
 
 		//Vehicleの更新
+		for (auto& v : vehicles)
+			v.update();
+
+		//Groupの更新
 		for (auto& g : groups)
 			g.update();
 
@@ -83,29 +89,30 @@ void Main()
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 
-
-		if (MouseL.down() && (selectedUrban == nullptr || !Rect(32, 32, 320, 640).mouseOver()))
+		//オブジェクトの選択
+		if (MouseL.down() && ((selectedVehicle == nullptr && selectedUrban == nullptr) || !Rect(32, 32, 320, 640).mouseOver()))
 		{
 			selectedUrban = nullptr;
+			selectedVehicle = nullptr;
+			tinyCamera2D.gazePoint = none;
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
 				for (auto& u : urbans)
 					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
-		}
-		if (MouseL.down() && (selectedVehicle == nullptr || !Rect(32, 32, 320, 640).mouseOver()))
-		{
-			selectedVehicle = nullptr;
-			tinyCamera2D.gazePoint = none;
-			for (int i = 0; i < 2; i++)
+			if (selectedUrban == nullptr)
 			{
-				const auto t1 = tinyCamera2D.createTransformer(i);
-				for (auto& g : groups)
-					for(auto& v : g.vehicles)
-					if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+				for (int i = 0; i < 2; i++)
+				{
+					const auto t1 = tinyCamera2D.createTransformer(i);
+					for (auto& v : vehicles)
+						if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+				}
 			}
 		}
+
+		//Vehicleに注視点を設定
 		if (selectedVehicle != nullptr) tinyCamera2D.gazePoint = Pos(selectedVehicle->getMPos());
 
 		{
@@ -127,9 +134,8 @@ void Main()
 					if (r.isSeaRoute) r.draw(Palette::Red);
 
 			//Vehicle
-			for (const auto& g : groups)
-				for (const auto& v : g.vehicles)
-					v.draw();
+			for (auto& v : vehicles)
+				v.draw();
 			//Urban
 			for (const auto& u : urbans) u.draw();
 
@@ -138,13 +144,68 @@ void Main()
 		/*
 		if (timeSpeed < 0.1)
 		{
-			const auto t1 = planet.createTransformer();
+			const auto t1 = tinyCamera2D.createTransformer();
 			RectF((0.25 - worldTimer)*TwoPi - TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 		}*/
 		//Interface
+		if (selectedVehicle != nullptr)
+		{
+			const Array<String> commandText = {
+				L"MOVE", L"JUMP", L"WAIT", L"BUY", L"SELL", L"none"
+			};
+			String text;
+			const Color fColor = Palette::Skyblue;
+			const Color bColor = Color(Palette::Darkcyan, 192);
+			Rect(32, 32, 320, 660).draw(bColor).drawFrame(2, fColor);
+			{
+				const Rect rect(32, 32, 320, 24);
+				rect.drawFrame(2, fColor);
+				font16(groups[selectedVehicle->joinedGroupID].name, L" 所属交易船").draw(rect.pos.movedBy(4, 0), Palette::White);
+			}
+			{
+				const Rect rect(32, 56, 320, 24);
+				rect.drawFrame(2, fColor);
+				font16(L"資本金", groups[selectedVehicle->joinedGroupID].money, L"G").draw(rect.pos.movedBy(4, 0), Palette::White);
+			}
+			{
+
+			}
+			for (auto i : step(int(selectedVehicle->chain.size())))
+			{
+				const int command = selectedVehicle->chain[i].first;
+				const int data = selectedVehicle->chain[i].second;
+				switch (Command(command))
+				{
+				case Command::MOVE:
+					text = Format(urbans[data].name, L"に移動");
+					break;
+				case Command::JUMP:
+					text = Format(data, L"番地にジャンプ");
+					break;
+				case Command::WAIT:
+					text = Format(L"1日休止");
+					break;
+				case Command::BUY:
+					text = Format(iData[data].name, L"を購入");
+					break;
+				case Command::SELL:
+					text = Format(L"保有する商品の売却");
+					break;
+				default:
+					text = Format(L"存在しない命令");
+					break;
+				}
+				const Rect rect(32, 64 + 32 + 24 * i, 320, 24);
+				if (i == selectedVehicle->progress) rect.draw(Color(Palette::Orange, 192));
+				rect.drawFrame(2, fColor);
+				Rect(rect.pos, 56, 24).drawFrame(2, fColor);
+				font16(commandText[command]).draw(rect.pos.movedBy(4, 0), Palette::White);
+				font16(text).draw(rect.pos.movedBy(64, 0), Palette::White);
+			}
+		}
 		if (selectedUrban != nullptr)
 		{
 			const Color fColor = Palette::Skyblue;
@@ -166,7 +227,7 @@ void Main()
 
 			//メニュー選択
 			{
-				const Array<String> ns = { L"💹",L"👪",L"📰",L"🚢", };
+				const Array<String> ns = { L"💹", L"👪", L"📰", L"🚢" };
 				const Array<DrawingType> ts = { DrawingType::Market,DrawingType::Towner,DrawingType::News,DrawingType::Vehicle, };
 				for (int i = 0; i<int(ns.size()); i++)
 				{

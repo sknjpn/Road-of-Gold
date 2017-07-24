@@ -1,52 +1,64 @@
 {
   "BData": [
     {
-      "Name": "Sea",
-      "Color": "#0F285A"
+      "BiomeName": "Sea",
+      "BiomeColor": "#0F285A",
+      "BiomeMovingCost": 2.00
     },
     {
-      "Name": "Ocean",
-      "Color": "#0F1E50"
+      "BiomeName": "Ocean",
+      "BiomeColor": "#0F1E50",
+      "BiomeMovingCost": 3.00
     },
     {
-      "Name": "Ice",
-      "Color": "#FFFFFF"
+      "BiomeName": "Ice",
+      "BiomeColor": "#FFFFFF",
+      "BiomeMovingCost": 30.00
     },
     {
-      "Name": "Desert",
-      "Color": "#EEDA82"
+      "BiomeName": "Desert",
+      "BiomeColor": "#EEDA82",
+      "BiomeMovingCost": 30.00
     },
     {
-      "Name": "Savanna",
-      "Color": "#B1D16E"
+      "BiomeName": "Savanna",
+      "BiomeColor": "#B1D16E",
+      "BiomeMovingCost": 10.00
     },
     {
-      "Name": "TropicalRainforest",
-      "Color": "#1D4928"
+      "BiomeName": "TropicalRainforest",
+      "BiomeColor": "#1D4928",
+      "BiomeMovingCost": 50.00
     },
     {
-      "Name": "Tundra",
-      "Color": "#608370"
+      "BiomeName": "Tundra",
+      "BiomeColor": "#608370",
+      "BiomeMovingCost": 8.00
     },
     {
-      "Name": "TemperateRainforest",
-      "Color": "#427B19"
+      "BiomeName": "TemperateRainforest",
+      "BiomeColor": "#427B19",
+      "BiomeMovingCost": 20.00
     },
     {
-      "Name": "Grassland",
-      "Color": "#A4E163"
+      "BiomeName": "Grassland",
+      "BiomeColor": "#A4E163",
+      "BiomeMovingCost": 6.00
     },
     {
-      "Name": "SeasonalForest",
-      "Color": "#496423"
+      "BiomeName": "SeasonalForest",
+      "BiomeColor": "#496423",
+      "BiomeMovingCost": 10.00
     },
     {
-      "Name": "BorealForest",
-      "Color": "#5F733E"
+      "BiomeName": "BorealForest",
+      "BiomeColor": "#5F733E",
+      "BiomeMovingCost": 10.00
     },
     {
-      "Name": "Woodland",
-      "Color": "#8BAF5A"
+      "BiomeName": "Woodland",
+      "BiomeColor": "#8BAF5A",
+      "BiomeMovingCost": 8.00
     }
   ],
   "RData": [

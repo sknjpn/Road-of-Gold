@@ -9,6 +9,7 @@ struct Path
 {
 	int		id;
 	double	length;
+	double	cost;
 	int		parentNodeID;
 	int		childNodeID;
 
