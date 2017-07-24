@@ -101,15 +101,13 @@ void Group::update()
 			{
 				//v.chain.push_back({ int16(Command::WAIT), int32(0) });
 				for (auto& r : u1.getRoutesToUrban(u2.id))
-				{
-					Log(r->destinationUrbanID);
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
-				}
+
 				v.chain.push_back({ int16(Command::BUY), iData.choice().id });
+
 				for (auto& r : u2.getRoutesToUrban(u1.id))
-				{
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
-				}
+
 				v.chain.push_back({ int16(Command::SELL), int32(0) });
 				v.chain.push_back({ int16(Command::JUMP), int32(0) });
 			}
