@@ -74,6 +74,8 @@ Group::Group()
 void	Vehicle::update()
 {
 	auto& g = groups[joinedGroupID];
+	double actionTime = timeSpeed;
+
 	if (chain.isEmpty())
 	{
 		auto& u1 = urbans[nowUrbanID];
@@ -95,7 +97,6 @@ void	Vehicle::update()
 			chain.push_back({ int16(Command::JUMP), int32(0) });
 		}
 	}
-	double actionTime = timeSpeed;
 
 	for (;;)
 	{
