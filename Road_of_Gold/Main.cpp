@@ -85,7 +85,7 @@ void Main()
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 
-		if (MouseL.down() && !Rect(32, 32, 320, 640).mouseOver())
+		if (MouseL.down() && ((selectedVehicle == nullptr && selectedUrban == nullptr) || !Rect(32, 32, 320, 640).mouseOver()))
 		{
 			selectedUrban = nullptr;
 			selectedVehicle = nullptr;
