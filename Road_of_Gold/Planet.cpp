@@ -2,7 +2,7 @@
 #include"Group.h"
 #include"Urban.h"
 #include"GlobalVariables.h"
-
+#include"JSON.h"
 
 Planet::Planet()
 	: mapTexture()
@@ -15,6 +15,7 @@ void	Planet::makeGroupsRandom()
 	{
 		groups.emplace_back();
 		auto& g = groups.back();
+		g.name = GroupName.choice();
 		auto& u = urbans[Random(int(urbans.size() - 1))];
 		for (int i = 0; i < 20; i++) g.vehicles.emplace_back(u.id);
 		for (auto& v : g.vehicles)
