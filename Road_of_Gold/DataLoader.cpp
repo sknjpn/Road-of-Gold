@@ -42,6 +42,7 @@ RData::RData(const JSONValue _json)
 BData::BData(const JSONValue _json)
 	: name(_json[L"BiomeName"].getOr<String>(L"hoge"))
 	, color(_json[L"BiomeColor"].getOr<String>(L"#000000"))
+	, movingCost(_json[L"BiomeMovingCost"].getOr<double>(1.00))
 {}
 
 bool	Planet::loadBiome()

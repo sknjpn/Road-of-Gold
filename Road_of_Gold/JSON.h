@@ -15,6 +15,7 @@ struct BData
 {
 	String	name;
 	Color	color;
+	double	movingCost;
 
 	BData(const JSONValue _json);
 };
