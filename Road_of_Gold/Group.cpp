@@ -108,8 +108,7 @@ void Vehicle::update()
 
 	for (;;)
 	{
-		if (actionTime == 0) break;
-		else if (inRoute())
+		if (inRoute())
 		{
 			if (actionTime >= getRoute().totalLength - routeProgress)
 			{
@@ -122,7 +121,7 @@ void Vehicle::update()
 			else
 			{
 				routeProgress += actionTime;
-				actionTime = 0;
+				break;
 			}
 		}
 		else if (sleepTimer > 0)
@@ -136,74 +135,69 @@ void Vehicle::update()
 			else
 			{
 				sleepTimer -= actionTime;
-				actionTime = 0;
+				break;
 			}
 		}
-		else if (progress < int(chain.size()))
+		else if (progress < int(chain.size()) && progress >= 0)
 		{
 			//スクリプトの実行
-			for (;;)
+			const int command = chain[progress].first;
+			const int data = chain[progress].second;
+			switch (Command(command))
 			{
-				if (inRoute() || sleepTimer > 0) break;
-				switch (Command(chain[progress].first))
+			case Command::MOVE:	//都市へ移動
+				for (auto& rID : getNowUrban().routeIDs)
 				{
-				case Command::MOVE:	//都市へ移動
-					for (auto& rID : getNowUrban().routeIDs)
+					if (routes[rID].destinationUrbanID == data)
 					{
-						if (routes[rID].destinationUrbanID == chain[progress].second)
-						{
-							routeProgress = 0.0;
-							routeID = routes[rID].id;
-							break;
-						}
+						routeProgress = 0.0;
+						routeID = routes[rID].id;
+						break;
 					}
-					break;
-
-				case Command::JUMP:	//アドレスジャンプ命令
-					progress = chain[progress].second;
-					break;
-
-				case Command::WAIT: //ウェイト命令
-					sleepTimer += 1;
-					break;
-
-				case Command::BUY: //購買命令
-					if (stock.num == 0)
-					{
-						const int itemType = chain[progress].second;
-						const int numBuy = Min(10, getNowUrban().baskets[chain[progress].second].getNumItem());
-						if (numBuy > 0)
-						{
-							groups[joinedGroupID].money -= getNowUrban().baskets[chain[progress].second].getCost(numBuy);
-							getNowUrban().baskets[itemType].buyItem(numBuy);
-							stock.num = numBuy;
-							stock.itemType = itemType;
-						}
-						sleepTimer = 0.1;
-					}
-					else ++progress;
-					break;
-
-				case Command::SELL:	//販売命令
-					if (stock.num > 0)
-					{
-						getNowUrban().baskets[stock.itemType].addRing(chain[progress].second, stock.num, &groups[joinedGroupID]);
-						stock.num = 0;
-						sleepTimer = 0.1;
-					}
-					else ++progress;
-					break;
-
-				default://存在しない命令
-					++progress;
-					break;
-
 				}
+				break;
+
+			case Command::JUMP:	//アドレスジャンプ命令
+				progress = data;
+				break;
+
+			case Command::WAIT: //ウェイト命令
+				sleepTimer = 1;
+				break;
+
+			case Command::BUY: //購買命令
+				if (stock.num == 0)
+				{
+					const int numBuy = Min(10, getNowUrban().baskets[data].getNumItem());
+					if (numBuy > 0)
+					{
+						groups[joinedGroupID].money -= getNowUrban().baskets[data].getCost(numBuy);
+						getNowUrban().baskets[data].buyItem(numBuy);
+						stock.num = numBuy;
+						stock.itemType = data;
+					}
+					sleepTimer = 1 / 24.0;	//1hour
+				}
+				else ++progress;
+				break;
+
+			case Command::SELL:	//販売命令
+				if (stock.num > 0)
+				{
+					getNowUrban().baskets[stock.itemType].addRing(data, stock.num, &groups[joinedGroupID]);
+					stock.num = 0;
+					sleepTimer = 1 / 24.0;	//1hour
+				}
+				else ++progress;
+				break;
+
+			default:	//存在しない命令
+				++progress;
+				break;
 			}
 		}
-		else break;
+		else break;	//存在しない地点の参照
 	}
-
 }
 
 void Group::update()
