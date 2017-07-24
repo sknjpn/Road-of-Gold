@@ -25,8 +25,6 @@ void Main()
 	const Font font24(24);
 	const Font font36(36);
 	const Font font48(48);
-	const Texture ship(L"Assets/Ship.png");
-	const Texture wagon(L"Assets/Wagon.png");
 	Node* nearestNode = nullptr;
 
 	enum struct DrawingType
