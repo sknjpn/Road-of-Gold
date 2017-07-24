@@ -40,14 +40,17 @@ void Main()
 	planet.setRegions();
 
 	//Urbanの生成
-	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 100;
+	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 50;
 	for (auto& r : regions)
 	{
 		if (r.numNodes == 0) continue;
-		for (;;)
+		for (int i = 0; i < r.numNodes / 200 + 1; i++)
 		{
-			auto& n = nodes[Random(int(nodes.size() - 1))];
-			if (n.joinedRegionID == r.id && n.isCoast() && setUrban(n)) break;
+			for (;;)
+			{
+				auto& n = nodes[Random(int(nodes.size() - 1))];
+				if (n.ownUrbanID == -1 && n.joinedRegionID == r.id && n.isCoast() && setUrban(n)) break;
+			}
 		}
 	}
 	numUrbans -= int(regions.size());
