@@ -20,19 +20,14 @@ Vec2	Vehicle::getMPos() const
 {
 	if (routeID != -1)
 	{
-		auto& r = routes[routeID];
 		double length = routeProgress;
-		for (int i = 0; i < r.pathIDs.size(); i++)
+		for (int i = 0; i < routes[routeID].pathIDs.size(); i++)
 		{
-			auto& p = paths[r.pathIDs[i]];
+			auto& p = paths[routes[routeID].pathIDs[i]];
 			const auto line = p->getLine();
 
 			if (length > p->cost) length -= p->cost;
-			else
-			{
-				const auto pos = line.begin.lerp(line.end, length / p->cost);
-				return pos;
-			}
+			else return line.begin.lerp(line.end, length / p->cost);
 		}
 	}
 	return urbans[nowUrbanID].getPos().mPos;
@@ -90,14 +85,12 @@ void	Vehicle::update()
 
 			chain.push_back({ int16(Command::SELL), int32(1000) });
 			chain.push_back({ int16(Command::BUY), iData.choice().id });
-			chain.push_back({ int16(Command::WAIT), int32(0) });
 
 			for (auto& r : u2.getRoutesToUrban(u1.id))
 				chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
 			chain.push_back({ int16(Command::SELL), int32(1000) });
 			chain.push_back({ int16(Command::BUY), iData.choice().id });
-			chain.push_back({ int16(Command::WAIT), int32(0) });
 
 			chain.push_back({ int16(Command::JUMP), int32(0) });
 		}
@@ -114,7 +107,7 @@ void	Vehicle::update()
 				nowUrbanID = routes[routeID].destinationUrbanID;
 				routeProgress = 0.0;
 				routeID = -1;
-				++progress;
+				sleepTimer = 1 / 24.0;	//1hour
 			}
 			else
 			{
