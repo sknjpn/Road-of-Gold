@@ -139,7 +139,7 @@ void Main()
 		/*
 		if (timeSpeed < 0.1)
 		{
-			const auto t1 = planet.createTransformer();
+			const auto t1 = tinyCamera2D.createTransformer();
 			RectF((0.25 - worldTimer)*TwoPi - TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
@@ -159,7 +159,7 @@ void Main()
 				switch (Command(command))
 				{
 				case Command::MOVE:
-					text = Format(L"MOVE:", urbans[data].name);
+					text = Format(L"MOVE:", urbans[data].name,L"に移動");
 					break;
 				case Command::JUMP:
 					text = Format(L"JUMP:", data, L"番地にジャンプ");

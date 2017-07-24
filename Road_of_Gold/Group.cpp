@@ -91,16 +91,20 @@ void Group::update()
 			auto& u2 = urbans.choice();
 			if (&u1 != &u2)
 			{
-				//v.chain.push_back({ int16(Command::WAIT), int32(0) });
 				for (auto& r : u1.getRoutesToUrban(u2.id))
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
+				v.chain.push_back({ int16(Command::SELL), int32(0) });
 				v.chain.push_back({ int16(Command::BUY), iData.choice().id });
+				v.chain.push_back({ int16(Command::WAIT), int32(0) });
 
 				for (auto& r : u2.getRoutesToUrban(u1.id))
 					v.chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
 				v.chain.push_back({ int16(Command::SELL), int32(0) });
+				v.chain.push_back({ int16(Command::BUY), iData.choice().id });
+				v.chain.push_back({ int16(Command::WAIT), int32(0) });
+
 				v.chain.push_back({ int16(Command::JUMP), int32(0) });
 			}
 			/*
@@ -146,6 +150,7 @@ void Group::update()
 					v.nowUrbanID = v.getRoute().destinationUrbanID;
 					v.routeProgress = 0.0;
 					v.routeID = -1;
+					++v.progress;
 				}
 				else
 				{
@@ -159,6 +164,7 @@ void Group::update()
 				{
 					actionTime -= v.sleepTimer;
 					v.sleepTimer = 0;
+					++v.progress;
 				}
 				else
 				{
@@ -187,7 +193,6 @@ void Group::update()
 								break;
 							}
 						}
-						++v.progress;
 					}
 					break;
 
@@ -200,7 +205,6 @@ void Group::update()
 					case Command::WAIT: //ウェイト命令
 					{
 						v.sleepTimer += 1;
-						++v.progress;
 					}
 					break;
 
@@ -214,7 +218,8 @@ void Group::update()
 							v.stock.num = numBuy;
 							v.stock.itemType = itemType;
 						}
-						++v.progress;
+						v.sleepTimer = 0.1;
+						//++v.progress;
 					}
 					break;
 
@@ -225,7 +230,8 @@ void Group::update()
 							v.getNowUrban().baskets[v.stock.itemType].addRing(v.chain[v.progress].second, v.stock.num, this);
 							v.stock.num = 0;
 						}
-						++v.progress;
+						v.sleepTimer = 0.1;
+						//++v.progress;
 					}
 					break;
 
