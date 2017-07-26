@@ -20,9 +20,6 @@ Urban*	selectedUrban = NULL;
 
 void Main()
 {
-	Window::SetTitle(L"MapEditor");
-	Window::Resize(1280, 720);
-
 	const Rect uiRect(32, 32, 320, 720 - 64);
 	const Font font12(12);
 	const Font font16(16);
@@ -43,12 +40,19 @@ void Main()
 	bool	drawOutlineEnabled = true;
 	Node*	nearestNode = &nodes[0];
 
+	Window::SetTitle(L"MapEditor");
+	Window::Resize(1280, 720);
+
+	//データの読み込み
 	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
 
+	//ファイル名入力欄
 	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
 
 	while (System::Update())
 	{
+
+		//キー入力
 		if (!textBox.isActive())
 		{
 			if (KeyG.down()) drawOutlineEnabled = !drawOutlineEnabled;
@@ -66,20 +70,25 @@ void Main()
 			if (KeyF.down()) selectedBrush = 1;
 			if (KeyV.down()) selectedBrush = 2;
 		}
+
+		//ブラシサイズの変更
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
+		//カメラの更新
 		tinyCamera2D.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; i++) {
 			const auto t1 = tinyCamera2D.createTransformer(i);
+
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
+
+		//都市の描画
 		for (int i = 0; i < 2; i++) {
 			const auto t1 = tinyCamera2D.createTransformer(i);
 
-			//都市の描画
 			for (auto& u : urbans)
 				Circle(u.getPos().mPos, 0.012).draw(Palette::Red).drawFrame(0.002, 0.0, Palette::Black);
 		}
