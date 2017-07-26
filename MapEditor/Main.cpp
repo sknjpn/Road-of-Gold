@@ -11,6 +11,7 @@ Array<Urban> urbans;
 Planet planet;
 TinyCamera2D tinyCamera2D;
 int		selectedBiome = 0;
+int		selectedUrban = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
 
