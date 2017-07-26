@@ -11,11 +11,9 @@ Array<Urban> urbans;
 Planet planet;
 TinyCamera2D tinyCamera2D;
 int		selectedBiome = 0;
-int		selectedUrban = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
-
-Urban*	selectedUrban = NULL;
+Urban*	selectedUrban = nullptr;
 
 
 void Main()
@@ -95,13 +93,8 @@ void Main()
 
 		if (!uiRect.mouseOver())
 		{
-			tinyCamera2D.createTransformer();
-
 			//色の取得
-			if (MouseR.down())
-			{
-				selectedBiome = nearestNode->biomeType;
-			}
+			if (MouseR.down()) selectedBiome = nearestNode->biomeType;
 
 			//nearestNodeの設定
 			{
