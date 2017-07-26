@@ -103,10 +103,12 @@ void makeRoute()
 }
 Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 {
-	auto& ut = urbans[_urbanID];
-	for (auto& n : nodeTemp) n = nullptr;
+	const auto& ut = urbans[_urbanID];
+	const double stopCost = 1 / 24.0;	//’“—¯Žž‚ÌƒRƒXƒg
 	Array<Route*> rs;
 	int wPos = 0;
+
+	for (auto& n : nodeTemp) n = nullptr;
 	nodeTemp[wPos] = &nodes[ut.joinedNodeID]; wPos++;
 	nodes[ut.joinedNodeID].isScaned = true;
 
@@ -122,12 +124,12 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 		{
 			auto& n2 = nodes[routes[rID].getDestinationUrban().joinedNodeID];
 
-			if (!n2.isScaned || n2.cost > n1->cost + routes[rID].totalLength)
+			if (!n2.isScaned || n2.cost > n1->cost + routes[rID].totalLength + stopCost)
 			{
 				if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
 				n2.isScaned = true;
 				n2.isInQueue = true;
-				n2.cost = n1->cost + routes[rID].totalLength;
+				n2.cost = n1->cost + routes[rID].totalLength + stopCost;
 				n2.fromNodeID = n1->id;
 			}
 		}
@@ -136,6 +138,7 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 	if (nodes[joinedNodeID].fromNodeID != -1)
 	{
 		auto* n = &nodes[joinedNodeID];
+
 		for (;;)
 		{
 			for (auto& rID : urbans[n->ownUrbanID].routeIDs)
