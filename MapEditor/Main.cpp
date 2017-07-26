@@ -110,17 +110,18 @@ void Main()
 			}
 
 			//selectedBiomeの反映
-			if (selectedBrush == 0)
+			switch (selectedBrush)
 			{
+			case 0:
 				if (MouseL.pressed() && nearestNode->biomeType != selectedBiome)
 				{
 					Array<Node*> list = { nearestNode };
 					nearestNode->biomeType = selectedBiome;
 					planet.updateImage(list);
 				}
-			}
-			else if (selectedBrush == 1)
-			{
+				break;
+
+			case 1:
 				if (MouseL.pressed())
 				{
 					Array<Node*> list;
@@ -138,9 +139,9 @@ void Main()
 					}
 					planet.updateImage(list);
 				}
-			}
-			else
-			{
+				break;
+
+			case 2:
 				if (MouseL.down())
 				{
 					Array<Node*> list;
@@ -161,6 +162,10 @@ void Main()
 					for (auto& n : list) n->biomeType = selectedBiome;
 					planet.updateImage(list);
 				}
+				break;
+
+			default:
+				break;
 			}
 		}
 
