@@ -173,15 +173,20 @@ void Main()
 				switch (actionMode)
 				{
 				case ActionMode::modify:
+					if (MouseL.down() && nearestNode->ownUrbanID != -1)
+					{
+						selectedUrban = &urbans[nearestNode->ownUrbanID];
+					}
 					break;
 				case ActionMode::set:
-					if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID == -1)
+					if (MouseL.down() && nearestNode->ownUrbanID == -1)
 					{
 						urbans.emplace_back(nearestNode->id);
+						selectedUrban = &urbans[nearestNode->ownUrbanID];
 					}
 					break;
 				case ActionMode::remove:
-					if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID != -1)
+					if (MouseL.down() && nearestNode->ownUrbanID != -1)
 					{
 						const int targetID = nearestNode->ownUrbanID;
 						urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
