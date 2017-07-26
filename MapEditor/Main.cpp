@@ -95,6 +95,17 @@ void Main()
 				Circle(u.getPos().mPos, 0.012).draw(Palette::Red).drawFrame(0.002, 0.0, Palette::Black);
 		}
 
+		//selectedUrbanの描画
+		if (selectedUrban != nullptr && uiMode == UIMode::setUrban)
+		{
+			for (int i = 0; i < 2; i++) {
+				const auto t1 = tinyCamera2D.createTransformer(i);
+
+				Circle(selectedUrban->getPos().mPos, 0.012).draw(Palette::Yellow).drawFrame(0.002, 0.0, Palette::Black);
+			}
+		}
+		else selectedUrban = nullptr;
+
 		if (!uiRect.mouseOver())
 		{
 
@@ -174,7 +185,14 @@ void Main()
 				}
 
 				break;
+
 			case UIMode::setUrban:
+
+				if (MouseR.down())
+				{
+					selectedUrban = nullptr;
+					actionMode = ActionMode::none;
+				}
 
 				switch (actionMode)
 				{
