@@ -13,15 +13,11 @@ TinyCamera2D tinyCamera2D;
 int		selectedBiome = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
-
-Urban*	selectedUrban = NULL;
+Urban*	selectedUrban = nullptr;
 
 
 void Main()
 {
-	Window::SetTitle(L"MapEditor");
-	Window::Resize(1280, 720);
-
 	const Rect uiRect(32, 32, 320, 720 - 64);
 	const Font font12(12);
 	const Font font16(16);
@@ -30,9 +26,9 @@ void Main()
 
 	enum struct ActionMode {
 		none,
-		setUrban,	//Urbanの配置
-		removeUrban,//Urbanの削除
-	} actionMode = ActionMode::setUrban;
+		set,
+		remove,
+	} actionMode = ActionMode::set;
 
 	enum struct UIMode {
 		setBiome,
@@ -42,12 +38,23 @@ void Main()
 	bool	drawOutlineEnabled = true;
 	Node*	nearestNode = &nodes[0];
 
+	Window::SetTitle(L"MapEditor");
+	Window::Resize(1280, 720);
+
+	//データの読み込み
 	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
 
+	//ファイル名入力欄
 	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
+
+	Array<TextBox> resouceTextBox;
+	for (auto i : step(rData.size()))
+		resouceTextBox.emplace_back(textBoxFont, Vec2(114, 114 + i * 20), none);
 
 	while (System::Update())
 	{
+
+		//キー入力
 		if (!textBox.isActive())
 		{
 			if (KeyG.down()) drawOutlineEnabled = !drawOutlineEnabled;
@@ -65,33 +72,42 @@ void Main()
 			if (KeyF.down()) selectedBrush = 1;
 			if (KeyV.down()) selectedBrush = 2;
 		}
+
+		//ブラシサイズの変更
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
+		//カメラの更新
 		tinyCamera2D.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; i++) {
 			const auto t1 = tinyCamera2D.createTransformer(i);
+
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
+
+		//都市の描画
 		for (int i = 0; i < 2; i++) {
 			const auto t1 = tinyCamera2D.createTransformer(i);
 
-			//都市の描画
 			for (auto& u : urbans)
 				Circle(u.getPos().mPos, 0.012).draw(Palette::Red).drawFrame(0.002, 0.0, Palette::Black);
 		}
 
+		//selectedUrbanの描画
+		if (selectedUrban != nullptr && uiMode == UIMode::setUrban)
+		{
+			for (int i = 0; i < 2; i++) {
+				const auto t1 = tinyCamera2D.createTransformer(i);
+
+				Circle(selectedUrban->getPos().mPos, 0.012).draw(Palette::Yellow).drawFrame(0.002, 0.0, Palette::Black);
+			}
+		}
+		else selectedUrban = nullptr;
+
 		if (!uiRect.mouseOver())
 		{
-			tinyCamera2D.createTransformer();
-
-			//色の取得
-			if (MouseR.down())
-			{
-				selectedBiome = nearestNode->biomeType;
-			}
 
 			//nearestNodeの設定
 			{
@@ -103,61 +119,117 @@ void Main()
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
-				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004);
+				Circle(nearestNode->pos.mPos, 0.01).drawFrame(0.003, Palette::Black);
 			}
 
-			//selectedBiomeの反映
-			if (selectedBrush == 0)
+			switch (uiMode)
 			{
-				if (MouseL.pressed() && nearestNode->biomeType != selectedBiome)
-				{
-					Array<Node*> list = { nearestNode };
-					nearestNode->biomeType = selectedBiome;
-					planet.updateImage(list);
-				}
-			}
-			else if (selectedBrush == 1)
-			{
-				if (MouseL.pressed())
-				{
-					Array<Node*> list;
-					auto mp = tinyCamera2D.getCursorPos();
-					for (auto& n : nodes)
-					{
-						if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
-						{
-							if (n.biomeType != selectedBiome)
-							{
-								n.biomeType = selectedBiome;
-								list.emplace_back(&n);
-							}
-						}
-					}
-					planet.updateImage(list);
-				}
-			}
-			else
-			{
-				if (MouseL.down())
-				{
-					Array<Node*> list;
-					list.emplace_back(nearestNode);
+			case UIMode::setBiome:
 
-					for (int i = 0; i< int(list.size()); i++)
+				//色の取得
+				if (MouseR.down()) selectedBiome = nearestNode->biomeType;
+
+				//ブラシの使用
+				switch (selectedBrush)
+				{
+				case 0:
+					if (MouseL.pressed() && nearestNode->biomeType != selectedBiome)
 					{
-						auto& n1 = list[i];
-						for (auto& p : n1->paths)
+						Array<Node*> list = { nearestNode };
+						nearestNode->biomeType = selectedBiome;
+						planet.updateImage(list);
+					}
+					break;
+
+				case 1:
+					if (MouseL.pressed())
+					{
+						Array<Node*> list;
+						auto mp = tinyCamera2D.getCursorPos();
+						for (auto& n : nodes)
 						{
-							auto& n2 = p.getChild();
-							if (n1->biomeType == n2.biomeType && !list.any([&n2](Node* _n) {return _n == &n2; }))
+							if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
 							{
-								list.emplace_back(&n2);
+								if (n.biomeType != selectedBiome)
+								{
+									n.biomeType = selectedBiome;
+									list.emplace_back(&n);
+								}
 							}
 						}
+						planet.updateImage(list);
 					}
-					for (auto& n : list) n->biomeType = selectedBiome;
-					planet.updateImage(list);
+					break;
+
+				case 2:
+					if (MouseL.down() && nearestNode->biomeType != selectedBiome)
+					{
+						Array<Node*> list;
+						list.emplace_back(nearestNode);
+						for (int i = 0; i < int(list.size()); i++)
+						{
+							auto& n1 = list[i];
+							for (auto& p : n1->paths)
+							{
+								auto& n2 = p.getChild();
+								if (n1->biomeType == n2.biomeType && !list.any([&n2](Node* _n) {return _n == &n2; }))
+								{
+									list.emplace_back(&n2);
+								}
+							}
+						}
+						for (auto& n : list) n->biomeType = selectedBiome;
+						planet.updateImage(list);
+					}
+					break;
 				}
+
+				break;
+
+			case UIMode::setUrban:
+
+				if (MouseR.down())
+				{
+					selectedUrban = nullptr;
+					actionMode = ActionMode::none;
+				}
+
+				switch (actionMode)
+				{
+				case ActionMode::none:
+					if (MouseL.down() && nearestNode->ownUrbanID != -1)
+					{
+						selectedUrban = &urbans[nearestNode->ownUrbanID];
+						for (auto i : step(rData.size()))
+							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
+					}
+					break;
+				case ActionMode::set:
+					if (MouseL.down() && nearestNode->ownUrbanID == -1)
+					{
+						urbans.emplace_back(nearestNode->id);
+						selectedUrban = &urbans.back();
+						for (auto i : step(rData.size()))
+							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
+					}
+					break;
+				case ActionMode::remove:
+					if (MouseL.down() && nearestNode->ownUrbanID != -1)
+					{
+						const int targetID = nearestNode->ownUrbanID;
+						urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
+						nearestNode->ownUrbanID = -1;
+						selectedUrban = nullptr;
+						//IDの整合性を取る
+						for (auto& n : nodes)
+							if (n.ownUrbanID > targetID) --n.ownUrbanID;
+						for (auto& u : urbans)
+							if (u.id > targetID) --u.id;
+					}
+					break;
+				}
+
+				break;
 			}
 		}
 
@@ -258,39 +330,38 @@ void Main()
 				const Rect rect(32, 64, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
-				if (s.leftClicked()) actionMode = actionMode == ActionMode::setUrban ? ActionMode::none : ActionMode::setUrban;
-				s.draw(actionMode == ActionMode::setUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
+				s.draw(actionMode == ActionMode::set ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
 			}
 			{
 				const Rect rect(32, 88, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
-				if (s.leftClicked()) actionMode = actionMode == ActionMode::removeUrban ? ActionMode::none : ActionMode::removeUrban;
-				s.draw(actionMode == ActionMode::removeUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
+				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
 			}
-			switch (actionMode)
+			for (auto& i : step(int(rData.size())))
 			{
-			case ActionMode::setUrban:
-				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID == -1)
+				const Rect rect(32, 112 + i * 20, 80, 20);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font12(rData[i].name).draw(rect.pos.movedBy(4, 0));
+			}
+			if (selectedUrban != nullptr)
+			{
+				for (auto& i : step(int(rData.size())))
 				{
-					urbans.emplace_back(nearestNode->id);
+					const Rect rect(112, 112 + i * 20, 60, 20);
+					rect.drawFrame(1, 0, Palette::Skyblue);
+
+					auto& t = resouceTextBox[i];
+					t.setWidth(56);
+					t.update();
+					selectedUrban->resource[i] = ParseInt<int>(t.getText()) % 10000;
+					t.setText(Format(selectedUrban->resource[i]));
+					t.draw();
 				}
-				break;
-			case ActionMode::removeUrban:
-				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID != -1)
-				{
-					const int targetID = nearestNode->ownUrbanID;
-					urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
-					nearestNode->ownUrbanID = -1;
-					//IDの整合性を取る
-					for (auto& n : nodes)
-						if (n.ownUrbanID > targetID) --n.ownUrbanID;
-					for (auto& u : urbans)
-						if (u.id > targetID) --u.id;
-				}
-				break;
 			}
 			break;
 		}

@@ -20,30 +20,29 @@ Vec2	Vehicle::getMPos() const
 {
 	if (routeID != -1)
 	{
-		auto& r = routes[routeID];
 		double length = routeProgress;
-		for (int i = 0; i < r.pathIDs.size(); i++)
+
+		for (int i = 0; i < routes[routeID].pathIDs.size(); i++)
 		{
-			auto& p = paths[r.pathIDs[i]];
+			auto& p = paths[routes[routeID].pathIDs[i]];
 			const auto line = p->getLine();
 
 			if (length > p->cost) length -= p->cost;
-			else
-			{
-				const auto pos = line.begin.lerp(line.end, length / p->cost);
-				return pos;
-			}
+			else return line.begin.lerp(line.end, length / p->cost);
 		}
 	}
 	return urbans[nowUrbanID].getPos().mPos;
 }
 void	Vehicle::draw() const
 {
+	auto& g = groups[joinedGroupID];
 	const Circle shape(0.01);
+
 	if (routeID != -1)
 	{
 		auto& r = routes[routeID];
 		double length = routeProgress;
+
 		for (int i = 0; i < r.pathIDs.size(); i++)
 		{
 			auto& p = paths[r.pathIDs[i]];
@@ -51,22 +50,20 @@ void	Vehicle::draw() const
 
 			if (length > p->cost)
 			{
-				line.draw(0.005, Color(groups[joinedGroupID].color, 64));
+				line.draw(0.005, Color(g.color, 64));
 				length -= p->cost;
 			}
 			else
 			{
 				const auto pos = line.begin.lerp(line.end, length / p->cost);
-				Line(line.begin, pos).draw(0.005, Color(groups[joinedGroupID].color, 64));
-				shape.movedBy(pos).draw(groups[joinedGroupID].color).drawFrame(0.005, Palette::Black);
+
+				Line(line.begin, pos).draw(0.005, Color(g.color, 64));
+				shape.movedBy(pos).draw(g.color).drawFrame(0.005, Palette::Black);
 				break;
 			}
 		}
 	}
-	else
-	{
-		Triangle(-0.02, -0.03, 0.02, -0.03, 0.0, 0.0).movedBy(getMPos()).draw(groups[joinedGroupID].color);
-	}
+	else Triangle(-0.02, -0.03, 0.02, -0.03, 0.0, 0.0).movedBy(getMPos()).draw(g.color);
 }
 
 Array<Group> groups;
@@ -79,10 +76,13 @@ Group::Group()
 void	Vehicle::update()
 {
 	auto& g = groups[joinedGroupID];
+	double actionTime = timeSpeed;
+
 	if (chain.isEmpty())
 	{
 		auto& u1 = urbans[nowUrbanID];
 		auto& u2 = urbans.choice();
+
 		if (&u1 != &u2)
 		{
 			for (auto& r : u1.getRoutesToUrban(u2.id))
@@ -90,19 +90,16 @@ void	Vehicle::update()
 
 			chain.push_back({ int16(Command::SELL), int32(1000) });
 			chain.push_back({ int16(Command::BUY), iData.choice().id });
-			chain.push_back({ int16(Command::WAIT), int32(0) });
 
 			for (auto& r : u2.getRoutesToUrban(u1.id))
 				chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
 			chain.push_back({ int16(Command::SELL), int32(1000) });
 			chain.push_back({ int16(Command::BUY), iData.choice().id });
-			chain.push_back({ int16(Command::WAIT), int32(0) });
 
 			chain.push_back({ int16(Command::JUMP), int32(0) });
 		}
 	}
-	double actionTime = timeSpeed;
 
 	for (;;)
 	{
@@ -114,7 +111,7 @@ void	Vehicle::update()
 				nowUrbanID = routes[routeID].destinationUrbanID;
 				routeProgress = 0.0;
 				routeID = -1;
-				++progress;
+				sleepTimer = 1 / 24.0;	//1hour
 			}
 			else
 			{
@@ -141,6 +138,7 @@ void	Vehicle::update()
 			//スクリプトの実行
 			const int command = chain[progress].first;
 			const int data = chain[progress].second;
+
 			switch (Command(command))
 			{
 			case Command::MOVE:	//都市へ移動
