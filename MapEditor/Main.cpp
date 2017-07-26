@@ -47,6 +47,10 @@ void Main()
 	//ファイル名入力欄
 	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
 
+	Array<TextBox> resouceTextBox;
+	for (auto i : step(rData.size()))
+		resouceTextBox.emplace_back(textBoxFont, Vec2(114, 114 + i * 20), none);
+
 	while (System::Update())
 	{
 
@@ -178,13 +182,17 @@ void Main()
 					if (MouseL.down() && nearestNode->ownUrbanID != -1)
 					{
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
+						for (auto i : step(rData.size()))
+							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
 				case ActionMode::set:
 					if (MouseL.down() && nearestNode->ownUrbanID == -1)
 					{
 						urbans.emplace_back(nearestNode->id);
-						selectedUrban = &urbans[nearestNode->ownUrbanID];
+						selectedUrban = &urbans.back();
+						for (auto i : step(rData.size()))
+							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
 				case ActionMode::remove:
@@ -193,6 +201,7 @@ void Main()
 						const int targetID = nearestNode->ownUrbanID;
 						urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
 						nearestNode->ownUrbanID = -1;
+						selectedUrban = nullptr;
 						//IDの整合性を取る
 						for (auto& n : nodes)
 							if (n.ownUrbanID > targetID) --n.ownUrbanID;
@@ -314,6 +323,27 @@ void Main()
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
+			}
+			for (auto& i : step(int(rData.size())))
+			{
+				const Rect rect(32, 112 + i * 20, 80, 20);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font12(rData[i].name).draw(rect.pos.movedBy(4, 0));
+			}
+			if (selectedUrban != nullptr)
+			{
+				for (auto& i : step(int(rData.size())))
+				{
+					const Rect rect(112, 112 + i * 20, 60, 20);
+					rect.drawFrame(1, 0, Palette::Skyblue);
+
+					auto& t = resouceTextBox[i];
+					t.setWidth(56);
+					t.update();
+					selectedUrban->resource[i] = ParseInt<int>(t.getText()) % 10000;
+					t.setText(Format(selectedUrban->resource[i]));
+					t.draw();
+				}
 			}
 			break;
 		}
