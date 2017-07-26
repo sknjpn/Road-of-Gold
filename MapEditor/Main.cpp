@@ -29,14 +29,14 @@ void Main()
 	const Font textBoxFont(12, Typeface::Bold);
 
 	enum struct ActionMode {
-		none,
-		setUrban,	//Urbanの配置
-		removeUrban,//Urbanの削除
-	} actionMode = ActionMode::setUrban;
+		modify,
+		set,
+		remove,
+	} actionMode = ActionMode::set;
 
 	enum struct UIMode {
 		setBiome,
-		setUrban,
+		set,
 	} uiMode = UIMode::setBiome;
 
 	bool	drawOutlineEnabled = true;
@@ -252,33 +252,36 @@ void Main()
 
 			break;
 		}
-		case UIMode::setUrban:
+		case UIMode::set:
 		{
 			{
 				const Rect rect(32, 64, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
-				if (s.leftClicked()) actionMode = actionMode == ActionMode::setUrban ? ActionMode::none : ActionMode::setUrban;
-				s.draw(actionMode == ActionMode::setUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::modify : ActionMode::set;
+				s.draw(actionMode == ActionMode::set ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
 			}
 			{
 				const Rect rect(32, 88, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
-				if (s.leftClicked()) actionMode = actionMode == ActionMode::removeUrban ? ActionMode::none : ActionMode::removeUrban;
-				s.draw(actionMode == ActionMode::removeUrban ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::modify : ActionMode::remove;
+				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
 			}
 			switch (actionMode)
 			{
-			case ActionMode::setUrban:
+			case ActionMode::modify:
+
+				break;
+			case ActionMode::set:
 				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID == -1)
 				{
 					urbans.emplace_back(nearestNode->id);
 				}
 				break;
-			case ActionMode::removeUrban:
+			case ActionMode::remove:
 				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID != -1)
 				{
 					const int targetID = nearestNode->ownUrbanID;
