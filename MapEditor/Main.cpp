@@ -32,7 +32,7 @@ void Main()
 
 	enum struct UIMode {
 		setBiome,
-		set,
+		setUrban,
 	} uiMode = UIMode::setBiome;
 
 	bool	drawOutlineEnabled = true;
@@ -109,7 +109,7 @@ void Main()
 				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004);
 			}
 
-			//selectedBiomeの反映
+			//ブラシの使用
 			switch (selectedBrush)
 			{
 			case 0:
@@ -146,8 +146,7 @@ void Main()
 				{
 					Array<Node*> list;
 					list.emplace_back(nearestNode);
-
-					for (int i = 0; i< int(list.size()); i++)
+					for (int i = 0; i < int(list.size()); i++)
 					{
 						auto& n1 = list[i];
 						for (auto& p : n1->paths)
@@ -166,6 +165,35 @@ void Main()
 
 			default:
 				break;
+			}
+
+			//都市の操作
+			if (uiMode == UIMode::setUrban)
+			{
+				switch (actionMode)
+				{
+				case ActionMode::modify:
+					break;
+				case ActionMode::set:
+					if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID == -1)
+					{
+						urbans.emplace_back(nearestNode->id);
+					}
+					break;
+				case ActionMode::remove:
+					if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID != -1)
+					{
+						const int targetID = nearestNode->ownUrbanID;
+						urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
+						nearestNode->ownUrbanID = -1;
+						//IDの整合性を取る
+						for (auto& n : nodes)
+							if (n.ownUrbanID > targetID) --n.ownUrbanID;
+						for (auto& u : urbans)
+							if (u.id > targetID) --u.id;
+					}
+					break;
+				}
 			}
 		}
 
@@ -260,7 +288,7 @@ void Main()
 
 			break;
 		}
-		case UIMode::set:
+		case UIMode::setUrban:
 		{
 			{
 				const Rect rect(32, 64, 160, 24);
@@ -277,31 +305,6 @@ void Main()
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::modify : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
-			}
-			switch (actionMode)
-			{
-			case ActionMode::modify:
-
-				break;
-			case ActionMode::set:
-				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID == -1)
-				{
-					urbans.emplace_back(nearestNode->id);
-				}
-				break;
-			case ActionMode::remove:
-				if (!uiRect.mouseOver() && MouseL.down() && nearestNode->ownUrbanID != -1)
-				{
-					const int targetID = nearestNode->ownUrbanID;
-					urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
-					nearestNode->ownUrbanID = -1;
-					//IDの整合性を取る
-					for (auto& n : nodes)
-						if (n.ownUrbanID > targetID) --n.ownUrbanID;
-					for (auto& u : urbans)
-						if (u.id > targetID) --u.id;
-				}
-				break;
 			}
 			break;
 		}
