@@ -25,7 +25,7 @@ void Main()
 	const Font textBoxFont(12, Typeface::Bold);
 
 	enum struct ActionMode {
-		modify,
+		none,
 		set,
 		remove,
 	} actionMode = ActionMode::set;
@@ -174,7 +174,7 @@ void Main()
 
 				switch (actionMode)
 				{
-				case ActionMode::modify:
+				case ActionMode::none:
 					if (MouseL.down() && nearestNode->ownUrbanID != -1)
 					{
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
@@ -303,7 +303,7 @@ void Main()
 				const Rect rect(32, 64, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
-				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::modify : ActionMode::set;
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
 				s.draw(actionMode == ActionMode::set ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
 			}
@@ -311,7 +311,7 @@ void Main()
 				const Rect rect(32, 88, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
-				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::modify : ActionMode::remove;
+				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
 			}
