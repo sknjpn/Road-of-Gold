@@ -93,8 +93,6 @@ void Main()
 
 		if (!uiRect.mouseOver())
 		{
-			//色の取得
-			if (MouseR.down()) selectedBiome = nearestNode->biomeType;
 
 			//nearestNodeの設定
 			{
@@ -106,70 +104,74 @@ void Main()
 			for (int i = 0; i < 2; i++)
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
-				Circle(nearestNode->pos.mPos, 0.01).draw(bData[selectedBiome].color).drawFrame(0.004);
+				Circle(nearestNode->pos.mPos, 0.01).drawFrame(0.003, Palette::Black);
 			}
 
-			//ブラシの使用
-			switch (selectedBrush)
+			switch (uiMode)
 			{
-			case 0:
-				if (MouseL.pressed() && nearestNode->biomeType != selectedBiome)
-				{
-					Array<Node*> list = { nearestNode };
-					nearestNode->biomeType = selectedBiome;
-					planet.updateImage(list);
-				}
-				break;
+			case UIMode::setBiome:
 
-			case 1:
-				if (MouseL.pressed())
+				//色の取得
+				if (MouseR.down()) selectedBiome = nearestNode->biomeType;
+
+				//ブラシの使用
+				switch (selectedBrush)
 				{
-					Array<Node*> list;
-					auto mp = tinyCamera2D.getCursorPos();
-					for (auto& n : nodes)
+				case 0:
+					if (MouseL.pressed() && nearestNode->biomeType != selectedBiome)
 					{
-						if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
+						Array<Node*> list = { nearestNode };
+						nearestNode->biomeType = selectedBiome;
+						planet.updateImage(list);
+					}
+					break;
+
+				case 1:
+					if (MouseL.pressed())
+					{
+						Array<Node*> list;
+						auto mp = tinyCamera2D.getCursorPos();
+						for (auto& n : nodes)
 						{
-							if (n.biomeType != selectedBiome)
+							if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
 							{
-								n.biomeType = selectedBiome;
-								list.emplace_back(&n);
+								if (n.biomeType != selectedBiome)
+								{
+									n.biomeType = selectedBiome;
+									list.emplace_back(&n);
+								}
 							}
 						}
+						planet.updateImage(list);
 					}
-					planet.updateImage(list);
-				}
-				break;
+					break;
 
-			case 2:
-				if (MouseL.down())
-				{
-					Array<Node*> list;
-					list.emplace_back(nearestNode);
-					for (int i = 0; i < int(list.size()); i++)
+				case 2:
+					if (MouseL.down())
 					{
-						auto& n1 = list[i];
-						for (auto& p : n1->paths)
+						Array<Node*> list;
+						list.emplace_back(nearestNode);
+						for (int i = 0; i < int(list.size()); i++)
 						{
-							auto& n2 = p.getChild();
-							if (n1->biomeType == n2.biomeType && !list.any([&n2](Node* _n) {return _n == &n2; }))
+							auto& n1 = list[i];
+							for (auto& p : n1->paths)
 							{
-								list.emplace_back(&n2);
+								auto& n2 = p.getChild();
+								if (n1->biomeType == n2.biomeType && !list.any([&n2](Node* _n) {return _n == &n2; }))
+								{
+									list.emplace_back(&n2);
+								}
 							}
 						}
+						for (auto& n : list) n->biomeType = selectedBiome;
+						planet.updateImage(list);
 					}
-					for (auto& n : list) n->biomeType = selectedBiome;
-					planet.updateImage(list);
+					break;
 				}
-				break;
 
-			default:
 				break;
-			}
+			case UIMode::setUrban:
 
-			//都市の操作
-			if (uiMode == UIMode::setUrban)
-			{
 				switch (actionMode)
 				{
 				case ActionMode::modify:
@@ -199,6 +201,8 @@ void Main()
 					}
 					break;
 				}
+
+				break;
 			}
 		}
 
