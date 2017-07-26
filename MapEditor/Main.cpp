@@ -147,7 +147,7 @@ void Main()
 					break;
 
 				case 2:
-					if (MouseL.down())
+					if (MouseL.down() && nearestNode->biomeType != selectedBiome)
 					{
 						Array<Node*> list;
 						list.emplace_back(nearestNode);
