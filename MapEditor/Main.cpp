@@ -47,9 +47,12 @@ void Main()
 	//ファイル名入力欄
 	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
 
+	//都市名入力欄
+	TextBox urbanNameTextBox(textBoxFont, Vec2(78, 66), 112);
+
 	Array<TextBox> resouceTextBox;
 	for (auto i : step(rData.size()))
-		resouceTextBox.emplace_back(textBoxFont, Vec2(134, 66 + i * 20), none);
+		resouceTextBox.emplace_back(textBoxFont, Vec2(134, 86 + i * 20), none);
 
 	while (System::Update())
 	{
@@ -200,6 +203,7 @@ void Main()
 					if (MouseL.down() && nearestNode->ownUrbanID != -1)
 					{
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
+						urbanNameTextBox.setText(selectedUrban->name);
 						for (auto i : step(rData.size()))
 							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
@@ -209,6 +213,7 @@ void Main()
 					{
 						urbans.emplace_back(nearestNode->id);
 						selectedUrban = &urbans.back();
+						urbanNameTextBox.setText(selectedUrban->name);
 						for (auto i : step(rData.size()))
 							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
@@ -342,26 +347,35 @@ void Main()
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
 			}
+			{
+				urbanNameTextBox.update();
+				if (selectedUrban != nullptr) selectedUrban->name = urbanNameTextBox.getText();
+				else urbanNameTextBox.setText(L"");
+				urbanNameTextBox.draw();
+				const Rect rect(32, 64, 44, 20);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
+			}
 			for (auto& i : step(int(rData.size())))
 			{
-				const Rect rect(32, 64 + i * 20, 100, 20);
+				const Rect rect(32, 84 + i * 20, 100, 20);
 				rect.drawFrame(1, 0, Palette::Skyblue);
-				font12(rData[i].name).draw(rect.pos.movedBy(4, 0));
+				font12(rData[i].name).draw(rect.pos.movedBy(4, 1));
 			}
-			if (selectedUrban != nullptr)
+			for (auto& i : step(int(rData.size())))
 			{
-				for (auto& i : step(int(rData.size())))
+				const Rect rect(132, 84 + i * 20, 60, 20);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				auto& t = resouceTextBox[i];
+				t.setWidth(56);
+				t.update();
+				if (selectedUrban != nullptr)
 				{
-					const Rect rect(132, 64 + i * 20, 60, 20);
-					rect.drawFrame(1, 0, Palette::Skyblue);
-
-					auto& t = resouceTextBox[i];
-					t.setWidth(56);
-					t.update();
 					selectedUrban->resource[i] = ParseInt<int>(t.getText()) % 10000;
 					t.setText(Format(selectedUrban->resource[i]));
-					t.draw();
 				}
+				else t.setText(L"");
+				t.draw();
 			}
 			break;
 		}
