@@ -49,7 +49,7 @@ void Main()
 
 	Array<TextBox> resouceTextBox;
 	for (auto i : step(rData.size()))
-		resouceTextBox.emplace_back(textBoxFont, Vec2(114, 114 + i * 20), none);
+		resouceTextBox.emplace_back(textBoxFont, Vec2(134, 66 + i * 20), none);
 
 	while (System::Update())
 	{
@@ -327,7 +327,7 @@ void Main()
 		case UIMode::setUrban:
 		{
 			{
-				const Rect rect(32, 64, 160, 24);
+				const Rect rect(192, 64, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
@@ -335,7 +335,7 @@ void Main()
 				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
 			}
 			{
-				const Rect rect(32, 88, 160, 24);
+				const Rect rect(192, 88, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
@@ -344,7 +344,7 @@ void Main()
 			}
 			for (auto& i : step(int(rData.size())))
 			{
-				const Rect rect(32, 112 + i * 20, 80, 20);
+				const Rect rect(32, 64 + i * 20, 100, 20);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				font12(rData[i].name).draw(rect.pos.movedBy(4, 0));
 			}
@@ -352,7 +352,7 @@ void Main()
 			{
 				for (auto& i : step(int(rData.size())))
 				{
-					const Rect rect(112, 112 + i * 20, 60, 20);
+					const Rect rect(132, 64 + i * 20, 60, 20);
 					rect.drawFrame(1, 0, Palette::Skyblue);
 
 					auto& t = resouceTextBox[i];
