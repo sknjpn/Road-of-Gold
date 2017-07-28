@@ -3,7 +3,6 @@
 #include"Node.h"
 #include"Urban.h"
 
-Array<String> UrbanName;
 Array<String> GroupName;
 Array<BData> bData;
 Array<IData> iData;
@@ -12,11 +11,6 @@ Array<RData> rData;
 
 bool loadJSONData()
 {
-	{
-		JSONReader json(L"Assets/UrbanName.json");
-		if (json.isEmpty()) return false;
-		for (auto j : json[L"UrbanName"].arrayView()) UrbanName.emplace_back(j.getOr<String>(L"hoge"));
-	}
 	{
 		JSONReader json(L"Assets/GroupName.json");
 		if (json.isEmpty()) return false;
