@@ -1,6 +1,8 @@
 #include"JSON.h"
 #include"Planet.h"
 #include"Node.h"
+#include"Urban.h"
+
 
 Array<String> UrbanName;
 Array<String> GroupName;
@@ -66,6 +68,19 @@ bool	Planet::loadBiome()
 				reader.read(t);
 				n.biomeType = t;
 				n.color = bData[n.biomeType].color.lerp(RandomColor(), 0.05);
+			}
+			int numUrbans, length;
+			reader.read(numUrbans);
+			for (; numUrbans > 0; --numUrbans)
+			{
+				urbans.emplace_back();
+				reader.read(urbans.back().joinedNodeID);
+				nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
+				reader.read(length);
+				urbans.back().name.resize(length);
+				reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
+				for (auto i : step(rData.size()))
+					reader.read(urbans.back().resource[i]);
 			}
 			return true;
 		}
