@@ -9,12 +9,14 @@ Urban* selectedUrban;
 
 Urban::Urban()
 	: id(int(urbans.size()))
-	, name(UrbanName.choice())
+	, name(L"")
 	, joinedNodeID(-1)
 	, timer(0.5 + getPos().mPos.x / TwoPi)
 	, day(0)
 {
 	resource.resize(rData.size());
+	cRT.resize(rData.size());
+	cRB.resize(rData.size());
 	avgBhs.resize(cData.size());
 
 	const Array<int> numCitizen = {
@@ -39,6 +41,11 @@ void	Urban::update()
 	timer += timeSpeed;
 	if (timer >= 1.0)
 	{
+		for (auto i : step(cRB.size()))
+		{
+			cRB[i] = cRT[i];
+			cRT[i] = 0;
+		}
 		timer -= 1.0;
 		day++;
 		//àÍÇ©åéÇ™åoâﬂ
@@ -62,9 +69,41 @@ void	Urban::update()
 			b.tradeLog.clear();
 			b.chart.pop_back();
 		}
+
+		for (auto i : step(int(cData.size())))
+		{
+			int sum = 0;
+			int num = 0;
+			for (auto& c : citizens)
+			{
+				if (c.citizenType == i)
+				{
+					num++;
+					sum += c.money / 4;
+					c.money -= c.money / 4;
+				}
+			}
+			if (num > 0)
+			{
+				for (auto& c : citizens)
+					if (c.citizenType == i)
+						c.money += sum / num;
+			}
+		}
 	}
 
 	//ésñØÇÃçXêV
 	for (auto& c : citizens)
 		c.update();
+}
+double	Urban::getEfficiency(int _citizenType) const
+{
+	auto job = cData[_citizenType].job;
+	double efficiency = 1.0;
+	for (auto rID : job.needResouceID)
+	{
+		if (resource[rID] == 0) return 0;
+		if (resource[rID] < cRB[rID]) efficiency *= (resource[rID] / cRB[rID]);
+	}
+	return efficiency;
 }

@@ -36,7 +36,8 @@ IData::IData(const JSONValue _json)
 {}
 
 RData::RData(const JSONValue _json)
-	: name(_json[L"ResourceName"].getOr<String>(L"hoge"))
+	: id(int(rData.size()))
+	, name(_json[L"ResourceName"].getOr<String>(L"hoge"))
 	, description(_json[L"ResourceDescription"].getOr<String>(L"hoge"))
 {}
 

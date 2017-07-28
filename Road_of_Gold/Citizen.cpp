@@ -11,6 +11,7 @@ Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	, id(_id)
 	, price(100)
 	, hapiness(0)
+	, progress(0)
 	, ths(0)
 	, bhs(0)
 	, tmr(Random(99) + 100)
@@ -23,16 +24,19 @@ void	Citizen::update()
 	if (timer >= 1.0)
 	{
 		timer -= 1.0;
-
+		
 		//“]E‚Ì”»’è
 		tmr--;
 		if (tmr == 0)
 		{
 			tmr = 100;
-			for (int i = 0; i<int(cData.size()); i++)
+			for (int i = 0; i < int(cData.size()); i++)
 			{
-				if (RandomBool(Max(0.0, double(u.avgBhs[i] - bhs) / 1000.0)))
+				if (RandomBool(Max(0.0, double(u.avgBhs[i] - bhs) / 10000.0)))
+				{
 					citizenType = Random(int(cData.size() - 1));
+					money = 0;
+				}
 			}
 		}
 
@@ -50,10 +54,12 @@ void	Citizen::update()
 		}
 
 		//d–‚ÌÀs
-		if (totalCost < money)
+		if (RandomBool(u.getEfficiency(citizenType)) && totalCost < money)
 		{
 			if (flag)	//‚à‚µA•K—v‚ÈŞ—¿‚ªsê‚Éo‚Ä‚¢‚ê‚Î
 			{
+				for (auto& rID : cJob.needResouceID) u.cRT[rID]++;
+
 				//Ş—¿‚Ìw“ü
 				for (auto& p : cJob.consume)
 					u.baskets[p.itemID].buyItem(p.numConsume);
@@ -95,6 +101,6 @@ void	Citizen::update()
 				ths += iData[b->itemType].value;
 			}
 		}
-		else money += 100;	//˜J“­Ò‚Æ‚µ‚Ä“­‚­
+		else money += 60;	//˜J“­Ò‚Æ‚µ‚Ä“­‚­
 	}
 }

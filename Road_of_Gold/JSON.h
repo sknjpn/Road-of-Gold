@@ -4,8 +4,9 @@ bool loadJSONData();
 
 struct RData
 {
-	String name;
-	String description;
+	int		id;
+	String	name;
+	String	description;
 
 	RData(const JSONValue _json);
 };
@@ -83,7 +84,7 @@ struct Job
 			product.emplace_back(p);
 		for (auto r : _json[L"NeedResouce"].arrayView())
 		{
-			for (auto& i : iData)
+			for (auto& i : rData)
 				if (i.name == r.getOr<String>(L"")) needResouceID.emplace_back(i.id);
 		}
 	}

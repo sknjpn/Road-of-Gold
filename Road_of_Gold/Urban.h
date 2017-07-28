@@ -44,6 +44,7 @@ struct Citizen
 	int		citizenType;
 	int		money;
 	double	timer;
+	double	progress;
 	int		price;
 	int		hapiness;
 	int		bhs;	//先月の合計幸福度
@@ -65,9 +66,12 @@ struct Urban
 	Array<Citizen>	citizens;
 	Array<int>		avgBhs;	//各職業のBHS
 	Array<int>		resource;
+	Array<int>		cRT;	//本日消費資源量
+	Array<int>		cRB;	//前日消費資源量
 	Array<int>		routeIDs;
 
 	Urban();
+	double	getEfficiency(int _citizenType) const;
 	void	update();
 	void	draw() const;
 	Pos&	getPos() const;
