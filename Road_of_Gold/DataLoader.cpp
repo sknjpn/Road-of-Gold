@@ -3,7 +3,6 @@
 #include"Node.h"
 #include"Urban.h"
 
-
 Array<String> UrbanName;
 Array<String> GroupName;
 Array<BData> bData;
