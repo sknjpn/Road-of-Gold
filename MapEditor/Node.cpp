@@ -2,6 +2,7 @@
 #include"Planet.h"
 #include"Pi.h"
 #include"JSON.h"
+#include"Urban.h"
 
 Array<Node> nodes;
 Array<Path*> paths;
@@ -35,5 +36,13 @@ void	saveBiomeData(const FilePath& _filePath)
 {
 	BinaryWriter writer(_filePath);
 	for (auto& n : nodes) writer.write(n.biomeType);
+	writer.write(int(urbans.size()));
+	for (auto& u : urbans)
+	{
+		writer.write(u.joinedNodeID);
+		writer.write(int(u.name.length()));
+		writer.write(u.name.data(), int(u.name.length()) * sizeof(wchar));
+			for (auto i : step(rData.size())) writer.write(u.resource[i]);
+	}
 	writer.close();
 }

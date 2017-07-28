@@ -397,6 +397,19 @@ void Main()
 					list.emplace_back(&n);
 				}
 			}
+			int numUrbans, length;
+			reader.read(numUrbans);
+			for (; numUrbans > 0; --numUrbans)
+			{
+				urbans.emplace_back();
+				reader.read(urbans.back().joinedNodeID);
+				nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
+				reader.read(length);
+				urbans.back().name.resize(length);
+				reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
+				for (auto i : step(rData.size()))
+					reader.read(urbans.back().resource[i]);
+			}
 			planet.updateImage(list);
 		}
 	}
