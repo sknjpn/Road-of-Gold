@@ -75,11 +75,11 @@
       "ResourceDescription": "キタキツネは北の大地に生息し、毛皮を供給します。"
     },
     {
-      "ResourceName": "熱帯性土壌",
+      "ResourceName": "熱帯土壌",
       "ResourceDescription": "年中照りつける日光は一部の植物にとって重要です。"
     },
     {
-      "ResourceName": "温帯性土壌",
+      "ResourceName": "温帯土壌",
       "ResourceDescription": "安定した温暖気候は多くの植物が住むのに必要です。"
     }
   ],
@@ -145,7 +145,7 @@
     {
       "CitizenName": "木こり",
       "Job": {
-        "NeedResouce": [
+        "NeedResource": [
           "森林"
         ],
         "JobName": "炭焼き",
@@ -154,7 +154,7 @@
         "Product": [
           {
             "ItemName": "木炭",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -168,13 +168,13 @@
         "Consume": [
           {
             "ItemName": "木炭",
-            "NumConsume": 10
+            "NumConsume": 5
           }
         ],
         "Product": [
           {
             "ItemName": "陶器",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -182,7 +182,7 @@
     {
       "CitizenName": "狩人",
       "Job": {
-        "NeedResouce": [
+        "NeedResource": [
           "キタキツネ"
         ],
         "JobName": "狩猟",
@@ -205,13 +205,13 @@
         "Consume": [
           {
             "ItemName": "毛皮",
-            "NumConsume": 20
+            "NumConsume": 5
           }
         ],
         "Product": [
           {
             "ItemName": "コート",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -219,7 +219,7 @@
     {
       "CitizenName": "漁師",
       "Job": {
-        "NeedResouce": [
+        "NeedResource": [
           "漁場"
         ],
         "JobName": "漁業",
@@ -228,7 +228,7 @@
         "Product": [
           {
             "ItemName": "魚介類",
-            "NumProduct": 20
+            "NumProduct": 5
           }
         ]
       }
@@ -236,8 +236,8 @@
     {
       "CitizenName": "コーヒー農家",
       "Job": {
-        "NeedResouce": [
-          "熱帯性土壌"
+        "NeedResource": [
+          "熱帯土壌"
         ],
         "JobName": "コーヒー栽培",
         "JobDescription": "コーヒー豆を栽培します。",
@@ -245,7 +245,7 @@
         "Product": [
           {
             "ItemName": "コーヒー",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -253,8 +253,8 @@
     {
       "CitizenName": "茶葉農家",
       "Job": {
-        "NeedResouce": [
-          "温帯性土壌"
+        "NeedResource": [
+          "温帯土壌"
         ],
         "JobName": "茶葉栽培",
         "JobDescription": "茶葉を栽培します。",
@@ -262,7 +262,7 @@
         "Product": [
           {
             "ItemName": "茶葉",
-            "NumProduct": 20
+            "NumProduct": 5
           }
         ]
       }
@@ -270,8 +270,8 @@
     {
       "CitizenName": "香辛料農家",
       "Job": {
-        "NeedResouce": [
-          "熱帯性土壌"
+        "NeedResource": [
+          "熱帯土壌"
         ],
         "JobName": "香辛料栽培",
         "JobDescription": "香辛料を栽培します。",
@@ -279,7 +279,7 @@
         "Product": [
           {
             "ItemName": "香辛料",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }

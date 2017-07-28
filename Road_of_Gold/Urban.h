@@ -47,11 +47,12 @@ struct Citizen
 	double	progress;
 	int		price;
 	int		hapiness;
-	int		bhs;	//先月の合計幸福度
-	int		ths;	//今月の合計幸福度
+	Array<int>	incomeLog;	//100日分の収入記録
 	int		tmr;	//転職判定までのカウント
 
 	Citizen(int _id, int _citizenType, int _joinedUrbanID);
+	int		avgIncome() const;
+	void	addMoney(int _amount);	//外部からの収入
 	void	update();
 };
 
@@ -64,14 +65,12 @@ struct Urban
 	int		day;
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
-	Array<int>		avgBhs;	//各職業のBHS
+	Array<int>		avgIncome;	//各職業の収入平均
 	Array<int>		resource;
-	Array<int>		cRT;	//本日消費資源量
-	Array<int>		cRB;	//前日消費資源量
+	Array<double>	jobEfficiency;
 	Array<int>		routeIDs;
 
 	Urban();
-	double	getEfficiency(int _citizenType) const;
 	void	update();
 	void	draw() const;
 	Pos&	getPos() const;

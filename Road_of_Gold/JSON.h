@@ -68,7 +68,7 @@ struct Job
 	String	description;
 	int		cost;
 	int		wage;
-	Array<int>	needResouceID;
+	Array<int>	needResourceID;
 	Array<Consume> consume;
 	Array<Product> product;
 
@@ -82,10 +82,10 @@ struct Job
 			consume.emplace_back(c);
 		for (auto p : _json[L"Product"].arrayView())
 			product.emplace_back(p);
-		for (auto r : _json[L"NeedResouce"].arrayView())
+		for (auto r : _json[L"NeedResource"].arrayView())
 		{
 			for (auto& i : rData)
-				if (i.name == r.getOr<String>(L"")) needResouceID.emplace_back(i.id);
+				if (i.name == r.getOr<String>(L"")) needResourceID.emplace_back(i.id);
 		}
 	}
 };

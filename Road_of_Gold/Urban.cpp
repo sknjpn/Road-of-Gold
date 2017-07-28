@@ -15,9 +15,8 @@ Urban::Urban()
 	, day(0)
 {
 	resource.resize(rData.size());
-	cRT.resize(rData.size());
-	cRB.resize(rData.size());
-	avgBhs.resize(cData.size());
+	jobEfficiency.resize(cData.size());
+	avgIncome.resize(cData.size());
 
 	const Array<int> numCitizen = {
 		100,//òJì≠é“
@@ -41,24 +40,49 @@ void	Urban::update()
 	timer += timeSpeed;
 	if (timer >= 1.0)
 	{
-		for (auto i : step(cRB.size()))
-		{
-			cRB[i] = cRT[i];
-			cRT[i] = 0;
-		}
 		timer -= 1.0;
 		day++;
-		//àÍÇ©åéÇ™åoâﬂ
-		if (day > 100)
-		{
-			day = 0;
 
-			//BHSÇÃçXêV
-			avgBhs.fill(0);
-			for (auto& c : citizens) { c.bhs = c.ths; c.ths = 0; avgBhs[c.citizenType] += c.bhs; }
-			for (int i = 0; i<int(cData.size()); i++)
-				avgBhs[i] = int(avgBhs[i] / citizens.count_if([&i](const Citizen& c) {return c.citizenType == i; }));
+		//EfficiencyÇÃçXêV
+		{
+			Array<int>	usedResource(rData.size());
+			for (auto c : citizens)
+				for (auto rID : cData[c.citizenType].job.needResourceID) usedResource[rID]++;
+
+			for (auto i : step(int(cData.size())))
+			{
+				double efficiency = 1.0;
+				for (auto j : cData[i].job.needResourceID)
+				{
+					if (resource[j] == 0) efficiency = 0.0;
+					else if (resource[j] < usedResource[j]) efficiency *= (double(resource[j]) / double(usedResource[j]));
+				}
+				jobEfficiency[i] = efficiency;
+			}
 		}
+
+		//AvgIncomeÇÃèCê≥
+		for (auto i : step(int(cData.size())))
+		{
+			int num = 0;
+			int sum = 0;
+			for (auto& c : citizens)
+			{
+				if (c.citizenType == i)
+				{
+					num++;
+					sum += c.avgIncome();
+				}
+			}
+			if (num > 0) avgIncome[i] = sum / num;
+		}
+		for (auto& c : citizens)
+		{
+			c.incomeLog.push_front(0);
+			c.incomeLog.pop_back();
+		}
+
+		//ésèÍëÄçÏ
 		for (auto& b : baskets)
 		{
 			//âøäií·â∫
@@ -69,7 +93,6 @@ void	Urban::update()
 			b.tradeLog.clear();
 			b.chart.pop_back();
 		}
-
 		for (auto i : step(int(cData.size())))
 		{
 			int sum = 0;
@@ -79,8 +102,8 @@ void	Urban::update()
 				if (c.citizenType == i)
 				{
 					num++;
-					sum += c.money / 4;
-					c.money -= c.money / 4;
+					sum += c.money / 10;
+					c.money -= c.money / 10;
 				}
 			}
 			if (num > 0)
@@ -95,15 +118,4 @@ void	Urban::update()
 	//ésñØÇÃçXêV
 	for (auto& c : citizens)
 		c.update();
-}
-double	Urban::getEfficiency(int _citizenType) const
-{
-	auto job = cData[_citizenType].job;
-	double efficiency = 1.0;
-	for (auto rID : job.needResouceID)
-	{
-		if (resource[rID] == 0) return 0;
-		if (resource[rID] < cRB[rID]) efficiency *= (resource[rID] / cRB[rID]);
-	}
-	return efficiency;
 }

@@ -306,9 +306,7 @@ void Main()
 					int sumHapiness = 0;
 					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumHapiness += c.hapiness;
 					font16(L"幸福:", int(sumHapiness / double(numCitizen))).draw(16, 48);
-					int sumBhs = 0;
-					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumBhs += c.bhs;
-					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
+					font16(L"日給:", u.avgIncome[selectedCitizen]).draw(16 + 96, 48);
 
 
 				}
@@ -376,9 +374,7 @@ void Main()
 					int sumHapiness = 0;
 					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumHapiness += c.hapiness;
 					font16(L"幸福:", sumHapiness / double(numCitizen)).draw(16, 48);
-					int sumBhs = 0;
-					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumBhs += c.bhs;
-					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
+					font16(L"日給:", u.avgIncome[selectedCitizen]).draw(16 + 96, 48);
 
 					font12(cd.job.description).draw(4, 72);
 					font16(L"維持費:", 50 + cd.job.cost).draw(4, 72 + 16);

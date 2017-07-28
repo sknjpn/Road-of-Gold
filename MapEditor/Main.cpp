@@ -50,9 +50,9 @@ void Main()
 	//都市名入力欄
 	TextBox urbanNameTextBox(textBoxFont, Vec2(78, 66), 112);
 
-	Array<TextBox> resouceTextBox;
+	Array<TextBox> resourceTextBox;
 	for (auto i : step(rData.size()))
-		resouceTextBox.emplace_back(textBoxFont, Vec2(134, 86 + i * 20), none);
+		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 86 + i * 20), none);
 
 	while (System::Update())
 	{
@@ -205,7 +205,7 @@ void Main()
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
 						urbanNameTextBox.setText(selectedUrban->name);
 						for (auto i : step(rData.size()))
-							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
+							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
 				case ActionMode::set:
@@ -215,7 +215,7 @@ void Main()
 						selectedUrban = &urbans.back();
 						urbanNameTextBox.setText(selectedUrban->name);
 						for (auto i : step(rData.size()))
-							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
+							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
 				case ActionMode::remove:
@@ -366,7 +366,7 @@ void Main()
 			{
 				const Rect rect(132, 84 + i * 20, 60, 20);
 				rect.drawFrame(1, 0, Palette::Skyblue);
-				auto& t = resouceTextBox[i];
+				auto& t = resourceTextBox[i];
 				t.setWidth(56);
 				t.update();
 				if (selectedUrban != nullptr)

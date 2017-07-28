@@ -2,51 +2,63 @@
   "BData": [
     {
       "BiomeName": "Sea",
-      "BiomeColor": "#0F285A"
+      "BiomeColor": "#0F285A",
+      "BiomeMovingCost": 2.00
     },
     {
       "BiomeName": "Ocean",
-      "BiomeColor": "#0F1E50"
+      "BiomeColor": "#0F1E50",
+      "BiomeMovingCost": 3.00
     },
     {
       "BiomeName": "Ice",
-      "BiomeColor": "#FFFFFF"
+      "BiomeColor": "#FFFFFF",
+      "BiomeMovingCost": 30.00
     },
     {
       "BiomeName": "Desert",
-      "BiomeColor": "#EEDA82"
+      "BiomeColor": "#EEDA82",
+      "BiomeMovingCost": 30.00
     },
     {
       "BiomeName": "Savanna",
-      "BiomeColor": "#B1D16E"
+      "BiomeColor": "#B1D16E",
+      "BiomeMovingCost": 10.00
     },
     {
       "BiomeName": "TropicalRainforest",
-      "BiomeColor": "#1D4928"
+      "BiomeColor": "#1D4928",
+      "BiomeMovingCost": 50.00
     },
     {
       "BiomeName": "Tundra",
-      "BiomeColor": "#608370"
+      "BiomeColor": "#608370",
+      "BiomeMovingCost": 8.00
     },
     {
       "BiomeName": "TemperateRainforest",
-      "BiomeColor": "#427B19"
+      "BiomeColor": "#427B19",
+      "BiomeMovingCost": 20.00
     },
     {
       "BiomeName": "Grassland",
-      "BiomeColor": "#A4E163"
+      "BiomeColor": "#A4E163",
+      "BiomeMovingCost": 6.00
     },
     {
       "BiomeName": "SeasonalForest",
-      "BiomeColor": "#496423"
+      "BiomeColor": "#496423",
+      "BiomeMovingCost": 10.00
     },
     {
       "BiomeName": "BorealForest",
-      "BiomeColor": "#5F733E"
+      "BiomeColor": "#5F733E",
+      "BiomeMovingCost": 10.00
     },
     {
       "BiomeName": "Woodland",
-      "BiomeColor": "#8BAF5A"
+      "BiomeColor": "#8BAF5A",
+      "BiomeMovingCost": 8.00
     }
   ],
   "RData": [
@@ -63,11 +75,11 @@
       "ResourceDescription": "キタキツネは北の大地に生息し、毛皮を供給します。"
     },
     {
-      "ResourceName": "熱帯性土壌",
+      "ResourceName": "熱帯土壌",
       "ResourceDescription": "年中照りつける日光は一部の植物にとって重要です。"
     },
     {
-      "ResourceName": "温帯性土壌",
+      "ResourceName": "温帯土壌",
       "ResourceDescription": "安定した温暖気候は多くの植物が住むのに必要です。"
     }
   ],
@@ -133,13 +145,16 @@
     {
       "CitizenName": "木こり",
       "Job": {
+        "NeedResource": [
+          "森林"
+        ],
         "JobName": "炭焼き",
         "JobDescription": "沢山の薪から木炭を作ります。",
         "Cost": 100,
         "Product": [
           {
             "ItemName": "木炭",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -153,13 +168,13 @@
         "Consume": [
           {
             "ItemName": "木炭",
-            "NumConsume": 10
+            "NumConsume": 5
           }
         ],
         "Product": [
           {
             "ItemName": "陶器",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -167,6 +182,9 @@
     {
       "CitizenName": "狩人",
       "Job": {
+        "NeedResource": [
+          "キタキツネ"
+        ],
         "JobName": "狩猟",
         "JobDescription": "キツネやテンの毛皮を得ます。",
         "Cost": 50,
@@ -187,13 +205,13 @@
         "Consume": [
           {
             "ItemName": "毛皮",
-            "NumConsume": 20
+            "NumConsume": 5
           }
         ],
         "Product": [
           {
             "ItemName": "コート",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -201,13 +219,16 @@
     {
       "CitizenName": "漁師",
       "Job": {
+        "NeedResource": [
+          "漁場"
+        ],
         "JobName": "漁業",
         "JobDescription": "魚を釣ります。",
         "Cost": 50,
         "Product": [
           {
             "ItemName": "魚介類",
-            "NumProduct": 20
+            "NumProduct": 5
           }
         ]
       }
@@ -215,13 +236,16 @@
     {
       "CitizenName": "コーヒー農家",
       "Job": {
+        "NeedResource": [
+          "熱帯土壌"
+        ],
         "JobName": "コーヒー栽培",
         "JobDescription": "コーヒー豆を栽培します。",
         "Cost": 50,
         "Product": [
           {
             "ItemName": "コーヒー",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
@@ -229,13 +253,16 @@
     {
       "CitizenName": "茶葉農家",
       "Job": {
+        "NeedResource": [
+          "温帯土壌"
+        ],
         "JobName": "茶葉栽培",
         "JobDescription": "茶葉を栽培します。",
         "Cost": 100,
         "Product": [
           {
             "ItemName": "茶葉",
-            "NumProduct": 20
+            "NumProduct": 5
           }
         ]
       }
@@ -243,13 +270,16 @@
     {
       "CitizenName": "香辛料農家",
       "Job": {
+        "NeedResource": [
+          "熱帯土壌"
+        ],
         "JobName": "香辛料栽培",
         "JobDescription": "香辛料を栽培します。",
         "Cost": 100,
         "Product": [
           {
             "ItemName": "香辛料",
-            "NumProduct": 10
+            "NumProduct": 5
           }
         ]
       }
