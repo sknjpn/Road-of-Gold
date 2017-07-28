@@ -67,7 +67,7 @@ struct Urban
 	Array<int>		resource;
 	Array<int>		routeIDs;
 
-	Urban(int _joinedNodeID);
+	Urban();
 	void	update();
 	void	draw() const;
 	Pos&	getPos() const;
@@ -77,4 +77,3 @@ struct Urban
 };
 extern Urban*			selectedUrban;
 extern Array<Urban>		urbans;
-bool	setUrban(Node& _node);

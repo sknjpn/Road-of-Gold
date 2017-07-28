@@ -7,25 +7,15 @@
 Array<Urban> urbans;
 Urban* selectedUrban;
 
-Urban::Urban(int _joinedNodeID)
+Urban::Urban()
 	: id(int(urbans.size()))
 	, name(UrbanName.choice())
-	, joinedNodeID(_joinedNodeID)
-	, timer(0.0)
+	, joinedNodeID(-1)
+	, timer(0.5 + getPos().mPos.x / TwoPi)
 	, day(0)
 {
 	resource.resize(rData.size());
 	avgBhs.resize(cData.size());
-}
-String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, '0') + L":" + Format(int(timer * 24 * 60) % 60).lpad(2, '0'); }
-bool	setUrban(Node& _node)
-{
-	if (_node.isSea() || _node.ownUrbanID != -1) return false;
-	for (const auto& p : _node.paths) if (p.getChildNode().ownUrbanID != -1) return false;
-	_node.ownUrbanID = int(urbans.size());
-	urbans.emplace_back(_node.id);
-	auto& u = urbans.back();
-	u.timer = 0.5 + u.getPos().mPos.x / TwoPi;
 
 	const Array<int> numCitizen = {
 		100,//˜J“­ŽÒ
@@ -39,11 +29,11 @@ bool	setUrban(Node& _node)
 		5,
 	};
 
-	for (int i = 0; i < int(iData.size()); i++) u.baskets.emplace_back(i, u.id);
+	for (int i = 0; i < int(iData.size()); i++) baskets.emplace_back(i, id);
 	for (int i = 0; i < int(Min(cData.size(), numCitizen.size())); i++)
-		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, u.id);
-	return true;
+		for (int j = 0; j < numCitizen[i]; j++) citizens.emplace_back(int(citizens.size()), i, id);
 }
+String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, '0') + L":" + Format(int(timer * 24 * 60) % 60).lpad(2, '0'); }
 void	Urban::update()
 {
 	timer += timeSpeed;

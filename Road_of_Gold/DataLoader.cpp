@@ -71,12 +71,14 @@ bool	Planet::loadBiome()
 			}
 			int numUrbans, length;
 			reader.read(numUrbans);
+			if (numUrbans > 256) return false;
 			for (; numUrbans > 0; --numUrbans)
 			{
 				urbans.emplace_back();
 				reader.read(urbans.back().joinedNodeID);
 				nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
 				reader.read(length);
+				if (length > 16) return false;
 				urbans.back().name.resize(length);
 				reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
 				for (auto i : step(rData.size()))

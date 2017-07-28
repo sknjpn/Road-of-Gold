@@ -6,7 +6,7 @@ struct Region;
 
 struct Path
 {
-	Path::Path(int _parentNodeID, int _childNodeID);
+	Path(int _parentNodeID, int _childNodeID);
 	Node&	getChild() const;
 	Node&	getParent() const;
 	Line	getLine() const;
@@ -20,7 +20,7 @@ extern Array<Path*> paths;
 
 struct Node
 {
-	Node::Node(const Pos& _pos);
+	Node(const Pos& _pos);
 	Color	getColor() const;
 
 	int		ownUrbanID;
