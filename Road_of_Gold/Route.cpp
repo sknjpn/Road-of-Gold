@@ -2,8 +2,6 @@
 #include"Route.h"
 #include"Urban.h"
 
-Node* nodeTemp[1000000];
-
 Array<Route> routes;
 Route::Route(int _id)
 	: id(_id)
@@ -26,17 +24,15 @@ void	Route::draw(const Color& _color) const
 }
 void makeRoute()
 {
-	for (auto& n : nodeTemp) n = nullptr;
-	routes.clear();
+	Array<Node*> temp;
 	for (auto& u : urbans)
 	{
-		int wPos = 0;
-		nodeTemp[wPos] = &nodes[u.joinedNodeID]; wPos++;
+		temp.emplace_back(&nodes[u.joinedNodeID]);
 		nodes[u.joinedNodeID].isScaned = true;
 
-		for (int i = 0; i < wPos; ++i)
+		for (int i = 0; i < int(temp.size()); ++i)
 		{
-			auto& n1 = nodeTemp[i];
+			auto& n1 = temp[i];
 
 			if (n1->fromNodeID != -1 && !n1->isSea() && nodes[n1->fromNodeID].isSea()) continue;
 
@@ -49,7 +45,7 @@ void makeRoute()
 
 				if (!n2.isScaned || n2.cost > n1->cost + p.cost)
 				{
-					if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
+					if (!n2.isInQueue) temp.emplace_back(&n2);
 					n2.isScaned = true;
 					n2.isInQueue = true;
 					n2.cost = n1->cost + p.cost;
@@ -87,14 +83,14 @@ void makeRoute()
 			}
 		}
 
-		for (int i = 0; i < wPos; ++i)
+		for (auto& n : temp)
 		{
-			auto& n = nodeTemp[i];
 			n->cost = 0.0;
 			n->isInQueue = false;
 			n->isScaned = false;
 			n->fromNodeID = -1;
 		}
+		temp.clear();
 	}
 
 	//“sŽs‚ÉRoute‚Ì“o˜^
@@ -106,15 +102,14 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 	const auto& ut = urbans[_urbanID];
 	const double stopCost = 1 / 24.0;	//’“—¯Žž‚ÌƒRƒXƒg
 	Array<Route*> rs;
-	int wPos = 0;
 
-	for (auto& n : nodeTemp) n = nullptr;
-	nodeTemp[wPos] = &nodes[ut.joinedNodeID]; wPos++;
+	Array<Node*> temp;
+	temp.emplace_back(&nodes[ut.joinedNodeID]);
 	nodes[ut.joinedNodeID].isScaned = true;
 
-	for (int i = 0; i < wPos; ++i)
+	for (int i = 0; i < int(temp.size()); ++i)
 	{
-		auto& n1 = nodeTemp[i];
+		auto& n1 = temp[i];
 
 		if (n1->fromNodeID != -1 && !n1->isSea() && nodes[n1->fromNodeID].isSea()) continue;
 
@@ -126,7 +121,7 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 
 			if (!n2.isScaned || n2.cost > n1->cost + routes[rID].totalCost + stopCost)
 			{
-				if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
+				if (!n2.isInQueue)  temp.emplace_back(&n2);
 				n2.isScaned = true;
 				n2.isInQueue = true;
 				n2.cost = n1->cost + routes[rID].totalCost + stopCost;
@@ -154,9 +149,8 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 		}
 	}
 
-	for (int i = 0; i < wPos; ++i)
+	for(auto& n : temp)
 	{
-		auto& n = nodeTemp[i];
 		n->cost = 0.0;
 		n->isInQueue = false;
 		n->isScaned = false;
