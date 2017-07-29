@@ -83,7 +83,7 @@ void Main()
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
 				for (auto& u : urbans)
-					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
+					if (Circle(nodes[u.joinedNodeID].pos.mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
 			if (selectedUrban == nullptr)
 			{

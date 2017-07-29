@@ -32,7 +32,7 @@ Vec2	Vehicle::getMPos() const
 			else return line.begin.lerp(line.end, length / p->cost);
 		}
 	}
-	return urbans[nowUrbanID].getPos().mPos;
+	return nodes[urbans[nowUrbanID].joinedNodeID].pos.mPos;
 }
 void	Vehicle::draw() const
 {

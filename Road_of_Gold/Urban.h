@@ -73,7 +73,6 @@ struct Urban
 	Urban();
 	void	update();
 	void	draw() const;
-	Pos&	getPos() const;
 	String	getTimeAsString() const;
 	Array<Route*>	getRoutesToUrban(int _urbanID) const;
 
