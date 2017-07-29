@@ -17,7 +17,7 @@ void	Planet::makeGroupsRandom()
 		auto& g = groups.back();
 		g.name = GroupName.choice();
 		auto& u = urbans[Random(int(urbans.size() - 1))];
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 1; i++)
 		{
 			vehicles.emplace_back(u.id);
 			auto& v = vehicles.back();

@@ -7,6 +7,43 @@ void	Citizen::goToShopping()
 {
 	auto& u = urbans[joinedUrbanID];
 
+	int target = 0;	//–Ú•W
+	int maxEarn = 0;
+	for (int i = 0; i < 1 << iData.size(); i++)
+	{
+		int cost = 0;
+		int earn = 0;
+		for (int j = 0; j < iData.size(); j++)
+		{
+			if ((i & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
+			{
+				cost += u.baskets[j].rings.front().price;
+				earn += iData[j].value;
+			}
+		}
+		if (money < cost) continue;
+
+		for (int k = 0;; ++k)
+			if (1 << k > money - cost) { earn += k * 100; break; }
+
+		if (maxEarn < earn) target = i;
+	}
+	hapiness = 0;
+	for (int j = 0; j < iData.size(); j++)
+	{
+		if ((target & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
+		{
+			money -= u.baskets[j].rings.front().price;
+			u.baskets[j].buyItem(1);
+			hapiness += iData[j].value;
+		}
+	}
+	for (int k = 0;; ++k)
+		if (1 << k > money) { hapiness += k * 100; break; }
+	money = 0;
+
+
+	/*
 	Array<Basket*> buyList;	//w”ƒ—š—ğ
 	for (;;)
 	{
@@ -36,10 +73,11 @@ void	Citizen::goToShopping()
 	for (int i = 0;; ++i)
 		if (1 << i > money) { hapiness += i * 100; break; }
 	money = 0;
+	*/
 }
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
-	, money(00)
+	, money(0)
 	, timer(Random(0.0, 1.0))
 	, joinedUrbanID(_joinedUrbanID)
 	, id(_id)
@@ -87,7 +125,7 @@ void	Citizen::update()
 
 							int num = 0;
 							int sum = 0;
-							for(auto& c: u.citizens)
+							for (auto& c : u.citizens)
 								if (c.citizenType == i) { num++; sum += c.price; }
 							if (num > 0) price = sum / num;
 						}
