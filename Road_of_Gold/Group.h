@@ -43,10 +43,13 @@ extern Array<Vehicle> vehicles;
 
 struct Group
 {
+	double	timer;
 	Color	color;
 	int		id;
 	int		money;
 	String	name;
+	String	description;
+	int		moneyLog;	
 
 	Group();
 	void	update();

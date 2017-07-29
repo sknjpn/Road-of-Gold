@@ -9,7 +9,7 @@ Planet::Planet()
 {}
 void	Planet::makeGroupsRandom()
 {
-	const int numGroups = 20;
+	const int numGroups = 40;
 
 	for (int j = 0; j < numGroups; j++)
 	{

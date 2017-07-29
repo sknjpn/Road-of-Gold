@@ -19,11 +19,11 @@ Urban::Urban()
 	avgIncome.resize(cData.size());
 
 	const Array<int> numCitizen = {
-		300,//˜J“­Ò
-		10,	//–Ø‚±‚è
-		10,	//“©Œ|El
-		20,	//ël
-		10,	//d—§‚Ä‰®
+		100,//˜J“­Ò
+		5,	//–Ø‚±‚è
+		5,	//“©Œ|El
+		5,	//ël
+		5,	//d—§‚Ä‰®
 		5,	//‹™t
 		5,	//‹™t
 		5,

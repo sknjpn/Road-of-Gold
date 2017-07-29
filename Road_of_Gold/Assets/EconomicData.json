@@ -95,7 +95,7 @@
       "ItemName": "陶器",
       "ItemDescription": "食べ物を食べるときには欠かせません。",
       "Volume": 10,
-      "Value": 100,
+      "Value": 200,
       "Color": "#F5DEB3"
     },
     {
@@ -109,7 +109,7 @@
       "ItemName": "コート",
       "ItemDescription": "上質で暖かい毛皮です。",
       "Volume": 10,
-      "Value": 100,
+      "Value": 200,
       "Color": "#000080"
     },
     {

@@ -24,7 +24,7 @@ void	Citizen::goToShopping()
 		if (money < cost) continue;
 
 		for (int k = 0;; ++k)
-			if (1 << k > money - cost) { earn += k * 100; break; }
+			if (1 << k > money - cost) { earn += k * 25; break; }
 
 		if (maxEarn < earn) target = i;
 	}
@@ -39,7 +39,7 @@ void	Citizen::goToShopping()
 		}
 	}
 	for (int k = 0;; ++k)
-		if (1 << k > money) { hapiness += k * 100; break; }
+		if (1 << k > money) { hapiness += k * 25; break; }
 	money = 0;
 
 

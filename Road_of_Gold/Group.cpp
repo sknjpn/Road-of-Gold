@@ -38,6 +38,7 @@ void	Vehicle::draw() const
 	auto& g = groups[joinedGroupID];
 	const Circle shape(0.01);
 
+
 	if (routeID != -1)
 	{
 		auto& r = routes[routeID];
@@ -58,7 +59,7 @@ void	Vehicle::draw() const
 				const auto pos = line.begin.lerp(line.end, length / p->cost);
 
 				Line(line.begin, pos).draw(0.005, Color(g.color, 64));
-				shape.movedBy(pos).draw(g.color).drawFrame(0.005, Palette::Black);
+				shape.movedBy(pos).draw(stock.num == 0 ? Color(0, 0) : iData[stock.itemType].color).drawFrame(0.005, Palette::Black);
 				break;
 			}
 		}
@@ -72,19 +73,21 @@ Group::Group()
 	, name(Format(L"‘æ", id, L"–¼–³‚µ¤‰ï"))
 	, money(0)
 	, color(RandomColor())
+	, timer(0.0)
 {}
 void	Vehicle::update()
 {
 	auto& g = groups[joinedGroupID];
 	double actionTime = timeSpeed;
-
-	if (chain.isEmpty())
+	if (routeID == -1 && sleepTimer==0 && chain.isEmpty())
 	{
+		progress = 0;
 		auto& u1 = urbans[nowUrbanID];
 		auto& u2 = urbans.choice();
 
 		if (&u1 != &u2)
 		{
+			g.description = Format(u1.name, L"-", u2.name, L"ŠÔ");
 			for (auto& r : u1.getRoutesToUrban(u2.id))
 				chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
@@ -200,4 +203,17 @@ void	Vehicle::update()
 
 void Group::update()
 {
+	timer += timeSpeed;
+	if (timer > 100)
+	{
+		timer = 0;
+		if (money - moneyLog < 1000)
+		{
+			for (auto& v : vehicles)
+			{
+				if(v.joinedGroupID == id) v.chain.clear();
+			}
+		}
+		moneyLog = money;
+	}
 }
