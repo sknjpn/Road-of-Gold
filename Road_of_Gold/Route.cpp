@@ -18,7 +18,7 @@ void	Route::draw(const Color& _color) const
 	for (const auto& pID : pathIDs)
 	{
 		const auto& p = paths[pID];
-		Circle(p->getChildNode().pos.mPos, width / 2).draw(_color);
+		//Circle(p->getChildNode().pos.mPos, width / 2).draw(_color);
 		p->getLine().stretched(-width / 2).draw(width, _color);
 	}
 }
