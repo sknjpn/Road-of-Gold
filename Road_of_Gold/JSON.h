@@ -29,6 +29,7 @@ struct IData
 	String	description;
 	int		volume;
 	int		value;
+	Color	color;
 
 	IData(const JSONValue _json);
 };

@@ -33,6 +33,7 @@ IData::IData(const JSONValue _json)
 	, description(_json[L"ItemDescription"].getOr<String>(L"hoge"))
 	, volume(_json[L"Volume"].getOr<int>(10))
 	, value(_json[L"Value"].getOr<int>(0))
+	, color(_json[L"Color"].getOr<String>(L"#000000"))
 {}
 
 RData::RData(const JSONValue _json)
