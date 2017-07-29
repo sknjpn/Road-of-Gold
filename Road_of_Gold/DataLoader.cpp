@@ -11,11 +11,14 @@ Array<RData> rData;
 
 bool loadJSONData()
 {
+	//グループ名の読み込み
 	{
 		JSONReader json(L"Assets/GroupName.json");
 		if (json.isEmpty()) return false;
 		for (auto j : json[L"GroupName"].arrayView()) GroupName.emplace_back(j.getOr<String>(L"hoge"));
 	}
+
+	//各種JSONデータの読み込み
 	{
 		JSONReader json(L"Assets/EconomicData.json");
 		if (json.isEmpty()) return false;
@@ -26,6 +29,7 @@ bool loadJSONData()
 	}
 	return true;
 }
+
 RData::RData(const JSONValue _json)
 	: id(int(rData.size()))
 	, name(_json[L"ResourceName"].getOr<String>(L"hoge"))
@@ -33,7 +37,8 @@ RData::RData(const JSONValue _json)
 {}
 
 BData::BData(const JSONValue _json)
-	: name(_json[L"BiomeName"].getOr<String>(L"hoge"))
+	: id(int(bData.size()))
+	, name(_json[L"BiomeName"].getOr<String>(L"hoge"))
 	, color(_json[L"BiomeColor"].getOr<String>(L"#000000"))
 	, movingCost(_json[L"BiomeMovingCost"].getOr<double>(1.00))
 {}
@@ -47,16 +52,16 @@ IData::IData(const JSONValue _json)
 	, color(_json[L"Color"].getOr<String>(L"#000000"))
 {}
 
-Product::Product(const JSONValue _json)
-	: numProduct(_json[L"NumProduct"].getOr<int>(0))
+Consume::Consume(const JSONValue _json)
+	: numConsume(_json[L"NumConsume"].getOr<int>(0))
 	, itemID(-1)
 {
 	for (auto& i : iData)
 		if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
 }
 
-Consume::Consume(const JSONValue _json)
-	: numConsume(_json[L"NumConsume"].getOr<int>(0))
+Product::Product(const JSONValue _json)
+	: numProduct(_json[L"NumProduct"].getOr<int>(0))
 	, itemID(-1)
 {
 	for (auto& i : iData)
@@ -66,18 +71,19 @@ Consume::Consume(const JSONValue _json)
 Job::Job(const JSONValue _json)
 	: name(_json[L"JobName"].getOr<String>(L"hoge"))
 	, description(_json[L"JobDescription"].getOr<String>(L"hoge"))
-	, wage(_json[L"Wage"].getOr<int>(0))
 	, cost(_json[L"Cost"].getOr<int>(0))
+	, wage(_json[L"Wage"].getOr<int>(0))
 {
-	for (auto c : _json[L"Consume"].arrayView())
-		consume.emplace_back(c);
-	for (auto p : _json[L"Product"].arrayView())
-		product.emplace_back(p);
+	//Consumeデータの読み込み
+	for (auto c : _json[L"Consume"].arrayView()) consume.emplace_back(c);
+
+	//Productデータの読み込み
+	for (auto p : _json[L"Product"].arrayView()) product.emplace_back(p);
+
+	//NeedResourceデータの読み込み
 	for (auto r : _json[L"NeedResource"].arrayView())
-	{
 		for (auto& i : rData)
 			if (i.name == r.getOr<String>(L"")) needResourceID.emplace_back(i.id);
-	}
 }
 
 CData::CData(const JSONValue _json)

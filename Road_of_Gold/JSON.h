@@ -14,6 +14,7 @@ extern Array<RData> rData;
 
 struct BData
 {
+	int		id;
 	String	name;
 	Color	color;
 	double	movingCost;
