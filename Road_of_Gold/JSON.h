@@ -40,13 +40,7 @@ struct Consume
 	int	itemID;
 	int numConsume;
 
-	Consume(const JSONValue _json)
-		: numConsume(_json[L"NumConsume"].getOr<int>(0))
-		, itemID(-1)
-	{
-		for (auto& i : iData)
-			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
-	}
+	Consume(const JSONValue _json);
 };
 
 struct Product
@@ -54,13 +48,7 @@ struct Product
 	int	itemID;
 	int numProduct;
 
-	Product(const JSONValue _json)
-		: numProduct(_json[L"NumProduct"].getOr<int>(0))
-		, itemID(-1)
-	{
-		for (auto& i : iData)
-			if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
-	}
+	Product(const JSONValue _json);
 };
 
 struct Job
@@ -73,22 +61,7 @@ struct Job
 	Array<Consume> consume;
 	Array<Product> product;
 
-	Job(const JSONValue _json)
-		: name(_json[L"JobName"].getOr<String>(L"hoge"))
-		, description(_json[L"JobDescription"].getOr<String>(L"hoge"))
-		, wage(_json[L"Wage"].getOr<int>(0))
-		, cost(_json[L"Cost"].getOr<int>(0))
-	{
-		for (auto c : _json[L"Consume"].arrayView())
-			consume.emplace_back(c);
-		for (auto p : _json[L"Product"].arrayView())
-			product.emplace_back(p);
-		for (auto r : _json[L"NeedResource"].arrayView())
-		{
-			for (auto& i : rData)
-				if (i.name == r.getOr<String>(L"")) needResourceID.emplace_back(i.id);
-		}
-	}
+	Job(const JSONValue _json);
 };
 
 struct CData
@@ -96,10 +69,7 @@ struct CData
 	String name;
 	Job job;
 
-	CData(const JSONValue _json)
-		: name(_json[L"CitizenName"].getOr<String>(L"hoge"))
-		, job(_json[L"Job"])
-	{}
+	CData(const JSONValue _json);
 };
 extern Array<CData> cData;
 extern Array<String> GroupName;

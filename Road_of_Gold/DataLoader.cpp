@@ -26,16 +26,6 @@ bool loadJSONData()
 	}
 	return true;
 }
-
-IData::IData(const JSONValue _json)
-	: id(int(iData.size()))
-	, name(_json[L"ItemName"].getOr<String>(L"hoge"))
-	, description(_json[L"ItemDescription"].getOr<String>(L"hoge"))
-	, volume(_json[L"Volume"].getOr<int>(10))
-	, value(_json[L"Value"].getOr<int>(0))
-	, color(_json[L"Color"].getOr<String>(L"#000000"))
-{}
-
 RData::RData(const JSONValue _json)
 	: id(int(rData.size()))
 	, name(_json[L"ResourceName"].getOr<String>(L"hoge"))
@@ -46,6 +36,53 @@ BData::BData(const JSONValue _json)
 	: name(_json[L"BiomeName"].getOr<String>(L"hoge"))
 	, color(_json[L"BiomeColor"].getOr<String>(L"#000000"))
 	, movingCost(_json[L"BiomeMovingCost"].getOr<double>(1.00))
+{}
+
+IData::IData(const JSONValue _json)
+	: id(int(iData.size()))
+	, name(_json[L"ItemName"].getOr<String>(L"hoge"))
+	, description(_json[L"ItemDescription"].getOr<String>(L"hoge"))
+	, volume(_json[L"Volume"].getOr<int>(10))
+	, value(_json[L"Value"].getOr<int>(0))
+	, color(_json[L"Color"].getOr<String>(L"#000000"))
+{}
+
+Product::Product(const JSONValue _json)
+	: numProduct(_json[L"NumProduct"].getOr<int>(0))
+	, itemID(-1)
+{
+	for (auto& i : iData)
+		if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
+}
+
+Consume::Consume(const JSONValue _json)
+	: numConsume(_json[L"NumConsume"].getOr<int>(0))
+	, itemID(-1)
+{
+	for (auto& i : iData)
+		if (i.name == _json[L"ItemName"].getOr<String>(L"")) itemID = i.id;
+}
+
+Job::Job(const JSONValue _json)
+	: name(_json[L"JobName"].getOr<String>(L"hoge"))
+	, description(_json[L"JobDescription"].getOr<String>(L"hoge"))
+	, wage(_json[L"Wage"].getOr<int>(0))
+	, cost(_json[L"Cost"].getOr<int>(0))
+{
+	for (auto c : _json[L"Consume"].arrayView())
+		consume.emplace_back(c);
+	for (auto p : _json[L"Product"].arrayView())
+		product.emplace_back(p);
+	for (auto r : _json[L"NeedResource"].arrayView())
+	{
+		for (auto& i : rData)
+			if (i.name == r.getOr<String>(L"")) needResourceID.emplace_back(i.id);
+	}
+}
+
+CData::CData(const JSONValue _json)
+	: name(_json[L"CitizenName"].getOr<String>(L"hoge"))
+	, job(_json[L"Job"])
 {}
 
 bool	Planet::loadBiome()
