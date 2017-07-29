@@ -96,7 +96,7 @@ void Main()
 	voronoiMap.fill(-1);
 
 	DynamicTexture tex;
-	Stopwatch tmr(true);
+	Stopwatch timer(true);
 	int	LastUpdateA = 0;
 	int	LastUpdateB = 0;
 
@@ -154,14 +154,14 @@ void Main()
 				}
 			}
 		}
-		if (tmr.ms() > 16)
+		if (timer.ms() > 16)
 		{
 
 			tex.fill(image);
 			tex.resize(Window::Size()).draw();
 			Window::SetTitle(LastUpdateA);
 			if (!System::Update()) return;
-			tmr.restart();
+			timer.restart();
 		}
 		if (flag) break;
 	}

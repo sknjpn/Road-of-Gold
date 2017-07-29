@@ -8,10 +8,10 @@ struct Citizen;
 
 struct Ring
 {
-	int price;
-	int num;
-	int ownerGroupID;
-	int ownerCitizenID;
+	int		price;
+	int		num;
+	int		ownerGroupID;
+	int		ownerCitizenID;
 
 	Ring(int _price, int _num, const Group* _owner);
 	Ring(int _price, int _num, const Citizen* _owner);
@@ -21,8 +21,8 @@ bool operator>(const Ring& _left, const Ring& _right);
 
 struct Basket
 {
-	int joinedUrbanID;
-	int itemType;
+	int		joinedUrbanID;
+	int		itemType;
 	Array<int>	tradeLog;
 	Array<int>	chart;
 	Array<Ring> rings;
@@ -48,7 +48,6 @@ struct Citizen
 	int		price;
 	int		hapiness;
 	Array<int>	incomeLog;	//100日分の収入記録
-	int		tmr;	//転職判定までのカウント
 
 	Citizen(int _id, int _citizenType, int _joinedUrbanID);
 	int		avgIncome() const;

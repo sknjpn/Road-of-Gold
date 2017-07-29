@@ -51,7 +51,6 @@ Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	, price(100)
 	, hapiness(0)
 	, progress(0)
-	, tmr(Random(99) + 100)
 {
 	incomeLog.resize(100);
 }
@@ -69,38 +68,24 @@ void	Citizen::update()
 		timer -= 1.0;
 
 		//“]E‚Ì”»’è
-
-		tmr--;
-		if (tmr == 0)
+		if (RandomBool(0.001) || u.jobEfficiency[citizenType] == 0.0)
 		{
-			tmr = 100;
-			if (RandomBool(0.1) && (u.citizens.count_if([this](Citizen c) { return c.citizenType == citizenType; }) > 1 || u.jobEfficiency[citizenType] == 0.0))
+			auto max = u.avgIncome[citizenType] * 2;
+			for (auto i : step(int(cData.size())))
 			{
-				auto avg = avgIncome();
-				//if (avg < 150)
+				if (max < u.avgIncome[i])
 				{
-					//citizenType = 0;
-				}
-				//else
-				{
-					for (auto i : step(int(cData.size())))
-					{
-						if (avg < u.avgIncome[i])
-						{
-							avg = u.avgIncome[i];
-							citizenType = i;
+					max = u.avgIncome[i];
+					citizenType = i;
 
-							int num = 0;
-							int sum = 0;
-							for (auto& c : u.citizens)
-								if (c.citizenType == i) { num++; sum += c.price; }
-							if (num > 0) price = sum / num;
-						}
-					}
+					int num = 0;
+					int sum = 0;
+					for (auto& c : u.citizens)
+						if (c.citizenType == i) { num++; sum += c.price; }
+					if (num > 0) price = sum / num;
 				}
 			}
 		}
-
 		auto& cJob = cData[citizenType].job;
 
 		//d–‚ª’B¬‰Â”\‚©‚Ç‚¤‚©”»’è
