@@ -109,9 +109,9 @@ void	Vehicle::update()
 	{
 		if (routeID != -1)
 		{
-			if (actionTime >= routes[routeID].totalLength - routeProgress)
+			if (actionTime >= routes[routeID].totalCost - routeProgress)
 			{
-				actionTime -= routes[routeID].totalLength - routeProgress;
+				actionTime -= routes[routeID].totalCost - routeProgress;
 				nowUrbanID = routes[routeID].destinationUrbanID;
 				routeProgress = 0.0;
 				routeID = -1;
