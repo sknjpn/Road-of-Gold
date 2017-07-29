@@ -25,6 +25,7 @@ struct Stock
 
 struct Vehicle
 {
+	int		id;
 	int		joinedGroupID;
 	Stock	stock;
 	int		nowUrbanID;
@@ -50,6 +51,7 @@ struct Group
 	String	name;
 	String	description;
 	int		moneyLog;	
+	Array<int>	ownVehicleIDs;
 
 	Group();
 	void	update();

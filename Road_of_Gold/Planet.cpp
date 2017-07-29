@@ -20,6 +20,7 @@ void	Planet::makeGroupsRandom()
 		for (int i = 0; i < 1; i++)
 		{
 			vehicles.emplace_back(u.id);
+			g.ownVehicleIDs.emplace_back(vehicles.back().id);
 			auto& v = vehicles.back();
 			v.joinedGroupID = g.id;
 		}
