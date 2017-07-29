@@ -88,7 +88,7 @@
       "ItemName": "木炭",
       "ItemDescription": "暖を取るために重宝されます。重いので移動に適しません。",
       "Volume": 10,
-      "Value": 10
+      "Value": 100
     },
     {
       "ItemName": "陶器",
@@ -100,37 +100,37 @@
       "ItemName": "毛皮",
       "ItemDescription": "イタチ科の小動物の毛皮です。",
       "Volume": 5,
-      "Value": 20
+      "Value": 100
     },
     {
       "ItemName": "コート",
       "ItemDescription": "上質で暖かい毛皮です。",
       "Volume": 10,
-      "Value": 200
+      "Value": 100
     },
     {
       "ItemName": "魚介類",
       "ItemDescription": "栄養不足気味な市民にとって貴重な動物性たんぱく質です。",
       "Volume": 1,
-      "Value": 20
+      "Value": 100
     },
     {
       "ItemName": "コーヒー",
       "ItemDescription": "カフェインで永遠の昼を得られます。",
       "Volue": 1,
-      "Value": 50
+      "Value": 100
     },
     {
       "ItemName": "茶葉",
       "ItemDescription": "美味しく水を飲むことが出来ます。",
       "Volume": 1,
-      "Value": 50
+      "Value": 100
     },
     {
       "ItemName": "香辛料",
       "ItemDescription": "調味料としても、薬用としても有用です。",
       "Volume": 1,
-      "Value": 75
+      "Value": 100
     }
   ],
   "CData": [

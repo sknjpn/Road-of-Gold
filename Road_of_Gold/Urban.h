@@ -54,6 +54,7 @@ struct Citizen
 	int		avgIncome() const;
 	void	addMoney(int _amount);	//外部からの収入
 	void	update();
+	void	goToShopping();
 };
 
 struct Urban

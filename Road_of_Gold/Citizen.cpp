@@ -3,6 +3,40 @@
 #include"JSON.h"
 
 
+void	Citizen::goToShopping()
+{
+	auto& u = urbans[joinedUrbanID];
+
+	Array<Basket*> buyList;	//購買履歴
+	for (;;)
+	{
+		Basket* best = nullptr;	//有力候補
+		double	earn = 0.0;		//コスパ
+		for (int i = 0; i < int(iData.size()); i++)
+		{
+			auto& b = u.baskets[i];
+			if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == nullptr || iData[i].value / double(b.rings.front().price) > earn))
+			{
+				earn = iData[i].value / double(b.rings.front().price);
+				best = &b;
+			}
+		}
+		if (best != nullptr && best->rings.front().price <= money) {
+			money -= best->rings.front().price;
+			buyList.emplace_back(best);
+			best->buyItem(1);
+		}
+		else break;
+	}
+	hapiness = 0;
+	for (auto& b : buyList)
+	{
+		hapiness += iData[b->itemType].value;
+	}
+	for (int i = 0;; ++i)
+		if (1 << i > money) { hapiness += i * 100; break; }
+	money = 0;
+}
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
 	, money(00)
@@ -96,36 +130,8 @@ void	Citizen::update()
 					addMoney(-totalCost);
 				}
 
-				//娯楽としての購買
-				Array<Basket*> buyList;	//購買履歴
-				for (;;)
-				{
-					Basket* best = nullptr;	//有力候補
-					double	earn = 0.0;		//コスパ
-					for (int i = 0; i < int(iData.size()); i++)
-					{
-						auto& b = u.baskets[i];
-						if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == nullptr || iData[i].value / double(b.rings.front().price) > earn))
-						{
-							earn = iData[i].value / double(b.rings.front().price);
-							best = &b;
-						}
-					}
-					if (best != nullptr && best->rings.front().price <= money) {
-						money -= best->rings.front().price;
-						buyList.emplace_back(best);
-						best->buyItem(1);
-					}
-					else break;
-				}
-				hapiness = 0;
-				for (auto& b : buyList)
-				{
-					hapiness += iData[b->itemType].value;
-				}
-				for (int i = 0;; ++i)
-					if (1 << i > money) { hapiness += i * 100; break; }
-				money = 0;
+				//買い物をする
+				goToShopping();
 			}
 			else addMoney(60);	//労働者として働く
 		}
