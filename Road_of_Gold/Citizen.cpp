@@ -123,6 +123,9 @@ void	Citizen::update()
 				{
 					hapiness += iData[b->itemType].value;
 				}
+				for (int i = 0;; ++i)
+					if (1 << i > money) { hapiness += i * 100; break; }
+				money = 0;
 			}
 			else addMoney(60);	//˜J“­ŽÒ‚Æ‚µ‚Ä“­‚­
 		}

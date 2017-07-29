@@ -9,7 +9,7 @@ Planet::Planet()
 {}
 void	Planet::makeGroupsRandom()
 {
-	const int numGroups = 50;
+	const int numGroups = 20;
 
 	for (int j = 0; j < numGroups; j++)
 	{
@@ -17,7 +17,7 @@ void	Planet::makeGroupsRandom()
 		auto& g = groups.back();
 		g.name = GroupName.choice();
 		auto& u = urbans[Random(int(urbans.size() - 1))];
-		for (int i = 0; i < 20; i++)
+		for (int i = 0; i < 2; i++)
 		{
 			vehicles.emplace_back(u.id);
 			auto& v = vehicles.back();

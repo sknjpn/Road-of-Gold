@@ -41,7 +41,7 @@ void Main()
 	
 	makeRoute();
 
-	//planet.makeGroupsRandom();
+	planet.makeGroupsRandom();
 
 	while (System::Update())
 	{
