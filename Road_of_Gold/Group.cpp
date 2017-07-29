@@ -71,10 +71,11 @@ void	Vehicle::draw() const
 Array<Group> groups;
 Group::Group()
 	: id(int(groups.size()))
-	, name(Format(L"ëÊ", id, L"ñºñ≥Çµè§âÔ"))
+	, name(Format(L"hogeè§âÔ"))
 	, money(0)
 	, color(RandomColor())
-	, timer(0.0)
+	, timer(0)
+	, moneyLog(0)
 {}
 void	Vehicle::update()
 {

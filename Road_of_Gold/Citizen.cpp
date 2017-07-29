@@ -26,7 +26,11 @@ void	Citizen::goToShopping()
 		for (int k = 0;; ++k)
 			if ((1 << k) > money - cost) { earn += k * 10; break; }
 
-		if (maxEarn < earn) target = i;
+		if (maxEarn < earn)
+		{
+			target = i;
+			maxEarn = earn;
+		}
 	}
 	hapiness = 0;
 	for (int j = 0; j < iData.size(); j++)
@@ -54,10 +58,7 @@ Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 {
 	incomeLog.resize(100);
 }
-int		Citizen::avgIncome() const
-{
-	return int(incomeLog.sum() / double(incomeLog.size()));
-}
+int		Citizen::avgIncome() const { return int(incomeLog.sum() / double(incomeLog.size())); }
 void	Citizen::update()
 {
 	auto& u = urbans[joinedUrbanID];
@@ -78,6 +79,7 @@ void	Citizen::update()
 					max = u.avgIncome[i];
 					citizenType = i;
 
+					//”Ì”„‰¿Ši‚ÌÄÝ’è
 					int num = 0;
 					int sum = 0;
 					for (auto& c : u.citizens)
@@ -112,7 +114,7 @@ void	Citizen::update()
 
 					//¤•i‚Ì”Ì”„
 					for (auto& p : cJob.product)
-						u.baskets[p.itemID].addRing(1 + int(price*Random(1.1, 1.2)), p.numProduct, this);
+						u.baskets[p.itemID].addRing(1 + int(price*Random(1.05, 1.1)), p.numProduct, this);
 
 					//”ï—p‚ÌŽx•¥‚¢
 					addMoney(-totalCost);
