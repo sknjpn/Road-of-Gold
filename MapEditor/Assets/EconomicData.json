@@ -88,49 +88,57 @@
       "ItemName": "木炭",
       "ItemDescription": "暖を取るために重宝されます。重いので移動に適しません。",
       "Volume": 10,
-      "Value": 10
+      "Value": 100,
+      "Color": "#343434"
     },
     {
       "ItemName": "陶器",
       "ItemDescription": "食べ物を食べるときには欠かせません。",
       "Volume": 10,
-      "Value": 100
+      "Value": 200,
+      "Color": "#F5DEB3"
     },
     {
       "ItemName": "毛皮",
       "ItemDescription": "イタチ科の小動物の毛皮です。",
       "Volume": 5,
-      "Value": 20
+      "Value": 100,
+      "Color": "#8B4513"
     },
     {
       "ItemName": "コート",
       "ItemDescription": "上質で暖かい毛皮です。",
       "Volume": 10,
-      "Value": 200
+      "Value": 200,
+      "Color": "#000080"
     },
     {
       "ItemName": "魚介類",
       "ItemDescription": "栄養不足気味な市民にとって貴重な動物性たんぱく質です。",
       "Volume": 1,
-      "Value": 20
+      "Value": 100,
+      "Color": "#0000FF"
     },
     {
       "ItemName": "コーヒー",
       "ItemDescription": "カフェインで永遠の昼を得られます。",
       "Volue": 1,
-      "Value": 50
+      "Value": 100,
+      "Color": "#800000"
     },
     {
       "ItemName": "茶葉",
       "ItemDescription": "美味しく水を飲むことが出来ます。",
       "Volume": 1,
-      "Value": 50
+      "Value": 100,
+      "Color": "#228B22"
     },
     {
       "ItemName": "香辛料",
       "ItemDescription": "調味料としても、薬用としても有用です。",
       "Volume": 1,
-      "Value": 75
+      "Value": 100,
+      "Color": "#FF4500"
     }
   ],
   "CData": [
@@ -139,7 +147,7 @@
       "Job": {
         "JobName": "出稼ぎ労働",
         "JobDescription": "生産的労働活動を行う",
-        "Wage": 150
+        "Wage": 200
       }
     },
     {
@@ -150,7 +158,7 @@
         ],
         "JobName": "炭焼き",
         "JobDescription": "沢山の薪から木炭を作ります。",
-        "Cost": 100,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "木炭",
@@ -187,7 +195,7 @@
         ],
         "JobName": "狩猟",
         "JobDescription": "キツネやテンの毛皮を得ます。",
-        "Cost": 50,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "毛皮",
@@ -224,7 +232,7 @@
         ],
         "JobName": "漁業",
         "JobDescription": "魚を釣ります。",
-        "Cost": 50,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "魚介類",
@@ -241,7 +249,7 @@
         ],
         "JobName": "コーヒー栽培",
         "JobDescription": "コーヒー豆を栽培します。",
-        "Cost": 50,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "コーヒー",
@@ -258,7 +266,7 @@
         ],
         "JobName": "茶葉栽培",
         "JobDescription": "茶葉を栽培します。",
-        "Cost": 100,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "茶葉",
@@ -275,7 +283,7 @@
         ],
         "JobName": "香辛料栽培",
         "JobDescription": "香辛料を栽培します。",
-        "Cost": 100,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "香辛料",

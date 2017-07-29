@@ -9,7 +9,7 @@ void	Citizen::goToShopping()
 
 	int target = 0;	//目標
 	int maxEarn = 0;
-	for (int i = 0; i < 1 << iData.size(); i++)
+	for (int i = 0; i < (1 << iData.size()); i++)
 	{
 		int cost = 0;
 		int earn = 0;
@@ -24,7 +24,7 @@ void	Citizen::goToShopping()
 		if (money < cost) continue;
 
 		for (int k = 0;; ++k)
-			if (1 << k > money - cost) { earn += k * 25; break; }
+			if ((1 << k) > money - cost) { earn += k * 10; break; }
 
 		if (maxEarn < earn) target = i;
 	}
@@ -39,41 +39,8 @@ void	Citizen::goToShopping()
 		}
 	}
 	for (int k = 0;; ++k)
-		if (1 << k > money) { hapiness += k * 25; break; }
+		if ((1 << k) > money) { hapiness += k * 10; break; }
 	money = 0;
-
-
-	/*
-	Array<Basket*> buyList;	//購買履歴
-	for (;;)
-	{
-		Basket* best = nullptr;	//有力候補
-		double	earn = 0.0;		//コスパ
-		for (int i = 0; i < int(iData.size()); i++)
-		{
-			auto& b = u.baskets[i];
-			if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == nullptr || iData[i].value / double(b.rings.front().price) > earn))
-			{
-				earn = iData[i].value / double(b.rings.front().price);
-				best = &b;
-			}
-		}
-		if (best != nullptr && best->rings.front().price <= money) {
-			money -= best->rings.front().price;
-			buyList.emplace_back(best);
-			best->buyItem(1);
-		}
-		else break;
-	}
-	hapiness = 0;
-	for (auto& b : buyList)
-	{
-		hapiness += iData[b->itemType].value;
-	}
-	for (int i = 0;; ++i)
-		if (1 << i > money) { hapiness += i * 100; break; }
-	money = 0;
-	*/
 }
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
@@ -134,8 +101,6 @@ void	Citizen::update()
 			}
 		}
 
-		money = Max(0, money - 50);	//生活費の支払い
-
 		auto& cJob = cData[citizenType].job;
 
 		//仕事が達成可能かどうか判定
@@ -171,7 +136,7 @@ void	Citizen::update()
 				//買い物をする
 				goToShopping();
 			}
-			else addMoney(60);	//労働者として働く
+			else addMoney(50);	//労働者として働く
 		}
 	}
 }

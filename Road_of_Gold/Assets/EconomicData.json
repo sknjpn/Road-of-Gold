@@ -147,7 +147,7 @@
       "Job": {
         "JobName": "出稼ぎ労働",
         "JobDescription": "生産的労働活動を行う",
-        "Wage": 150
+        "Wage": 200
       }
     },
     {
@@ -158,7 +158,7 @@
         ],
         "JobName": "炭焼き",
         "JobDescription": "沢山の薪から木炭を作ります。",
-        "Cost": 100,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "木炭",
@@ -195,7 +195,7 @@
         ],
         "JobName": "狩猟",
         "JobDescription": "キツネやテンの毛皮を得ます。",
-        "Cost": 50,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "毛皮",
@@ -232,7 +232,7 @@
         ],
         "JobName": "漁業",
         "JobDescription": "魚を釣ります。",
-        "Cost": 50,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "魚介類",
@@ -249,7 +249,7 @@
         ],
         "JobName": "コーヒー栽培",
         "JobDescription": "コーヒー豆を栽培します。",
-        "Cost": 50,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "コーヒー",
@@ -266,7 +266,7 @@
         ],
         "JobName": "茶葉栽培",
         "JobDescription": "茶葉を栽培します。",
-        "Cost": 100,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "茶葉",
@@ -283,7 +283,7 @@
         ],
         "JobName": "香辛料栽培",
         "JobDescription": "香辛料を栽培します。",
-        "Cost": 100,
+        "Cost": 20,
         "Product": [
           {
             "ItemName": "香辛料",
