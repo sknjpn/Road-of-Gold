@@ -12,14 +12,14 @@ bool	Planet::loadVoronoiMap()
 
 		int	nodesSize, pathsSize;
 		reader.read(nodesSize);
-		for (int i = 0; i < nodesSize; i++)
+		for (int i = 0; i < nodesSize; ++i)
 		{
 			Vec3 ePos;
 			reader.read(ePos);
 			nodes.emplace_back(ePos);
 		}
 		reader.read(pathsSize);
-		for (int i = 0; i < pathsSize; i++)
+		for (int i = 0; i < pathsSize; ++i)
 		{
 			int parentNodeID, childNodeID;
 			reader.read(parentNodeID);
@@ -64,10 +64,10 @@ bool	Planet::loadVoronoiMap()
 				Point p2 = p1;
 				switch (m)
 				{
-				case 0: p2 = { p1.x - 1,p1.y }; break;
-				case 1: p2 = { p1.x + 1,p1.y }; break;
-				case 2: p2 = { p1.x ,p1.y - 1 }; break;
-				case 3: p2 = { p1.x ,p1.y + 1 }; break;
+				case 0: p2 = { p1.x - 1, p1.y }; break;
+				case 1: p2 = { p1.x + 1, p1.y }; break;
+				case 2: p2 = { p1.x, p1.y - 1 }; break;
+				case 3: p2 = { p1.x, p1.y + 1 }; break;
 				}
 				//—áŠO”»’è
 				if (p2.y < 0 || p2.y >= reader.size().y) continue;

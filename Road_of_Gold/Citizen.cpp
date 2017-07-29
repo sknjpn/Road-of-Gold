@@ -9,11 +9,11 @@ void	Citizen::goToShopping()
 
 	int target = 0;	//–Ú•W
 	int maxEarn = 0;
-	for (int i = 0; i < (1 << iData.size()); i++)
+	for (int i = 0; i < (1 << iData.size()); ++i)
 	{
 		int cost = 0;
 		int earn = 0;
-		for (int j = 0; j < iData.size(); j++)
+		for (int j = 0; j < iData.size(); ++j)
 		{
 			if ((i & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
 			{
@@ -33,7 +33,7 @@ void	Citizen::goToShopping()
 		}
 	}
 	hapiness = 0;
-	for (int j = 0; j < iData.size(); j++)
+	for (int j = 0; j < iData.size(); ++j)
 	{
 		if ((target & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
 		{

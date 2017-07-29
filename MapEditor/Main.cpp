@@ -83,7 +83,7 @@ void Main()
 		tinyCamera2D.update();
 
 		//マップの描画
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; ++i) {
 			const auto t1 = tinyCamera2D.createTransformer(i);
 
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
@@ -91,7 +91,7 @@ void Main()
 		}
 
 		//都市の描画
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; ++i) {
 			const auto t1 = tinyCamera2D.createTransformer(i);
 
 			for (auto& u : urbans)
@@ -101,7 +101,7 @@ void Main()
 		//selectedUrbanの描画
 		if (selectedUrban != nullptr && uiMode == UIMode::setUrban)
 		{
-			for (int i = 0; i < 2; i++) {
+			for (int i = 0; i < 2; ++i) {
 				const auto t1 = tinyCamera2D.createTransformer(i);
 
 				Circle(selectedUrban->getPos().mPos, 0.012).draw(Palette::Yellow).drawFrame(0.002, 0.0, Palette::Black);
@@ -119,7 +119,7 @@ void Main()
 			}
 
 			//nearestNodeの描画
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 2; ++i)
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
 				Circle(nearestNode->pos.mPos, 0.01).drawFrame(0.003, Palette::Black);
@@ -169,7 +169,7 @@ void Main()
 					{
 						Array<Node*> list;
 						list.emplace_back(nearestNode);
-						for (int i = 0; i < int(list.size()); i++)
+						for (int i = 0; i < int(list.size()); ++i)
 						{
 							auto& n1 = list[i];
 							for (auto& p : n1->paths)

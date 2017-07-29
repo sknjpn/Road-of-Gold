@@ -23,7 +23,7 @@ Vec2	Vehicle::getMPos() const
 	{
 		double length = routeProgress;
 
-		for (int i = 0; i < routes[routeID].pathIDs.size(); i++)
+		for (int i = 0; i < routes[routeID].pathIDs.size(); ++i)
 		{
 			auto& p = paths[routes[routeID].pathIDs[i]];
 			const auto line = p->getLine();
@@ -45,7 +45,7 @@ void	Vehicle::draw() const
 		auto& r = routes[routeID];
 		double length = routeProgress;
 
-		for (int i = 0; i < r.pathIDs.size(); i++)
+		for (int i = 0; i < r.pathIDs.size(); ++i)
 		{
 			auto& p = paths[r.pathIDs[i]];
 			const auto line = p->getLine();

@@ -34,7 +34,7 @@ void makeRoute()
 		nodeTemp[wPos] = &nodes[u.joinedNodeID]; wPos++;
 		nodes[u.joinedNodeID].isScaned = true;
 
-		for (int i = 0; i < wPos; i++)
+		for (int i = 0; i < wPos; ++i)
 		{
 			auto& n1 = nodeTemp[i];
 
@@ -87,7 +87,7 @@ void makeRoute()
 			}
 		}
 
-		for (int i = 0; i < wPos; i++)
+		for (int i = 0; i < wPos; ++i)
 		{
 			auto& n = nodeTemp[i];
 			n->cost = 0.0;
@@ -112,7 +112,7 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 	nodeTemp[wPos] = &nodes[ut.joinedNodeID]; wPos++;
 	nodes[ut.joinedNodeID].isScaned = true;
 
-	for (int i = 0; i < wPos; i++)
+	for (int i = 0; i < wPos; ++i)
 	{
 		auto& n1 = nodeTemp[i];
 
@@ -154,7 +154,7 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 		}
 	}
 
-	for (int i = 0; i < wPos; i++)
+	for (int i = 0; i < wPos; ++i)
 	{
 		auto& n = nodeTemp[i];
 		n->cost = 0.0;

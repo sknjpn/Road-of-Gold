@@ -11,7 +11,7 @@ void Main()
 
 
 	Window::Resize(1280, 720);
-	for (int i = 0; i < 20000; i++)
+	for (int i = 0; i < 20000; ++i)
 	{
 		for (;;)
 		{
@@ -30,7 +30,7 @@ void Main()
 		font(L"処理を開始するにはEnterキーを押してください。").draw();
 	}
 
-	for (int i = 0; i < 50; i++)
+	for (int i = 0; i < 50; ++i)
 	{
 
 		for (int x = 0; x < s; x++)
@@ -111,7 +111,7 @@ void Main()
 		LastUpdateB = LastUpdateA;
 		LastUpdateA = _sizeX / 2;
 		bool flag = true;
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; ++i)
 		{
 			auto sp = i == 0 ? step(Size(_sizeX, _sizeX / 4 - LastUpdateB)) : step(Point(0, _sizeX / 4 + LastUpdateB), Size(_sizeX, _sizeX / 4 - LastUpdateB));
 			for (auto p1 : sp)
@@ -203,12 +203,12 @@ void Main()
 		Window::SetTitle(paths.size());
 		BinaryWriter writer(L"Assets/NodeMap.bin");
 		writer.write(int(nodes.size()));
-		for (int i = 0; i < int(nodes.size()); i++)
+		for (int i = 0; i < int(nodes.size()); ++i)
 		{
 			writer.write(nodes[i].pos.ePos);
 		}
 		writer.write(int(paths.size()));
-		for (int i = 0; i < int(paths.size()); i++)
+		for (int i = 0; i < int(paths.size()); ++i)
 		{
 			writer.write(paths[i]->parentNodeID);
 			writer.write(paths[i]->childNodeID);
