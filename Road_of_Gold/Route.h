@@ -10,11 +10,11 @@ struct Urban;
 struct Route
 {
 	int		id;
-	int		destinationUrbanID;
-	int		originUrbanID;
-	double	totalLength;
-	bool	isSeaRoute;
-	Array<int>	pathIDs;
+	int		destinationUrbanID;	//目的地の都市
+	int		originUrbanID;		//出発地の都市
+	double	totalCost;			//移動コスト
+	bool	isSeaRoute;			//海上ルートか否か
+	Array<int>	pathIDs;		//経由するパス
 
 	Route(int _id);
 	Urban&	getDestinationUrban() const;

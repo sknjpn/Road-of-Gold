@@ -8,10 +8,10 @@ struct Citizen;
 
 struct Ring
 {
-	int price;
-	int num;
-	int ownerGroupID;
-	int ownerCitizenID;
+	int		price;
+	int		num;
+	int		ownerGroupID;
+	int		ownerCitizenID;
 
 	Ring(int _price, int _num, const Group* _owner);
 	Ring(int _price, int _num, const Citizen* _owner);
@@ -21,8 +21,8 @@ bool operator>(const Ring& _left, const Ring& _right);
 
 struct Basket
 {
-	int joinedUrbanID;
-	int itemType;
+	int		joinedUrbanID;
+	int		itemType;
 	Array<int>	tradeLog;
 	Array<int>	chart;
 	Array<Ring> rings;
@@ -44,14 +44,16 @@ struct Citizen
 	int		citizenType;
 	int		money;
 	double	timer;
+	double	progress;
 	int		price;
 	int		hapiness;
-	int		bhs;	//先月の合計幸福度
-	int		ths;	//今月の合計幸福度
-	int		tmr;	//転職判定までのカウント
+	Array<int>	incomeLog;	//100日分の収入記録
 
 	Citizen(int _id, int _citizenType, int _joinedUrbanID);
+	int		avgIncome() const;
+	void	addMoney(int _amount);	//外部からの収入
 	void	update();
+	void	goToShopping();
 };
 
 struct Urban
@@ -63,11 +65,12 @@ struct Urban
 	int		day;
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
-	Array<int>		avgBhs;	//各職業のBHS
+	Array<int>		avgIncome;	//各職業の収入平均
 	Array<int>		resource;
+	Array<double>	jobEfficiency;
 	Array<int>		routeIDs;
 
-	Urban(int _joinedNodeID);
+	Urban();
 	void	update();
 	void	draw() const;
 	Pos&	getPos() const;
@@ -77,4 +80,3 @@ struct Urban
 };
 extern Urban*			selectedUrban;
 extern Array<Urban>		urbans;
-bool	setUrban(Node& _node);

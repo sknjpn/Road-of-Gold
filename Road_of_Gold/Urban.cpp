@@ -7,43 +7,34 @@
 Array<Urban> urbans;
 Urban* selectedUrban;
 
-Urban::Urban(int _joinedNodeID)
+Urban::Urban()
 	: id(int(urbans.size()))
-	, name(UrbanName.choice())
-	, joinedNodeID(_joinedNodeID)
-	, timer(0.0)
+	, name(L"")
+	, joinedNodeID(-1)
+	, timer(0.5 + getPos().mPos.x / TwoPi)
 	, day(0)
 {
 	resource.resize(rData.size());
-	avgBhs.resize(cData.size());
-}
-String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, '0') + L":" + Format(int(timer * 24 * 60) % 60).lpad(2, '0'); }
-bool	setUrban(Node& _node)
-{
-	if (_node.isSea() || _node.ownUrbanID != -1) return false;
-	for (const auto& p : _node.paths) if (p.getChildNode().ownUrbanID != -1) return false;
-	_node.ownUrbanID = int(urbans.size());
-	urbans.emplace_back(_node.id);
-	auto& u = urbans.back();
-	u.timer = 0.5 + u.getPos().mPos.x / TwoPi;
+	jobEfficiency.resize(cData.size());
+	avgIncome.resize(cData.size());
 
 	const Array<int> numCitizen = {
 		100,//òJì≠é“
-		10,	//ñÿÇ±ÇË
-		10,	//ì©å|êEêl
-		20,	//éÎêl
-		10,	//édóßÇƒâÆ
+		5,	//ñÿÇ±ÇË
+		5,	//ì©å|êEêl
+		5,	//éÎêl
+		5,	//édóßÇƒâÆ
 		5,	//ãôét
 		5,	//ãôét
 		5,
 		5,
 	};
 
-	for (int i = 0; i < int(iData.size()); i++) u.baskets.emplace_back(i, u.id);
+	for (int i = 0; i < int(iData.size()); i++) baskets.emplace_back(i, id);
 	for (int i = 0; i < int(Min(cData.size(), numCitizen.size())); i++)
-		for (int j = 0; j < numCitizen[i]; j++) u.citizens.emplace_back(int(u.citizens.size()), i, u.id);
-	return true;
+		for (int j = 0; j < numCitizen[i]; j++) citizens.emplace_back(int(citizens.size()), i, id);
 }
+String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, '0') + L":" + Format(int(timer * 24 * 60) % 60).lpad(2, '0'); }
 void	Urban::update()
 {
 	timer += timeSpeed;
@@ -51,17 +42,47 @@ void	Urban::update()
 	{
 		timer -= 1.0;
 		day++;
-		//àÍÇ©åéÇ™åoâﬂ
-		if (day > 100)
-		{
-			day = 0;
 
-			//BHSÇÃçXêV
-			avgBhs.fill(0);
-			for (auto& c : citizens) { c.bhs = c.ths; c.ths = 0; avgBhs[c.citizenType] += c.bhs; }
-			for (int i = 0; i<int(cData.size()); i++)
-				avgBhs[i] = int(avgBhs[i] / citizens.count_if([&i](const Citizen& c) {return c.citizenType == i; }));
+		//EfficiencyÇÃçXêV
+		{
+			Array<int>	usedResource(rData.size());
+			for (auto c : citizens)
+				for (auto rID : cData[c.citizenType].job.needResourceID) usedResource[rID]++;
+
+			for (auto i : step(int(cData.size())))
+			{
+				double efficiency = 1.0;
+				for (auto j : cData[i].job.needResourceID)
+				{
+					if (resource[j] == 0) efficiency = 0.0;
+					else if (resource[j] < usedResource[j]) efficiency *= (double(resource[j]) / double(usedResource[j]));
+				}
+				jobEfficiency[i] = efficiency;
+			}
 		}
+
+		//AvgIncomeÇÃèCê≥
+		for (auto i : step(int(cData.size())))
+		{
+			int num = 0;
+			int sum = 0;
+			for (auto& c : citizens)
+			{
+				if (c.citizenType == i)
+				{
+					num++;
+					sum += c.avgIncome();
+				}
+			}
+			if (num > 0) avgIncome[i] = sum / num;
+		}
+		for (auto& c : citizens)
+		{
+			c.incomeLog.push_front(0);
+			c.incomeLog.pop_back();
+		}
+
+		//ésèÍëÄçÏ
 		for (auto& b : baskets)
 		{
 			//âøäií·â∫
@@ -71,6 +92,26 @@ void	Urban::update()
 			b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
 			b.tradeLog.clear();
 			b.chart.pop_back();
+		}
+		for (auto i : step(int(cData.size())))
+		{
+			int sum = 0;
+			int num = 0;
+			for (auto& c : citizens)
+			{
+				if (c.citizenType == i)
+				{
+					num++;
+					sum += c.money / 10;
+					c.money -= c.money / 10;
+				}
+			}
+			if (num > 0)
+			{
+				for (auto& c : citizens)
+					if (c.citizenType == i)
+						c.money += sum / num;
+			}
 		}
 	}
 

@@ -3,18 +3,62 @@
 #include"JSON.h"
 
 
+void	Citizen::goToShopping()
+{
+	auto& u = urbans[joinedUrbanID];
+
+	int target = 0;	//目標
+	int maxEarn = 0;
+	for (int i = 0; i < (1 << iData.size()); i++)
+	{
+		int cost = 0;
+		int earn = 0;
+		for (int j = 0; j < iData.size(); j++)
+		{
+			if ((i & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
+			{
+				cost += u.baskets[j].rings.front().price;
+				earn += iData[j].value;
+			}
+		}
+		if (money < cost) continue;
+
+		for (int k = 0;; ++k)
+			if ((1 << k) > money - cost) { earn += k * 10; break; }
+
+		if (maxEarn < earn)
+		{
+			target = i;
+			maxEarn = earn;
+		}
+	}
+	hapiness = 0;
+	for (int j = 0; j < iData.size(); j++)
+	{
+		if ((target & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
+		{
+			money -= u.baskets[j].rings.front().price;
+			u.baskets[j].buyItem(1);
+			hapiness += iData[j].value;
+		}
+	}
+	for (int k = 0;; ++k)
+		if ((1 << k) > money) { hapiness += k * 10; break; }
+	money = 0;
+}
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
-	, money(00)
+	, money(0)
 	, timer(Random(0.0, 1.0))
 	, joinedUrbanID(_joinedUrbanID)
 	, id(_id)
 	, price(100)
 	, hapiness(0)
-	, ths(0)
-	, bhs(0)
-	, tmr(Random(99) + 100)
-{}
+	, progress(0)
+{
+	incomeLog.resize(100);
+}
+int		Citizen::avgIncome() const { return int(incomeLog.sum() / double(incomeLog.size())); }
 void	Citizen::update()
 {
 	auto& u = urbans[joinedUrbanID];
@@ -25,19 +69,25 @@ void	Citizen::update()
 		timer -= 1.0;
 
 		//転職の判定
-		tmr--;
-		if (tmr == 0)
+		if (RandomBool(0.001) || u.jobEfficiency[citizenType] == 0.0)
 		{
-			tmr = 100;
-			for (int i = 0; i<int(cData.size()); i++)
+			auto max = u.avgIncome[citizenType] * 2;
+			for (auto i : step(int(cData.size())))
 			{
-				if (RandomBool(Max(0.0, double(u.avgBhs[i] - bhs) / 1000.0)))
-					citizenType = Random(int(cData.size() - 1));
+				if (max < u.avgIncome[i])
+				{
+					max = u.avgIncome[i];
+					citizenType = i;
+
+					//販売価格の再設定
+					int num = 0;
+					int sum = 0;
+					for (auto& c : u.citizens)
+						if (c.citizenType == i) { num++; sum += c.price; }
+					if (num > 0) price = sum / num;
+				}
 			}
 		}
-
-		money -= 50;	//生活費の支払い
-
 		auto& cJob = cData[citizenType].job;
 
 		//仕事が達成可能かどうか判定
@@ -50,51 +100,36 @@ void	Citizen::update()
 		}
 
 		//仕事の実行
-		if (totalCost < money)
+		progress += u.jobEfficiency[citizenType];
+		if (progress >= 1.0)
 		{
-			if (flag)	//もし、必要な材料が市場に出ていれば
+			progress -= 1.0;
+			if (totalCost < money)
 			{
-				//材料の購入
-				for (auto& p : cJob.consume)
-					u.baskets[p.itemID].buyItem(p.numConsume);
-
-				//商品の販売
-				for (auto& p : cJob.product)
-					u.baskets[p.itemID].addRing(1 + int(price*Random(1.1, 1.2)), p.numProduct, this);
-
-				//費用の支払い
-				money -= totalCost;
-			}
-
-			//娯楽としての購買
-			Array<Basket*> buyList;	//購買履歴
-			for (;;)
-			{
-				Basket* best = nullptr;	//有力候補
-				double	earn = 0.0;		//コスパ
-				for (int i = 0; i < int(iData.size()); i++)
+				if (flag)	//もし、必要な材料が市場に出ていれば
 				{
-					auto& b = u.baskets[i];
-					if (!b.rings.isEmpty() && !buyList.any([&b](const Basket* t) {return t == &b; }) && (best == nullptr || iData[i].value / double(b.rings.front().price) > earn))
-					{
-						earn = iData[i].value / double(b.rings.front().price);
-						best = &b;
-					}
+					//材料の購入
+					for (auto& p : cJob.consume)
+						u.baskets[p.itemID].buyItem(p.numConsume);
+
+					//商品の販売
+					for (auto& p : cJob.product)
+						u.baskets[p.itemID].addRing(1 + int(price*Random(1.05, 1.1)), p.numProduct, this);
+
+					//費用の支払い
+					addMoney(-totalCost);
 				}
-				if (best != nullptr && best->rings.front().price <= money) {
-					money -= best->rings.front().price;
-					buyList.emplace_back(best);
-					best->buyItem(1);
-				}
-				else break;
+
+				//買い物をする
+				goToShopping();
 			}
-			hapiness = 0;
-			for (auto& b : buyList)
-			{
-				hapiness += iData[b->itemType].value;
-				ths += iData[b->itemType].value;
-			}
+			else addMoney(50);	//労働者として働く
 		}
-		else money += 100;	//労働者として働く
 	}
+}
+
+void	Citizen::addMoney(int _amount)
+{
+	incomeLog.front() += _amount;
+	money += _amount;
 }

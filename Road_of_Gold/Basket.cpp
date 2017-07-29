@@ -65,7 +65,7 @@ void	Basket::buyItem(int _num)
 		if (r.num < num) {
 			if (r.ownerCitizenID != -1)
 			{
-				u.citizens[r.ownerCitizenID].money += r.num*r.price;
+				u.citizens[r.ownerCitizenID].addMoney(r.num*r.price);
 				u.citizens[r.ownerCitizenID].price = r.price;
 			}
 			else groups[r.ownerGroupID].money += r.num*r.price;
@@ -75,7 +75,7 @@ void	Basket::buyItem(int _num)
 		else if (r.num == num) {
 			if (r.ownerCitizenID != -1)
 			{
-				u.citizens[r.ownerCitizenID].money += r.num*r.price;
+				u.citizens[r.ownerCitizenID].addMoney(r.num*r.price);
 				u.citizens[r.ownerCitizenID].price = r.price;
 			}
 			else groups[r.ownerGroupID].money += r.num*r.price;
@@ -86,7 +86,7 @@ void	Basket::buyItem(int _num)
 		else {
 			if (r.ownerCitizenID != -1)
 			{
-				u.citizens[r.ownerCitizenID].money += num*r.price;
+				u.citizens[r.ownerCitizenID].addMoney(num*r.price);
 				u.citizens[r.ownerCitizenID].price = r.price;
 			}
 			else groups[r.ownerGroupID].money += num*r.price;

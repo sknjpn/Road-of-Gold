@@ -9,6 +9,7 @@ struct Urban
 	int		joinedNodeID;
 	Array<int>		resource;
 
+	Urban();
 	Urban(int _joinedNodeID);
 	void	update();
 	void	draw() const;

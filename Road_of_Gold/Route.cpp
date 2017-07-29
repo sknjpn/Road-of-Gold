@@ -9,7 +9,7 @@ Route::Route(int _id)
 	: id(_id)
 	, destinationUrbanID(-1)
 	, originUrbanID(-1)
-	, totalLength(0.0)
+	, totalCost(0)
 	, isSeaRoute(false)
 {}
 Urban&	Route::getDestinationUrban() const { return urbans[destinationUrbanID]; }
@@ -73,7 +73,7 @@ void makeRoute()
 						if (n->fromNodeID == p.childNodeID)
 						{
 							r.pathIDs.push_back(p.id);
-							r.totalLength += p.cost;
+							r.totalCost += p.cost;
 							n = &nodes[n->fromNodeID];
 							break;
 						}
@@ -124,12 +124,12 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID) const
 		{
 			auto& n2 = nodes[routes[rID].getDestinationUrban().joinedNodeID];
 
-			if (!n2.isScaned || n2.cost > n1->cost + routes[rID].totalLength + stopCost)
+			if (!n2.isScaned || n2.cost > n1->cost + routes[rID].totalCost + stopCost)
 			{
 				if (!n2.isInQueue) { nodeTemp[wPos] = &n2; wPos++; }
 				n2.isScaned = true;
 				n2.isInQueue = true;
-				n2.cost = n1->cost + routes[rID].totalLength + stopCost;
+				n2.cost = n1->cost + routes[rID].totalCost + stopCost;
 				n2.fromNodeID = n1->id;
 			}
 		}

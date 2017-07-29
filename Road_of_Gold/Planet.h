@@ -25,10 +25,11 @@ struct TinyCamera2D
 	Mat3x2	getMat3x2(int _delta = 0) const;
 	Transformer2D createTransformer(int _delta = 0) const;
 
-	RectF	restrictedRegion;
-	RectF	drawingRegion;
-	RectF	smoothDrawingRegion;
-	Optional<Pos>	gazePoint;
+	RectF	outputRegion;		//‰æ–Ê•`‰ææ—Ìˆæ
+	RectF	restrictedRegion;	//‹“_ˆÚ“®§ŒÀ—Ìˆæ
+	RectF	drawingRegion;		//‰¼‘z•`‰æ—Ìˆæ
+	RectF	smoothDrawingRegion;//À•`‰æ—Ìˆæ
+	Optional<Pos>	gazePoint;	//’‹“_
 };
 
 extern Planet planet;

@@ -7,6 +7,7 @@ TinyCamera2D::TinyCamera2D()
 	, drawingRegion(-Pi, -HalfPi, Pi, HalfPi)
 	, smoothDrawingRegion(drawingRegion)
 	, gazePoint(none)
+	, outputRegion(32, 32, 1280 - 64, 720 - 64)
 {}
 
 void TinyCamera2D::update()
@@ -64,7 +65,7 @@ Pos TinyCamera2D::getCursorPos() const
 }
 Mat3x2 TinyCamera2D::getMat3x2(int _delta) const
 {
-	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center());
+	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(outputRegion.size.y / smoothDrawingRegion.size.y).translate(outputRegion.center());
 }
 Transformer2D TinyCamera2D::createTransformer(int _delta) const
 {

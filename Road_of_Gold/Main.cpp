@@ -10,6 +10,7 @@ double timeSpeed = 0.01;
 double worldTimer = 0;
 int selectedBasket = 0;
 int selectedCitizen = 0;
+bool groupViewWindowEnabled = false;
 Vehicle* selectedVehicle = nullptr;
 
 Planet planet;
@@ -37,25 +38,8 @@ void Main()
 	if (!loadJSONData() || !planet.loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
 	planet.setRegions();
 
-	//Urbanの生成
-	auto numUrbans = int(nodes.count_if([](const auto& n) {return !n.isSea(); })) / 50;
-	for (auto& r : regions)
-	{
-		if (r.numNodes == 0) continue;
-		for (int i = 0; i < r.numNodes / 200 + 1; i++)
-		{
-			for (;;)
-			{
-				auto& n = nodes[Random(int(nodes.size() - 1))];
-				if (n.ownUrbanID == -1 && n.joinedRegionID == r.id && n.isCoast() && setUrban(n)) break;
-			}
-		}
-	}
-	numUrbans -= int(regions.size());
-	while (numUrbans > 0)
-		if (setUrban(nodes[Random(int(nodes.size() - 1))])) numUrbans--;
-
 	for (auto& p : paths) p->cost = p->length * (bData[p->getChildNode().biomeType].movingCost + bData[p->getParentNode().biomeType].movingCost) / 2.0;
+
 	makeRoute();
 
 	planet.makeGroupsRandom();
@@ -153,6 +137,7 @@ void Main()
 		//Interface
 		if (selectedVehicle != nullptr)
 		{
+			auto& g = groups[selectedVehicle->joinedGroupID];
 			const Array<String> commandText = {
 				L"MOVE", L"JUMP", L"WAIT", L"BUY", L"SELL", L"none"
 			};
@@ -163,12 +148,13 @@ void Main()
 			{
 				const Rect rect(32, 32, 320, 24);
 				rect.drawFrame(2, fColor);
-				font16(groups[selectedVehicle->joinedGroupID].name, L" 所属交易船").draw(rect.pos.movedBy(4, 0), Palette::White);
+				font16(g.name, L" 所属交易船").draw(rect.pos.movedBy(4, 0), Palette::White);
 			}
 			{
 				const Rect rect(32, 56, 320, 24);
 				rect.drawFrame(2, fColor);
-				font16(L"資本金", groups[selectedVehicle->joinedGroupID].money, L"G").draw(rect.pos.movedBy(4, 0), Palette::White);
+				font16(L"資本金", g.money, L"G").draw(rect.pos.movedBy(4, 0), Palette::White);
+				font16(L"利益", g.money - g.moneyLog, L"G").draw(rect.pos.movedBy(168, 0), g.money - g.moneyLog < 0 ? Palette::Red : Palette::Blue);
 			}
 			{
 
@@ -323,9 +309,7 @@ void Main()
 					int sumHapiness = 0;
 					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumHapiness += c.hapiness;
 					font16(L"幸福:", int(sumHapiness / double(numCitizen))).draw(16, 48);
-					int sumBhs = 0;
-					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumBhs += c.bhs;
-					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
+					font16(L"日給:", u.avgIncome[selectedCitizen]).draw(16 + 96, 48);
 
 
 				}
@@ -393,9 +377,7 @@ void Main()
 					int sumHapiness = 0;
 					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumHapiness += c.hapiness;
 					font16(L"幸福:", sumHapiness / double(numCitizen)).draw(16, 48);
-					int sumBhs = 0;
-					for (const auto& c : u.citizens) if (c.citizenType == selectedCitizen) sumBhs += c.bhs;
-					font16(L"BHS:", int(sumBhs / double(numCitizen) / 30.0)).draw(16 + 96, 48);
+					font16(L"日給:", u.avgIncome[selectedCitizen]).draw(16 + 96, 48);
 
 					font12(cd.job.description).draw(4, 72);
 					font16(L"維持費:", 50 + cd.job.cost).draw(4, 72 + 16);
@@ -423,6 +405,34 @@ void Main()
 		font16(bData[nearestNode->biomeType].name).draw(0, 0, Palette::Black);
 
 		font16(L"F1～F3キーで倍速設定が出来ます。赤い都市アイコンをクリックで詳細が見れます。").draw(256, 0);
+
+		if (KeyH.down()) groupViewWindowEnabled = !groupViewWindowEnabled;
+		if (groupViewWindowEnabled)
+		{
+			selectedUrban = nullptr;
+			selectedVehicle = nullptr;
+			const Color fColor = Palette::Skyblue;
+			const Color bColor = Color(Palette::Darkcyan, 192);
+			Rect rect(32, 32, 480, int(groups.size() * 16));
+			rect.draw(bColor).drawFrame(1, fColor);
+			for (auto i : step(int(groups.size())))
+			{
+				Rect r(32, 32 + i * 16, 480, 16);
+				r.drawFrame(1, fColor);
+				if (r.mouseOver()) r.draw(Palette::Orange);
+				auto& g = groups[i];
+				font12(g.name).draw(32, 32 + i * 16, Palette::White);
+				font12(L" 利益", g.money - g.moneyLog).draw(32 + 96, 32 + i * 16, Palette::White);
+				font12(g.description).draw(32 + 240, 32 + i * 16, Palette::White);
+			}
+			if (rect.leftClicked())
+			{
+				groupViewWindowEnabled = false;
+				for (auto& v : vehicles)
+					if (v.joinedGroupID == groups[(Cursor::Pos().y - 32) / 16].id)
+						selectedVehicle = &v;
+			}
+		}
 
 		tinyCamera2D.draw();
 	}

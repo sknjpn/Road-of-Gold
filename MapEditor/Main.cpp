@@ -47,9 +47,12 @@ void Main()
 	//ファイル名入力欄
 	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
 
-	Array<TextBox> resouceTextBox;
+	//都市名入力欄
+	TextBox urbanNameTextBox(textBoxFont, Vec2(78, 66), 112);
+
+	Array<TextBox> resourceTextBox;
 	for (auto i : step(rData.size()))
-		resouceTextBox.emplace_back(textBoxFont, Vec2(114, 114 + i * 20), none);
+		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 86 + i * 20), none);
 
 	while (System::Update())
 	{
@@ -200,8 +203,9 @@ void Main()
 					if (MouseL.down() && nearestNode->ownUrbanID != -1)
 					{
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
+						urbanNameTextBox.setText(selectedUrban->name);
 						for (auto i : step(rData.size()))
-							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
+							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
 				case ActionMode::set:
@@ -209,8 +213,9 @@ void Main()
 					{
 						urbans.emplace_back(nearestNode->id);
 						selectedUrban = &urbans.back();
+						urbanNameTextBox.setText(selectedUrban->name);
 						for (auto i : step(rData.size()))
-							resouceTextBox[i].setText(Format(selectedUrban->resource[i]));
+							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
 				case ActionMode::remove:
@@ -327,7 +332,7 @@ void Main()
 		case UIMode::setUrban:
 		{
 			{
-				const Rect rect(32, 64, 160, 24);
+				const Rect rect(192, 64, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
@@ -335,33 +340,42 @@ void Main()
 				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
 			}
 			{
-				const Rect rect(32, 88, 160, 24);
+				const Rect rect(192, 88, 160, 24);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
 			}
+			{
+				urbanNameTextBox.update();
+				if (selectedUrban != nullptr) selectedUrban->name = urbanNameTextBox.getText();
+				else urbanNameTextBox.setText(L"");
+				urbanNameTextBox.draw();
+				const Rect rect(32, 64, 44, 20);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
+			}
 			for (auto& i : step(int(rData.size())))
 			{
-				const Rect rect(32, 112 + i * 20, 80, 20);
+				const Rect rect(32, 84 + i * 20, 100, 20);
 				rect.drawFrame(1, 0, Palette::Skyblue);
-				font12(rData[i].name).draw(rect.pos.movedBy(4, 0));
+				font12(rData[i].name).draw(rect.pos.movedBy(4, 1));
 			}
-			if (selectedUrban != nullptr)
+			for (auto& i : step(int(rData.size())))
 			{
-				for (auto& i : step(int(rData.size())))
+				const Rect rect(132, 84 + i * 20, 60, 20);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				auto& t = resourceTextBox[i];
+				t.setWidth(56);
+				t.update();
+				if (selectedUrban != nullptr)
 				{
-					const Rect rect(112, 112 + i * 20, 60, 20);
-					rect.drawFrame(1, 0, Palette::Skyblue);
-
-					auto& t = resouceTextBox[i];
-					t.setWidth(56);
-					t.update();
 					selectedUrban->resource[i] = ParseInt<int>(t.getText()) % 10000;
 					t.setText(Format(selectedUrban->resource[i]));
-					t.draw();
 				}
+				else t.setText(L"");
+				t.draw();
 			}
 			break;
 		}
@@ -382,6 +396,19 @@ void Main()
 					n.biomeType = t;
 					list.emplace_back(&n);
 				}
+			}
+			int numUrbans, length;
+			reader.read(numUrbans);
+			for (; numUrbans > 0; --numUrbans)
+			{
+				urbans.emplace_back();
+				reader.read(urbans.back().joinedNodeID);
+				nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
+				reader.read(length);
+				urbans.back().name.resize(length);
+				reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
+				for (auto i : step(rData.size()))
+					reader.read(urbans.back().resource[i]);
 			}
 			planet.updateImage(list);
 		}
