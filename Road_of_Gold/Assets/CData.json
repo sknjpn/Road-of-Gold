@@ -1,0 +1,154 @@
+{
+  "CData": [
+    {
+      "CitizenName": "労働者",
+      "Job": {
+        "JobName": "出稼ぎ労働",
+        "JobDescription": "生産的労働活動を行う",
+        "Wage": 200
+      }
+    },
+    {
+      "CitizenName": "木こり",
+      "Job": {
+        "NeedResource": [
+          "森林"
+        ],
+        "JobName": "炭焼き",
+        "JobDescription": "沢山の薪から木炭を作ります。",
+        "Cost": 20,
+        "Product": [
+          {
+            "ItemName": "木炭",
+            "NumProduct": 5
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "陶芸職人",
+      "Job": {
+        "JobName": "陶芸",
+        "JobDescription": "木炭と粘土から陶器を作ります。",
+        "Cost": 20,
+        "Consume": [
+          {
+            "ItemName": "木炭",
+            "NumConsume": 5
+          }
+        ],
+        "Product": [
+          {
+            "ItemName": "陶器",
+            "NumProduct": 5
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "狩人",
+      "Job": {
+        "NeedResource": [
+          "キタキツネ"
+        ],
+        "JobName": "狩猟",
+        "JobDescription": "キツネやテンの毛皮を得ます。",
+        "Cost": 20,
+        "Product": [
+          {
+            "ItemName": "毛皮",
+            "NumProduct": 5
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "仕立て屋",
+      "Job": {
+        "JobName": "仕立て",
+        "JobDescription": "毛皮から毛皮のコートを作ります。",
+        "Cost": 20,
+        "Consume": [
+          {
+            "ItemName": "毛皮",
+            "NumConsume": 5
+          }
+        ],
+        "Product": [
+          {
+            "ItemName": "コート",
+            "NumProduct": 5
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "漁師",
+      "Job": {
+        "NeedResource": [
+          "漁場"
+        ],
+        "JobName": "漁業",
+        "JobDescription": "魚を釣ります。",
+        "Cost": 20,
+        "Product": [
+          {
+            "ItemName": "魚介類",
+            "NumProduct": 5
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "コーヒー農家",
+      "Job": {
+        "NeedResource": [
+          "熱帯土壌"
+        ],
+        "JobName": "コーヒー栽培",
+        "JobDescription": "コーヒー豆を栽培します。",
+        "Cost": 20,
+        "Product": [
+          {
+            "ItemName": "コーヒー",
+            "NumProduct": 5
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "茶葉農家",
+      "Job": {
+        "NeedResource": [
+          "温帯土壌"
+        ],
+        "JobName": "茶葉栽培",
+        "JobDescription": "茶葉を栽培します。",
+        "Cost": 20,
+        "Product": [
+          {
+            "ItemName": "茶葉",
+            "NumProduct": 5
+          }
+        ]
+      }
+    },
+    {
+      "CitizenName": "香辛料農家",
+      "Job": {
+        "NeedResource": [
+          "熱帯土壌"
+        ],
+        "JobName": "香辛料栽培",
+        "JobDescription": "香辛料を栽培します。",
+        "Cost": 20,
+        "Product": [
+          {
+            "ItemName": "香辛料",
+            "NumProduct": 5
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -12,21 +12,15 @@ Array<RData> rData;
 bool loadJSONData()
 {
 	//グループ名の読み込み
-	{
-		JSONReader json(L"Assets/GroupName.json");
-		if (json.isEmpty()) return false;
-		for (auto j : json[L"GroupName"].arrayView()) GroupName.emplace_back(j.getOr<String>(L"hoge"));
-	}
+	JSONReader json(L"Assets/GroupName.json");
+	if (json.isEmpty()) return false;
+	for (auto j : json[L"GroupName"].arrayView()) GroupName.emplace_back(j.getOr<String>(L"hoge"));
 
 	//各種JSONデータの読み込み
-	{
-		JSONReader json(L"Assets/EconomicData.json");
-		if (json.isEmpty()) return false;
-		for (auto r : json[L"RData"].arrayView()) rData.emplace_back(r);
-		for (auto i : json[L"IData"].arrayView()) iData.emplace_back(i);
-		for (auto c : json[L"CData"].arrayView()) cData.emplace_back(c);
-		for (auto i : json[L"BData"].arrayView()) bData.emplace_back(i);
-	}
+	for (auto r : JSONReader(L"Assets/RData.json")[L"RData"].arrayView()) rData.emplace_back(r);
+	for (auto i : JSONReader(L"Assets/IData.json")[L"IData"].arrayView()) iData.emplace_back(i);
+	for (auto c : JSONReader(L"Assets/CData.json")[L"CData"].arrayView()) cData.emplace_back(c);
+	for (auto i : JSONReader(L"Assets/BData.json")[L"BData"].arrayView()) bData.emplace_back(i);
 	return true;
 }
 
