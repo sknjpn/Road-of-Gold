@@ -6,7 +6,7 @@
 #include"Group.h"
 #include"GlobalVariables.h"
 
-double timeSpeed = 0.01;
+double timeSpeed = 0.0001;
 double worldTimer = 0;
 int selectedBasket = 0;
 int selectedCitizen = 0;
@@ -125,7 +125,6 @@ void Main()
 
 		}
 		//影
-		/*
 		if (timeSpeed < 0.1)
 		{
 			const auto t1 = tinyCamera2D.createTransformer();
@@ -133,7 +132,7 @@ void Main()
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
-		}*/
+		}
 		//Interface
 		if (selectedVehicle != nullptr)
 		{
@@ -267,16 +266,35 @@ void Main()
 				for (int i = 0; i < 191; ++i)
 					Line(191 - i, 63 - bs.chart[i] * 62 / max, 190 - i, 63 - bs.chart[i + 1] * 62 / max).movedBy(160, 180).draw(1, Palette::Yellow);
 
-				//他市場との比較
-				int k = 0;	//描画位置
-				for (auto i : step(int(urbans.size())))
+				//安い順にソートして他市場との比較を描画
 				{
-					if (urbans[i].baskets[selectedBasket].isEmpty()) continue;
-					const Rect rect(160, 244 + k * 16, 192, 16);
-					rect.drawFrame(1, fColor);
-					font12(urbans[i].name).draw(rect.pos);
-					font12(Format(urbans[i].baskets[selectedBasket].getPrice()).lpad(5, '0'), L"G").draw(rect.pos.movedBy(108, 0));
-					k++;
+					Array<Urban*> temp;
+					for (auto& t : urbans) if (!t.baskets[selectedBasket].isEmpty()) temp.emplace_back(&t);
+					for (;;)
+					{
+						if (temp.size() <= 1) break;
+						bool flag = true;
+						for (auto i : step(int(temp.size()) - 1))
+						{
+							if (temp[i]->baskets[selectedBasket].getPrice() > temp[i + 1]->baskets[selectedBasket].getPrice())
+							{
+								auto a = temp[i];
+								temp[i] = temp[i + 1];
+								temp[i + 1] = a;
+								flag = false;
+							}
+						}
+						if (flag) break;
+					}
+					for (auto i : step(int(temp.size())))
+					{
+						const Rect rect(160, 244 + i * 16, 192, 16);
+						if (rect.mouseOver()) rect.draw(Palette::Orange);
+						if (rect.leftClicked()) selectedUrban = temp[i];
+						rect.drawFrame(1, fColor);
+						font12(temp[i]->name).draw(rect.pos);
+						font12(Format(temp[i]->baskets[selectedBasket].getPrice()).lpad(5, '0'), L"G").draw(rect.pos.movedBy(108, 0));
+					}
 				}
 
 				break;
