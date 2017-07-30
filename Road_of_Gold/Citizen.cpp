@@ -37,9 +37,9 @@ void	Citizen::goToShopping()
 	hapiness = 0;
 	for (int j = 0; j < iData.size(); ++j)
 	{
-		if ((target & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
+		if ((target & (1 << j)) != 0)
 		{
-			money -= u.baskets[j].rings.front().price;
+			money -= u.baskets[j].getPrice();
 			u.baskets[j].buyItem(1);
 			hapiness += iData[j].value;
 		}
@@ -75,7 +75,7 @@ void	Citizen::update()
 		//“]E‚Ì”»’è
 		if (RandomBool(0.001) || u.jobEfficiency[citizenType] == 0.0)
 		{
-			auto max = u.avgIncome[citizenType] * 2;
+			auto max = u.avgIncome[citizenType];
 			for (auto i : step(int(cData.size())))
 			{
 				if (max < u.avgIncome[i])

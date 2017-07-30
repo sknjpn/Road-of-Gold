@@ -18,7 +18,7 @@ Urban::Urban()
 	jobEfficiency.resize(cData.size());
 	avgIncome.resize(cData.size());
 
-	const int numCitizens = 100;
+	const int numCitizens = 500;
 
 	for (int i = 0; i < int(iData.size()); ++i) baskets.emplace_back(i, id);
 	for (int i = 0; i < int(cData.size()); ++i)
