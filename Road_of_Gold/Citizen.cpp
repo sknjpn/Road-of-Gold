@@ -24,7 +24,7 @@ void	Citizen::goToShopping()
 		if (money < cost) continue;
 
 		for (int k = 0;; ++k)
-			if ((1 << k) > money - cost) { earn += k * 10; break; }
+			if ((1 << k) > money - cost) { earn += k * 1000; break; }
 
 		if (maxEarn < earn)
 		{
@@ -42,10 +42,10 @@ void	Citizen::goToShopping()
 			hapiness += iData[j].value;
 		}
 	}
-	money *= personality;
-//	for (int k = 0;; ++k)
-	//	if ((1 << k) > money) { hapiness += k * 10; break; }
-//	money = 0;
+	money = int(money* personality);
+	//	for (int k = 0;; ++k)
+		//	if ((1 << k) > money) { hapiness += k * 10; break; }
+	//	money = 0;
 }
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
@@ -56,6 +56,7 @@ Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	, price(100)
 	, hapiness(0)
 	, progress(0)
+	, personality(Random(0.0, 1.0))
 {
 	incomeLog.resize(100);
 }

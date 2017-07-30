@@ -17,10 +17,14 @@ bool loadJSONData()
 	for (auto j : json[L"GroupName"].arrayView()) GroupName.emplace_back(j.getOr<String>(L"hoge"));
 
 	//各種JSONデータの読み込み
-	for (auto r : JSONReader(L"Assets/RData.json")[L"RData"].arrayView()) rData.emplace_back(r);
-	for (auto i : JSONReader(L"Assets/IData.json")[L"IData"].arrayView()) iData.emplace_back(i);
-	for (auto c : JSONReader(L"Assets/CData.json")[L"CData"].arrayView()) cData.emplace_back(c);
-	for (auto i : JSONReader(L"Assets/BData.json")[L"BData"].arrayView()) bData.emplace_back(i);
+	JSONReader rjson(L"Assets/RData.json");
+	JSONReader ijson(L"Assets/IData.json");
+	JSONReader cjson(L"Assets/CData.json");
+	JSONReader bjson(L"Assets/BData.json");
+	for (auto r : rjson[L"RData"].arrayView()) rData.emplace_back(r);
+	for (auto i : ijson[L"IData"].arrayView()) iData.emplace_back(i);
+	for (auto c : cjson[L"CData"].arrayView()) cData.emplace_back(c);
+	for (auto i : bjson[L"BData"].arrayView()) bData.emplace_back(i);
 	return true;
 }
 
