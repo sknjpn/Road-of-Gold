@@ -245,7 +245,7 @@ void Main()
 						const Color color = selectedBasket == b.itemType ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(0, 0));
 						rect.draw(color).drawFrame(2, fColor);
 						font12(iData[i].name).draw(32, 116 + i * 16);
-						font12(Format(b.chart.front()).lpad(5, '0'), L"G").draw(108, 116 + i * 16);
+						if (!b.isEmpty()) font12(Format(b.getPrice()).lpad(5, '0'), L"G").draw(108, 116 + i * 16);
 					}
 					else
 					{
@@ -266,6 +266,18 @@ void Main()
 				int max = 1; for (int i = 0; i < 191; ++i) max = Max(max, bs.chart[i]);
 				for (int i = 0; i < 191; ++i)
 					Line(191 - i, 63 - bs.chart[i] * 62 / max, 190 - i, 63 - bs.chart[i + 1] * 62 / max).movedBy(160, 180).draw(1, Palette::Yellow);
+
+				//他市場との比較
+				int k = 0;	//描画位置
+				for (auto i : step(int(urbans.size())))
+				{
+					if (urbans[i].baskets[selectedBasket].isEmpty()) continue;
+					const Rect rect(160, 244 + k * 16, 192, 16);
+					rect.drawFrame(1, fColor);
+					font12(urbans[i].name).draw(rect.pos);
+					font12(Format(urbans[i].baskets[selectedBasket].getPrice()).lpad(5, '0'), L"G").draw(rect.pos.movedBy(108, 0));
+					k++;
+				}
 
 				break;
 			}
