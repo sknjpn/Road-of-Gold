@@ -11,17 +11,19 @@ void	Citizen::goToShopping()
 	int maxEarn = 0;
 	for (int i = 0; i < (1 << iData.size()); ++i)
 	{
+		bool flag = true;
 		int cost = 0;
 		int earn = 0;
 		for (int j = 0; j < iData.size(); ++j)
 		{
-			if ((i & (1 << j)) != 0 && !u.baskets[j].rings.isEmpty())
+			if ((i & (1 << j)) != 0)
 			{
-				cost += u.baskets[j].rings.front().price;
+				if (u.baskets[j].isEmpty()) { flag = false; break; }
+				cost += u.baskets[j].getPrice();
 				earn += iData[j].value;
 			}
 		}
-		if (money < cost) continue;
+		if (!flag || money < cost) continue;
 
 		for (int k = 0;; ++k)
 			if ((1 << k) > money - cost) { earn += k * 1000; break; }
