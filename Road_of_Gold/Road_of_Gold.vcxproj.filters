@@ -220,9 +220,6 @@
     <ClCompile Include="Basket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="UrbanDraw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="DataLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>

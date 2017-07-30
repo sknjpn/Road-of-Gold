@@ -69,7 +69,7 @@ void	Basket::buyItem(int _num)
 				u.citizens[r.ownerCitizenID].price = r.price;
 			}
 			else groups[r.ownerGroupID].money += r.num*r.price;
-			for (int i = 0; i < r.num; i++) tradeLog.emplace_back(r.price);
+			for (int i = 0; i < r.num; ++i) tradeLog.emplace_back(r.price);
 			num -= r.num; rings.pop_front();
 		}
 		else if (r.num == num) {
@@ -79,7 +79,7 @@ void	Basket::buyItem(int _num)
 				u.citizens[r.ownerCitizenID].price = r.price;
 			}
 			else groups[r.ownerGroupID].money += r.num*r.price;
-			for (int i = 0; i < r.num; i++) tradeLog.emplace_back(r.price);
+			for (int i = 0; i < r.num; ++i) tradeLog.emplace_back(r.price);
 			rings.pop_front();
 			return;
 		}
@@ -90,7 +90,7 @@ void	Basket::buyItem(int _num)
 				u.citizens[r.ownerCitizenID].price = r.price;
 			}
 			else groups[r.ownerGroupID].money += num*r.price;
-			for (int i = 0; i < num; i++) tradeLog.emplace_back(r.price);
+			for (int i = 0; i < num; ++i) tradeLog.emplace_back(r.price);
 			r.num -= num; return;
 		}
 	}

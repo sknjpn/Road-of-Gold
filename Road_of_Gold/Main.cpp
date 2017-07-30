@@ -42,7 +42,7 @@ void Main()
 
 	makeRoute();
 
-	planet.makeGroupsRandom();
+	//planet.makeGroupsRandom();
 
 	while (System::Update())
 	{
@@ -68,7 +68,7 @@ void Main()
 		tinyCamera2D.update();
 
 		//マップの描画
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 2; ++i) {
 			const auto t1 = tinyCamera2D.createTransformer(i);
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
@@ -79,15 +79,15 @@ void Main()
 			selectedUrban = nullptr;
 			selectedVehicle = nullptr;
 			tinyCamera2D.gazePoint = none;
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 2; ++i)
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
 				for (auto& u : urbans)
-					if (Circle(u.getPos().mPos, 0.01).mouseOver()) selectedUrban = &u;
+					if (Circle(nodes[u.joinedNodeID].pos.mPos, 0.01).mouseOver()) selectedUrban = &u;
 			}
 			if (selectedUrban == nullptr)
 			{
-				for (int i = 0; i < 2; i++)
+				for (int i = 0; i < 2; ++i)
 				{
 					const auto t1 = tinyCamera2D.createTransformer(i);
 					for (auto& v : vehicles)
@@ -104,7 +104,7 @@ void Main()
 			for (auto& n : nodes)
 				if (nearestNode == nullptr || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
 		}
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; ++i)
 		{
 			const auto t1 = tinyCamera2D.createTransformer(i);
 
@@ -215,7 +215,7 @@ void Main()
 			{
 				const Array<String> ns = { L"💹", L"👪", L"📰", L"🚢" };
 				const Array<DrawingType> ts = { DrawingType::Market,DrawingType::Towner,DrawingType::News,DrawingType::Vehicle, };
-				for (int i = 0; i<int(ns.size()); i++)
+				for (int i = 0; i<int(ns.size()); ++i)
 				{
 					const RectF rect(32 + i * 320 / double(ns.size()), 68, 320 / double(ns.size()), 24);
 					rect.draw(drawingType == ts[i] ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, fColor);
@@ -235,7 +235,7 @@ void Main()
 				font16(L"販売物").drawAt(96, 104);
 
 				//商品一覧
-				for (int i = 0; i < 36; i++)
+				for (int i = 0; i < 36; ++i)
 				{
 					const auto rect = Rect(32, 116 + i * 16, 128, 16);
 					if (i < int(iData.size()))
@@ -263,8 +263,8 @@ void Main()
 
 				//チャート
 				Rect(160, 180, 192, 64).drawFrame(2, fColor);
-				int max = 1; for (int i = 0; i < 191; i++) max = Max(max, bs.chart[i]);
-				for (int i = 0; i < 191; i++)
+				int max = 1; for (int i = 0; i < 191; ++i) max = Max(max, bs.chart[i]);
+				for (int i = 0; i < 191; ++i)
 					Line(191 - i, 63 - bs.chart[i] * 62 / max, 190 - i, 63 - bs.chart[i + 1] * 62 / max).movedBy(160, 180).draw(1, Palette::Yellow);
 
 				break;
@@ -276,7 +276,7 @@ void Main()
 				font16(L"市民").drawAt(96, 104);
 
 				//市民リスト
-				for (int i = 0; i < 24; i++)
+				for (int i = 0; i < 24; ++i)
 				{
 					if (i < int(cData.size()))
 					{
@@ -316,9 +316,9 @@ void Main()
 				//各市民情報
 				{
 					int j = 0;
-					for (int i = 0; i < 33; i++)
+					for (int i = 0; i < 33; ++i)
 					{
-						for (; j<int(u.citizens.size()); j++)
+						for (; j<int(u.citizens.size()); ++j)
 						{
 							const auto& c = u.citizens[j];
 							if (c.citizenType == selectedCitizen)
@@ -326,7 +326,7 @@ void Main()
 								Rect(160, 164 + 16 * i, 192, 16).drawFrame(2, fColor);
 								font12(L"財産:", c.money, L"G").draw(176, 164 + 16 * i);
 								font12(L"幸福:", c.hapiness).draw(176 + 96, 164 + 16 * i);
-								j++;
+								++j;
 								break;
 							}
 						}
@@ -344,7 +344,7 @@ void Main()
 				}
 
 				//市民リスト
-				for (int i = 0; i < 24; i++)
+				for (int i = 0; i < 24; ++i)
 				{
 					if (i < int(cData.size()))
 					{

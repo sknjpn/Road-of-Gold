@@ -47,6 +47,7 @@ struct Citizen
 	double	progress;
 	int		price;
 	int		hapiness;
+	double	personality;
 	Array<int>	incomeLog;	//100日分の収入記録
 
 	Citizen(int _id, int _citizenType, int _joinedUrbanID);
@@ -73,7 +74,6 @@ struct Urban
 	Urban();
 	void	update();
 	void	draw() const;
-	Pos&	getPos() const;
 	String	getTimeAsString() const;
 	Array<Route*>	getRoutesToUrban(int _urbanID) const;
 

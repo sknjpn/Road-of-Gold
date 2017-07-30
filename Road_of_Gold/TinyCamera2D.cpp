@@ -21,7 +21,7 @@ void TinyCamera2D::update()
 		if (gazePoint)	//íçéãì_
 		{
 			auto p = gazePoint.value().mPos;
-			for (int i = -1; i <= 2; i++)
+			for (int i = -1; i <= 2; ++i)
 			{
 				if (p.distanceFrom(drawingRegion.center()) > gazePoint.value().mPos.movedBy(i*TwoPi, 0).distanceFrom(drawingRegion.center()))
 					p = gazePoint.value().mPos.movedBy(i*TwoPi, 0);

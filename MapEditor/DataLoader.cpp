@@ -7,12 +7,15 @@ Array<RData> rData;
 
 bool loadJSONData()
 {
-	JSONReader json(L"Assets/EconomicData.json");
-	if (json.isEmpty()) return false;
-	for (auto r : json[L"RData"].arrayView()) rData.emplace_back(r);
-	for (auto i : json[L"IData"].arrayView()) iData.emplace_back(i);
-	for (auto c : json[L"CData"].arrayView()) cData.emplace_back(c);
-	for (auto i : json[L"BData"].arrayView()) bData.emplace_back(i);
+	//各種JSONデータの読み込み
+	JSONReader rjson(L"Assets/RData.json");
+	JSONReader ijson(L"Assets/IData.json");
+	JSONReader cjson(L"Assets/CData.json");
+	JSONReader bjson(L"Assets/BData.json");
+	for (auto r : rjson[L"RData"].arrayView()) rData.emplace_back(r);
+	for (auto i : ijson[L"IData"].arrayView()) iData.emplace_back(i);
+	for (auto c : cjson[L"CData"].arrayView()) cData.emplace_back(c);
+	for (auto i : bjson[L"BData"].arrayView()) bData.emplace_back(i);
 	return true;
 }
 

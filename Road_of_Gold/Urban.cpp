@@ -11,28 +11,26 @@ Urban::Urban()
 	: id(int(urbans.size()))
 	, name(L"")
 	, joinedNodeID(-1)
-	, timer(0.5 + getPos().mPos.x / TwoPi)
+	, timer(0.5 + nodes[joinedNodeID].pos.mPos.x / TwoPi)
 	, day(0)
 {
 	resource.resize(rData.size());
 	jobEfficiency.resize(cData.size());
 	avgIncome.resize(cData.size());
 
-	const Array<int> numCitizen = {
-		100,//˜J“­Ò
-		5,	//–Ø‚±‚è
-		5,	//“©Œ|El
-		5,	//ël
-		5,	//d—§‚Ä‰®
-		5,	//‹™t
-		5,	//‹™t
-		5,
-		5,
-	};
+	const int numCitizens = 100;
 
-	for (int i = 0; i < int(iData.size()); i++) baskets.emplace_back(i, id);
-	for (int i = 0; i < int(Min(cData.size(), numCitizen.size())); i++)
-		for (int j = 0; j < numCitizen[i]; j++) citizens.emplace_back(int(citizens.size()), i, id);
+	for (int i = 0; i < int(iData.size()); ++i) baskets.emplace_back(i, id);
+	for (int i = 0; i < int(cData.size()); ++i)
+		for (int j = 0; j < 3; ++j) citizens.emplace_back(int(citizens.size()), i, id);
+	for (int i = 0; i < Max(0, int(numCitizens - cData.size() * 3)); ++i)
+		citizens.emplace_back(int(citizens.size()), 0, id);
+}
+void	Urban::draw() const
+{
+	const Circle circle(nodes[joinedNodeID].pos.mPos, 0.015);
+	const Color color = selectedUrban == this ? Palette::Yellow : (circle.mouseOver() ? Palette::Orange : Palette::Red);
+	circle.draw(color).drawFrame(0.005, Palette::Black);
 }
 String	Urban::getTimeAsString() const { return  Format(int(timer * 24)).lpad(2, '0') + L":" + Format(int(timer * 24 * 60) % 60).lpad(2, '0'); }
 void	Urban::update()

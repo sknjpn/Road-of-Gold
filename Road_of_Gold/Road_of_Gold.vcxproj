@@ -245,7 +245,6 @@
     </ClCompile>
     <ClCompile Include="TinyCamera2D.cpp" />
     <ClCompile Include="Urban.cpp" />
-    <ClCompile Include="UrbanDraw.cpp" />
     <ClCompile Include="VoronoiMap.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

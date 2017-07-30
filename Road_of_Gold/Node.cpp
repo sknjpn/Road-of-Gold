@@ -37,14 +37,14 @@ bool	Planet::loadNodeMap()
 
 	int	nodesSize, pathsSize;
 	reader.read(nodesSize);
-	for (int i = 0; i < nodesSize; i++)
+	for (int i = 0; i < nodesSize; ++i)
 	{
 		Vec3 ePos;
 		reader.read(ePos);
 		nodes.emplace_back(ePos);
 	}
 	reader.read(pathsSize);
-	for (int i = 0; i < pathsSize; i++)
+	for (int i = 0; i < pathsSize; ++i)
 	{
 		int parentNodeID;
 		int childNodeID;
