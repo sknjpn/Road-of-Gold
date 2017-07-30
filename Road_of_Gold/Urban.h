@@ -34,7 +34,8 @@ struct Basket
 	int		getCost(int _num) const;
 	int		getNumItem() const;
 	void	buyItem(int _num);
-
+	int		getPrice() const { return rings.front().price; }
+	bool	isEmpty() const { return rings.isEmpty(); }
 };
 
 struct Citizen
