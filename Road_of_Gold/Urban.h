@@ -47,6 +47,7 @@ struct Citizen
 	double	progress;
 	int		price;
 	int		hapiness;
+	double	personality = Random(1.0);
 	Array<int>	incomeLog;	//100日分の収入記録
 
 	Citizen(int _id, int _citizenType, int _joinedUrbanID);

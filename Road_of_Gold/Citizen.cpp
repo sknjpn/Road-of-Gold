@@ -42,9 +42,10 @@ void	Citizen::goToShopping()
 			hapiness += iData[j].value;
 		}
 	}
-	for (int k = 0;; ++k)
-		if ((1 << k) > money) { hapiness += k * 10; break; }
-	money = 0;
+	money *= personality;
+//	for (int k = 0;; ++k)
+	//	if ((1 << k) > money) { hapiness += k * 10; break; }
+//	money = 0;
 }
 Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
 	: citizenType(_citizenType)
