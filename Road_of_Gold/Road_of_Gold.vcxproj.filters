@@ -205,9 +205,6 @@
     <ClCompile Include="Route.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Planet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -236,6 +233,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="TinyCamera2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MakeGroups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

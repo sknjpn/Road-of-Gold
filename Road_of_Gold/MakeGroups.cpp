@@ -4,9 +4,6 @@
 #include"GlobalVariables.h"
 #include"JSON.h"
 
-Planet::Planet()
-	: mapTexture()
-{}
 void	Planet::makeGroupsRandom()
 {
 	const int numGroups = 40;

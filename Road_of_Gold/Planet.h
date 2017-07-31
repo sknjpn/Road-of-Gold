@@ -8,7 +8,9 @@ struct Planet
 	Grid<int>	voronoiMap;
 	Texture		mapTexture;
 
-	Planet();
+	Planet::Planet()
+		: mapTexture()
+	{}
 	void	setRegions();
 	void	makeGroupsRandom();
 	bool	loadNodeMap();

@@ -241,7 +241,7 @@
     <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="MakeGroups.cpp" />
     <ClCompile Include="Route.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
