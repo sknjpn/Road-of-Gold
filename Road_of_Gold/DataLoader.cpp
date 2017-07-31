@@ -8,6 +8,7 @@ Array<BData> bData;
 Array<IData> iData;
 Array<CData> cData;
 Array<RData> rData;
+Array<VData> vData;
 
 bool loadJSONData()
 {
@@ -21,12 +22,21 @@ bool loadJSONData()
 	JSONReader ijson(L"Assets/IData.json");
 	JSONReader cjson(L"Assets/CData.json");
 	JSONReader bjson(L"Assets/BData.json");
+	JSONReader vjson(L"Assets/VData.json");
+	for (auto v : rjson[L"VData"].arrayView()) vData.emplace_back(v);
 	for (auto r : rjson[L"RData"].arrayView()) rData.emplace_back(r);
 	for (auto i : ijson[L"IData"].arrayView()) iData.emplace_back(i);
 	for (auto c : cjson[L"CData"].arrayView()) cData.emplace_back(c);
 	for (auto i : bjson[L"BData"].arrayView()) bData.emplace_back(i);
 	return true;
 }
+VData::VData(const JSONValue _json)
+	: id(int(vData.size()))
+	, name(_json[L"ResourceName"].getOr<String>(L"hoge"))
+	, speed(_json[L"Speed"].getOr<double>(1.00))
+	, volume(_json[L"Volume"].getOr<int>(0))
+	, isShip(_json[L"IsShip"].getOr<bool>(false))
+{}
 
 RData::RData(const JSONValue _json)
 	: id(int(rData.size()))

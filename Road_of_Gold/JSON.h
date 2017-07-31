@@ -2,6 +2,17 @@
 
 bool loadJSONData();
 
+struct VData
+{
+	VData(const JSONValue _json);
+	int		id;
+	String	name;
+	double	speed;
+	int		volume;
+	bool	isShip;
+};
+extern Array<VData> vData;
+
 struct RData
 {
 	int		id;
