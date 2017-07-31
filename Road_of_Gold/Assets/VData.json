@@ -11,21 +11,21 @@
       "Name": "二等級帆船",
       "Speed": 0.75,
       "Volume": 300,
-      "Range": 2.5,
+      "Range": 2.0,
       "IsShip": true
     },
     {
       "Name": "一等級帆船",
       "Speed": 0.5,
       "Volume": 500,
-      "Range": 5.0,
+      "Range": 3.0,
       "IsShip": true
     },
     {
       "Name": "幌馬車",
       "Speed": 0.5,
       "Volume": 100,
-      "Range": 1.0
+      "Range": 5.0
     }
   ]
 }

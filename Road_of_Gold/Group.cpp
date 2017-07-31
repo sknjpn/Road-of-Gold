@@ -90,20 +90,25 @@ void	Vehicle::update()
 
 		if (&u1 != &u2)
 		{
-			g.description = Format(u1.name, L"-", u2.name, L"ŠÔ");
-			for (auto& r : u1.getRoutesToUrban(u2.id))
-				chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
+			auto r1 = u1.getRoutesToUrban(u2.id, getRange());
+			auto r2 = u2.getRoutesToUrban(u1.id, getRange());
+			if (!r1.isEmpty() && !r2.isEmpty())
+			{
+				g.description = Format(u1.name, L"-", u2.name, L"ŠÔ");
+				for (auto& r : r1)
+					chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
-			chain.push_back({ int16(Command::SELL), int32(1000) });
-			chain.push_back({ int16(Command::BUY), iData.choice().id });
+				chain.push_back({ int16(Command::SELL), int32(1000) });
+				chain.push_back({ int16(Command::BUY), iData.choice().id });
 
-			for (auto& r : u2.getRoutesToUrban(u1.id))
-				chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
+				for (auto& r : r2)
+					chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
-			chain.push_back({ int16(Command::SELL), int32(1000) });
-			chain.push_back({ int16(Command::BUY), iData.choice().id });
+				chain.push_back({ int16(Command::SELL), int32(1000) });
+				chain.push_back({ int16(Command::BUY), iData.choice().id });
 
-			chain.push_back({ int16(Command::JUMP), int32(0) });
+				chain.push_back({ int16(Command::JUMP), int32(0) });
+			}
 		}
 	}
 

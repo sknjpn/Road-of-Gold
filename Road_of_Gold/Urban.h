@@ -76,7 +76,7 @@ struct Urban
 	void	update();
 	void	draw() const;
 	String	getTimeAsString() const;
-	Array<Route*>	getRoutesToUrban(int _urbanID) const;
+	Array<Route*>	getRoutesToUrban(int _urbanID, double _maxRange) const;
 
 };
 extern Urban*			selectedUrban;
