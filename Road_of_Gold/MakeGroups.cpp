@@ -20,6 +20,7 @@ void	Planet::makeGroupsRandom()
 			g.ownVehicleIDs.emplace_back(vehicles.back().id);
 			auto& v = vehicles.back();
 			v.joinedGroupID = g.id;
+			v.vehicleType = vData.choice().id;
 		}
 	}
 }

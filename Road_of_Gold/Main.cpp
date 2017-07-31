@@ -140,6 +140,7 @@ void Main()
 		if (selectedVehicle != nullptr)
 		{
 			auto& g = groups[selectedVehicle->joinedGroupID];
+			auto& v = *selectedVehicle;
 			const Array<String> commandText = {
 				L"MOVE", L"JUMP", L"WAIT", L"BUY", L"SELL", L"none"
 			};
@@ -150,7 +151,7 @@ void Main()
 			{
 				const Rect rect(32, 32, 320, 24);
 				rect.drawFrame(2, fColor);
-				font16(g.name, L" 所属交易船").draw(rect.pos.movedBy(4, 0), Palette::White);
+				font16(g.name, L" 所属交易船", vData[v.vehicleType].name).draw(rect.pos.movedBy(4, 0), Palette::White);
 			}
 			{
 				const Rect rect(32, 56, 320, 24);
