@@ -153,10 +153,22 @@
     <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst">
       <Filter>Resource Files\engine\font\noto</Filter>
     </None>
-    <None Include="Assets\EconomicData.json">
+    <None Include="Assets\GroupName.json">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Assets\GroupName.json">
+    <None Include="Assets\CData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Assets\RData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Assets\VData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Assets\BData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="Assets\IData.json">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

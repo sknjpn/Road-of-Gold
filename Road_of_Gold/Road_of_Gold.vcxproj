@@ -196,8 +196,12 @@
     <Text Include="example\test.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\EconomicData.json" />
+    <None Include="Assets\BData.json" />
+    <None Include="Assets\CData.json" />
     <None Include="Assets\GroupName.json" />
+    <None Include="Assets\IData.json" />
+    <None Include="Assets\RData.json" />
+    <None Include="Assets\VData.json" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />

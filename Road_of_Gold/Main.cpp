@@ -94,6 +94,7 @@ void Main()
 						if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
 				}
 			}
+			if (selectedUrban != nullptr || selectedVehicle != nullptr) groupViewWindowEnabled = false;
 		}
 
 		//Vehicleに注視点を設定
@@ -125,6 +126,7 @@ void Main()
 
 		}
 		//影
+		/*
 		if (timeSpeed < 0.1)
 		{
 			const auto t1 = tinyCamera2D.createTransformer();
@@ -133,6 +135,7 @@ void Main()
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 		}
+		*/
 		//Interface
 		if (selectedVehicle != nullptr)
 		{
