@@ -38,6 +38,8 @@ struct Vehicle
 
 	Vehicle(int _nowUrbanID);
 	double	getSpeed() const;
+	double	getRange() const;
+	int		getVolume() const;
 	Vec2	getMPos() const;
 	void	update();
 	void	draw() const;

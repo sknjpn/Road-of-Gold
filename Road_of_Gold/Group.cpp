@@ -221,3 +221,4 @@ void Group::update()
 	}
 }
 double	Vehicle::getSpeed() const { return vData[vehicleType].speed; }
+int		Vehicle::getVolume() const { return vData[vehicleType].volume; }
