@@ -9,6 +9,7 @@ Array<Vehicle> vehicles;
 
 Vehicle::Vehicle(int _nowUrbanID)
 	: id(int(vehicles.size()))
+	, vehicleType(0)
 	, nowUrbanID(_nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
