@@ -111,9 +111,9 @@ void	Vehicle::update()
 	{
 		if (routeID != -1)
 		{
-			if (actionTime >= (routes[routeID].totalCost - routeProgress) / vData[vehicleType].speed)
+			if (actionTime >= (routes[routeID].totalCost - routeProgress) / getSpeed())
 			{
-				actionTime -= (routes[routeID].totalCost - routeProgress) / vData[vehicleType].speed;
+				actionTime -= (routes[routeID].totalCost - routeProgress) / getSpeed();
 				nowUrbanID = routes[routeID].destinationUrbanID;
 				routeProgress = 0.0;
 				routeID = -1;
@@ -121,7 +121,7 @@ void	Vehicle::update()
 			}
 			else
 			{
-				routeProgress += actionTime * vData[vehicleType].speed;
+				routeProgress += actionTime * getSpeed();
 				break;
 			}
 		}
