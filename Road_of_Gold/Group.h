@@ -37,6 +37,7 @@ struct Vehicle
 	Array<std::pair<int16, int32>> chain;
 
 	Vehicle(int _nowUrbanID);
+	double	getSpeed() const;
 	Vec2	getMPos() const;
 	void	update();
 	void	draw() const;

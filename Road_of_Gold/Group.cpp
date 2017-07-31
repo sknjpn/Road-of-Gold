@@ -82,7 +82,7 @@ void	Vehicle::update()
 {
 	auto& g = groups[joinedGroupID];
 	double actionTime = timeSpeed;
-	if (routeID == -1 && sleepTimer==0 && chain.isEmpty())
+	if (routeID == -1 && sleepTimer == 0 && chain.isEmpty())
 	{
 		progress = 0;
 		auto& u1 = urbans[nowUrbanID];
@@ -111,9 +111,9 @@ void	Vehicle::update()
 	{
 		if (routeID != -1)
 		{
-			if (actionTime >= routes[routeID].totalCost - routeProgress)
+			if (actionTime >= (routes[routeID].totalCost - routeProgress) / vData[vehicleType].speed)
 			{
-				actionTime -= routes[routeID].totalCost - routeProgress;
+				actionTime -= (routes[routeID].totalCost - routeProgress) / vData[vehicleType].speed;
 				nowUrbanID = routes[routeID].destinationUrbanID;
 				routeProgress = 0.0;
 				routeID = -1;
@@ -121,7 +121,7 @@ void	Vehicle::update()
 			}
 			else
 			{
-				routeProgress += actionTime;
+				routeProgress += actionTime * vData[vehicleType].speed;
 				break;
 			}
 		}
@@ -214,9 +214,10 @@ void Group::update()
 		{
 			for (auto& v : vehicles)
 			{
-				if(v.joinedGroupID == id) v.chain.clear();
+				if (v.joinedGroupID == id) v.chain.clear();
 			}
 		}
 		moneyLog = money;
 	}
 }
+double	Vehicle::getSpeed() const { return vData[vehicleType].speed; }
