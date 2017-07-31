@@ -34,6 +34,7 @@ VData::VData(const JSONValue _json)
 	: id(int(vData.size()))
 	, name(_json[L"Name"].getOr<String>(L"hoge"))
 	, speed(_json[L"Speed"].getOr<double>(1.00))
+	, range(_json[L"Range"].getOr<double>(1.00))
 	, volume(_json[L"Volume"].getOr<int>(0))
 	, isShip(_json[L"IsShip"].getOr<bool>(false))
 {}

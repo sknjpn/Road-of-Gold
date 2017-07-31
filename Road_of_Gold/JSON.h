@@ -8,6 +8,7 @@ struct VData
 	int		id;
 	String	name;
 	double	speed;
+	double	range;
 	int		volume;
 	bool	isShip;
 };
