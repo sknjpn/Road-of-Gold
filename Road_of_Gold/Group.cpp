@@ -171,7 +171,7 @@ void	Vehicle::update()
 				if (stock.num == 0)
 				{
 					Basket& b = urbans[nowUrbanID].baskets[data];
-					const int numBuy = Min(10, b.getNumItem());
+					const int numBuy = Min(getVolume() / iData[data].volume, b.getNumItem());
 					if (numBuy > 0)
 					{
 						g.money -= b.getCost(numBuy);
