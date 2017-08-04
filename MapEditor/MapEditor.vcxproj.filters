@@ -63,10 +63,13 @@
     <ClCompile Include="Urban.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataLoader.cpp">
+    <ClCompile Include="TinyCamera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TinyCamera2D.cpp">
+    <ClCompile Include="DataWriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="DataReader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
