@@ -85,27 +85,30 @@ void	Vehicle::update()
 	if (routeID == -1 && sleepTimer == 0 && chain.isEmpty())
 	{
 		progress = 0;
+		vehicleType = vData.choice().id;
 		auto& u1 = urbans[nowUrbanID];
 		auto& u2 = urbans.choice();
 
 		if (&u1 != &u2)
 		{
-			auto r1 = u1.getRoutesToUrban(u2.id, getRange());
-			auto r2 = u2.getRoutesToUrban(u1.id, getRange());
+			auto r1 = u1.getRoutesToUrban(u2.id, getRange(), isShip());
+			auto r2 = u2.getRoutesToUrban(u1.id, getRange(),isShip());
+			auto i1 = iData.choice().id;
+			auto i2 = iData.choice().id;
 			if (!r1.isEmpty() && !r2.isEmpty())
 			{
-				g.description = Format(u1.name, L"-", u2.name, L"ŠÔ");
+				g.description = Format(vData[vehicleType].name,L" ",iData[i1].name,L":",u1.name, L"-", iData[i2].name, L":", u2.name, L"ŠÔ");
 				for (auto& r : r1)
 					chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
 				chain.push_back({ int16(Command::SELL), int32(1000) });
-				chain.push_back({ int16(Command::BUY), iData.choice().id });
+				chain.push_back({ int16(Command::BUY),  i1});
 
 				for (auto& r : r2)
 					chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
 				chain.push_back({ int16(Command::SELL), int32(1000) });
-				chain.push_back({ int16(Command::BUY), iData.choice().id });
+				chain.push_back({ int16(Command::BUY), i2 });
 
 				chain.push_back({ int16(Command::JUMP), int32(0) });
 			}
@@ -225,6 +228,7 @@ void Group::update()
 		moneyLog = money;
 	}
 }
+bool	Vehicle::isShip() const { return vData[vehicleType].isShip; }
 double	Vehicle::getSpeed() const { return vData[vehicleType].speed; }
 double	Vehicle::getRange() const { return vData[vehicleType].range; }
 int		Vehicle::getVolume() const { return vData[vehicleType].volume; }

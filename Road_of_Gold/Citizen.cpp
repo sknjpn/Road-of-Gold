@@ -26,7 +26,7 @@ void	Citizen::goToShopping()
 		if (!flag || money < cost) continue;
 
 		for (int k = 0;; ++k)
-			if ((1 << k) > money - cost) { earn += k * 1000; break; }
+			if ((1 << k) > money - cost) { earn += k * 200; break; }
 
 		if (maxEarn < earn)
 		{

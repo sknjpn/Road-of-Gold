@@ -447,7 +447,7 @@ void Main()
 			selectedVehicle = nullptr;
 			const Color fColor = Palette::Skyblue;
 			const Color bColor = Color(Palette::Darkcyan, 192);
-			Rect rect(32, 32, 480, int(groups.size() * 16));
+			Rect rect(32, 32, 540, int(groups.size() * 16));
 			rect.draw(bColor).drawFrame(1, fColor);
 			for (auto i : step(int(groups.size())))
 			{
@@ -457,7 +457,7 @@ void Main()
 				auto& g = groups[i];
 				font12(g.name).draw(32, 32 + i * 16, Palette::White);
 				font12(L" 利益", g.money - g.moneyLog).draw(32 + 96, 32 + i * 16, Palette::White);
-				font12(g.description).draw(32 + 240, 32 + i * 16, Palette::White);
+				font12(g.description).draw(32 + 180, 32 + i * 16, Palette::White);
 			}
 			if (rect.leftClicked())
 			{

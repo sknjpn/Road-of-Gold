@@ -97,7 +97,7 @@ void makeRoute()
 	for (auto& r : routes)
 		r.getOriginUrban().routeIDs.emplace_back(r.id);
 }
-Array<Route*>	Urban::getRoutesToUrban(int _urbanID, double _maxRange) const
+Array<Route*>	Urban::getRoutesToUrban(int _urbanID, double _maxRange, bool _isSeaRoute) const
 {
 	const auto& ut = urbans[_urbanID];
 	const double stopCost = 1 / 24.0;	//’“—¯Žž‚ÌƒRƒXƒg
@@ -118,7 +118,7 @@ Array<Route*>	Urban::getRoutesToUrban(int _urbanID, double _maxRange) const
 		for (auto& rID : urbans[n1->ownUrbanID].routeIDs)
 		{
 			auto& r = routes[rID];
-			if (r.totalCost > _maxRange) continue;
+			if (r.totalCost > _maxRange || r.isSeaRoute != _isSeaRoute) continue;
 
 			auto& n2 = nodes[r.getDestinationUrban().joinedNodeID];
 

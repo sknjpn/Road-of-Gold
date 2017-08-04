@@ -37,6 +37,7 @@ struct Vehicle
 	Array<std::pair<int16, int32>> chain;
 
 	Vehicle(int _nowUrbanID);
+	bool	isShip() const;
 	double	getSpeed() const;
 	double	getRange() const;
 	int		getVolume() const;
