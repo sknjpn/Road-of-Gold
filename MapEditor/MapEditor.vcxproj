@@ -234,6 +234,7 @@
     <None Include="example\test.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pi.h" />

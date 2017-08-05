@@ -50,9 +50,12 @@ void Main()
 	//都市名入力欄
 	TextBox urbanNameTextBox(textBoxFont, Vec2(78, 66), 112);
 
+	//人口入力欄
+	TextBox numCitizensTextBox(textBoxFont, Vec2(78, 86), 112);
+
 	Array<TextBox> resourceTextBox;
 	for (auto i : step(rData.size()))
-		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 86 + i * 20), none);
+		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 106 + i * 20), none);
 
 	while (System::Update())
 	{
@@ -358,13 +361,13 @@ void Main()
 			}
 			for (auto& i : step(int(rData.size())))
 			{
-				const Rect rect(32, 84 + i * 20, 100, 20);
+				const Rect rect(32, 104 + i * 20, 100, 20);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				font12(rData[i].name).draw(rect.pos.movedBy(4, 1));
 			}
 			for (auto& i : step(int(rData.size())))
 			{
-				const Rect rect(132, 84 + i * 20, 60, 20);
+				const Rect rect(132, 104 + i * 20, 60, 20);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				auto& t = resourceTextBox[i];
 				t.setWidth(56);
@@ -376,6 +379,19 @@ void Main()
 				}
 				else t.setText(L"");
 				t.draw();
+			}
+			{
+				numCitizensTextBox.update();
+				if (selectedUrban != nullptr)
+				{
+					selectedUrban->numCitizens = ParseInt<int>(numCitizensTextBox.getText());
+					numCitizensTextBox.setText(Format(Max(1, selectedUrban->numCitizens)));
+				}
+				numCitizensTextBox.draw();
+				const Rect rect(32, 84, 44, 20);
+				rect.drawFrame(1, 0, Palette::Skyblue);
+				font12(L"人口").draw(rect.pos.movedBy(4, 1));
+				
 			}
 			break;
 		}

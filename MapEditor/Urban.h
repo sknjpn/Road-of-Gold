@@ -5,6 +5,7 @@ struct Pos;
 struct Urban
 {
 	int		id;
+	int		numCitizens;
 	String	name;
 	int		joinedNodeID;
 	Array<int>		resource;

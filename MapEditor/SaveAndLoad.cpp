@@ -9,22 +9,23 @@ Urban::Urban(const JSONValue _json)
 	: id(int(urbans.size()))
 	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))
 	, name(_json[L"Name"].getOr<String>(L"hoge"))
+	, numCitizens(_json[L"NumCitizens"].getOr<int>(1))
 {
 	nodes[joinedNodeID].ownUrbanID = id;
 	resource.resize(rData.size());
 
 	for (auto i : step(int(rData.size())))
 	{
-		if (!_json[L"Resources."+rData[i].name].isEmpty())
+		if (!_json[L"Resources." + rData[i].name].isEmpty())
 		{
-			resource[i] = _json[L"Resources."+rData[i].name].getOr<int>(10);
+			resource[i] = _json[L"Resources." + rData[i].name].getOr<int>(10);
 		}
 	}
 }
 
 bool loadMapData(const FilePath& _path)
 {
-	//if (!FileSystem::IsDirectory(_path)) return false;
+	if (!FileSystem::IsDirectory(_path)) return false;
 
 	//バイオームデータのロード
 	{
@@ -45,36 +46,6 @@ bool loadMapData(const FilePath& _path)
 		for (auto json : reader[L"Urbans"].arrayView())
 			urbans.emplace_back(json);
 	}
-	/*
-	BinaryReader reader(_path);
-	Array<Node*> list;
-	for (auto& n : nodes)
-	{
-		int t;
-		reader.read(t);
-		if (t != n.biomeType)
-		{
-			n.biomeType = t;
-			if (n.biomeType >= bData.size()) return false;	//異常検出
-			list.emplace_back(&n);
-		}
-	}
-	int numUrbans, length;
-	reader.read(numUrbans);
-	if (numUrbans >= 1024) return false;	//異常検出
-	for (; numUrbans > 0; --numUrbans)
-	{
-		urbans.emplace_back();
-		reader.read(urbans.back().joinedNodeID);
-		nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
-		reader.read(length);
-		urbans.back().name.resize(length);
-		reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
-		for (auto i : step(rData.size()))
-			reader.read(urbans.back().resource[i]);
-	}
-	planet.updateImage(list);
-	*/
 	return true;
 }
 bool saveMapData(const FilePath& _path)
@@ -100,6 +71,9 @@ bool saveMapData(const FilePath& _path)
 
 			//都市名の保存
 			text += Format(L",\r\t\t\t\"Name\": \"", u.name, L"\"");
+
+			//人口の保存
+			text += Format(L",\r\t\t\t\"NumCitizens\": ", u.numCitizens);
 
 			//Resourcesデータの保存
 			text += L",\r\t\t\t\"Resources\": {";
