@@ -66,10 +66,10 @@
     <ClCompile Include="TinyCamera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataWriter.cpp">
+    <ClCompile Include="SaveAndLoad.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="DataReader.cpp">
+    <ClCompile Include="DataLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -318,8 +318,8 @@ void Main()
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked())
 				{
-					FilePath filePath = L"Map/" + (textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin");
-					saveBiomeData(filePath);
+					FilePath filePath = L"Map/" + textBox.getText() + L"/";
+					saveMapData(filePath);
 				}
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"セーブ").draw(rect.pos.movedBy(4, 0));
@@ -385,32 +385,7 @@ void Main()
 		auto items = DragDrop::GetDroppedFilePaths();
 		for (auto item : items)
 		{
-			BinaryReader reader(item.path);
-			Array<Node*> list;
-			for (auto& n : nodes)
-			{
-				int t;
-				reader.read(t);
-				if (t != n.biomeType)
-				{
-					n.biomeType = t;
-					list.emplace_back(&n);
-				}
-			}
-			int numUrbans, length;
-			reader.read(numUrbans);
-			for (; numUrbans > 0; --numUrbans)
-			{
-				urbans.emplace_back();
-				reader.read(urbans.back().joinedNodeID);
-				nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
-				reader.read(length);
-				urbans.back().name.resize(length);
-				reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
-				for (auto i : step(rData.size()))
-					reader.read(urbans.back().resource[i]);
-			}
-			planet.updateImage(list);
+			if (loadMapData(item.path)) break;
 		}
 	}
 }

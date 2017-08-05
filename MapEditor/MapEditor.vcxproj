@@ -175,9 +175,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="DataWriter.cpp" />
+    <ClCompile Include="SaveAndLoad.cpp" />
     <ClCompile Include="GenerateBiome.cpp" />
-    <ClCompile Include="DataReader.cpp" />
+    <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Planet.cpp" />
