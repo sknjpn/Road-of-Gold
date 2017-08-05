@@ -3,7 +3,7 @@
 #include"Pi.h"
 #include"JSON.h"
 #include"Urban.h"
-
+#include"GlobalVariables.h"
 
 Urban::Urban(const JSONValue _json)
 	: id(int(urbans.size()))
@@ -28,24 +28,30 @@ bool loadMapData(const FilePath& _path)
 	if (!FileSystem::IsDirectory(_path)) return false;
 
 	//バイオームデータのロード
+	if (FileSystem::Exists(_path + L"BiomeData.bin"))
 	{
 		Array<Node*> list;
 		BinaryReader reader(_path + L"BiomeData.bin");
 		for (auto& n : nodes)
 		{
 			reader.read(n.biomeType);
+			if (n.biomeType >= bData.size()) return false;
 			list.emplace_back(&n);
 		}
 		planet.updateImage(list);
 	}
+	else return false;
 
-	//Urbansデータのセーブ
+	//Urbansデータのロード
 	if (FileSystem::Exists(_path + L"Urbans.json"))
 	{
 		JSONReader reader(_path + L"Urbans.json");
 		for (auto json : reader[L"Urbans"].arrayView())
 			urbans.emplace_back(json);
 	}
+
+	textBox.setText(FileSystem::BaseName(_path));
+	
 	return true;
 }
 bool saveMapData(const FilePath& _path)

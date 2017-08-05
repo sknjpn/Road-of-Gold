@@ -15,6 +15,8 @@ int		selectedBrush = 0;
 int		brushSize = 10;
 Urban*	selectedUrban = nullptr;
 
+//ファイル名入力欄
+TextBox textBox;
 
 void Main()
 {
@@ -44,8 +46,7 @@ void Main()
 	//データの読み込み
 	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
 
-	//ファイル名入力欄
-	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
+	textBox = TextBox(textBoxFont, Vec2(160, 72), 120);
 
 	//都市名入力欄
 	TextBox urbanNameTextBox(textBoxFont, Vec2(78, 66), 112);
