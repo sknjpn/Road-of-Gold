@@ -4,8 +4,48 @@
 #include"JSON.h"
 #include"Urban.h"
 
+
+Urban::Urban(const JSONValue _json)
+	: id(int(urbans.size()))
+	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))
+	, name(_json[L"Name"].getOr<String>(L"hoge"))
+{
+	nodes[joinedNodeID].ownUrbanID = id;
+	resource.resize(rData.size());
+
+	for (auto i : step(int(rData.size())))
+	{
+		if (!_json[L"Resources."+rData[i].name].isEmpty())
+		{
+			resource[i] = _json[L"Resources."+rData[i].name].getOr<int>(10);
+		}
+	}
+}
+
 bool loadMapData(const FilePath& _path)
 {
+	//if (!FileSystem::IsDirectory(_path)) return false;
+
+	//バイオームデータのロード
+	{
+		Array<Node*> list;
+		BinaryReader reader(_path + L"BiomeData.bin");
+		for (auto& n : nodes)
+		{
+			reader.read(n.biomeType);
+			list.emplace_back(&n);
+		}
+		planet.updateImage(list);
+	}
+
+	//Urbansデータのセーブ
+	if (FileSystem::Exists(_path + L"Urbans.json"))
+	{
+		JSONReader reader(_path + L"Urbans.json");
+		for (auto json : reader[L"Urbans"].arrayView())
+			urbans.emplace_back(json);
+	}
+	/*
 	BinaryReader reader(_path);
 	Array<Node*> list;
 	for (auto& n : nodes)
@@ -34,6 +74,7 @@ bool loadMapData(const FilePath& _path)
 			reader.read(urbans.back().resource[i]);
 	}
 	planet.updateImage(list);
+	*/
 	return true;
 }
 bool saveMapData(const FilePath& _path)
@@ -42,7 +83,6 @@ bool saveMapData(const FilePath& _path)
 	{
 		BinaryWriter writer(_path + L"BiomeData.bin");
 		for (auto& n : nodes) writer.write(n.biomeType);
-		writer.write(int(urbans.size()));
 	}
 
 	//Urbansデータのセーブ
@@ -61,8 +101,8 @@ bool saveMapData(const FilePath& _path)
 			//都市名の保存
 			text += Format(L",\r\t\t\t\"Name\": \"", u.name, L"\"");
 
-			//Resouceデータの保存
-			text += L",\r\t\t\t\"Resouces\": {";
+			//Resourcesデータの保存
+			text += L",\r\t\t\t\"Resources\": {";
 			bool isFirst = true;
 			for (auto j : step(rData.size()))
 			{

@@ -10,6 +10,7 @@ struct Urban
 	Array<int>		resource;
 
 	Urban();
+	Urban(const JSONValue _json);
 	Urban(int _joinedNodeID);
 	void	update();
 	void	draw() const;
