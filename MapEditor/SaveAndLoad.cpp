@@ -15,11 +15,13 @@ bool loadMapData(const FilePath& _path)
 		if (t != n.biomeType)
 		{
 			n.biomeType = t;
+			if (n.biomeType >= bData.size()) return false;	//異常検出
 			list.emplace_back(&n);
 		}
 	}
 	int numUrbans, length;
 	reader.read(numUrbans);
+	if (numUrbans >= 1024) return false;	//異常検出
 	for (; numUrbans > 0; --numUrbans)
 	{
 		urbans.emplace_back();
@@ -36,17 +38,49 @@ bool loadMapData(const FilePath& _path)
 }
 bool saveMapData(const FilePath& _path)
 {
-	BinaryWriter writer(_path + L"BiomeData.bin");
-	for (auto& n : nodes) writer.write(n.biomeType);
-	writer.write(int(urbans.size()));
-
-	for (auto& u : urbans)
+	//バイオームデータのセーブ
 	{
-		writer.write(u.joinedNodeID);
-		writer.write(int(u.name.length()));
-		writer.write(u.name.data(), int(u.name.length()) * sizeof(wchar));
-		for (auto i : step(rData.size())) writer.write(u.resource[i]);
+		BinaryWriter writer(_path + L"BiomeData.bin");
+		for (auto& n : nodes) writer.write(n.biomeType);
+		writer.write(int(urbans.size()));
 	}
-	writer.close();
+
+	//Urbansデータのセーブ
+	if (!urbans.isEmpty())
+	{
+		String text(L"{\r\t\"Urbans\": [");
+		for (auto i : step(int(urbans.size())))
+		{
+			auto& u = urbans[i];
+			if (i == 0) text += L"\r\t\t{";
+			else text += L",\r\t\t{";
+
+			//都市座標の保存
+			text += Format(L"\r\t\t\t\"NodePos\": ", u.joinedNodeID);
+
+			//都市名の保存
+			text += Format(L",\r\t\t\t\"Name\": \"", u.name, L"\"");
+
+			//Resouceデータの保存
+			text += L",\r\t\t\t\"Resouces\": {";
+			bool isFirst = true;
+			for (auto j : step(rData.size()))
+			{
+				if (u.resource[j] > 0)
+				{
+					if (isFirst) { text += L"\r"; isFirst = false; }
+					else text += L",\r";
+					text += Format(L"\t\t\t\t\"", rData[j].name, L"\": ", u.resource[j]);
+				}
+			}
+			text += L"\r\t\t\t}";
+
+			text += L"\r\t\t}";
+		}
+		text += L"\r\t]\r}";
+		TextWriter writer(_path + L"Urbans.json");
+		writer.write(text);
+		writer.close();
+	}
 	return true;
 }
