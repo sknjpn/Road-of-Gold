@@ -210,6 +210,7 @@ void Main()
 					{
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
 						urbanNameTextBox.setText(selectedUrban->name);
+						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 						for (auto i : step(rData.size()))
 							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
@@ -220,6 +221,7 @@ void Main()
 						urbans.emplace_back(nearestNode->id);
 						selectedUrban = &urbans.back();
 						urbanNameTextBox.setText(selectedUrban->name);
+						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 						for (auto i : step(rData.size()))
 							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
@@ -248,7 +250,7 @@ void Main()
 		tinyCamera2D.draw();
 
 		//UIの描画
-		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(1, 0, Palette::Skyblue);
+		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(2, Palette::Skyblue);
 
 		//UIModeの選択
 		{
@@ -258,7 +260,7 @@ void Main()
 				const int width = 320 / int(ns.size());
 				const Rect rect(32 + width*i, 32, width, 32);
 				if (rect.leftClicked()) uiMode = UIMode(i);
-				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(1, 0, Palette::Skyblue);
+				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, Palette::Skyblue);
 				font24(ns[i]).drawAt(rect.center());
 			}
 		}
@@ -282,19 +284,19 @@ void Main()
 					if (color != Color(0, 0)) rect.draw(Color(color, 128));
 					font12(L"---").draw(rect.pos.movedBy(12, 0));
 				}
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 			}
 			//詳細
 			{
 				const Rect rect(192, 64, 160, 40);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font16(L"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
 				font12(bData[selectedBiome].name).draw(rect.pos.movedBy(4, 22));
 			}
 			//ブラシの選択
 			{
 				const Rect rect(192, 104, 160, 128);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font16(L"ブラシの選択").draw(rect.pos.movedBy(4, 0));
 				const Array<String> brushName = { L"鉛筆:KeyR", L"筆:KeyF", L"バケツ:KeyV" };
 				for (auto i : step(int(brushName.size())))
@@ -310,7 +312,7 @@ void Main()
 			//生成
 			{
 				const Rect rect(192, 232, 160, 24);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked()) planet.generateBiome();
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -320,7 +322,7 @@ void Main()
 			{
 				const Rect rect(192, 256, 160, 48);
 				textBox.setPos(rect.pos.movedBy(4, 28));
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked())
 				{
@@ -339,7 +341,7 @@ void Main()
 		{
 			{
 				const Rect rect(192, 64, 160, 24);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
 				s.draw(actionMode == ActionMode::set ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -347,7 +349,7 @@ void Main()
 			}
 			{
 				const Rect rect(192, 88, 160, 24);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -359,19 +361,19 @@ void Main()
 				else urbanNameTextBox.setText(L"");
 				urbanNameTextBox.draw();
 				const Rect rect(32, 64, 44, 20);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
 			}
 			for (auto& i : step(int(rData.size())))
 			{
 				const Rect rect(32, 104 + i * 20, 100, 20);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font12(rData[i].name).draw(rect.pos.movedBy(4, 1));
 			}
 			for (auto& i : step(int(rData.size())))
 			{
 				const Rect rect(132, 104 + i * 20, 60, 20);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				auto& t = resourceTextBox[i];
 				t.setWidth(56);
 				t.update();
@@ -392,9 +394,10 @@ void Main()
 					selectedUrban->numCitizens = ParseInt<int>(numCitizensTextBox.getText());
 					numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 				}
+				else numCitizensTextBox.setText(L"");
 				numCitizensTextBox.draw();
 				const Rect rect(32, 84, 44, 20);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font12(L"人口").draw(rect.pos.movedBy(4, 1));
 
 			}
@@ -403,15 +406,30 @@ void Main()
 
 		case UIMode::saveAndLoad:
 		{
+			font16(L"クリックしただけで読み込みが開始されます").draw(32,64);
+
 			//ロードファイルリストの表示
 			{
 				auto items = FileSystem::DirectoryContents(L"Map/");
 				items.remove_if([](FilePath& _item) {return !FileSystem::IsDirectory(_item); });
 				for (auto i : step(int(items.size())))
 				{
-					auto item = items[i].remove(FileSystem::CurrentPath() + L"Map/");
-					Rect rect(32, 64 + i * 16, 160, 16);
-					rect.drawFrame(1, Palette::Skyblue);
+					auto item = items[i].remove(FileSystem::CurrentPath());
+					Rect rect(32, 88 + i * 16, 160, 16);
+					if (rect.mouseOver()) rect.draw(Palette::Orange);
+					if (rect.leftClicked())
+					{
+						for (int j = 0;; j++)
+						{
+							if (!FileSystem::Exists(Format(L"Map/_autosave/", j, L"/")))
+							{
+								saveMapData(Format(L"Map/_autosave/", j, L"/"));
+								break;
+							}
+						}
+						loadMapData(item);
+					}
+					rect.drawFrame(2, Palette::Skyblue);
 					font12(item).draw(rect.pos.movedBy(4, 0));
 				}
 			}

@@ -1,0 +1,185 @@
+﻿{
+	"Urbans": [
+		{
+			"JoinedNodeID": 8025,
+			"Name": "レニングラード",
+			"NumCitizens": 100,
+			"Resources": {
+				"漁場": 10,
+				"温帯土壌": 10
+			}
+		},
+		{
+			"JoinedNodeID": 3406,
+			"Name": "ジャカルタ",
+			"NumCitizens": 50,
+			"Resources": {
+				"漁場": 10,
+				"熱帯土壌": 30
+			}
+		},
+		{
+			"JoinedNodeID": 8486,
+			"Name": "アイスランド",
+			"NumCitizens": 40,
+			"Resources": {
+				"漁場": 30
+			}
+		},
+		{
+			"JoinedNodeID": 16232,
+			"Name": "グリーンランド",
+			"NumCitizens": 50,
+			"Resources": {
+				"森林": 10,
+				"漁場": 20,
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 18502,
+			"Name": "北京",
+			"NumCitizens": 300,
+			"Resources": {
+				"漁場": 10,
+				"熱帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 18100,
+			"Name": "新疆",
+			"NumCitizens": 200,
+			"Resources": {
+				"森林": 10,
+				"漁場": 20,
+				"熱帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 9797,
+			"Name": "テューリンゲン",
+			"NumCitizens": 100,
+			"Resources": {
+				"森林": 30,
+				"漁場": 20,
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 2783,
+			"Name": "ベルリン",
+			"NumCitizens": 600,
+			"Resources": {
+				"森林": 30,
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 9516,
+			"Name": "ウィーン",
+			"NumCitizens": 200,
+			"Resources": {
+				"キタキツネ": 20
+			}
+		},
+		{
+			"JoinedNodeID": 6010,
+			"Name": "ライプツィヒ",
+			"NumCitizens": 300,
+			"Resources": {
+				"漁場": 30,
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 4640,
+			"Name": "マルセイユ",
+			"NumCitizens": 200,
+			"Resources": {
+				"森林": 10,
+				"漁場": 30,
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 12666,
+			"Name": "パリ",
+			"NumCitizens": 300,
+			"Resources": {
+				"温帯土壌": 30
+			}
+		},
+		{
+			"JoinedNodeID": 9719,
+			"Name": "ストラスブール",
+			"NumCitizens": 100,
+			"Resources": {
+				"森林": 20,
+				"漁場": 20,
+				"キタキツネ": 10
+			}
+		},
+		{
+			"JoinedNodeID": 18278,
+			"Name": "ローマ",
+			"NumCitizens": 500,
+			"Resources": {
+				"温帯土壌": 50
+			}
+		},
+		{
+			"JoinedNodeID": 18770,
+			"Name": "ヴェネツィア",
+			"NumCitizens": 100,
+			"Resources": {
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 11529,
+			"Name": "ヴェローナ",
+			"NumCitizens": 100,
+			"Resources": {
+				"漁場": 50,
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 17602,
+			"Name": "バチカン",
+			"NumCitizens": 40,
+			"Resources": {
+				"キタキツネ": 20,
+				"温帯土壌": 10
+			}
+		},
+		{
+			"JoinedNodeID": 11146,
+			"Name": "オルレアン",
+			"NumCitizens": 50,
+			"Resources": {
+				"森林": 20,
+				"キタキツネ": 20
+			}
+		},
+		{
+			"JoinedNodeID": 6239,
+			"Name": "モスクワ",
+			"NumCitizens": 1000,
+			"Resources": {
+				"森林": 50,
+				"温帯土壌": 20
+			}
+		},
+		{
+			"JoinedNodeID": 5595,
+			"Name": "スモレンスク",
+			"NumCitizens": 200,
+			"Resources": {
+				"森林": 20,
+				"漁場": 20,
+				"温帯土壌": 30
+			}
+		}
+	]
+}
