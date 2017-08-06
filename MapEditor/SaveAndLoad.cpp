@@ -27,6 +27,8 @@ bool loadMapData(const FilePath& _path)
 {
 	if (!FileSystem::IsDirectory(_path)) return false;
 
+	urbans.clear();
+
 	//バイオームデータのロード
 	if (FileSystem::Exists(_path + L"BiomeData.bin"))
 	{
