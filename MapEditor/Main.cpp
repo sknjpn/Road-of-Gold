@@ -383,12 +383,14 @@ void Main()
 				else t.setText(L"");
 				t.draw();
 			}
+
+			//都市人口の設定
 			{
 				numCitizensTextBox.update();
 				if (selectedUrban != nullptr)
 				{
 					selectedUrban->numCitizens = ParseInt<int>(numCitizensTextBox.getText());
-					numCitizensTextBox.setText(Format(Max(1, selectedUrban->numCitizens)));
+					numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 				}
 				numCitizensTextBox.draw();
 				const Rect rect(32, 84, 44, 20);
@@ -398,6 +400,31 @@ void Main()
 			}
 			break;
 		}
+
+		case UIMode::saveAndLoad:
+		{
+			//ロードファイルリストの表示
+			{
+				auto items = FileSystem::DirectoryContents(L"Map/");
+				items.remove_if([](FilePath& _item) {return !FileSystem::IsDirectory(_item); });
+				for (auto i : step(int(items.size())))
+				{
+					auto item = items[i].remove(FileSystem::CurrentPath() + L"Map/");
+					Rect rect(32, 64 + i * 16, 160, 16);
+					rect.drawFrame(1, Palette::Skyblue);
+					font12(item).draw(rect.pos.movedBy(4, 0));
+				}
+			}
+
+			break;
+		}
+
+		case UIMode::help:
+		{
+
+			break;
+		}
+
 		}
 
 		//ロード
