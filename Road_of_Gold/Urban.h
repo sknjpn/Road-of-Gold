@@ -65,6 +65,7 @@ struct Urban
 	int		joinedNodeID;
 	double	timer;
 	int		day;
+	int		numCitizens;
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
 	Array<int>		avgIncome;	//各職業の収入平均
@@ -72,7 +73,9 @@ struct Urban
 	Array<double>	jobEfficiency;
 	Array<int>		routeIDs;
 
-	Urban();
+
+	Urban(const JSONValue _json);
+	Circle	getShape() const;
 	void	update();
 	void	draw() const;
 	String	getTimeAsString() const;

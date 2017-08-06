@@ -2,6 +2,7 @@
 #include"Planet.h"
 #include"Node.h"
 #include"Urban.h"
+#include"GlobalVariables.h"
 
 Array<String> GroupName;
 Array<BData> bData;
@@ -103,36 +104,61 @@ CData::CData(const JSONValue _json)
 bool	Planet::loadBiome()
 {
 	auto items = FileSystem::DirectoryContents(L"Map/");
-
 	for (auto& item : items)
 	{
-		if (item.indexOf(L".bin") != FilePath::npos)
+		if (FileSystem::IsDirectory(item))
 		{
-			BinaryReader reader(item);
-			for (auto& n : nodes)
+			//バイオームデータのロード
+			if (FileSystem::Exists(item + L"BiomeData.bin"))
 			{
-				int t;
-				reader.read(t);
-				n.biomeType = t;
-				n.color = bData[n.biomeType].color.lerp(RandomColor(), 0.05);
+				BinaryReader reader(item + L"BiomeData.bin");
+				for (auto& n : nodes)
+				{
+					reader.read(n.biomeType);
+					if (n.biomeType >= bData.size()) return false;
+					n.color = bData[n.biomeType].color.lerp(RandomColor(), 0.05);
+				}
 			}
-			int numUrbans, length;
-			reader.read(numUrbans);
-			if (numUrbans > 256) return false;
-			for (; numUrbans > 0; --numUrbans)
+			else continue;
+
+			//Urbansデータのロード
+			if (FileSystem::Exists(item + L"Urbans.json"))
 			{
-				urbans.emplace_back();
-				reader.read(urbans.back().joinedNodeID);
-				nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
-				reader.read(length);
-				if (length > 16) return false;
-				urbans.back().name.resize(length);
-				reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
-				for (auto i : step(rData.size()))
-					reader.read(urbans.back().resource[i]);
+				JSONReader reader(item + L"Urbans.json");
+				for (auto json : reader[L"Urbans"].arrayView())
+					urbans.emplace_back(json);
 			}
 			return true;
 		}
 	}
+
 	return false;
+}
+
+Urban::Urban(const JSONValue _json)
+	: id(int(urbans.size()))
+	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))
+	, name(_json[L"Name"].getOr<String>(L"hoge"))
+	, timer(0.5 + nodes[joinedNodeID].pos.mPos.x / TwoPi)
+	, day(0)
+	, numCitizens(_json[L"NumCitizens"].getOr<int>(1))
+{
+	nodes[joinedNodeID].ownUrbanID = id;
+	resource.resize(rData.size());
+	jobEfficiency.resize(cData.size());
+	avgIncome.resize(cData.size());
+
+	for (auto i : step(int(rData.size())))
+	{
+		if (!_json[L"Resources." + rData[i].name].isEmpty())
+		{
+			resource[i] = _json[L"Resources." + rData[i].name].getOr<int>(10);
+		}
+	}
+
+	for (int i = 0; i < int(iData.size()); ++i) baskets.emplace_back(i, id);
+	for (int i = 0; i < int(cData.size()); ++i)
+		for (int j = 0; j < 3; ++j) citizens.emplace_back(int(citizens.size()), i, id);
+	for (int i = 0; i < Max(0, int(numCitizens - cData.size() * 3)); ++i)
+		citizens.emplace_back(int(citizens.size()), 0, id);
 }

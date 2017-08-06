@@ -35,6 +35,8 @@ void Main()
 	enum struct UIMode {
 		setBiome,
 		setUrban,
+		saveAndLoad,
+		help,
 	} uiMode = UIMode::setBiome;
 
 	bool	drawOutlineEnabled = true;
@@ -250,7 +252,7 @@ void Main()
 
 		//UIModeの選択
 		{
-			const Array<String> ns = { L"🌍",L"🏭" };
+			const Array<String> ns = { L"🌍", L"🏭", L"📂", L"❓" };
 			for (auto i : step(int(ns.size())))
 			{
 				const int width = 320 / int(ns.size());
@@ -392,7 +394,7 @@ void Main()
 				const Rect rect(32, 84, 44, 20);
 				rect.drawFrame(1, 0, Palette::Skyblue);
 				font12(L"人口").draw(rect.pos.movedBy(4, 1));
-				
+
 			}
 			break;
 		}

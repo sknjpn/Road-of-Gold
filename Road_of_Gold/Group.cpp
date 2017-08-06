@@ -38,7 +38,7 @@ Vec2	Vehicle::getMPos() const
 void	Vehicle::draw() const
 {
 	auto& g = groups[joinedGroupID];
-	const Circle shape(0.01);
+	const Circle shape(0.005);
 
 
 	if (routeID != -1)
@@ -61,7 +61,7 @@ void	Vehicle::draw() const
 				const auto pos = line.begin.lerp(line.end, length / p->cost);
 
 				Line(line.begin, pos).draw(0.005, Color(g.color, 64));
-				shape.movedBy(pos).draw(stock.num == 0 ? Color(0, 0) : iData[stock.itemType].color).drawFrame(0.005, Palette::Black);
+				shape.movedBy(pos).draw(stock.num == 0 ? Color(0, 0) : iData[stock.itemType].color).drawFrame(0.0025, Palette::Black);
 				break;
 			}
 		}

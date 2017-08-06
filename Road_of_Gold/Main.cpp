@@ -83,7 +83,7 @@ void Main()
 			{
 				const auto t1 = tinyCamera2D.createTransformer(i);
 				for (auto& u : urbans)
-					if (Circle(nodes[u.joinedNodeID].pos.mPos, 0.01).mouseOver()) selectedUrban = &u;
+					if (u.getShape().mouseOver()) selectedUrban = &u;
 			}
 			if (selectedUrban == nullptr)
 			{
@@ -91,7 +91,7 @@ void Main()
 				{
 					const auto t1 = tinyCamera2D.createTransformer(i);
 					for (auto& v : vehicles)
-						if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+						if (Circle(v.getMPos(), 0.005).mouseOver()) selectedVehicle = &v;
 				}
 			}
 			if (selectedUrban != nullptr || selectedVehicle != nullptr) groupViewWindowEnabled = false;
