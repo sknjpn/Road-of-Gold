@@ -75,7 +75,7 @@ bool saveMapData(const FilePath& _path)
 			else text += L",\r\t\t{";
 
 			//ìsésç¿ïWÇÃï€ë∂
-			text += Format(L"\r\t\t\t\"NodePos\": ", u.joinedNodeID);
+			text += Format(L"\r\t\t\t\"JoinedNodeID\": ", u.joinedNodeID);
 
 			//ìsésñºÇÃï€ë∂
 			text += Format(L",\r\t\t\t\"Name\": \"", u.name, L"\"");

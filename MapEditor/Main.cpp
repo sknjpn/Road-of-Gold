@@ -411,7 +411,9 @@ void Main()
 			//ロードファイルリストの表示
 			{
 				auto items = FileSystem::DirectoryContents(L"Map/");
-				items.remove_if([](FilePath& _item) {return !FileSystem::IsDirectory(_item); });
+				items.remove_if([](FilePath& _item) {
+					return !FileSystem::IsDirectory(_item) || !FileSystem::Exists(_item + L"BiomeData.bin");
+				});
 				for (auto i : step(int(items.size())))
 				{
 					auto item = items[i].remove(FileSystem::CurrentPath());
