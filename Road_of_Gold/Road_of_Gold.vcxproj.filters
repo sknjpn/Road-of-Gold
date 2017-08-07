@@ -156,21 +156,6 @@
     <None Include="Assets\GroupName.json">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="Assets\CData.json">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Assets\RData.json">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Assets\VData.json">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Assets\BData.json">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="Assets\IData.json">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Urban.h">
@@ -198,6 +183,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="JSON.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -232,10 +220,13 @@
     <ClCompile Include="DataLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TinyCamera2D.cpp">
+    <ClCompile Include="MakeGroups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MakeGroups.cpp">
+    <ClCompile Include="Planet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

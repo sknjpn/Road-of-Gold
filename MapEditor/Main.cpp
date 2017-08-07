@@ -9,7 +9,7 @@ Road of Gold専用マップエディタ
 
 Array<Urban> urbans;
 Planet planet;
-TinyCamera2D tinyCamera2D;
+TinyCamera tinyCamera;
 int		selectedBiome = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
@@ -86,11 +86,11 @@ void Main()
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
 		//カメラの更新
-		tinyCamera2D.update();
+		tinyCamera.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; ++i) {
-			const auto t1 = tinyCamera2D.createTransformer(i);
+			const auto t1 = tinyCamera.createTransformer(i);
 
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
@@ -98,7 +98,7 @@ void Main()
 
 		//都市の描画
 		for (int i = 0; i < 2; ++i) {
-			const auto t1 = tinyCamera2D.createTransformer(i);
+			const auto t1 = tinyCamera.createTransformer(i);
 
 			for (auto& u : urbans)
 				Circle(u.getPos().mPos, 0.012).draw(Palette::Red).drawFrame(0.002, 0.0, Palette::Black);
@@ -108,7 +108,7 @@ void Main()
 		if (selectedUrban != nullptr && uiMode == UIMode::setUrban)
 		{
 			for (int i = 0; i < 2; ++i) {
-				const auto t1 = tinyCamera2D.createTransformer(i);
+				const auto t1 = tinyCamera.createTransformer(i);
 
 				Circle(selectedUrban->getPos().mPos, 0.012).draw(Palette::Yellow).drawFrame(0.002, 0.0, Palette::Black);
 			}
@@ -120,14 +120,14 @@ void Main()
 
 			//nearestNodeの設定
 			{
-				const auto& p = (tinyCamera2D.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
+				const auto& p = (tinyCamera.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
 				nearestNode = &nodes[planet.voronoiMap[int(p.y)][int(p.x)]];
 			}
 
 			//nearestNodeの描画
 			for (int i = 0; i < 2; ++i)
 			{
-				const auto t1 = tinyCamera2D.createTransformer(i);
+				const auto t1 = tinyCamera.createTransformer(i);
 				Circle(nearestNode->pos.mPos, 0.01).drawFrame(0.003, Palette::Black);
 			}
 
@@ -154,7 +154,7 @@ void Main()
 					if (MouseL.pressed())
 					{
 						Array<Node*> list;
-						auto mp = tinyCamera2D.getCursorPos();
+						auto mp = tinyCamera.getCursorPos();
 						for (auto& n : nodes)
 						{
 							if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
@@ -247,7 +247,7 @@ void Main()
 		}
 
 		//スライドバーの描画
-		tinyCamera2D.draw();
+		tinyCamera.draw();
 
 		//UIの描画
 		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(2, Palette::Skyblue);

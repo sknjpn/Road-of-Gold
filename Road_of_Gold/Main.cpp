@@ -5,6 +5,7 @@
 #include"JSON.h"
 #include"Group.h"
 #include"GlobalVariables.h"
+#include"TinyCamera.h"
 
 double timeSpeed = 0.0001;
 double worldTimer = 0;
@@ -14,7 +15,7 @@ bool groupViewWindowEnabled = false;
 Vehicle* selectedVehicle = nullptr;
 
 Planet planet;
-TinyCamera2D tinyCamera2D;
+TinyCamera tinyCamera;
 
 void Main()
 {
@@ -65,11 +66,11 @@ void Main()
 		for (auto& g : groups)
 			g.update();
 
-		tinyCamera2D.update();
+		tinyCamera.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; ++i) {
-			const auto t1 = tinyCamera2D.createTransformer(i);
+			const auto t1 = tinyCamera.createTransformer(i);
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 
@@ -78,10 +79,10 @@ void Main()
 		{
 			selectedUrban = nullptr;
 			selectedVehicle = nullptr;
-			tinyCamera2D.gazePoint = none;
+			tinyCamera.gazePoint = none;
 			for (int i = 0; i < 2; ++i)
 			{
-				const auto t1 = tinyCamera2D.createTransformer(i);
+				const auto t1 = tinyCamera.createTransformer(i);
 				for (auto& u : urbans)
 					if (u.getShape().mouseOver()) selectedUrban = &u;
 			}
@@ -89,7 +90,7 @@ void Main()
 			{
 				for (int i = 0; i < 2; ++i)
 				{
-					const auto t1 = tinyCamera2D.createTransformer(i);
+					const auto t1 = tinyCamera.createTransformer(i);
 					for (auto& v : vehicles)
 						if (Circle(v.getMPos(), 0.005).mouseOver()) selectedVehicle = &v;
 				}
@@ -98,16 +99,16 @@ void Main()
 		}
 
 		//Vehicleに注視点を設定
-		if (selectedVehicle != nullptr) tinyCamera2D.gazePoint = Pos(selectedVehicle->getMPos());
+		if (selectedVehicle != nullptr) tinyCamera.gazePoint = Pos(selectedVehicle->getMPos());
 
 		{
-			auto mp = tinyCamera2D.getCursorPos();
+			auto mp = tinyCamera.getCursorPos();
 			for (auto& n : nodes)
 				if (nearestNode == nullptr || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
 		}
 		for (int i = 0; i < 2; ++i)
 		{
-			const auto t1 = tinyCamera2D.createTransformer(i);
+			const auto t1 = tinyCamera.createTransformer(i);
 
 			//Node
 			if (KeyT.pressed())
@@ -129,7 +130,7 @@ void Main()
 		/*
 		if (timeSpeed < 0.1)
 		{
-			const auto t1 = tinyCamera2D.createTransformer();
+			const auto t1 = tinyCamera.createTransformer();
 			RectF((0.25 - worldTimer)*TwoPi - TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
@@ -484,6 +485,6 @@ void Main()
 			}
 		}
 
-		tinyCamera2D.draw();
+		tinyCamera.draw();
 	}
 }

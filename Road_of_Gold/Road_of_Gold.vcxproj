@@ -196,12 +196,7 @@
     <Text Include="example\test.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\BData.json" />
-    <None Include="Assets\CData.json" />
     <None Include="Assets\GroupName.json" />
-    <None Include="Assets\IData.json" />
-    <None Include="Assets\RData.json" />
-    <None Include="Assets\VData.json" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />
@@ -232,6 +227,7 @@
     <ClInclude Include="Pos.h" />
     <ClInclude Include="Route.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TinyCamera.h" />
     <ClInclude Include="Urban.h" />
   </ItemGroup>
   <ItemGroup>
@@ -242,12 +238,13 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="MakeGroups.cpp" />
+    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Route.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TinyCamera2D.cpp" />
+    <ClCompile Include="TinyCamera.cpp" />
     <ClCompile Include="Urban.cpp" />
     <ClCompile Include="VoronoiMap.cpp" />
   </ItemGroup>
