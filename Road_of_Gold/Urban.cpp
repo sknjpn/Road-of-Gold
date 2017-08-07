@@ -7,28 +7,10 @@
 Array<Urban> urbans;
 Urban* selectedUrban;
 
-Urban::Urban()
-	: id(int(urbans.size()))
-	, name(L"")
-	, joinedNodeID(-1)
-	, timer(0.5 + nodes[joinedNodeID].pos.mPos.x / TwoPi)
-	, day(0)
-{
-	resource.resize(rData.size());
-	jobEfficiency.resize(cData.size());
-	avgIncome.resize(cData.size());
-
-	const int numCitizens = 100;
-
-	for (int i = 0; i < int(iData.size()); ++i) baskets.emplace_back(i, id);
-	for (int i = 0; i < int(cData.size()); ++i)
-		for (int j = 0; j < 3; ++j) citizens.emplace_back(int(citizens.size()), i, id);
-	for (int i = 0; i < Max(0, int(numCitizens - cData.size() * 3)); ++i)
-		citizens.emplace_back(int(citizens.size()), 0, id);
-}
+Circle	Urban::getShape() const { return Circle(nodes[joinedNodeID].pos.mPos, 0.010*(1 + numCitizens / 500)); }
 void	Urban::draw() const
 {
-	const Circle circle(nodes[joinedNodeID].pos.mPos, 0.015);
+	const Circle circle = getShape();
 	const Color color = selectedUrban == this ? Palette::Yellow : (circle.mouseOver() ? Palette::Orange : Palette::Red);
 	circle.draw(color).drawFrame(0.005, Palette::Black);
 }
@@ -45,17 +27,16 @@ void	Urban::update()
 		{
 			Array<int>	usedResource(rData.size());
 			for (auto c : citizens)
-				for (auto rID : cData[c.citizenType].job.needResourceID) usedResource[rID]++;
-
+			{
+				if (cData[c.citizenType].needResourceID != -1)
+					usedResource[cData[c.citizenType].needResourceID]++;
+			}
 			for (auto i : step(int(cData.size())))
 			{
-				double efficiency = 1.0;
-				for (auto j : cData[i].job.needResourceID)
-				{
-					if (resource[j] == 0) efficiency = 0.0;
-					else if (resource[j] < usedResource[j]) efficiency *= (double(resource[j]) / double(usedResource[j]));
-				}
-				jobEfficiency[i] = efficiency;
+				if (cData[i].needResourceID == -1) jobEfficiency[i] = 1.0;
+				else if (resource[cData[i].needResourceID] == 0) jobEfficiency[i] = 0.0;
+				else if (resource[cData[i].needResourceID] < usedResource[cData[i].needResourceID]) jobEfficiency[i] = double(resource[cData[i].needResourceID]) / double(usedResource[cData[i].needResourceID]);
+				else jobEfficiency[i] = 1.0;
 			}
 		}
 
@@ -90,26 +71,6 @@ void	Urban::update()
 			b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
 			b.tradeLog.clear();
 			b.chart.pop_back();
-		}
-		for (auto i : step(int(cData.size())))
-		{
-			int sum = 0;
-			int num = 0;
-			for (auto& c : citizens)
-			{
-				if (c.citizenType == i)
-				{
-					num++;
-					sum += c.money / 10;
-					c.money -= c.money / 10;
-				}
-			}
-			if (num > 0)
-			{
-				for (auto& c : citizens)
-					if (c.citizenType == i)
-						c.money += sum / num;
-			}
 		}
 	}
 

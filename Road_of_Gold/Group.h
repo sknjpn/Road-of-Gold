@@ -26,6 +26,7 @@ struct Stock
 struct Vehicle
 {
 	int		id;
+	int		vehicleType;
 	int		joinedGroupID;
 	Stock	stock;
 	int		nowUrbanID;
@@ -36,6 +37,10 @@ struct Vehicle
 	Array<std::pair<int16, int32>> chain;
 
 	Vehicle(int _nowUrbanID);
+	bool	isShip() const;
+	double	getSpeed() const;
+	double	getRange() const;
+	int		getVolume() const;
 	Vec2	getMPos() const;
 	void	update();
 	void	draw() const;

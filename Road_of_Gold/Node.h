@@ -3,7 +3,6 @@
 
 
 struct Node;
-struct Region;
 
 struct Path
 {
@@ -37,18 +36,6 @@ struct Node
 	Node(const Pos& _pos);
 	bool	isCoast() const;
 	void	draw(const Color& _color) const;
-	Region&	getJoinedRegion() const;
 	bool	isSea() const { return biomeType == 0 || biomeType == 1; }
 };
 extern Array<Node> nodes;
-
-struct Region
-{
-	Color	color;
-	int		id;
-	int		numNodes;
-	bool	hasCity;
-
-	Region();
-};
-extern Array<Region> regions;

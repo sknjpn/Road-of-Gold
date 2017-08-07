@@ -1,8 +1,9 @@
 #include"Planet.h"
 #include"Node.h"
-
+#include"Urban.h"
 void	Planet::generateBiome()
 {
+	urbans.clear();
 	const int biomeType[6][6] = {
 		{ 2, 6, 8, 3, 3, 3 },
 		{ 2, 6, 8, 3, 3, 3 },

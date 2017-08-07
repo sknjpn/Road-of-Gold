@@ -5,8 +5,9 @@
 #include"JSON.h"
 #include"Group.h"
 #include"GlobalVariables.h"
+#include"TinyCamera.h"
 
-double timeSpeed = 0.01;
+double timeSpeed = 0.0001;
 double worldTimer = 0;
 int selectedBasket = 0;
 int selectedCitizen = 0;
@@ -14,7 +15,7 @@ bool groupViewWindowEnabled = false;
 Vehicle* selectedVehicle = nullptr;
 
 Planet planet;
-TinyCamera2D tinyCamera2D;
+TinyCamera tinyCamera;
 
 void Main()
 {
@@ -36,13 +37,12 @@ void Main()
 
 
 	if (!loadJSONData() || !planet.loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
-	planet.setRegions();
 
 	for (auto& p : paths) p->cost = p->length * (bData[p->getChildNode().biomeType].movingCost + bData[p->getParentNode().biomeType].movingCost) / 2.0;
 
 	makeRoute();
 
-	//planet.makeGroupsRandom();
+	planet.makeGroupsRandom();
 
 	while (System::Update())
 	{
@@ -65,11 +65,11 @@ void Main()
 		for (auto& g : groups)
 			g.update();
 
-		tinyCamera2D.update();
+		tinyCamera.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; ++i) {
-			const auto t1 = tinyCamera2D.createTransformer(i);
+			const auto t1 = tinyCamera.createTransformer(i);
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 		}
 
@@ -78,44 +78,59 @@ void Main()
 		{
 			selectedUrban = nullptr;
 			selectedVehicle = nullptr;
-			tinyCamera2D.gazePoint = none;
+			tinyCamera.gazePoint = none;
 			for (int i = 0; i < 2; ++i)
 			{
-				const auto t1 = tinyCamera2D.createTransformer(i);
+				const auto t1 = tinyCamera.createTransformer(i);
 				for (auto& u : urbans)
-					if (Circle(nodes[u.joinedNodeID].pos.mPos, 0.01).mouseOver()) selectedUrban = &u;
+					if (u.getShape().mouseOver()) selectedUrban = &u;
 			}
 			if (selectedUrban == nullptr)
 			{
 				for (int i = 0; i < 2; ++i)
 				{
-					const auto t1 = tinyCamera2D.createTransformer(i);
+					const auto t1 = tinyCamera.createTransformer(i);
 					for (auto& v : vehicles)
-						if (Circle(v.getMPos(), 0.01).mouseOver()) selectedVehicle = &v;
+						if (Circle(v.getMPos(), 0.005).mouseOver()) selectedVehicle = &v;
 				}
 			}
+			if (selectedUrban != nullptr || selectedVehicle != nullptr) groupViewWindowEnabled = false;
 		}
 
 		//Vehicleに注視点を設定
-		if (selectedVehicle != nullptr) tinyCamera2D.gazePoint = Pos(selectedVehicle->getMPos());
+		if (selectedVehicle != nullptr) tinyCamera.gazePoint = Pos(selectedVehicle->getMPos());
 
 		{
-			auto mp = tinyCamera2D.getCursorPos();
+			auto mp = tinyCamera.getCursorPos();
 			for (auto& n : nodes)
 				if (nearestNode == nullptr || (n.pos.ePos - mp.ePos).length() < (nearestNode->pos.ePos - mp.ePos).length()) nearestNode = &n;
 		}
 		for (int i = 0; i < 2; ++i)
 		{
-			const auto t1 = tinyCamera2D.createTransformer(i);
-
-			//Node
-			if (KeyT.pressed())
-				for (const auto& n : nodes) n.draw(n.joinedRegionID == -1 ? Color(Palette::White, 64) : n.getJoinedRegion().color);
+			const auto t1 = tinyCamera.createTransformer(i);
 
 			//Route
 			if (KeyY.pressed())
+			{
 				for (const auto& r : routes)
-					if (r.isSeaRoute) r.draw(Palette::Red);
+				{
+					const double width = r.isSeaRoute ? 0.01 : 0.005;
+					for (const auto& pID : r.pathIDs)
+					{
+						const auto& p = paths[pID];
+						p->getLine().stretched(-width / 2).draw(width, Palette::Red);
+					}
+				}
+				for (const auto& r : routes)
+				{
+					const double width = r.isSeaRoute ? 0.01 : 0.005;
+					for (const auto& pID : r.pathIDs)
+					{
+						const auto& p = paths[pID];
+						Circle(p->getChildNode().pos.mPos, width / 2).draw(Palette::Red);
+					}
+				}
+			}
 
 			//Vehicle
 			for (auto& v : vehicles)
@@ -128,16 +143,18 @@ void Main()
 		/*
 		if (timeSpeed < 0.1)
 		{
-			const auto t1 = tinyCamera2D.createTransformer();
+			const auto t1 = tinyCamera.createTransformer();
 			RectF((0.25 - worldTimer)*TwoPi - TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
 			RectF((0.25 - worldTimer)*TwoPi + TwoPi * 2, -HalfPi, Pi, Pi).draw(ColorF(Palette::Black, 0.5));
-		}*/
+		}
+		*/
 		//Interface
 		if (selectedVehicle != nullptr)
 		{
 			auto& g = groups[selectedVehicle->joinedGroupID];
+			auto& v = *selectedVehicle;
 			const Array<String> commandText = {
 				L"MOVE", L"JUMP", L"WAIT", L"BUY", L"SELL", L"none"
 			};
@@ -148,7 +165,7 @@ void Main()
 			{
 				const Rect rect(32, 32, 320, 24);
 				rect.drawFrame(2, fColor);
-				font16(g.name, L" 所属交易船").draw(rect.pos.movedBy(4, 0), Palette::White);
+				font16(g.name, L" 所属 ", vData[v.vehicleType].name).draw(rect.pos.movedBy(4, 0), Palette::White);
 			}
 			{
 				const Rect rect(32, 56, 320, 24);
@@ -245,7 +262,7 @@ void Main()
 						const Color color = selectedBasket == b.itemType ? Palette::Red : (rect.mouseOver() ? Palette::Orange : Color(0, 0));
 						rect.draw(color).drawFrame(2, fColor);
 						font12(iData[i].name).draw(32, 116 + i * 16);
-						font12(Format(b.chart.front()).lpad(5, '0'), L"G").draw(108, 116 + i * 16);
+						if (!b.isEmpty()) font12(Format(b.getPrice()).lpad(5, '0'), L"G").draw(108, 116 + i * 16);
 					}
 					else
 					{
@@ -266,6 +283,63 @@ void Main()
 				int max = 1; for (int i = 0; i < 191; ++i) max = Max(max, bs.chart[i]);
 				for (int i = 0; i < 191; ++i)
 					Line(191 - i, 63 - bs.chart[i] * 62 / max, 190 - i, 63 - bs.chart[i + 1] * 62 / max).movedBy(160, 180).draw(1, Palette::Yellow);
+
+				//安い順にソートして他市場との比較を描画
+				/*
+				{
+					Array<Urban*> temp;
+					for (auto& t : urbans) if (!t.baskets[selectedBasket].isEmpty()) temp.emplace_back(&t);
+					for (;;)
+					{
+						if (temp.size() <= 1) break;
+						bool flag = true;
+						for (auto i : step(int(temp.size()) - 1))
+						{
+							if (temp[i]->baskets[selectedBasket].getPrice() > temp[i + 1]->baskets[selectedBasket].getPrice())
+							{
+								auto a = temp[i];
+								temp[i] = temp[i + 1];
+								temp[i + 1] = a;
+								flag = false;
+							}
+						}
+						if (flag) break;
+					}
+					for (auto i : step(int(temp.size())))
+					{
+						const Rect rect(160, 244 + i * 16, 192, 16);
+						if (rect.mouseOver()) rect.draw(Palette::Orange);
+						if (rect.leftClicked()) selectedUrban = temp[i];
+						rect.drawFrame(1, fColor);
+						font12(temp[i]->name).draw(rect.pos);
+						font12(Format(temp[i]->baskets[selectedBasket].getPrice()).lpad(5, '0'), L"G").draw(rect.pos.movedBy(108, 0));
+					}
+				}*/
+
+				//リングの表示
+				{
+					for (auto i : step(int(bs.rings.size())))
+					{
+						auto& r = bs.rings[i];
+						Rect rect(160, 244 + i * 16, 192, 16);
+						rect.drawFrame(2, Palette::Skyblue);
+						{
+							String s = Format(r.price, L"G");
+							int width = int(font12(s).region().size.x);
+							font12(s).draw(rect.pos.movedBy(40 - width, 0));
+						}
+						{
+							String s = Format(r.num, L"個");
+							int width = int(font12(s).region().size.x);
+							font12(s).draw(rect.pos.movedBy(80 - width, 0));
+						}
+						{
+							String s = r.ownerCitizenID != -1 ? L"市民販売" : groups[r.ownerGroupID].name;
+							int width = int(font12(s).region().size.x);
+							font12(s).draw(rect.pos.movedBy(192 - width, 0));
+						}
+					}
+				}
 
 				break;
 			}
@@ -379,23 +453,13 @@ void Main()
 					font16(L"幸福:", sumHapiness / double(numCitizen)).draw(16, 48);
 					font16(L"日給:", u.avgIncome[selectedCitizen]).draw(16 + 96, 48);
 
-					font12(cd.job.description).draw(4, 72);
-					font16(L"維持費:", 50 + cd.job.cost).draw(4, 72 + 16);
-					font16(L"賃金　:", cd.job.wage).draw(4, 72 + 40);
+					font16(L"維持費:", 50 + cd.cost).draw(4, 72 + 16);
+					font16(L"賃金　:", cd.wage).draw(4, 72 + 40);
 					int p = 0;
-					font12(L"消費↓").draw(4, 72 + 64);
-					for (auto& c : cd.job.consume)
-					{
-						font12(L" ", iData[c.itemID].name, L"x", c.numConsume).draw(4, 72 + 80 + p * 16);
-						p++;
-					}
 					font12(L"生産↓").draw(4, 72 + 80 + p * 16);
 					p++;
-					for (auto& c : cd.job.product)
-					{
-						font12(L" ", iData[c.itemID].name, L"x", c.numProduct).draw(4, 72 + 80 + p * 16);
-						p++;
-					}
+					font12(L" ", iData[cd.product.itemID].name, L"x", cd.product.numProduct).draw(4, 72 + 80 + p * 16);
+					p++;
 				}
 				break;
 			}
@@ -413,7 +477,7 @@ void Main()
 			selectedVehicle = nullptr;
 			const Color fColor = Palette::Skyblue;
 			const Color bColor = Color(Palette::Darkcyan, 192);
-			Rect rect(32, 32, 480, int(groups.size() * 16));
+			Rect rect(32, 32, 540, int(groups.size() * 16));
 			rect.draw(bColor).drawFrame(1, fColor);
 			for (auto i : step(int(groups.size())))
 			{
@@ -423,7 +487,7 @@ void Main()
 				auto& g = groups[i];
 				font12(g.name).draw(32, 32 + i * 16, Palette::White);
 				font12(L" 利益", g.money - g.moneyLog).draw(32 + 96, 32 + i * 16, Palette::White);
-				font12(g.description).draw(32 + 240, 32 + i * 16, Palette::White);
+				font12(g.description).draw(32 + 180, 32 + i * 16, Palette::White);
 			}
 			if (rect.leftClicked())
 			{
@@ -434,6 +498,6 @@ void Main()
 			}
 		}
 
-		tinyCamera2D.draw();
+		tinyCamera.draw();
 	}
 }

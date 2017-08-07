@@ -1,0 +1,17 @@
+{
+  "VehicleData": [
+    {
+      "Name": "帆船",
+      "Speed": 1.0,
+      "Volume": 1000,
+      "Range": 5.0,
+      "IsShip": true
+    },
+    {
+      "Name": "幌馬車",
+      "Speed": 1.0,
+      "Volume": 1000,
+      "Range": 5.0
+    }
+  ]
+}

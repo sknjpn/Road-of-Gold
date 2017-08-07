@@ -29,5 +29,6 @@ struct Node
 	int		biomeType;
 	Array<Path> paths;
 };
-void	saveBiomeData(const FilePath& _filePath);
+bool saveMapData(const FilePath& _path);
+bool loadMapData(const FilePath& _path);
 extern Array<Node> nodes;

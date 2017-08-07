@@ -175,6 +175,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="SaveAndLoad.cpp" />
     <ClCompile Include="GenerateBiome.cpp" />
     <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="Main.cpp" />
@@ -184,7 +185,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TinyCamera2D.cpp" />
+    <ClCompile Include="TinyCamera.cpp" />
     <ClCompile Include="Urban.cpp" />
     <ClCompile Include="VoronoiMap.cpp" />
   </ItemGroup>
@@ -233,6 +234,7 @@
     <None Include="example\test.json" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="JSON.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pi.h" />

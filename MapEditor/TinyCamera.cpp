@@ -1,16 +1,15 @@
 #include"Planet.h"
-#include"GlobalVariables.h"
+#include"Pi.h"
 #include"Pos.h"
 
-TinyCamera2D::TinyCamera2D()
+TinyCamera::TinyCamera()
 	: restrictedRegion(-TwoPi, -HalfPi, TwoPi, HalfPi)
 	, drawingRegion(-Pi, -HalfPi, Pi, HalfPi)
 	, smoothDrawingRegion(drawingRegion)
 	, gazePoint(none)
-	, outputRegion(32, 32, 1280 - 64, 720 - 64)
 {}
 
-void TinyCamera2D::update()
+void TinyCamera::update()
 {
 	{
 		//視点移動処理
@@ -49,7 +48,7 @@ void TinyCamera2D::update()
 	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x > Window::Size().x - 32) drawingRegion.pos.x += slidingSpeed;
 	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y > Window::Size().y - 32) drawingRegion.pos.y += slidingSpeed;
 }
-void TinyCamera2D::draw() const
+void TinyCamera::draw() const
 {
 	//スライダー
 	const ColorF color(Palette::White, 0.3);
@@ -59,15 +58,15 @@ void TinyCamera2D::draw() const
 	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x > Window::Size().x - 32) RectF(Window::Size().x - 32, 0, 32, Window::Size().y).draw(color);
 	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y > Window::Size().y - 32) RectF(0, Window::Size().y - 32, Window::Size().x, 32).draw(color);
 }
-Pos TinyCamera2D::getCursorPos() const
+Pos TinyCamera::getCursorPos() const
 {
 	return getMat3x2().inverse().transform(Cursor::PosF());
 }
-Mat3x2 TinyCamera2D::getMat3x2(int _delta) const
+Mat3x2 TinyCamera::getMat3x2(int _delta) const
 {
-	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(outputRegion.size.y / smoothDrawingRegion.size.y).translate(outputRegion.center());
+	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta*TwoPi, 0.0)).scale(Window::Size().y / smoothDrawingRegion.size.y).translate(Window::Center());
 }
-Transformer2D TinyCamera2D::createTransformer(int _delta) const
+Transformer2D TinyCamera::createTransformer(int _delta) const
 {
 	return Transformer2D(getMat3x2(_delta), true);
 }

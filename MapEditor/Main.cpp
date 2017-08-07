@@ -9,12 +9,14 @@ Road of Gold専用マップエディタ
 
 Array<Urban> urbans;
 Planet planet;
-TinyCamera2D tinyCamera2D;
+TinyCamera tinyCamera;
 int		selectedBiome = 0;
 int		selectedBrush = 0;
 int		brushSize = 10;
 Urban*	selectedUrban = nullptr;
 
+//ファイル名入力欄
+TextBox textBox;
 
 void Main()
 {
@@ -33,6 +35,8 @@ void Main()
 	enum struct UIMode {
 		setBiome,
 		setUrban,
+		saveAndLoad,
+		help,
 	} uiMode = UIMode::setBiome;
 
 	bool	drawOutlineEnabled = true;
@@ -44,15 +48,17 @@ void Main()
 	//データの読み込み
 	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
 
-	//ファイル名入力欄
-	TextBox textBox(textBoxFont, Vec2(160, 72), 120);
+	textBox = TextBox(textBoxFont, Vec2(160, 72), 120);
 
 	//都市名入力欄
 	TextBox urbanNameTextBox(textBoxFont, Vec2(78, 66), 112);
 
+	//人口入力欄
+	TextBox numCitizensTextBox(textBoxFont, Vec2(78, 86), 112);
+
 	Array<TextBox> resourceTextBox;
 	for (auto i : step(rData.size()))
-		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 86 + i * 20), none);
+		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 106 + i * 20), none);
 
 	while (System::Update())
 	{
@@ -80,11 +86,11 @@ void Main()
 		if (KeyControl.pressed()) brushSize = Max(2, int(brushSize - Mouse::Wheel()));
 
 		//カメラの更新
-		tinyCamera2D.update();
+		tinyCamera.update();
 
 		//マップの描画
 		for (int i = 0; i < 2; ++i) {
-			const auto t1 = tinyCamera2D.createTransformer(i);
+			const auto t1 = tinyCamera.createTransformer(i);
 
 			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
@@ -92,7 +98,7 @@ void Main()
 
 		//都市の描画
 		for (int i = 0; i < 2; ++i) {
-			const auto t1 = tinyCamera2D.createTransformer(i);
+			const auto t1 = tinyCamera.createTransformer(i);
 
 			for (auto& u : urbans)
 				Circle(u.getPos().mPos, 0.012).draw(Palette::Red).drawFrame(0.002, 0.0, Palette::Black);
@@ -102,7 +108,7 @@ void Main()
 		if (selectedUrban != nullptr && uiMode == UIMode::setUrban)
 		{
 			for (int i = 0; i < 2; ++i) {
-				const auto t1 = tinyCamera2D.createTransformer(i);
+				const auto t1 = tinyCamera.createTransformer(i);
 
 				Circle(selectedUrban->getPos().mPos, 0.012).draw(Palette::Yellow).drawFrame(0.002, 0.0, Palette::Black);
 			}
@@ -114,14 +120,14 @@ void Main()
 
 			//nearestNodeの設定
 			{
-				const auto& p = (tinyCamera2D.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
+				const auto& p = (tinyCamera.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
 				nearestNode = &nodes[planet.voronoiMap[int(p.y)][int(p.x)]];
 			}
 
 			//nearestNodeの描画
 			for (int i = 0; i < 2; ++i)
 			{
-				const auto t1 = tinyCamera2D.createTransformer(i);
+				const auto t1 = tinyCamera.createTransformer(i);
 				Circle(nearestNode->pos.mPos, 0.01).drawFrame(0.003, Palette::Black);
 			}
 
@@ -148,7 +154,7 @@ void Main()
 					if (MouseL.pressed())
 					{
 						Array<Node*> list;
-						auto mp = tinyCamera2D.getCursorPos();
+						auto mp = tinyCamera.getCursorPos();
 						for (auto& n : nodes)
 						{
 							if ((n.pos.ePos - mp.ePos).length() < 0.01*brushSize)
@@ -204,6 +210,7 @@ void Main()
 					{
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
 						urbanNameTextBox.setText(selectedUrban->name);
+						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 						for (auto i : step(rData.size()))
 							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
@@ -214,6 +221,7 @@ void Main()
 						urbans.emplace_back(nearestNode->id);
 						selectedUrban = &urbans.back();
 						urbanNameTextBox.setText(selectedUrban->name);
+						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 						for (auto i : step(rData.size()))
 							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
@@ -239,20 +247,20 @@ void Main()
 		}
 
 		//スライドバーの描画
-		tinyCamera2D.draw();
+		tinyCamera.draw();
 
 		//UIの描画
-		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(1, 0, Palette::Skyblue);
+		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(2, Palette::Skyblue);
 
 		//UIModeの選択
 		{
-			const Array<String> ns = { L"🌍",L"🏭" };
+			const Array<String> ns = { L"🌍", L"🏭", L"📂", L"❓" };
 			for (auto i : step(int(ns.size())))
 			{
 				const int width = 320 / int(ns.size());
 				const Rect rect(32 + width*i, 32, width, 32);
 				if (rect.leftClicked()) uiMode = UIMode(i);
-				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(1, 0, Palette::Skyblue);
+				rect.draw(int(uiMode) == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, Palette::Skyblue);
 				font24(ns[i]).drawAt(rect.center());
 			}
 		}
@@ -276,19 +284,19 @@ void Main()
 					if (color != Color(0, 0)) rect.draw(Color(color, 128));
 					font12(L"---").draw(rect.pos.movedBy(12, 0));
 				}
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 			}
 			//詳細
 			{
 				const Rect rect(192, 64, 160, 40);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font16(L"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
 				font12(bData[selectedBiome].name).draw(rect.pos.movedBy(4, 22));
 			}
 			//ブラシの選択
 			{
 				const Rect rect(192, 104, 160, 128);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font16(L"ブラシの選択").draw(rect.pos.movedBy(4, 0));
 				const Array<String> brushName = { L"鉛筆:KeyR", L"筆:KeyF", L"バケツ:KeyV" };
 				for (auto i : step(int(brushName.size())))
@@ -304,7 +312,7 @@ void Main()
 			//生成
 			{
 				const Rect rect(192, 232, 160, 24);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked()) planet.generateBiome();
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -314,12 +322,12 @@ void Main()
 			{
 				const Rect rect(192, 256, 160, 48);
 				textBox.setPos(rect.pos.movedBy(4, 28));
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked())
 				{
-					FilePath filePath = L"Map/" + (textBox.getText().indexOf(L".bin") != String::npos ? textBox.getText() : textBox.getText() + L".bin");
-					saveBiomeData(filePath);
+					FilePath filePath = L"Map/" + textBox.getText() + L"/";
+					saveMapData(filePath);
 				}
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 				font16(L"セーブ").draw(rect.pos.movedBy(4, 0));
@@ -333,7 +341,7 @@ void Main()
 		{
 			{
 				const Rect rect(192, 64, 160, 24);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
 				s.draw(actionMode == ActionMode::set ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -341,7 +349,7 @@ void Main()
 			}
 			{
 				const Rect rect(192, 88, 160, 24);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -353,19 +361,19 @@ void Main()
 				else urbanNameTextBox.setText(L"");
 				urbanNameTextBox.draw();
 				const Rect rect(32, 64, 44, 20);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				rect.drawFrame(2, Palette::Skyblue);
 				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
 			}
 			for (auto& i : step(int(rData.size())))
 			{
-				const Rect rect(32, 84 + i * 20, 100, 20);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect rect(32, 104 + i * 20, 100, 20);
+				rect.drawFrame(2, Palette::Skyblue);
 				font12(rData[i].name).draw(rect.pos.movedBy(4, 1));
 			}
 			for (auto& i : step(int(rData.size())))
 			{
-				const Rect rect(132, 84 + i * 20, 60, 20);
-				rect.drawFrame(1, 0, Palette::Skyblue);
+				const Rect rect(132, 104 + i * 20, 60, 20);
+				rect.drawFrame(2, Palette::Skyblue);
 				auto& t = resourceTextBox[i];
 				t.setWidth(56);
 				t.update();
@@ -377,40 +385,74 @@ void Main()
 				else t.setText(L"");
 				t.draw();
 			}
+
+			//都市人口の設定
+			{
+				numCitizensTextBox.update();
+				if (selectedUrban != nullptr)
+				{
+					selectedUrban->numCitizens = ParseInt<int>(numCitizensTextBox.getText());
+					numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
+				}
+				else numCitizensTextBox.setText(L"");
+				numCitizensTextBox.draw();
+				const Rect rect(32, 84, 44, 20);
+				rect.drawFrame(2, Palette::Skyblue);
+				font12(L"人口").draw(rect.pos.movedBy(4, 1));
+
+			}
 			break;
 		}
+
+		case UIMode::saveAndLoad:
+		{
+			font16(L"クリックしただけで読み込みが開始されます").draw(32,64);
+
+			//ロードファイルリストの表示
+			{
+				auto items = FileSystem::DirectoryContents(L"Map/");
+				items.remove_if([](FilePath& _item) {
+					return !FileSystem::IsDirectory(_item) || !FileSystem::Exists(_item + L"BiomeData.bin");
+				});
+				for (auto i : step(int(items.size())))
+				{
+					auto item = items[i].remove(FileSystem::CurrentPath());
+					Rect rect(32, 88 + i * 16, 160, 16);
+					if (rect.mouseOver()) rect.draw(Palette::Orange);
+					if (rect.leftClicked())
+					{
+						for (int j = 0;; j++)
+						{
+							if (!FileSystem::Exists(Format(L"Map/_autosave/", j, L"/")))
+							{
+								saveMapData(Format(L"Map/_autosave/", j, L"/"));
+								break;
+							}
+						}
+						loadMapData(item);
+					}
+					rect.drawFrame(2, Palette::Skyblue);
+					font12(item).draw(rect.pos.movedBy(4, 0));
+				}
+			}
+
+			break;
+		}
+
+		case UIMode::help:
+		{
+
+			break;
+		}
+
 		}
 
 		//ロード
 		auto items = DragDrop::GetDroppedFilePaths();
 		for (auto item : items)
 		{
-			BinaryReader reader(item.path);
-			Array<Node*> list;
-			for (auto& n : nodes)
-			{
-				int t;
-				reader.read(t);
-				if (t != n.biomeType)
-				{
-					n.biomeType = t;
-					list.emplace_back(&n);
-				}
-			}
-			int numUrbans, length;
-			reader.read(numUrbans);
-			for (; numUrbans > 0; --numUrbans)
-			{
-				urbans.emplace_back();
-				reader.read(urbans.back().joinedNodeID);
-				nodes[urbans.back().joinedNodeID].ownUrbanID = urbans.back().id;
-				reader.read(length);
-				urbans.back().name.resize(length);
-				reader.read(&urbans.back().name[0], length * sizeof(wchar_t));
-				for (auto i : step(rData.size()))
-					reader.read(urbans.back().resource[i]);
-			}
-			planet.updateImage(list);
+			Log(item.path);
+			if (loadMapData(item.path)) break;
 		}
 	}
 }

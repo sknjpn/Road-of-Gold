@@ -153,9 +153,6 @@
     <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst">
       <Filter>Resource Files\engine\font\noto</Filter>
     </None>
-    <None Include="Assets\EconomicData.json">
-      <Filter>Resource Files</Filter>
-    </None>
     <None Include="Assets\GroupName.json">
       <Filter>Resource Files</Filter>
     </None>
@@ -188,12 +185,12 @@
     <ClInclude Include="JSON.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="TinyCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Route.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Planet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
@@ -223,7 +220,13 @@
     <ClCompile Include="DataLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TinyCamera2D.cpp">
+    <ClCompile Include="MakeGroups.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

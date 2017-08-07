@@ -34,7 +34,8 @@ struct Basket
 	int		getCost(int _num) const;
 	int		getNumItem() const;
 	void	buyItem(int _num);
-
+	int		getPrice() const { return rings.front().price; }
+	bool	isEmpty() const { return rings.isEmpty(); }
 };
 
 struct Citizen
@@ -64,6 +65,7 @@ struct Urban
 	int		joinedNodeID;
 	double	timer;
 	int		day;
+	int		numCitizens;
 	Array<Basket>	baskets;
 	Array<Citizen>	citizens;
 	Array<int>		avgIncome;	//各職業の収入平均
@@ -71,11 +73,13 @@ struct Urban
 	Array<double>	jobEfficiency;
 	Array<int>		routeIDs;
 
-	Urban();
+
+	Urban(const JSONValue _json);
+	Circle	getShape() const;
 	void	update();
 	void	draw() const;
 	String	getTimeAsString() const;
-	Array<Route*>	getRoutesToUrban(int _urbanID) const;
+	Array<Route*>	getRoutesToUrban(int _urbanID, double _maxRange, bool _isSeaRoute) const;
 
 };
 extern Urban*			selectedUrban;

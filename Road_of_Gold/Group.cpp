@@ -9,6 +9,7 @@ Array<Vehicle> vehicles;
 
 Vehicle::Vehicle(int _nowUrbanID)
 	: id(int(vehicles.size()))
+	, vehicleType(0)
 	, nowUrbanID(_nowUrbanID)
 	, routeID(-1)
 	, routeProgress(0.0)
@@ -37,7 +38,7 @@ Vec2	Vehicle::getMPos() const
 void	Vehicle::draw() const
 {
 	auto& g = groups[joinedGroupID];
-	const Circle shape(0.01);
+	const Circle shape(0.005);
 
 
 	if (routeID != -1)
@@ -60,7 +61,7 @@ void	Vehicle::draw() const
 				const auto pos = line.begin.lerp(line.end, length / p->cost);
 
 				Line(line.begin, pos).draw(0.005, Color(g.color, 64));
-				shape.movedBy(pos).draw(stock.num == 0 ? Color(0, 0) : iData[stock.itemType].color).drawFrame(0.005, Palette::Black);
+				shape.movedBy(pos).draw(stock.num == 0 ? Color(0, 0) : iData[stock.itemType].color).drawFrame(0.0025, Palette::Black);
 				break;
 			}
 		}
@@ -81,28 +82,36 @@ void	Vehicle::update()
 {
 	auto& g = groups[joinedGroupID];
 	double actionTime = timeSpeed;
-	if (routeID == -1 && sleepTimer==0 && chain.isEmpty())
+	if (routeID == -1 && sleepTimer == 0 && chain.isEmpty())
 	{
 		progress = 0;
+		vehicleType = vData.choice().id;
 		auto& u1 = urbans[nowUrbanID];
 		auto& u2 = urbans.choice();
 
 		if (&u1 != &u2)
 		{
-			g.description = Format(u1.name, L"-", u2.name, L"ŠÔ");
-			for (auto& r : u1.getRoutesToUrban(u2.id))
-				chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
+			auto r1 = u1.getRoutesToUrban(u2.id, getRange(), isShip());
+			auto r2 = u2.getRoutesToUrban(u1.id, getRange(),isShip());
+			auto i1 = iData.choice().id;
+			auto i2 = iData.choice().id;
+			if (!r1.isEmpty() && !r2.isEmpty())
+			{
+				g.description = Format(vData[vehicleType].name,L" ",iData[i1].name,L":",u1.name, L"-", iData[i2].name, L":", u2.name, L"ŠÔ");
+				for (auto& r : r1)
+					chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
-			chain.push_back({ int16(Command::SELL), int32(1000) });
-			chain.push_back({ int16(Command::BUY), iData.choice().id });
+				chain.push_back({ int16(Command::SELL), int32(1000) });
+				chain.push_back({ int16(Command::BUY),  i1});
 
-			for (auto& r : u2.getRoutesToUrban(u1.id))
-				chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
+				for (auto& r : r2)
+					chain.push_back({ int16(Command::MOVE), r->destinationUrbanID });
 
-			chain.push_back({ int16(Command::SELL), int32(1000) });
-			chain.push_back({ int16(Command::BUY), iData.choice().id });
+				chain.push_back({ int16(Command::SELL), int32(1000) });
+				chain.push_back({ int16(Command::BUY), i2 });
 
-			chain.push_back({ int16(Command::JUMP), int32(0) });
+				chain.push_back({ int16(Command::JUMP), int32(0) });
+			}
 		}
 	}
 
@@ -110,9 +119,9 @@ void	Vehicle::update()
 	{
 		if (routeID != -1)
 		{
-			if (actionTime >= routes[routeID].totalCost - routeProgress)
+			if (actionTime >= (routes[routeID].totalCost - routeProgress) / getSpeed())
 			{
-				actionTime -= routes[routeID].totalCost - routeProgress;
+				actionTime -= (routes[routeID].totalCost - routeProgress) / getSpeed();
 				nowUrbanID = routes[routeID].destinationUrbanID;
 				routeProgress = 0.0;
 				routeID = -1;
@@ -120,7 +129,7 @@ void	Vehicle::update()
 			}
 			else
 			{
-				routeProgress += actionTime;
+				routeProgress += actionTime * getSpeed();
 				break;
 			}
 		}
@@ -170,7 +179,7 @@ void	Vehicle::update()
 				if (stock.num == 0)
 				{
 					Basket& b = urbans[nowUrbanID].baskets[data];
-					const int numBuy = Min(10, b.getNumItem());
+					const int numBuy = Min(getVolume() / iData[data].volume, b.getNumItem());
 					if (numBuy > 0)
 					{
 						g.money -= b.getCost(numBuy);
@@ -213,9 +222,13 @@ void Group::update()
 		{
 			for (auto& v : vehicles)
 			{
-				if(v.joinedGroupID == id) v.chain.clear();
+				if (v.joinedGroupID == id) v.chain.clear();
 			}
 		}
 		moneyLog = money;
 	}
 }
+bool	Vehicle::isShip() const { return vData[vehicleType].isShip; }
+double	Vehicle::getSpeed() const { return vData[vehicleType].speed; }
+double	Vehicle::getRange() const { return vData[vehicleType].range; }
+int		Vehicle::getVolume() const { return vData[vehicleType].volume; }

@@ -17,9 +17,9 @@ struct Planet
 	Image	image;
 };
 
-struct TinyCamera2D
+struct TinyCamera
 {
-	TinyCamera2D();
+	TinyCamera();
 	void	update();
 	void	draw() const;
 	Pos		getCursorPos() const;
@@ -33,7 +33,7 @@ struct TinyCamera2D
 };
 
 extern Planet planet;
-extern TinyCamera2D tinyCamera2D;
+extern TinyCamera tinyCamera;
 
 extern int		selectedBiome;
 extern int		selectedBrush;

@@ -1,0 +1,52 @@
+{
+  "ItemData": [
+    {
+      "Name": "毛皮",
+      "Volume": 10,
+      "Value": 250,
+      "Color": "#AE7444"
+    },
+    {
+      "Name": "コーヒー",
+      "Volue": 10,
+      "Value": 100,
+      "Color": "#050000"
+    },
+    {
+      "Name": "茶葉",
+      "Volume": 10,
+      "Value": 100,
+      "Color": "#90B91D"
+    },
+    {
+      "Name": "絨毯",
+      "Volume": 10,
+      "Value": 500,
+      "Color": "#B5C2D0"
+    },
+    {
+      "Name": "香辛料",
+      "Volume": 10,
+      "Value": 1000,
+      "Color": "#FF4500"
+    },
+    {
+      "Name": "貴金属",
+      "Volume": 10,
+      "Value": 5000,
+      "Color": "#FFD900"
+    },
+    {
+      "Name": "ワイン",
+      "Volume": 10,
+      "Value": 2500,
+      "Color": "#9900CC"
+    },
+    {
+      "Name": "チョコレート",
+      "Volume": 10,
+      "Value": 100,
+      "Color": "#603835"
+    }
+  ]
+}
