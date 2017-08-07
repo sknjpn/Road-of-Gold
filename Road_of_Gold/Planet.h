@@ -15,7 +15,6 @@ struct Planet
 	Texture		mapTexture;
 
 	Planet();
-	void	setRegions();
 	void	makeGroupsRandom();
 	bool	loadNodeMap();
 	bool	loadBiome();

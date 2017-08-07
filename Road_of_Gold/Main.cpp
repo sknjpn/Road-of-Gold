@@ -37,7 +37,6 @@ void Main()
 
 
 	if (!loadJSONData() || !planet.loadNodeMap() || !planet.loadBiome() || !planet.loadVoronoiMap()) return;
-	planet.setRegions();
 
 	for (auto& p : paths) p->cost = p->length * (bData[p->getChildNode().biomeType].movingCost + bData[p->getParentNode().biomeType].movingCost) / 2.0;
 
@@ -110,14 +109,28 @@ void Main()
 		{
 			const auto t1 = tinyCamera.createTransformer(i);
 
-			//Node
-			if (KeyT.pressed())
-				for (const auto& n : nodes) n.draw(n.joinedRegionID == -1 ? Color(Palette::White, 64) : n.getJoinedRegion().color);
-
 			//Route
 			if (KeyY.pressed())
+			{
 				for (const auto& r : routes)
-					if (r.isSeaRoute) r.draw(Palette::Red);
+				{
+					const double width = r.isSeaRoute ? 0.01 : 0.005;
+					for (const auto& pID : r.pathIDs)
+					{
+						const auto& p = paths[pID];
+						p->getLine().stretched(-width / 2).draw(width, Palette::Red);
+					}
+				}
+				for (const auto& r : routes)
+				{
+					const double width = r.isSeaRoute ? 0.01 : 0.005;
+					for (const auto& pID : r.pathIDs)
+					{
+						const auto& p = paths[pID];
+						Circle(p->getChildNode().pos.mPos, width / 2).draw(Palette::Red);
+					}
+				}
+			}
 
 			//Vehicle
 			for (auto& v : vehicles)

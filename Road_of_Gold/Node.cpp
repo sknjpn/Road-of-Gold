@@ -27,8 +27,6 @@ void	Node::draw(const Color& _color) const
 		if (p.getChildNode().joinedRegionID == joinedRegionID) p.getLine().draw(0.002, _color);
 }
 
-Region&	Node::getJoinedRegion() const { return regions[joinedRegionID]; }
-
 bool	Planet::loadNodeMap()
 {
 	//NodeÇÃì«Ç›çûÇ›
@@ -64,34 +62,6 @@ bool	Planet::loadNodeMap()
 	return true;
 }
 
-void	Planet::setRegions()
-{
-	//ReigonÇÃê›íË
-	for (auto& n : nodes)
-	{
-		if (!n.isSea() && n.joinedRegionID == -1)
-		{
-			regions.emplace_back();
-			Array<Node*> nodeTemp;
-			nodeTemp.push_back(&n);
-			for (int w = 0; w < nodeTemp.size(); w++)
-			{
-				for (auto& p : nodeTemp[w]->paths)
-				{
-					auto& m = p.getChildNode();
-					if (!m.isScaned && !m.isSea())
-					{
-						regions.back().numNodes++;
-						m.joinedRegionID = regions.back().id;
-						m.isScaned = true;
-						nodeTemp.push_back(&m);
-					}
-				}
-			}
-			for (auto& t : nodeTemp) t->isScaned = false;
-		}
-	}
-}
 
 Array<Path*> paths;
 Path::Path(int _parentNodeID, int _childNodeID)
@@ -115,11 +85,3 @@ Line	Path::getLine() const
 	}
 	return Line(p1, p2);
 }
-
-Array<Region> regions;
-Region::Region()
-	: id(int(regions.size()))
-	, numNodes(0)
-	, hasCity(false)
-	, color(RandomHSV())
-{}
