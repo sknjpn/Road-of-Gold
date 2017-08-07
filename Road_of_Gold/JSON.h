@@ -18,7 +18,6 @@ struct RData
 {
 	int		id;
 	String	name;
-	String	description;
 
 	RData(const JSONValue _json);
 };
@@ -39,7 +38,6 @@ struct IData
 {
 	int		id;
 	String	name;
-	String	description;
 	int		volume;
 	int		value;
 	Color	color;
@@ -48,13 +46,6 @@ struct IData
 };
 extern Array<IData> iData;
 
-struct Consume
-{
-	int	itemID;
-	int numConsume;
-
-	Consume(const JSONValue _json);
-};
 
 struct Product
 {
@@ -64,23 +55,13 @@ struct Product
 	Product(const JSONValue _json);
 };
 
-struct Job
-{
-	String	name;
-	String	description;
-	int		cost;
-	int		wage;
-	Array<int>	needResourceID;
-	Array<Consume> consume;
-	Array<Product> product;
-
-	Job(const JSONValue _json);
-};
-
 struct CData
 {
-	String name;
-	Job job;
+	String	name;
+	int		cost;
+	int		wage;
+	int		needResourceID;
+	Product product;
 
 	CData(const JSONValue _json);
 };

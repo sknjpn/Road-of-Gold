@@ -271,6 +271,7 @@ void Main()
 					Line(191 - i, 63 - bs.chart[i] * 62 / max, 190 - i, 63 - bs.chart[i + 1] * 62 / max).movedBy(160, 180).draw(1, Palette::Yellow);
 
 				//安い順にソートして他市場との比較を描画
+				/*
 				{
 					Array<Urban*> temp;
 					for (auto& t : urbans) if (!t.baskets[selectedBasket].isEmpty()) temp.emplace_back(&t);
@@ -298,6 +299,31 @@ void Main()
 						rect.drawFrame(1, fColor);
 						font12(temp[i]->name).draw(rect.pos);
 						font12(Format(temp[i]->baskets[selectedBasket].getPrice()).lpad(5, '0'), L"G").draw(rect.pos.movedBy(108, 0));
+					}
+				}*/
+
+				//リングの表示
+				{
+					for (auto i : step(int(bs.rings.size())))
+					{
+						auto& r = bs.rings[i];
+						Rect rect(160, 244 + i * 16, 192, 16);
+						rect.drawFrame(2, Palette::Skyblue);
+						{
+							String s = Format(r.price, L"G");
+							int width = int(font12(s).region().size.x);
+							font12(s).draw(rect.pos.movedBy(40 - width, 0));
+						}
+						{
+							String s = Format(r.num, L"個");
+							int width = int(font12(s).region().size.x);
+							font12(s).draw(rect.pos.movedBy(80 - width, 0));
+						}
+						{
+							String s = r.ownerCitizenID != -1 ? L"市民販売" : groups[r.ownerGroupID].name;
+							int width = int(font12(s).region().size.x);
+							font12(s).draw(rect.pos.movedBy(192 - width, 0));
+						}
 					}
 				}
 
@@ -413,23 +439,13 @@ void Main()
 					font16(L"幸福:", sumHapiness / double(numCitizen)).draw(16, 48);
 					font16(L"日給:", u.avgIncome[selectedCitizen]).draw(16 + 96, 48);
 
-					font12(cd.job.description).draw(4, 72);
-					font16(L"維持費:", 50 + cd.job.cost).draw(4, 72 + 16);
-					font16(L"賃金　:", cd.job.wage).draw(4, 72 + 40);
+					font16(L"維持費:", 50 + cd.cost).draw(4, 72 + 16);
+					font16(L"賃金　:", cd.wage).draw(4, 72 + 40);
 					int p = 0;
-					font12(L"消費↓").draw(4, 72 + 64);
-					for (auto& c : cd.job.consume)
-					{
-						font12(L" ", iData[c.itemID].name, L"x", c.numConsume).draw(4, 72 + 80 + p * 16);
-						p++;
-					}
 					font12(L"生産↓").draw(4, 72 + 80 + p * 16);
 					p++;
-					for (auto& c : cd.job.product)
-					{
-						font12(L" ", iData[c.itemID].name, L"x", c.numProduct).draw(4, 72 + 80 + p * 16);
-						p++;
-					}
+					font12(L" ", iData[cd.product.itemID].name, L"x", cd.product.numProduct).draw(4, 72 + 80 + p * 16);
+					p++;
 				}
 				break;
 			}

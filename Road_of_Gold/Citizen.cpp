@@ -92,37 +92,23 @@ void	Citizen::update()
 				}
 			}
 		}
-		auto& cJob = cData[citizenType].job;
+		auto& cd = cData[citizenType];
 
 		//仕事が達成可能かどうか判定
-		int totalCost = cJob.cost - cJob.wage;
-		bool flag = true;
-		for (auto& p : cJob.consume)
-		{
-			if (u.baskets[p.itemID].getNumItem() < p.numConsume) { flag = false; break; }
-			totalCost += u.baskets[p.itemID].getCost(p.numConsume);
-		}
 
 		//仕事の実行
 		progress += u.jobEfficiency[citizenType];
 		if (progress >= 1.0)
 		{
 			progress -= 1.0;
-			if (totalCost < money)
+			if (cd.cost - cd.wage < money)
 			{
-				if (flag)	//もし、必要な材料が市場に出ていれば
-				{
-					//材料の購入
-					for (auto& p : cJob.consume)
-						u.baskets[p.itemID].buyItem(p.numConsume);
+				//商品の販売
+				if (cd.product.numProduct > 0)
+					u.baskets[cd.product.itemID].addRing(1 + int(price*Random(1.05, 1.1)), cd.product.numProduct, this);
 
-					//商品の販売
-					for (auto& p : cJob.product)
-						u.baskets[p.itemID].addRing(1 + int(price*Random(1.05, 1.1)), p.numProduct, this);
-
-					//費用の支払い
-					addMoney(-totalCost);
-				}
+				//費用の支払い
+				addMoney(cd.wage - cd.cost);
 
 				//買い物をする
 				goToShopping();

@@ -27,17 +27,16 @@ void	Urban::update()
 		{
 			Array<int>	usedResource(rData.size());
 			for (auto c : citizens)
-				for (auto rID : cData[c.citizenType].job.needResourceID) usedResource[rID]++;
-
+			{
+				if (cData[c.citizenType].needResourceID != -1)
+					usedResource[cData[c.citizenType].needResourceID]++;
+			}
 			for (auto i : step(int(cData.size())))
 			{
-				double efficiency = 1.0;
-				for (auto j : cData[i].job.needResourceID)
-				{
-					if (resource[j] == 0) efficiency = 0.0;
-					else if (resource[j] < usedResource[j]) efficiency *= (double(resource[j]) / double(usedResource[j]));
-				}
-				jobEfficiency[i] = efficiency;
+				if (cData[i].needResourceID == -1) jobEfficiency[i] = 1.0;
+				else if (resource[cData[i].needResourceID] == 0) jobEfficiency[i] = 0.0;
+				else if (resource[cData[i].needResourceID] < usedResource[cData[i].needResourceID]) jobEfficiency[i] = double(resource[cData[i].needResourceID]) / double(usedResource[cData[i].needResourceID]);
+				else jobEfficiency[i] = 1.0;
 			}
 		}
 
@@ -72,26 +71,6 @@ void	Urban::update()
 			b.chart.push_front(b.tradeLog.isEmpty() ? b.chart.front() : int(b.tradeLog.sum() / double(b.tradeLog.size())));
 			b.tradeLog.clear();
 			b.chart.pop_back();
-		}
-		for (auto i : step(int(cData.size())))
-		{
-			int sum = 0;
-			int num = 0;
-			for (auto& c : citizens)
-			{
-				if (c.citizenType == i)
-				{
-					num++;
-					sum += c.money / 10;
-					c.money -= c.money / 10;
-				}
-			}
-			if (num > 0)
-			{
-				for (auto& c : citizens)
-					if (c.citizenType == i)
-						c.money += sum / num;
-			}
 		}
 	}
 
