@@ -1,25 +1,29 @@
 #pragma once
 
-/*
-2つの都市間のルートを表す。
-pathIDsを順番にたどれば目的地に着く。
-*/
+//同一のマップでは常に同じRouteが作成されることが保証されなければならない。
 
+struct Path;
 struct Urban;
 
 struct Route
 {
-	int		id;
-	int		destinationUrbanID;	//目的地の都市
-	int		originUrbanID;		//出発地の都市
-	double	totalCost;			//移動コスト
-	bool	isSeaRoute;			//海上ルートか否か
-	Array<int>	pathIDs;		//経由するパス
+	Array<Path*> paths;
+	Urban*	fromUrban;
+	Urban*	toUrban;
+	bool	isSeaRoute;
+	double	movingCost;
 
-	Route(int _id);
-	Urban&	getDestinationUrban() const;
-	Urban&	getOriginUrban() const;
-	void	draw(const Color& _color) const;
+	Route(Urban* _fromUrban, Urban* _toUrban, Array<Path*> _paths, bool _isSeaRoute, double _movingCost)
+		: fromUrban(_fromUrban)
+		, toUrban(_toUrban)
+		, isSeaRoute(_isSeaRoute)
+		, movingCost(_movingCost)
+	{
+		paths = _paths;
+	}
 };
+
 extern Array<Route> routes;
-void	makeRoute();
+
+void	initRoutes();
+void	drawRotues();

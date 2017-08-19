@@ -1,30 +1,46 @@
 #include"Planet.h"
 #include"Node.h"
+#include"BiomeData.h"
 
-
-
-bool	Planet::loadVoronoiMap()
+void	initPlanet()
 {
+	Grid<Node*>	voronoiMap;
 	const bool useOutlineEnabled = false;
 	Image reader(L"Assets/VoronoiMap.png");
+
+	//VoronoiMapの読み込み
 	if (!reader.isEmpty())
 	{
 		voronoiMap.resize(reader.size());
 		for (auto p : step(reader.size()))
 		{
-			voronoiMap[p.y][p.x] = reader[p.y][p.x].r + (reader[p.y][p.x].g << 8) + (reader[p.y][p.x].b << 16);
+			//VoronoiMapからNodeを適用
+			int id = reader[p.y][p.x].r + (reader[p.y][p.x].g << 8) + (reader[p.y][p.x].b << 16);
+
+			if (id > int(nodes.size()))
+			{
+				LOG_ERROR(L"Assets/VoronoiMap.pngから異常な数値を検出");
+				System::Exit();
+				return;
+			}
+
+			voronoiMap[p.y][p.x] = &nodes[id];
 		}
 	}
-	else return false;
-
-
+	else
+	{
+		LOG_ERROR(L"Assets/VoronoiMap.pngの読み込みに失敗");
+		System::Exit();
+		return;
+	}
+	Log(L"VoronoiMapの読み込みが完了");
 
 	//Imageに色を転写
 	Image image(reader.size());
 	for (auto& p : step(reader.size()))
-		if (voronoiMap[p.y][p.x] != -1)
-			image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].color;
+		image[p.y][p.x] = voronoiMap[p.y][p.x]->color;
 
+	//輪郭線の描画
 	if (useOutlineEnabled)
 	{
 		for (auto& p1 : step(reader.size()))
@@ -48,6 +64,10 @@ bool	Planet::loadVoronoiMap()
 		}
 	}
 
-	mapTexture = Texture(image);
-	return true;
+	//mapTextureに適用
+	planet.mapTexture = Texture(image);
+	Log(L"MapTextrueの作成が完了");
+
+	//TinyCameraの設定
+	tinyCamera.outputRegion = Window::ClientRect();
 }

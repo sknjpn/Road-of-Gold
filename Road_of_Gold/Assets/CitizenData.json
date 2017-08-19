@@ -7,73 +7,73 @@
     {
       "Name": "狩人",
       "Cost": 1000,
-      "NeedResource": "キタキツネ",
+      "NeedEnergy": "キタキツネ",
       "Product": {
         "ItemName": "毛皮",
-        "NumProduct": 5
+        "NumItem": 5
       }
     },
     {
       "Name": "コーヒー農家",
       "Cost": 1000,
-      "NeedResource": "コーヒー",
+      "NeedEnergy": "コーヒー",
       "Product": {
         "ItemName": "コーヒー",
-        "NumProduct": 5
+        "NumItem": 10
       }
     },
     {
       "Name": "茶葉農家",
       "Cost": 1000,
-      "NeedResource": "茶葉",
+      "NeedEnergy": "茶葉",
       "Product": {
         "ItemName": "茶葉",
-        "NumProduct": 5
+        "NumItem": 10
       }
     },
     {
       "Name": "絨毯職人",
       "Cost": 1000,
-      "NeedResource": "絨毯",
+      "NeedEnergy": "絨毯",
       "Product": {
         "ItemName": "絨毯",
-        "NumProduct": 5
+        "NumItem": 10
       }
     },
     {
       "Name": "香辛料農家",
       "Cost": 1000,
-      "NeedResource": "香辛料",
+      "NeedEnergy": "香辛料",
       "Product": {
         "ItemName": "香辛料",
-        "NumProduct": 5
+        "NumItem": 2
       }
     },
     {
       "Name": "金鉱労働者",
       "Cost": 1000,
-      "NeedResource": "金山",
+      "NeedEnergy": "金山",
       "Product": {
         "ItemName": "貴金属",
-        "NumProduct": 5
+        "NumItem": 1
       }
     },
     {
       "Name": "ブドウ農家",
       "Cost": 1000,
-      "NeedResource": "ブドウ",
+      "NeedEnergy": "ブドウ",
       "Product": {
         "ItemName": "ワイン",
-        "NumProduct": 5
+        "NumItem": 5
       }
     },
     {
       "Name": "カカオ農家",
       "Cost": 1000,
-      "NeedResource": "カカオ",
+      "NeedEnergy": "カカオ",
       "Product": {
-        "ItemName": "チョコレート",
-        "NumProduct": 5
+        "ItemName": "ショコラ",
+        "NumItem": 10
       }
     }
   ]

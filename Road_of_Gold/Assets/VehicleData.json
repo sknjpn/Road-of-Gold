@@ -1,17 +1,17 @@
 {
   "VehicleData": [
     {
-      "Name": "帆船",
-      "Speed": 1.0,
+      "Name": "小帆船",
+      "Speed": 0.25,
       "Volume": 1000,
-      "Range": 5.0,
+      "Range": 12.0,
       "IsShip": true
     },
     {
       "Name": "幌馬車",
-      "Speed": 1.0,
+      "Speed": 0.25,
       "Volume": 1000,
-      "Range": 5.0
+      "Range": 6.0
     }
   ]
 }

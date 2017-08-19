@@ -1,86 +1,46 @@
-ï»¿#pragma once
+#pragma once
 
-struct Group;
+#include"Citizen.h"
+#include"Basket.h"
+#include"Wallet.h"
+#include"Energy.h"
+#include"Sandglass.h"
+#include"Seller.h"
+
 struct Node;
+struct Wallet;
 struct Pos;
 struct Route;
-struct Citizen;
-
-struct Ring
-{
-	int		price;
-	int		num;
-	int		ownerGroupID;
-	int		ownerCitizenID;
-
-	Ring(int _price, int _num, const Group* _owner);
-	Ring(int _price, int _num, const Citizen* _owner);
-};
-bool operator<(const Ring& _left, const Ring& _right);
-bool operator>(const Ring& _left, const Ring& _right);
-
-struct Basket
-{
-	int		joinedUrbanID;
-	int		itemType;
-	Array<int>	tradeLog;
-	Array<int>	chart;
-	Array<Ring> rings;
-
-	Basket(int _itemType, int _joinedUrbanID);
-	String&	getItemName() const;
-	void	addRing(int _price, int _num, const Group* _owner);
-	void	addRing(int _price, int _num, const Citizen* _owner);
-	int		getCost(int _num) const;
-	int		getNumItem() const;
-	void	buyItem(int _num);
-	int		getPrice() const { return rings.front().price; }
-	bool	isEmpty() const { return rings.isEmpty(); }
-};
-
-struct Citizen
-{
-	int		id;
-	int		joinedUrbanID;
-	int		citizenType;
-	int		money;
-	double	timer;
-	double	progress;
-	int		price;
-	int		hapiness;
-	double	personality;
-	Array<int>	incomeLog;	//100æ—¥åˆ†ã®åå…¥è¨˜éŒ²
-
-	Citizen(int _id, int _citizenType, int _joinedUrbanID);
-	int		avgIncome() const;
-	void	addMoney(int _amount);	//å¤–éƒ¨ã‹ã‚‰ã®åå…¥
-	void	update();
-	void	goToShopping();
-};
 
 struct Urban
 {
-	int		id;
 	String	name;
+	int		walletID;
 	int		joinedNodeID;
-	double	timer;
-	int		day;
-	int		numCitizens;
-	Array<Basket>	baskets;
+	double	productivity;
+	Sandglass	sandglass;
+	Array<Energy>	energies;
 	Array<Citizen>	citizens;
-	Array<int>		avgIncome;	//å„è·æ¥­ã®åå…¥å¹³å‡
-	Array<int>		resource;
 	Array<double>	jobEfficiency;
-	Array<int>		routeIDs;
+	Array<Route*>	ownRoutes;
+	Array<Seller>	sellers;
+	Array<Basket>	baskets;
 
-
-	Urban(const JSONValue _json);
-	Circle	getShape() const;
-	void	update();
-	void	draw() const;
-	String	getTimeAsString() const;
-	Array<Route*>	getRoutesToUrban(int _urbanID, double _maxRange, bool _isSeaRoute) const;
-
+	Urban(const JSONValue& _json);
+	void	sellItem(const Casket& _casket, int _price, int _ownerWalletID);
+	void	sellItem(int _itemType, int _numItem, int _price, int _ownerWalletID);
+	int		numItem(int _itemType) const;	//”„‚ç‚ê‚Ä‚¢‚é”
+	bool	isSoldOut(int _itemType) const;	//”„‚èØ‚ê‚©‚Ç‚¤‚©
+	int		cost(int _itemType, int _numItem = 1) const;	//_numItemŒÂ”ƒ‚¤‚Ì‚É‚©‚©‚éÅ’áƒRƒXƒg	‚È‚¢‚È‚ç-1‚ğ•Ô‚·
+	void	buyItem(int _itemType, int _walletID, int _numItem = 1);
+	int		id() const;
+	Pos		pos() const;
+	Circle	shape() const;
+	bool	mouseOver() const;
+	bool	leftClicked() const;
 };
-extern Urban*			selectedUrban;
-extern Array<Urban>		urbans;
+
+extern Array<Urban> urbans;
+
+void	updateUrbans();
+void	drawUrbans();

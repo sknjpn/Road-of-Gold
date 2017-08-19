@@ -71,36 +71,35 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_5)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_5)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Debug-x86\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_5)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_5)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Debug-x64\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x64\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_5)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_5)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Release-x86\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_5)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_5)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Release-x64\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x64\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -109,6 +108,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -135,8 +135,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <PrecompiledHeader>Use</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -145,6 +144,7 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -175,6 +175,44 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Basket.cpp" />
+    <ClCompile Include="Casket.cpp" />
+    <ClCompile Include="Citizen.cpp" />
+    <ClCompile Include="drawGroups.cpp" />
+    <ClCompile Include="drawPlanet.cpp" />
+    <ClCompile Include="drawRoutes.cpp" />
+    <ClCompile Include="drawUI.cpp" />
+    <ClCompile Include="drawUrbans.cpp" />
+    <ClCompile Include="drawVehicles.cpp" />
+    <ClCompile Include="Export.cpp" />
+    <ClCompile Include="globalVariables.cpp" />
+    <ClCompile Include="Group.cpp" />
+    <ClCompile Include="initGroups.cpp" />
+    <ClCompile Include="initNodes.cpp" />
+    <ClCompile Include="initPlanet.cpp" />
+    <ClCompile Include="initRoutes.cpp" />
+    <ClCompile Include="loadData.cpp" />
+    <ClCompile Include="loadMap.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Sandglass.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TinyCamera.cpp" />
+    <ClCompile Include="updateGroups.cpp" />
+    <ClCompile Include="updatePlanet.cpp" />
+    <ClCompile Include="updateUrbans.cpp" />
+    <ClCompile Include="updateVehicles.cpp" />
+    <ClCompile Include="Urban.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="Wallet.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <Image Include="engine\texture\box-shadow\128.png" />
     <Image Include="engine\texture\box-shadow\16.png" />
     <Image Include="engine\texture\box-shadow\256.png" />
@@ -193,10 +231,10 @@
     <Text Include="engine\font\fontawesome\LICENSE_OFL.txt" />
     <Text Include="engine\font\noto\LICENSE_OFL.txt" />
     <Text Include="example\LICENSE.txt" />
+    <Text Include="example\script.txt" />
     <Text Include="example\test.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\GroupName.json" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />
@@ -219,34 +257,36 @@
     <None Include="example\test.json" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="GlobalVariables.h" />
-    <ClInclude Include="Group.h" />
-    <ClInclude Include="JSON.h" />
-    <ClInclude Include="Node.h" />
-    <ClInclude Include="Planet.h" />
-    <ClInclude Include="Pos.h" />
-    <ClInclude Include="Route.h" />
-    <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TinyCamera.h" />
-    <ClInclude Include="Urban.h" />
+    <Media Include="example\test.mp3" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Basket.cpp" />
-    <ClCompile Include="Citizen.cpp" />
-    <ClCompile Include="Group.cpp" />
-    <ClCompile Include="DataLoader.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="MakeGroups.cpp" />
-    <ClCompile Include="Planet.cpp" />
-    <ClCompile Include="Route.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="TinyCamera.cpp" />
-    <ClCompile Include="Urban.cpp" />
-    <ClCompile Include="VoronoiMap.cpp" />
+    <ClInclude Include="Basket.h" />
+    <ClInclude Include="BiomeData.h" />
+    <ClInclude Include="Buyer.h" />
+    <ClInclude Include="Casket.h" />
+    <ClInclude Include="Citizen.h" />
+    <ClInclude Include="CitizenData.h" />
+    <ClInclude Include="Energy.h" />
+    <ClInclude Include="EnergyData.h" />
+    <ClInclude Include="Export.h" />
+    <ClInclude Include="Group.h" />
+    <ClInclude Include="ItemData.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="Path.h" />
+    <ClInclude Include="Planet.h" />
+    <ClInclude Include="Pos.h" />
+    <ClInclude Include="Ring.h" />
+    <ClInclude Include="Route.h" />
+    <ClInclude Include="Sandglass.h" />
+    <ClInclude Include="Seller.h" />
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TinyCamera.h" />
+    <ClInclude Include="UI.h" />
+    <ClInclude Include="Urban.h" />
+    <ClInclude Include="Vehicle.h" />
+    <ClInclude Include="VehicleData.h" />
+    <ClInclude Include="Wallet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

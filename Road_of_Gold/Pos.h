@@ -9,6 +9,8 @@ struct Pos
 	Pos(const Vec3& _ePos) { set(_ePos); }
 	Pos(const Vec2& _mPos) { set(_mPos); }
 
+	double	distanceFrom(const Pos& _pos) const { return ePos.distanceFrom(_pos.ePos); }
+
 	void set(const Vec3& _ePos)
 	{
 		ePos = _ePos.normalized();

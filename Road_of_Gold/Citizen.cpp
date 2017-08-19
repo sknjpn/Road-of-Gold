@@ -1,125 +1,18 @@
-#include"Urban.h"
-#include"GlobalVariables.h"
-#include"JSON.h"
+#include"Citizen.h"
+#include"Wallet.h"
+#include"CitizenData.h"
 
-
-void	Citizen::goToShopping()
-{
-	auto& u = urbans[joinedUrbanID];
-
-	int target = 0;	//目標
-	int maxEarn = 0;
-	for (int i = 0; i < (1 << iData.size()); ++i)
-	{
-		bool flag = true;
-		int cost = 0;
-		int earn = 0;
-		for (int j = 0; j < iData.size(); ++j)
-		{
-			if ((i & (1 << j)) != 0)
-			{
-				if (u.baskets[j].isEmpty()) { flag = false; break; }
-				cost += u.baskets[j].getPrice();
-				earn += iData[j].value;
-			}
-		}
-		if (!flag || money < cost) continue;
-
-		for (int k = 0;; ++k)
-			if ((1 << k) > money - cost) { earn += k * 200; break; }
-
-		if (maxEarn < earn)
-		{
-			target = i;
-			maxEarn = earn;
-		}
-	}
-	hapiness = 0;
-	for (int j = 0; j < iData.size(); ++j)
-	{
-		if ((target & (1 << j)) != 0)
-		{
-			money -= u.baskets[j].getPrice();
-			u.baskets[j].buyItem(1);
-			hapiness += iData[j].value;
-		}
-	}
-	money = int(money* personality);
-	//	for (int k = 0;; ++k)
-		//	if ((1 << k) > money) { hapiness += k * 10; break; }
-	//	money = 0;
-}
-Citizen::Citizen(int _id, int _citizenType, int _joinedUrbanID)
+Citizen::Citizen(int _citizenType)
 	: citizenType(_citizenType)
-	, money(0)
-	, timer(Random(0.0, 1.0))
-	, joinedUrbanID(_joinedUrbanID)
-	, id(_id)
-	, price(100)
-	, hapiness(0)
-	, progress(0)
-	, personality(Random(0.0, 1.0))
+	, walletID(getNewWalletID())
+	, jobProgress(0)
+	, timer(Random(1.0))
+	, personality(Random(0.1, 0.9))
+	, jobEfficiency(Random(0.25, 1.0))
 {
-	incomeLog.resize(100);
-}
-int		Citizen::avgIncome() const { return int(incomeLog.sum() / double(incomeLog.size())); }
-void	Citizen::update()
-{
-	auto& u = urbans[joinedUrbanID];
-
-	timer += timeSpeed;
-	if (timer >= 1.0)
-	{
-		timer -= 1.0;
-
-		//転職の判定
-		if (RandomBool(0.001) || u.jobEfficiency[citizenType] == 0.0)
-		{
-			auto max = u.avgIncome[citizenType];
-			for (auto i : step(int(cData.size())))
-			{
-				if (max < u.avgIncome[i])
-				{
-					max = u.avgIncome[i];
-					citizenType = i;
-
-					//販売価格の再設定
-					int num = 0;
-					int sum = 0;
-					for (auto& c : u.citizens)
-						if (c.citizenType == i) { num++; sum += c.price; }
-					if (num > 0) price = sum / num;
-				}
-			}
-		}
-		auto& cd = cData[citizenType];
-
-		//仕事が達成可能かどうか判定
-
-		//仕事の実行
-		progress += u.jobEfficiency[citizenType];
-		if (progress >= 1.0)
-		{
-			progress -= 1.0;
-			if (cd.cost - cd.wage < money)
-			{
-				//商品の販売
-				if (cd.product.numProduct > 0)
-					u.baskets[cd.product.itemID].addRing(1 + int(price*Random(1.05, 1.1)), cd.product.numProduct, this);
-
-				//費用の支払い
-				addMoney(cd.wage - cd.cost);
-
-				//買い物をする
-				goToShopping();
-			}
-			else addMoney(50);	//労働者として働く
-		}
-	}
+	incomeLog.resize(5);
+	wallet().price = 1000;
 }
 
-void	Citizen::addMoney(int _amount)
-{
-	incomeLog.front() += _amount;
-	money += _amount;
-}
+CitizenData&	Citizen::data() const { return citizenData.at(citizenType); }
+Wallet&	Citizen::wallet() const { return wallets[walletID]; }
