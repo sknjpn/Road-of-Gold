@@ -7,6 +7,7 @@ struct Citizen
 {
 	int		citizenType;
 	int		walletID;
+	int		targetRevenue;	//–Ú•W”„‚èã‚°
 	double	jobProgress;
 	double	timer;
 	Array<int>	incomeLog;

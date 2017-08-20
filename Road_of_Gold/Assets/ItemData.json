@@ -4,7 +4,7 @@
       "Name": "毛皮",
       "Volume": 10,
       "Value": 200,
-      "Color": "#AE7444",
+      "Color": "#5F220A",
       "Icon": "Assets/Image/Fur.png"
     },
     {
@@ -18,7 +18,7 @@
       "Name": "茶葉",
       "Volume": 10,
       "Value": 100,
-      "Color": "#90B91D",
+      "Color": "#037B00",
       "Icon": "Assets/Image/Tea.png"
     },
     {
@@ -26,7 +26,7 @@
       "Volume": 10,
       "Value": 100,
       "Color": "#B5C2D0",
-      "Icon": "Assets/Image/Origami.png"
+      "Icon": "Assets/Image/Carpet.png"
     },
     {
       "Name": "香辛料",
@@ -40,7 +40,7 @@
       "Volume": 10,
       "Value": 1000,
       "Color": "#FFD900",
-      "Icon": "Assets/Image/Gold.png"
+      "Icon": "Assets/Image/Ring.png"
     },
     {
       "Name": "ワイン",

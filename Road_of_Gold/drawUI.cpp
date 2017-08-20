@@ -28,6 +28,7 @@ void	drawUI()
 		}
 	}
 
+	//–îˆó
 	for (int i = 0; i < 2; i++)
 	{
 		auto t = tinyCamera.createTransformer(i);
