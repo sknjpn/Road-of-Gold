@@ -37,6 +37,7 @@ void	drawUI()
 			if ((ui.drawExportLineEnabled && (ui.selectedItemType == -1 || ui.selectedItemType == e.itemType)) || (ui.selectedUrbanID != -1 && (e.from->id() == ui.selectedUrbanID || e.to->id() == ui.selectedUrbanID)))
 			{
 				double width = 0.005*e.numItemPerDay;
+
 				LineString l;
 
 				for (double x = 0; x <= 1.0; x += 0.01)
@@ -48,7 +49,7 @@ void	drawUI()
 				for (int j = 0; j < int(l.size() - 20); j++)
 				{
 					auto line = Line(l[j], l[j + 1]);
-					line.draw(width, ColorF(itemData[e.itemType].color));
+					line.draw(width*j/double(int(l.size()-20)), ColorF(itemData[e.itemType].color));
 				}
 				auto p = (l.at(l.size() - 2) - l.at(l.size() - 1)).normalized();
 				Triangle(e.to->pos().mPos, l[l.size() - 20] + p.rotated(90_deg)*width * 2, l[l.size() - 20] + p.rotated(-90_deg)*width * 2).draw(ColorF(itemData[e.itemType].color));
