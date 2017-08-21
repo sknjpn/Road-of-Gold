@@ -22,6 +22,7 @@ Vehicle::Vehicle(int _vehicleType, Urban* _nowUrban)
 	, timer(0)
 	, period(0)
 	, exportLog()
+	, stopFlag(false)
 {
 	maxVolume = data().volume;
 }

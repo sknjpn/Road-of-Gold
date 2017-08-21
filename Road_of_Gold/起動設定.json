@@ -1,0 +1,5 @@
+{
+    "FullScreen": false,
+    "NumVehicles": 500,
+    "comment": "もしFullScreenにしない場合はこのファイルごと削除するか、falseに変更してください。"
+}

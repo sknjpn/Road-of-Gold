@@ -135,6 +135,9 @@
     <ClCompile Include="Export.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Traders.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">

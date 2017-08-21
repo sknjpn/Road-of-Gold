@@ -67,6 +67,8 @@ void	Urban::sellItem(int _itemType, int _numItem, int _price, int _ownerWalletID
 {
 	auto& b = baskets[_itemType];
 
+	_price = int(b.tradeLog.price.front()*Random(1.0, 1.1)) + 1;
+
 	if (!b.rings.isEmpty() && _price < b.rings.back().price)
 	{
 		b.rings.emplace_back(_itemType, _numItem, _price, _ownerWalletID);

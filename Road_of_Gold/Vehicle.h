@@ -30,6 +30,7 @@ struct Vehicle
 	Urban*	nowUrban;
 	Route*	route;
 	Export	exportLog;
+	bool	stopFlag;	//true‚È‚ç‚ÎŽ–‹Æ‚ð’†’f
 
 	int		maxVolume;
 	int		reader;

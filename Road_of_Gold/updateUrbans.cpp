@@ -61,6 +61,8 @@ void	updateUrbans()
 							{
 								c.incomeLog.fill(0);
 								c.citizenType = t.citizenType;
+								//–Ú•W—˜‰v‚ğ˜J“­Ò‚Ìû‰v‚ğŒ³‚Éİ’è
+								c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
 
 								//”Ì”„‰¿Ši‚ÌƒRƒs[
 								c.wallet().price = t.wallet().price;
@@ -73,6 +75,8 @@ void	updateUrbans()
 						if (u.jobEfficiency[i] != 0 && !u.citizens.any([&i](const Citizen& t) { return t.citizenType == i; }))
 						{
 							c.citizenType = i;
+							//–Ú•W—˜‰v‚ğ˜J“­Ò‚Ìû‰v‚ğŒ³‚Éİ’è
+							c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
 						}
 					}
 				}
@@ -88,20 +92,32 @@ void	updateUrbans()
 				b.tradeLog.push();
 			}
 
-
 			//Seller‚ÌXV
 			for (auto& s : u.sellers)
 			{
-				int numSell = s.casket.numItem / s.timer;
+				if (s.progress < s.period) s.progress++;
+				int numSell = s.casket.numItem - int(s.target*(1 - s.progress / double(s.period)));
 
 				if (numSell > 0)
 				{
 					u.sellItem(s.casket.itemType, numSell, Max(1, int(1 + s.wallet().price*Random(1.00, 1.10))), s.walletID);
 					s.casket.numItem -= numSell;
 				}
-				s.timer--;
 			}
-			u.sellers.remove_if([](const Seller& s) { return s.timer <= 0; });
+			u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
+
+			//Buyer‚ÌXV
+			for (auto& b : u.buyers)
+			{
+				if (b.progress < b.period) b.progress++;
+
+				int numBuy = Min(u.numItem(b.casket.itemType), int(b.target*(b.progress / double(b.period))) - b.casket.numItem);
+				if (numBuy == 0) continue;
+
+				u.buyItem(b.casket.itemType, b.walletID, numBuy);
+				b.casket.numItem += numBuy;
+
+			}
 		}
 
 		//s–¯‚ÌXV
@@ -126,13 +142,15 @@ void	updateUrbans()
 				//Item‚Ì”Ì”„
 				if (data.product.numItem > 0)
 				{
-					u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
+					//–Ú•W—˜‰v‚ğ’B¬‚Å‚«‚éê‡‚Ì‚İ¶Y
+					if (u.isSoldOut(data.product.itemType) || u.cost(data.product.itemType) > c.targetRevenue / data.product.numItem)
+						u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
 				}
 
 				//w”ƒ
 				for (int i = 0; i < int(itemData.size()); i++)
 				{
-					const double h = Random(0.1,5.0);
+					const double h = Random(0.1, 5.0);
 					auto itemType = Random(int(itemData.size() - 1));
 					if (!u.isSoldOut(itemType))
 					{
@@ -140,7 +158,7 @@ void	updateUrbans()
 							u.buyItem(itemType, c.walletID);
 					}
 				}
-				c.wallet().pull(c.wallet().money);
+				c.wallet().pull(c.wallet().money / 10);
 
 			}
 		}

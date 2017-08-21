@@ -17,15 +17,17 @@ void	updateVehicles()
 
 		if (v.chain.isEmpty() || v.reader >= int(v.chain.size()))
 		{
-			auto* u1 = v.nowUrban;
-			auto rs = u1->ownRoutes.filter([&v](const Route* r) { return r->isSeaRoute == v.data().isShip && r->movingCost <= v.data().range; });
-			if (rs.isEmpty())
-			{
-				v.vehicleType = vehicleData.choice().id();
-				continue;
-			}
+			//乗り物種類の変更
+			v.vehicleType = vehicleData.choice().id();
+
+			auto* u2 = v.nowUrban;
+			auto rs = u2->ownRoutes.filter([&v](const Route* r) { return r->isSeaRoute == v.data().isShip && r->movingCost <= v.data().range; });
+
+			//ルートがない場合、再生成
+			if (rs.isEmpty()) continue;
+
 			auto* r = rs.choice();
-			auto* u2 = r->toUrban;
+			auto* u1 = r->toUrban;
 
 			int itemType = -1;
 			{
@@ -52,12 +54,12 @@ void	updateVehicles()
 			v.chain.clear();
 			v.period = 2.0*r->movingCost / v.data().speed;	//周回に要する時間
 			v.chain = {
-				{ Code::Move, u2->id() },
-				{ Code::MVol, 100 },
-				{ Code::Buy,  itemType },
-
 				{ Code::Move, u1->id() },
 				{ Code::Sell, 0 },
+				{ Code::Move, u2->id() },
+				{ Code::MVol, 100 },
+				{ Code::Buy,  itemType },	//Buyerに指示&商品受け取り
+
 
 				{ Code::Jump, 0 }
 			};
@@ -72,7 +74,7 @@ void	updateVehicles()
 					break;
 				}
 			}
-			if(flag)
+			if (flag)
 			{
 				exports.emplace_back(v.exportLog);
 			}
@@ -117,7 +119,30 @@ void	updateVehicles()
 						break;
 					}
 				}
-				else if (v.timer > 50.0)
+				else if (v.stopFlag)	//事業停止
+				{
+					v.stopFlag = false;
+					for (auto& e : exports)
+					{
+						if (e.from == v.exportLog.from &&
+							e.to == v.exportLog.to &&
+							e.itemType == v.exportLog.itemType)
+						{
+							e.numItemPerDay -= v.exportLog.numItemPerDay;
+							break;
+						}
+					}
+					exports.remove_if([](const Export& e) { return e.numItemPerDay == 0; });
+					v.chain.clear();
+					v.reader = 0;
+
+					for (auto& u : urbans)
+					{
+						u.buyers.remove_if([&v](const Buyer& b) { return b.walletID == v.walletID; });
+					}
+					break;
+				}
+				/*if (v.timer > 50.0)
 				{
 
 					v.timer = 0;
@@ -143,7 +168,7 @@ void	updateVehicles()
 					{
 						v.wallet().money = 0;
 					}
-				}
+				}*/
 				else
 				{
 					auto& c = v.chain[v.reader];
@@ -164,12 +189,31 @@ void	updateVehicles()
 						break;
 					case Code::Buy:
 					{
+						bool flag = false;
+						for (auto& b : v.nowUrban->buyers)
+						{
+							if (b.walletID == v.walletID)
+							{
+								b.progress = 0;
+								v.cargo = b.casket;
+								b.casket.numItem = 0;
+								b.target = v.maxVolume;
+								flag = true;
+								break;
+							}
+						}
+						if (!flag)
+						{
+							v.nowUrban->buyers.emplace_back(v.walletID, c.second, int(v.period), v.maxVolume);
+						}
+						/*
 						int num = Min(v.maxVolume, v.nowUrban->numItem(c.second));
 						if (num > 0)
 						{
 							v.nowUrban->buyItem(c.second, v.walletID, num);
 							v.cargo = Casket(c.second, num);
 						}
+						*/
 						v.reader++;
 						break;
 					}

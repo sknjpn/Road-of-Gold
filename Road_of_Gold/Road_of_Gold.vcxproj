@@ -204,6 +204,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="TinyCamera.cpp" />
+    <ClCompile Include="Traders.cpp" />
     <ClCompile Include="updateGroups.cpp" />
     <ClCompile Include="updatePlanet.cpp" />
     <ClCompile Include="updateUrbans.cpp" />

@@ -6,6 +6,7 @@
 #include"Energy.h"
 #include"Sandglass.h"
 #include"Seller.h"
+#include"Buyer.h"
 
 struct Node;
 struct Wallet;
@@ -24,6 +25,7 @@ struct Urban
 	Array<double>	jobEfficiency;
 	Array<Route*>	ownRoutes;
 	Array<Seller>	sellers;
+	Array<Buyer>	buyers;
 	Array<Basket>	baskets;
 
 	Urban(const JSONValue& _json);
