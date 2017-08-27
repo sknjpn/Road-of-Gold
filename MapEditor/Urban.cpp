@@ -8,7 +8,7 @@ Urban::Urban(int _joinedNodeID)
 	, numCitizens(1)
 {
 	nodes[_joinedNodeID].ownUrbanID = id;
-	resource.resize(rData.size());
+	resource.resize(energyData.size());
 }
 Urban::Urban()
 	: id(int(urbans.size()))
@@ -16,6 +16,6 @@ Urban::Urban()
 	, joinedNodeID(-1)
 	, numCitizens(1)
 {
-	resource.resize(rData.size());
+	resource.resize(energyData.size());
 }
 Pos&	Urban::getPos() const { return nodes[joinedNodeID].pos; }

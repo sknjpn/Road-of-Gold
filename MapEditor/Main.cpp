@@ -57,7 +57,7 @@ void Main()
 	TextBox numCitizensTextBox(textBoxFont, Vec2(78, 86), 112);
 
 	Array<TextBox> resourceTextBox;
-	for (auto i : step(rData.size()))
+	for (auto i : step(energyData.size()))
 		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 106 + i * 20), none);
 
 	while (System::Update())
@@ -211,7 +211,7 @@ void Main()
 						selectedUrban = &urbans[nearestNode->ownUrbanID];
 						urbanNameTextBox.setText(selectedUrban->name);
 						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
-						for (auto i : step(rData.size()))
+						for (auto i : step(energyData.size()))
 							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
@@ -222,7 +222,7 @@ void Main()
 						selectedUrban = &urbans.back();
 						urbanNameTextBox.setText(selectedUrban->name);
 						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
-						for (auto i : step(rData.size()))
+						for (auto i : step(energyData.size()))
 							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
 					}
 					break;
@@ -273,11 +273,11 @@ void Main()
 			{
 				const Rect rect(32, 64 + i * 16, 160, 16);
 				const Color color(selectedBiome == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0));
-				if (i < int(bData.size()))
+				if (i < int(biomeData.size()))
 				{
 					if (rect.leftClicked()) selectedBiome = i;
 					rect.draw(color);
-					font12(bData[i].name).draw(rect.pos.movedBy(12, 0));
+					font12(biomeData[i].name).draw(rect.pos.movedBy(12, 0));
 				}
 				else
 				{
@@ -291,7 +291,7 @@ void Main()
 				const Rect rect(192, 64, 160, 40);
 				rect.drawFrame(2, Palette::Skyblue);
 				font16(L"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
-				font12(bData[selectedBiome].name).draw(rect.pos.movedBy(4, 22));
+				font12(biomeData[selectedBiome].name).draw(rect.pos.movedBy(4, 22));
 			}
 			//ブラシの選択
 			{
@@ -364,13 +364,13 @@ void Main()
 				rect.drawFrame(2, Palette::Skyblue);
 				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
 			}
-			for (auto& i : step(int(rData.size())))
+			for (auto& i : step(int(energyData.size())))
 			{
 				const Rect rect(32, 104 + i * 20, 100, 20);
 				rect.drawFrame(2, Palette::Skyblue);
-				font12(rData[i].name).draw(rect.pos.movedBy(4, 1));
+				font12(energyData[i].name).draw(rect.pos.movedBy(4, 1));
 			}
-			for (auto& i : step(int(rData.size())))
+			for (auto& i : step(int(energyData.size())))
 			{
 				const Rect rect(132, 104 + i * 20, 60, 20);
 				rect.drawFrame(2, Palette::Skyblue);

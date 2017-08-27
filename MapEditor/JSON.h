@@ -1,20 +1,33 @@
 #pragma once
 
-bool loadJSONData();
-
-struct BData
+struct BiomeData
 {
 	String	name;
 	Color	color;
+	double	movingCost;
+	bool	isSea;
 
-	BData(const JSONValue _json);
+	BiomeData(const JSONValue& _json)
+		: name(_json[L"Name"].getOr<String>(L""))
+		, color(_json[L"Color"].getOr<String>(L"#FFFFFF"))
+		, movingCost(_json[L"MovingCost"].getOr<double>(1.0))
+		, isSea(_json[L"IsSea"].getOr<bool>(false))
+	{}
+	int		id() const;
 };
-extern Array<BData> bData;
 
-struct RData
+extern Array<BiomeData>	biomeData;
+
+struct EnergyData
 {
-	String name;
+	String	name;
 
-	RData(const JSONValue _json);
+	EnergyData(const JSONValue& _json)
+		: name(_json[L"Name"].getOr<String>(L""))
+	{}
+	int		id() const;
 };
-extern Array<RData> rData;
+
+extern Array<EnergyData>	energyData;
+
+bool loadJSONData();

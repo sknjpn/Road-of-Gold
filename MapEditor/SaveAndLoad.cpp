@@ -12,13 +12,13 @@ Urban::Urban(const JSONValue _json)
 	, numCitizens(_json[L"NumCitizens"].getOr<int>(1))
 {
 	nodes[joinedNodeID].ownUrbanID = id;
-	resource.resize(rData.size());
+	resource.resize(energyData.size());
 
-	for (auto i : step(int(rData.size())))
+	for (auto i : step(int(energyData.size())))
 	{
-		if (!_json[L"Resources." + rData[i].name].isEmpty())
+		if (!_json[L"Resources." + energyData[i].name].isEmpty())
 		{
-			resource[i] = _json[L"Resources." + rData[i].name].getOr<int>(10);
+			resource[i] = _json[L"Resources." + energyData[i].name].getOr<int>(10);
 		}
 	}
 }
@@ -37,7 +37,7 @@ bool loadMapData(const FilePath& _path)
 		for (auto& n : nodes)
 		{
 			reader.read(n.biomeType);
-			if (n.biomeType >= bData.size()) return false;
+			if (n.biomeType >= int(biomeData.size())) return false;
 			list.emplace_back(&n);
 		}
 		planet.updateImage(list);
@@ -86,13 +86,13 @@ bool saveMapData(const FilePath& _path)
 			//Resourcesƒf[ƒ^‚Ì•Û‘¶
 			text += L",\r\t\t\t\"Resources\": {";
 			bool isFirst = true;
-			for (auto j : step(rData.size()))
+			for (auto j : step(energyData.size()))
 			{
 				if (u.resource[j] > 0)
 				{
 					if (isFirst) { text += L"\r"; isFirst = false; }
 					else text += L",\r";
-					text += Format(L"\t\t\t\t\"", rData[j].name, L"\": ", u.resource[j]);
+					text += Format(L"\t\t\t\t\"", energyData[j].name, L"\": ", u.resource[j]);
 				}
 			}
 			text += L"\r\t\t\t}";

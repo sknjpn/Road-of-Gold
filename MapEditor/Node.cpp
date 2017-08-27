@@ -13,7 +13,7 @@ Node::Node(const Pos& _pos)
 	, biomeType(0)
 	, ownUrbanID(-1)
 {}
-Color	Node::getColor() const { return bData[biomeType].color; }
+Color	Node::getColor() const { return biomeData[biomeType].color; }
 Path::Path(int _parentNodeID, int _childNodeID)
 	: id(0)
 	, parentNodeID(_parentNodeID)

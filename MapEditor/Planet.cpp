@@ -31,10 +31,10 @@ void	Planet::updateImage(Array<Node*> _nodeList)
 				if (p2.y < 0 || p2.y >= voronoiMap.size().y) continue;
 				if (p2.x < 0) p2.x = voronoiMap.size().x - 1;
 				if (p2.x >= voronoiMap.size().x) p2.x = 0;
-				if (voronoiMap[p1.y][p1.x] == voronoiMap[p2.y][p2.x] && image[p2.y][p2.x] != bData[n->biomeType].color)
+				if (voronoiMap[p1.y][p1.x] == voronoiMap[p2.y][p2.x] && image[p2.y][p2.x] != biomeData[n->biomeType].color)
 				{
 					temp.emplace_back(p2);
-					image[p2.y][p2.x] = bData[n->biomeType].color;
+					image[p2.y][p2.x] = biomeData[n->biomeType].color;
 				}
 			}
 			temp.pop_front();
