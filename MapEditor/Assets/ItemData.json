@@ -3,50 +3,58 @@
     {
       "Name": "毛皮",
       "Volume": 10,
-      "Value": 250,
-      "Color": "#AE7444"
+      "Value": 200,
+      "Color": "#5F220A",
+      "Icon": "Assets/Image/Fur.png"
     },
     {
       "Name": "コーヒー",
       "Volue": 10,
       "Value": 100,
-      "Color": "#050000"
+      "Color": "#050000",
+      "Icon": "Assets/Image/Coffee.png"
     },
     {
       "Name": "茶葉",
       "Volume": 10,
       "Value": 100,
-      "Color": "#90B91D"
+      "Color": "#037B00",
+      "Icon": "Assets/Image/Tea.png"
     },
     {
       "Name": "絨毯",
       "Volume": 10,
-      "Value": 500,
-      "Color": "#B5C2D0"
+      "Value": 100,
+      "Color": "#B5C2D0",
+      "Icon": "Assets/Image/Carpet.png"
     },
     {
       "Name": "香辛料",
       "Volume": 10,
-      "Value": 1000,
-      "Color": "#FF4500"
+      "Value": 500,
+      "Color": "#FF4500",
+      "Icon": "Assets/Image/Spice.png"
     },
     {
       "Name": "貴金属",
       "Volume": 10,
-      "Value": 5000,
-      "Color": "#FFD900"
+      "Value": 1000,
+      "Color": "#FFD900",
+      "Icon": "Assets/Image/Gold.png"
     },
     {
       "Name": "ワイン",
       "Volume": 10,
-      "Value": 2500,
-      "Color": "#9900CC"
+      "Value": 200,
+      "Color": "#9900CC",
+      "Icon": "Assets/Image/Wine.png"
     },
     {
-      "Name": "チョコレート",
+      "Name": "ショコラ",
       "Volume": 10,
       "Value": 100,
-      "Color": "#603835"
+      "Color": "#603835",
+      "Icon": "Assets/Image/Chocolate.png"
     }
   ]
 }

@@ -3,12 +3,14 @@
     {
       "Name": "Sea",
       "Color": "#0F285A",
-      "MovingCost": 2.00
+      "MovingCost": 2.00,
+      "IsSea" : true
     },
     {
       "Name": "Ocean",
       "Color": "#0F1E50",
-      "MovingCost": 3.00
+      "MovingCost": 3.00,
+      "IsSea" : true
     },
     {
       "Name": "Ice",
@@ -33,12 +35,12 @@
     {
       "Name": "Tundra",
       "Color": "#608370",
-      "MovingCost": 8.00
+      "MovingCost": 15.00
     },
     {
       "Name": "TemperateRainforest",
       "Color": "#427B19",
-      "MovingCost": 20.00
+      "MovingCost": 30.00
     },
     {
       "Name": "Grassland",
@@ -48,7 +50,7 @@
     {
       "Name": "SeasonalForest",
       "Color": "#496423",
-      "MovingCost": 10.00
+      "MovingCost": 20.00
     },
     {
       "Name": "BorealForest",
