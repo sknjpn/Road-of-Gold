@@ -211,8 +211,10 @@
     <None Include="engine\shader\sprite_sdf.ps" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BiomeData.h" />
+    <ClInclude Include="EnergyData.h" />
     <ClInclude Include="GlobalVariables.h" />
-    <ClInclude Include="JSON.h" />
+    <ClInclude Include="ItemData.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pi.h" />
     <ClInclude Include="Planet.h" />
@@ -220,10 +222,11 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TinyCamera.h" />
     <ClInclude Include="Urban.h" />
+    <ClInclude Include="VehicleData.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DataLoader.cpp" />
     <ClCompile Include="GenerateBiome.cpp" />
+    <ClCompile Include="loadData.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Planet.cpp" />

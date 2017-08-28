@@ -37,6 +37,9 @@
     <Filter Include="Resource Files\engine\font\noto">
       <UniqueIdentifier>{f7208394-61be-44c0-9992-57a2a749ba60}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Data">
+      <UniqueIdentifier>{de27a9d0-f68a-43a0-98c3-f4e2c121057e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">
@@ -146,9 +149,6 @@
     <ClInclude Include="GlobalVariables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="JSON.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -157,6 +157,18 @@
     </ClInclude>
     <ClInclude Include="Planet.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BiomeData.h">
+      <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="EnergyData.h">
+      <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemData.h">
+      <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleData.h">
+      <Filter>Header Files\Data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -167,9 +179,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="VoronoiMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="DataLoader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="GenerateBiome.cpp">
@@ -188,6 +197,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

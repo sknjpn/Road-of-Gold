@@ -1,5 +1,5 @@
 #include"Urban.h"
-#include"JSON.h"
+#include"EnergyData.h"
 #include"Node.h"
 Urban::Urban(int _joinedNodeID)
 	: name(L"hogeTown")

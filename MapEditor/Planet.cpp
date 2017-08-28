@@ -1,7 +1,7 @@
 #include"Planet.h"
 #include"Pi.h"
 #include"Node.h"
-#include"JSON.h"
+#include"BiomeData.h"
 
 Planet::Planet()
 	: mapTexture()

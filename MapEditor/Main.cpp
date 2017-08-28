@@ -1,7 +1,8 @@
 ﻿#include"Planet.h"
 #include"Node.h"
 #include"Pi.h"
-#include"JSON.h"
+#include"EnergyData.h"
+#include"BiomeData.h"
 #include"Urban.h"
 #include"TinyCamera.h"
 /*
@@ -46,8 +47,11 @@ void Main()
 	Window::SetTitle(L"MapEditor");
 	Window::Resize(1280, 720);
 
+	loadBiomeData();
+	loadEnergyData();
+
 	//データの読み込み
-	if (!loadJSONData() || !planet.loadVoronoiMap()) return;
+	if (!planet.loadVoronoiMap()) return;
 
 	textBox = TextBox(textBoxFont, Vec2(160, 72), 120);
 
