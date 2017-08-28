@@ -258,6 +258,7 @@
     <ClInclude Include="CitizenData.h" />
     <ClInclude Include="Energy.h" />
     <ClInclude Include="EnergyData.h" />
+    <ClInclude Include="Incident.h" />
     <ClInclude Include="Export.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="ItemData.h" />

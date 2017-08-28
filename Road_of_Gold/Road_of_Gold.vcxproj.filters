@@ -328,5 +328,8 @@
     <ClInclude Include="VehicleData.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
+    <ClInclude Include="Incident.h">
+      <Filter>Source Files\class</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
