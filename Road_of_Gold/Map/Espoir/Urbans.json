@@ -126,10 +126,9 @@
 		{
 			"JoinedNodeID": 17602,
 			"Name": "バチカン",
-			"NumCitizens": 100,
+			"NumCitizens": 200,
 			"Productivity": 0.25,
 			"Energies": {
-				"金山": 100
 			}
 		},
 		{
@@ -173,7 +172,6 @@
 			"NumCitizens": 200,
 			"Productivity": 0.25,
 			"Energies": {
-				"コーヒー": 100
 			}
 		},
 		{
@@ -182,7 +180,6 @@
 			"NumCitizens": 150,
 			"Productivity": 0.25,
 			"Energies": {
-				"コーヒー": 50
 			}
 		}
 	]

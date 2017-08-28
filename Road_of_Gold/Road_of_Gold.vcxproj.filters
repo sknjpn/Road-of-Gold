@@ -153,6 +153,12 @@
     <ClCompile Include="Node.cpp">
       <Filter>Source Files\class</Filter>
     </ClCompile>
+    <ClCompile Include="Scuttle.cpp">
+      <Filter>Source Files\class</Filter>
+    </ClCompile>
+    <ClCompile Include="Incident.cpp">
+      <Filter>Source Files\class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">
@@ -329,6 +335,9 @@
       <Filter>Header Files\Data</Filter>
     </ClInclude>
     <ClInclude Include="Incident.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Scuttle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

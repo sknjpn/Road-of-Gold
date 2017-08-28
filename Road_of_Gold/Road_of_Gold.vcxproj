@@ -187,6 +187,7 @@
     <ClCompile Include="Export.cpp" />
     <ClCompile Include="globalVariables.cpp" />
     <ClCompile Include="Group.cpp" />
+    <ClCompile Include="Incident.cpp" />
     <ClCompile Include="initGroups.cpp" />
     <ClCompile Include="initNodes.cpp" />
     <ClCompile Include="initPlanet.cpp" />
@@ -196,6 +197,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Sandglass.cpp" />
+    <ClCompile Include="Scuttle.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -269,6 +271,7 @@
     <ClInclude Include="Ring.h" />
     <ClInclude Include="Route.h" />
     <ClInclude Include="Sandglass.h" />
+    <ClInclude Include="Scuttle.h" />
     <ClInclude Include="Seller.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />

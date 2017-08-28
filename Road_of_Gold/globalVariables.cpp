@@ -7,6 +7,8 @@
 #include"Wallet.h"
 #include"UI.h"
 #include"Export.h"
+#include"Scuttle.h"
+#include"Incident.h"
 
 #include"EnergyData.h"
 #include"CitizenData.h"
@@ -17,6 +19,7 @@
 UI	ui;
 Planet	planet;
 TinyCamera tinyCamera;
+JSONReader incidentJson;
 
 Array<Node>		nodes;
 Array<Route>	routes;
@@ -25,6 +28,7 @@ Array<Group>	groups;
 Array<Wallet>	wallets;
 Array<Vehicle>	vehicles;
 Array<Export>	exports;
+Array<Scuttle>	scuttles;
 Array<Incident>	incidents;
 
 Array<EnergyData>	energyData;

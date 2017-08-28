@@ -6,7 +6,8 @@
 #include"Route.h"
 #include"UI.h"
 #include"Sound.h"
-
+#include"Scuttle.h"
+#include"Incident.h"
 
 #include"BiomeData.h"
 #include"EnergyData.h"
@@ -29,6 +30,8 @@ void Main()
 	for (auto i : step(int(1024))) fonts.emplace_back(i);
 	for (auto i : step(int(fonts.size()))) ui.fonts.emplace_back(&fonts.at(i));
 	Log(L"fontsの展開が完了 size = ", fonts.size());
+
+	System::SetExitEvent(WindowEvent::CloseButton);
 
 	loadItemData();
 	loadBiomeData();
@@ -66,6 +69,7 @@ void Main()
 		updateUrbans();
 		updateGroups();
 		updateVehicles();
+		updateScuttles();
 
 		drawPlanet();
 		//drawRotues();
@@ -73,5 +77,6 @@ void Main()
 		drawUrbans();
 		drawGroups();
 		drawUI();
+		drawScuttles();
 	}
 }

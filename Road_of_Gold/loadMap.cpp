@@ -3,6 +3,7 @@
 #include"Urban.h"
 #include"BiomeData.h"
 #include"Incident.h"
+#include"Scuttle.h"
 
 void	loadMap()
 {
@@ -39,9 +40,10 @@ void	loadMap()
 			//Incidentsデータのロード
 			if (FileSystem::Exists(item + L"Incidents.json"))
 			{
-				JSONReader reader(item + L"Incidents.json");
-				for (auto json : reader[L"Incidents"].arrayView())
+				incidentJson = JSONReader(item + L"Incidents.json");
+				for (auto json : incidentJson[L"Incidents"].arrayView())
 					incidents.emplace_back(json);
+
 			}
 
 			return;

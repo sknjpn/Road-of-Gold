@@ -1,8 +1,15 @@
 #include"Planet.h"
+#include"Incident.h"
 
 void	updatePlanet()
 {
-	planet.sandglass.update();
+	if (planet.sandglass.update())
+	{
+		for (auto& i : incidents)
+		{
+			if (int(planet.sandglass.timer) == i.time()) i.action();
+		}
+	}
 
 	tinyCamera.update();
 

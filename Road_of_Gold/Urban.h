@@ -29,6 +29,8 @@ struct Urban
 	Array<Basket>	baskets;
 
 	Urban(const JSONValue& _json);
+	void	addEnergy(const String _name, int _num);
+	void	pullEnergy(const String _name, int _num);
 	void	sellItem(const Casket& _casket, int _price, int _ownerWalletID);
 	void	sellItem(int _itemType, int _numItem, int _price, int _ownerWalletID);
 	int		numItem(int _itemType) const;	//îÑÇÁÇÍÇƒÇ¢ÇÈêî
@@ -46,3 +48,4 @@ extern Array<Urban> urbans;
 
 void	updateUrbans();
 void	drawUrbans();
+Urban*	getUrban(const String& _name);

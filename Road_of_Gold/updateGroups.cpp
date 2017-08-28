@@ -25,7 +25,7 @@ void	updateGroups()
 				}
 			}
 			if (i == 0) Log(L"Å’á:", min);
-			target->stopFlag = true;
+			if (target != nullptr) target->stopFlag = true;
 		}
 		int avg = 0;
 		for (auto& v : vehicles) avg += v.wallet().money;

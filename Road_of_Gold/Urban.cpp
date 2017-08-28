@@ -161,3 +161,44 @@ void	TradeLog::addTrade(int _price, int _num)
 	numTrade.front() += _num;
 	price.front() = n / numTrade.front();
 }
+Urban*	getUrban(const String& _name)
+{
+	for (auto& u : urbans)
+	{
+		if (u.name == _name) return &u;
+	}
+	return nullptr;
+}
+void	Urban::addEnergy(const String _name, int _num)
+{
+	auto* data = getEnergyData(_name);
+
+	for (auto& e : energies)
+	{
+		if (e.energyType == data->id())
+		{
+			e.numEnergy += _num;
+			return;
+		}
+	}
+
+	energies.emplace_back(data->id(), _num);
+}
+void	Urban::pullEnergy(const String _name, int _num)
+{
+	auto* data = getEnergyData(_name);
+
+	for (auto& e : energies)
+	{
+		if (e.energyType == data->id())
+		{
+			if (e.numEnergy <= _num)
+			{
+				e.numEnergy = 0;
+			}
+			else e.numEnergy -= _num;
+
+			return;
+		}
+	}
+}

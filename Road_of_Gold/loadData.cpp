@@ -63,3 +63,11 @@ CitizenData::CitizenData(const JSONValue& _json)
 	}
 
 }
+EnergyData*	getEnergyData(const String& _name)
+{
+	for (auto& e : energyData)
+	{
+		if (e.name == _name) return &e;
+	}
+	return nullptr;
+}

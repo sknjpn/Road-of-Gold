@@ -13,3 +13,4 @@ struct EnergyData
 extern Array<EnergyData>	energyData;
 
 void	loadEnergyData();
+EnergyData*	getEnergyData(const String& _name);
