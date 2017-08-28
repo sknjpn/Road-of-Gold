@@ -6,14 +6,14 @@ struct Region;
 
 struct Path
 {
+	int		id;
+	int		parentNodeID;
+	int		childNodeID;
+
 	Path(int _parentNodeID, int _childNodeID);
 	Node&	getChild() const;
 	Node&	getParent() const;
 	Line	getLine() const;
-
-	int		id;
-	int		parentNodeID;
-	int		childNodeID;
 
 };
 extern Array<Path*> paths;
@@ -29,6 +29,8 @@ struct Node
 	Color	getColor() const;
 	int		ownUrbanID() const;
 };
+
+extern Array<Node> nodes;
+
 bool saveMapData(const FilePath& _path);
 bool loadMapData(const FilePath& _path);
-extern Array<Node> nodes;
