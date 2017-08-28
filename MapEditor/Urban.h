@@ -4,11 +4,11 @@ struct Pos;
 
 struct Urban
 {
-	int		id;
 	int		numCitizens;
+	double	productivity;
 	String	name;
 	int		joinedNodeID;
-	Array<int>		resource;
+	Array<int>	energies;
 
 	Urban();
 	Urban(const JSONValue _json);
@@ -17,6 +17,7 @@ struct Urban
 	void	draw() const;
 	Pos&	getPos() const;
 	String	getTimeAsString() const;
+	int		id() const;
 
 };
 extern Array<Urban> urbans;

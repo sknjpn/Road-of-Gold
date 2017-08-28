@@ -11,7 +11,6 @@ Node::Node(const Pos& _pos)
 	: id(int(nodes.size()))
 	, pos(_pos)
 	, biomeType(0)
-	, ownUrbanID(-1)
 {}
 Color	Node::getColor() const { return biomeData[biomeType].color; }
 Path::Path(int _parentNodeID, int _childNodeID)
@@ -31,4 +30,13 @@ Line	Path::getLine() const
 		else p2.x -= TwoPi;
 	}
 	return Line(p1, p2);
+}
+int		Node::ownUrbanID() const
+{
+	for (auto& u : urbans)
+	{
+		if (u.joinedNodeID == id) return u.id();
+	}
+
+	return -1;
 }

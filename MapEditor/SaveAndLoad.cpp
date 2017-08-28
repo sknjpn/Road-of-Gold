@@ -6,21 +6,26 @@
 #include"GlobalVariables.h"
 
 Urban::Urban(const JSONValue _json)
-	: id(int(urbans.size()))
+	: name(_json[L"Name"].getString())
 	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))
-	, name(_json[L"Name"].getOr<String>(L"hoge"))
+	, productivity(_json[L"Productivity"].getOr<double>(1.0))
 	, numCitizens(_json[L"NumCitizens"].getOr<int>(1))
 {
-	nodes[joinedNodeID].ownUrbanID = id;
-	resource.resize(energyData.size());
 
-	for (auto i : step(int(energyData.size())))
+	//資源配置
+	energies.resize(energyData.size());
+	for (auto i : _json[L"Energies"].objectView())
 	{
-		if (!_json[L"Resources." + energyData[i].name].isEmpty())
+		for (int j = 0; j < int(energyData.size()); j++)
 		{
-			resource[i] = _json[L"Resources." + energyData[i].name].getOr<int>(10);
+			auto& data = energyData.at(j);
+			if (data.name == i.name)
+			{
+				energies.at(j) = i.value.getOr<int>(0);
+				break;
+			}
 		}
-	}
+	} 
 }
 
 bool loadMapData(const FilePath& _path)
@@ -53,7 +58,7 @@ bool loadMapData(const FilePath& _path)
 	}
 
 	textBox.setText(FileSystem::BaseName(_path));
-	
+
 	return true;
 }
 bool saveMapData(const FilePath& _path)
@@ -83,16 +88,19 @@ bool saveMapData(const FilePath& _path)
 			//人口の保存
 			text += Format(L",\r\t\t\t\"NumCitizens\": ", u.numCitizens);
 
+			//生産性の保存
+			text += Format(L",\r\t\t\t\"Productivity\": ", u.productivity);
+
 			//Resourcesデータの保存
-			text += L",\r\t\t\t\"Resources\": {";
+			text += L",\r\t\t\t\"Energies\": {";
 			bool isFirst = true;
 			for (auto j : step(energyData.size()))
 			{
-				if (u.resource[j] > 0)
+				if (u.energies[j] > 0)
 				{
 					if (isFirst) { text += L"\r"; isFirst = false; }
 					else text += L",\r";
-					text += Format(L"\t\t\t\t\"", energyData[j].name, L"\": ", u.resource[j]);
+					text += Format(L"\t\t\t\t\"", energyData[j].name, L"\": ", u.energies[j]);
 				}
 			}
 			text += L"\r\t\t\t}";

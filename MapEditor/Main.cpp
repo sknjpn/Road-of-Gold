@@ -206,38 +206,32 @@ void Main()
 				switch (actionMode)
 				{
 				case ActionMode::none:
-					if (MouseL.down() && nearestNode->ownUrbanID != -1)
+					if (MouseL.down() && nearestNode->ownUrbanID() != -1)
 					{
-						selectedUrban = &urbans[nearestNode->ownUrbanID];
+						selectedUrban = &urbans[nearestNode->ownUrbanID()];
 						urbanNameTextBox.setText(selectedUrban->name);
 						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 						for (auto i : step(energyData.size()))
-							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
+							resourceTextBox[i].setText(Format(selectedUrban->energies[i]));
 					}
 					break;
 				case ActionMode::set:
-					if (MouseL.down() && nearestNode->ownUrbanID == -1)
+					if (MouseL.down() && nearestNode->ownUrbanID() == -1)
 					{
 						urbans.emplace_back(nearestNode->id);
 						selectedUrban = &urbans.back();
 						urbanNameTextBox.setText(selectedUrban->name);
 						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 						for (auto i : step(energyData.size()))
-							resourceTextBox[i].setText(Format(selectedUrban->resource[i]));
+							resourceTextBox[i].setText(Format(selectedUrban->energies[i]));
 					}
 					break;
 				case ActionMode::remove:
-					if (MouseL.down() && nearestNode->ownUrbanID != -1)
+					if (MouseL.down() && nearestNode->ownUrbanID() != -1)
 					{
-						const int targetID = nearestNode->ownUrbanID;
-						urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID == u.id; });
-						nearestNode->ownUrbanID = -1;
+						const int targetID = nearestNode->ownUrbanID();
+						urbans.remove_if([&nearestNode](Urban& u) {return nearestNode->ownUrbanID() == u.id(); });
 						selectedUrban = nullptr;
-						//IDの整合性を取る
-						for (auto& n : nodes)
-							if (n.ownUrbanID > targetID) --n.ownUrbanID;
-						for (auto& u : urbans)
-							if (u.id > targetID) --u.id;
 					}
 					break;
 				}
@@ -360,6 +354,7 @@ void Main()
 				if (selectedUrban != nullptr) selectedUrban->name = urbanNameTextBox.getText();
 				else urbanNameTextBox.setText(L"");
 				urbanNameTextBox.draw();
+				
 				const Rect rect(32, 64, 44, 20);
 				rect.drawFrame(2, Palette::Skyblue);
 				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
@@ -379,8 +374,8 @@ void Main()
 				t.update();
 				if (selectedUrban != nullptr)
 				{
-					selectedUrban->resource[i] = ParseInt<int>(t.getText()) % 10000;
-					t.setText(Format(selectedUrban->resource[i]));
+					selectedUrban->energies[i] = ParseInt<int>(t.getText()) % 10000;
+					t.setText(Format(selectedUrban->energies[i]));
 				}
 				else t.setText(L"");
 				t.draw();

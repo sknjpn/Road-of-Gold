@@ -20,14 +20,14 @@ extern Array<Path*> paths;
 
 struct Node
 {
-	Node(const Pos& _pos);
-	Color	getColor() const;
-
-	int		ownUrbanID;
 	int		id;
 	Pos		pos;
 	int		biomeType;
 	Array<Path> paths;
+
+	Node(const Pos& _pos);
+	Color	getColor() const;
+	int		ownUrbanID() const;
 };
 bool saveMapData(const FilePath& _path);
 bool loadMapData(const FilePath& _path);
