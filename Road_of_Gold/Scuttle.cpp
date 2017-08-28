@@ -6,8 +6,6 @@ void	Scuttle::draw() const
 	backGround.draw(rect.pos);
 	rect.drawFrame(4, Palette::Black);
 	buttonRegion.movedBy(rect.pos).draw(Palette::Forestgreen).drawFrame(4, Palette::Black);
-	//titleRegion.movedBy(rect.pos).draw(Palette::Blue).drawFrame(4, Palette::Black);
-	//descriptionRegion.movedBy(rect.pos).draw(Palette::Red).drawFrame(4, Palette::Black);
 	auto bPos = buttonRegion.movedBy(rect.pos).center();
 	auto tPos = titleRegion.movedBy(rect.pos).center();
 	auto dPos = descriptionRegion.movedBy(rect.pos).center();
@@ -18,6 +16,8 @@ void	Scuttle::draw() const
 
 void	updateScuttles()
 {
+	if (KeyEscape.down() && !scuttles.isEmpty()) scuttles.pop_back();
+	
 	if (MouseL.down())
 	{
 		Scuttle* target = nullptr;
@@ -50,6 +50,10 @@ void	updateScuttles()
 			if (s.isGrabbed)
 			{
 				s.rect.pos += Cursor::DeltaF();
+				if (s.rect.pos.x < 0) s.rect.pos.x = 0;
+				if (s.rect.br().x > Window::Size().x) s.rect.pos.x = Window::Size().x - s.rect.size.x;
+				if (s.rect.pos.y < 0) s.rect.pos.y = 0;
+				if (s.rect.br().y > Window::Size().y) s.rect.pos.y = Window::Size().y - s.rect.size.y;
 			}
 		}
 	}
