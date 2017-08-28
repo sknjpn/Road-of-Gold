@@ -25,6 +25,7 @@ Array<Group>	groups;
 Array<Wallet>	wallets;
 Array<Vehicle>	vehicles;
 Array<Export>	exports;
+Array<Incident>	incidents;
 
 Array<EnergyData>	energyData;
 Array<CitizenData>	citizenData;

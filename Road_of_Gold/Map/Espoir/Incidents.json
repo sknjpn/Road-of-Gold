@@ -1,0 +1,64 @@
+{
+    "Incidents": [
+        {
+            "Name": "バチカンで金山の発見",
+            "Description": "バチカンにて金が産出されるようになりました",
+            "Year": 1500,
+            "Month": 4,
+            "Day": 14,
+            "Button": "他社に先駆けて金の確保を急ごう",
+            "Action": [
+                {
+                    "Type": "AddEnergy",
+                    "Urban": "バチカン",
+                    "Num": 50,
+                    "EnergyName": "金山"
+                }
+            ]
+        },
+        {
+            "Name": "キツネの減少",
+            "Description": "近年のキタキツネの乱獲は深刻な毛皮不足を招きました",
+            "Year": 1505,
+            "Month": 2,
+            "Day": 11,
+            "Button": "利益の追求は環境に深刻なダメージをもたらす",
+            "Action": [
+                {
+                    "Type": "PullEnergy",
+                    "Urban": "ウィーン",
+                    "Num": 100,
+                    "EnergyName": "キタキツネ"
+                },
+                {
+                    "Type": "PullEnergy",
+                    "Urban": "ストラスブール",
+                    "Num": 50,
+                    "EnergyName": "キタキツネ"
+                }
+            ]
+        },
+        {
+            "Name": "エチオピアの経済成長",
+            "Description": "近年のエチオピアにおける大規模なコーヒー生産は他の産業を活性化させました",
+            "Year": 1502,
+            "Month": 7,
+            "Day": 11,
+            "Button": "経済成長は物価の上昇を招くだろう",
+            "Action": [
+                {
+                    "Type": "CorrectProductivity",
+                    "Urban": "アクスム",
+                    "Num": 1.5,
+                    "EnergyName": "金山"
+                },
+                {
+                    "Type": "CorrectProductivity",
+                    "Urban": "アディスアベバ",
+                    "Num": 1.5,
+                    "EnergyName": "金山"
+                }
+            ]
+        },
+    ]
+}

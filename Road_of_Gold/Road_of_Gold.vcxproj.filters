@@ -329,7 +329,7 @@
       <Filter>Header Files\Data</Filter>
     </ClInclude>
     <ClInclude Include="Incident.h">
-      <Filter>Source Files\class</Filter>
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

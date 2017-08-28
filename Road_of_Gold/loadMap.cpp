@@ -2,6 +2,7 @@
 #include"Node.h"
 #include"Urban.h"
 #include"BiomeData.h"
+#include"Incident.h"
 
 void	loadMap()
 {
@@ -33,6 +34,14 @@ void	loadMap()
 				for (auto& u : urbans)
 					for (auto& b : u.baskets)
 						b.joinedUrban = &u;
+			}
+
+			//Incidentsデータのロード
+			if (FileSystem::Exists(item + L"Incidents.json"))
+			{
+				JSONReader reader(item + L"Incidents.json");
+				for (auto json : reader[L"Incidents"].arrayView())
+					incidents.emplace_back(json);
 			}
 
 			return;
