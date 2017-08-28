@@ -243,6 +243,7 @@
     <ClInclude Include="Planet.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="TinyCamera.h" />
     <ClInclude Include="Urban.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

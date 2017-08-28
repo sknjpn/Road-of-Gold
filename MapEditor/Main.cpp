@@ -3,6 +3,7 @@
 #include"Pi.h"
 #include"JSON.h"
 #include"Urban.h"
+#include"TinyCamera.h"
 /*
 Road of Gold専用マップエディタ
 */
@@ -239,9 +240,6 @@ void Main()
 				break;
 			}
 		}
-
-		//スライドバーの描画
-		tinyCamera.draw();
 
 		//UIの描画
 		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(2, Palette::Skyblue);
