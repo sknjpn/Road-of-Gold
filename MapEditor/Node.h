@@ -6,7 +6,6 @@ struct Region;
 
 struct Path
 {
-	int		id;
 	int		parentNodeID;
 	int		childNodeID;
 
@@ -20,7 +19,6 @@ extern Array<Path*> paths;
 
 struct Node
 {
-	int		id;
 	Pos		pos;
 	int		biomeType;
 	Array<Path> paths;
@@ -28,6 +26,7 @@ struct Node
 	Node(const Pos& _pos);
 	Color	getColor() const;
 	int		ownUrbanID() const;
+	int		id() const;
 };
 
 extern Array<Node> nodes;

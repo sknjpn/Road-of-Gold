@@ -30,7 +30,6 @@ bool	Planet::loadVoronoiMap()
 		{
 			for (auto& p : n.paths)
 			{
-				p.id = int(paths.size());
 				paths.emplace_back(&p);
 			}
 		}

@@ -223,7 +223,7 @@ void Main()
 				case ActionMode::set:
 					if (MouseL.down() && nearestNode->ownUrbanID() == -1)
 					{
-						urbans.emplace_back(nearestNode->id);
+						urbans.emplace_back(nearestNode->id());
 						selectedUrban = &urbans.back();
 						urbanNameTextBox.setText(selectedUrban->name);
 						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));

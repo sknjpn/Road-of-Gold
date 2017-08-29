@@ -8,14 +8,12 @@ Array<Node> nodes;
 Array<Path*> paths;
 
 Node::Node(const Pos& _pos)
-	: id(int(nodes.size()))
-	, pos(_pos)
+	: pos(_pos)
 	, biomeType(0)
 {}
 Color	Node::getColor() const { return biomeData[biomeType].color; }
 Path::Path(int _parentNodeID, int _childNodeID)
-	: id(0)
-	, parentNodeID(_parentNodeID)
+	: parentNodeID(_parentNodeID)
 	, childNodeID(_childNodeID)
 {}
 Node&	Path::getChild() const { return nodes[childNodeID]; }
@@ -35,8 +33,12 @@ int		Node::ownUrbanID() const
 {
 	for (auto& u : urbans)
 	{
-		if (u.joinedNodeID == id) return u.id();
+		if (u.joinedNodeID == id()) return u.id();
 	}
 
 	return -1;
+}
+int	Node::id() const
+{
+	return int(this - &nodes.front());
 }
