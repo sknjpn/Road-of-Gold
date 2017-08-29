@@ -10,10 +10,8 @@ struct Incident
 	{}
 	void	action();	//é¿çs
 	void	addScuttle();
-	String	name() const;
-	String	description() const;
-	String	type() const;
-	double	time() const;
+	void	update();
 };
 extern JSONReader incidentJson;
 extern Array<Incident>	incidents;
+extern Array<String>	flagTexts;

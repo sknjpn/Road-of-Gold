@@ -4,165 +4,176 @@
 #include"CitizenData.h"
 #include"ItemData.h"
 #include"Sound.h"
+#include<thread>
 
-void	updateUrbans()
+void	updateUrban(Urban& u)
 {
-	for (auto& u : urbans)
+	if (u.sandglass.update())
 	{
-		if (u.sandglass.update())
+		//å¯ó¶ÇÃçXêV
+		for (auto i : step(int(citizenData.size())))
 		{
-			//å¯ó¶ÇÃçXêV
-			for (auto i : step(int(citizenData.size())))
-			{
-				auto& je = u.jobEfficiency[i];
-				auto& data = citizenData[i];
-				auto numCitizen = int(u.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }));
+			auto& je = u.jobEfficiency[i];
+			auto& data = citizenData[i];
+			auto numCitizen = int(u.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }));
 
-				if (data.needEnergyType == -1) je = 1;
-				else if (!u.energies.any([&data](const Energy& e) { return e.energyType == data.needEnergyType; })) je = 0;
-				else
+			if (data.needEnergyType == -1) je = 1;
+			else if (!u.energies.any([&data](const Energy& e) { return e.energyType == data.needEnergyType; })) je = 0;
+			else
+			{
+				for (auto j : step(int(u.energies.size())))
 				{
-					for (auto j : step(int(u.energies.size())))
+					auto& e = u.energies[j];
+					if (e.energyType == data.needEnergyType)
 					{
-						auto& e = u.energies[j];
-						if (e.energyType == data.needEnergyType)
-						{
-							if (e.numEnergy == 0) je = 0;
-							else if (e.numEnergy >= numCitizen) je = 1;
-							else je = (double)e.numEnergy / (double)numCitizen;
-						}
+						if (e.numEnergy == 0) je = 0;
+						else if (e.numEnergy >= numCitizen) je = 1;
+						else je = (double)e.numEnergy / (double)numCitizen;
 					}
 				}
-			}
-
-			//ésñØÉçÉOÇÃçXêV
-			for (auto& c : u.citizens)
-			{
-				c.incomeLog.push_front(c.wallet().income);
-				c.incomeLog.pop_back();
-				c.wallet().income = 0;	//é˚ì¸ÇÉäÉZÉbÉg
-			}
-
-			//ésñØÇÃì]êE
-			for (auto& c : u.citizens)
-			{
-				if (u.jobEfficiency[c.citizenType] == 0 || RandomBool(0.003))	//ì]êE
-				{
-					int sum = 0;
-					for (auto t : u.citizens) sum += t.avgIncome();
-
-					sum = Random(sum);
-					for (auto t : u.citizens)
-					{
-						sum -= t.avgIncome();
-						if (sum < 0)
-						{
-							if (c.avgIncome() < t.avgIncome())
-							{
-								c.incomeLog.fill(0);
-								c.citizenType = t.citizenType;
-								//ñ⁄ïWóòâvÇòJì≠é“ÇÃé˚âvÇå≥Ç…ê›íË
-								c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
-
-								//îÃîÑâøäiÇÃÉRÉsÅ[
-								c.wallet().price = t.wallet().price;
-							}
-							break;
-						}
-					}
-					for (int i = 0; i < int(citizenData.size()); i++)
-					{
-						if (u.jobEfficiency[i] != 0 && !u.citizens.any([&i](const Citizen& t) { return t.citizenType == i; }))
-						{
-							c.citizenType = i;
-							//ñ⁄ïWóòâvÇòJì≠é“ÇÃé˚âvÇå≥Ç…ê›íË
-							c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
-						}
-					}
-				}
-			}
-
-			//ésèÍÇÃçXêV
-			for (auto i : step(int(u.baskets.size())))
-			{
-				auto& b = u.baskets[i];
-				for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//âøäií·â∫
-
-				//TradeLogÇÃçXêV
-				b.tradeLog.push();
-			}
-
-			//SellerÇÃçXêV
-			for (auto& s : u.sellers)
-			{
-				if (s.progress < s.period) s.progress++;
-				int numSell = s.casket.numItem - int(s.target*(1 - s.progress / double(s.period)));
-
-				if (numSell > 0)
-				{
-					u.sellItem(s.casket.itemType, numSell, Max(1, int(1 + s.wallet().price*Random(1.00, 1.10))), s.walletID);
-					s.casket.numItem -= numSell;
-				}
-			}
-			u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
-
-			//BuyerÇÃçXêV
-			for (auto& b : u.buyers)
-			{
-				if (b.progress < b.period) b.progress++;
-
-				int numBuy = Min(u.numItem(b.casket.itemType), int(b.target*(b.progress / double(b.period))) - b.casket.numItem);
-				if (numBuy == 0) continue;
-
-				u.buyItem(b.casket.itemType, b.walletID, numBuy);
-				b.casket.numItem += numBuy;
-
 			}
 		}
 
-		//ésñØÇÃçXêV
+		//ésñØÉçÉOÇÃçXêV
 		for (auto& c : u.citizens)
 		{
-			const auto& je = u.jobEfficiency[c.citizenType];
-			const auto& data = c.data();
+			c.incomeLog.push_front(c.wallet().income);
+			c.incomeLog.pop_back();
+			c.wallet().income = 0;	//é˚ì¸ÇÉäÉZÉbÉg
+		}
 
-			if (je == 0) c.jobProgress = 0;
-
-
-
-			//if (c.wallet().sellCount == 0)
-			c.jobProgress += je * planet.timeSpeed*c.jobEfficiency;
-
-			if (c.jobProgress >= 1.0)
+		//ésñØÇÃì]êE
+		for (auto& c : u.citizens)
+		{
+			if (u.jobEfficiency[c.citizenType] == 0 || RandomBool(0.003))	//ì]êE
 			{
-				c.jobProgress -= 1.0;
+				int sum = 0;
+				for (auto t : u.citizens) sum += t.avgIncome();
 
-				c.wallet().add(int(data.wage*u.productivity));
-
-				//ItemÇÃîÃîÑ
-				if (data.product.numItem > 0)
+				sum = Random(sum);
+				for (auto t : u.citizens)
 				{
-					//ñ⁄ïWóòâvÇíBê¨Ç≈Ç´ÇÈèÍçáÇÃÇ›ê∂éY
-					if (u.isSoldOut(data.product.itemType) || u.cost(data.product.itemType) > c.targetRevenue / data.product.numItem)
-						u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
-				}
-
-				//çwîÉ
-				for (int i = 0; i < int(itemData.size()); i++)
-				{
-					const double h = Random(0.1, 5.0);
-					auto itemType = Random(int(itemData.size() - 1));
-					if (!u.isSoldOut(itemType))
+					sum -= t.avgIncome();
+					if (sum < 0)
 					{
-						if (itemData[itemType].value / double(u.cost(itemType)) > h && u.cost(itemType) < c.wallet().money)
-							u.buyItem(itemType, c.walletID);
+						if (c.avgIncome() < t.avgIncome())
+						{
+							c.incomeLog.fill(0);
+							c.citizenType = t.citizenType;
+							//ñ⁄ïWóòâvÇòJì≠é“ÇÃé˚âvÇå≥Ç…ê›íË
+							c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
+
+							//îÃîÑâøäiÇÃÉRÉsÅ[
+							c.wallet().price = t.wallet().price;
+						}
+						break;
 					}
 				}
-				c.wallet().pull(c.wallet().money / 10);
-
+				for (int i = 0; i < int(citizenData.size()); i++)
+				{
+					if (u.jobEfficiency[i] != 0 && !u.citizens.any([&i](const Citizen& t) { return t.citizenType == i; }))
+					{
+						c.citizenType = i;
+						//ñ⁄ïWóòâvÇòJì≠é“ÇÃé˚âvÇå≥Ç…ê›íË
+						c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
+					}
+				}
 			}
 		}
+
+		//ésèÍÇÃçXêV
+		for (auto i : step(int(u.baskets.size())))
+		{
+			auto& b = u.baskets[i];
+			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//âøäií·â∫
+
+																			//TradeLogÇÃçXêV
+			b.tradeLog.push();
+		}
+
+		//SellerÇÃçXêV
+		for (auto& s : u.sellers)
+		{
+			if (s.progress < s.period) s.progress++;
+			int numSell = s.casket.numItem - int(s.target*(1 - s.progress / double(s.period)));
+
+			if (numSell > 0)
+			{
+				u.sellItem(s.casket.itemType, numSell, Max(1, int(1 + s.wallet().price*Random(1.00, 1.10))), s.walletID);
+				s.casket.numItem -= numSell;
+			}
+		}
+		u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
+
+		//BuyerÇÃçXêV
+		for (auto& b : u.buyers)
+		{
+			if (b.progress < b.period) b.progress++;
+
+			int numBuy = Min(u.numItem(b.casket.itemType), int(b.target*(b.progress / double(b.period))) - b.casket.numItem);
+			if (numBuy == 0 || (b.topPrice && u.cost(b.casket.itemType) > b.topPrice.value())) continue;
+
+			u.buyItem(b.casket.itemType, b.walletID, numBuy);
+			b.casket.numItem += numBuy;
+
+		}
 	}
+
+	//ésñØÇÃçXêV
+	for (auto& c : u.citizens)
+	{
+		const auto& je = u.jobEfficiency[c.citizenType];
+		const auto& data = c.data();
+
+		if (je == 0) c.jobProgress = 0;
+
+
+
+		//if (c.wallet().sellCount == 0)
+		c.jobProgress += je * planet.timeSpeed*c.jobEfficiency;
+
+		if (c.jobProgress >= 1.0)
+		{
+			c.jobProgress -= 1.0;
+
+			c.wallet().add(int(data.wage*u.productivity));
+
+			//ItemÇÃîÃîÑ
+			if (data.product.numItem > 0)
+			{
+				//ñ⁄ïWóòâvÇíBê¨Ç≈Ç´ÇÈèÍçáÇÃÇ›ê∂éY
+				if (u.isSoldOut(data.product.itemType) || u.cost(data.product.itemType) > c.targetRevenue / data.product.numItem)
+					u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
+			}
+
+			//çwîÉ
+			for (int i = 0; i < int(itemData.size()); i++)
+			{
+				const double h = Random(0.1, 5.0);
+				auto itemType = Random(int(itemData.size() - 1));
+				if (!u.isSoldOut(itemType))
+				{
+					if (itemData[itemType].value / double(u.cost(itemType)) > h && u.cost(itemType) < c.wallet().money)
+						u.buyItem(itemType, c.walletID);
+				}
+			}
+			c.wallet().pull(c.wallet().money / 10);
+
+		}
+	}
+}
+void	updateUrbans()
+{
+	if (KeyM.down()) useMulthThread = !useMulthThread;
+
+	if (useMulthThread)
+	{
+		Array<std::thread> threads;
+
+		for (auto& u : urbans) threads.emplace_back(updateUrban, std::ref(u)); 
+		for (auto& t : threads)  t.join(); 
+	}
+	else for (auto& u : urbans) updateUrban(u);
 
 	if (MouseL.down())
 	{

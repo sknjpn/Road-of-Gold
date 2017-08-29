@@ -205,6 +205,7 @@ void	updateVehicles()
 						if (!flag)
 						{
 							v.nowUrban->buyers.emplace_back(v.walletID, c.second, int(v.period), v.maxVolume);
+							v.nowUrban->buyers.back().topPrice = v.topPrice;
 						}
 						/*
 						int num = Min(v.maxVolume, v.nowUrban->numItem(c.second));
@@ -222,6 +223,7 @@ void	updateVehicles()
 						{
 							v.nowUrban->sellers.emplace_back(v.walletID, v.cargo, int(v.period));
 							//v.nowUrban->sellItem(v.cargo, 10000, v.walletID);
+							v.topPrice = v.wallet().price;
 						}
 						v.cargo.numItem = 0;
 						v.reader++;

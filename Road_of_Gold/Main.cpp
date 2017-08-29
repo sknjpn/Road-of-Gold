@@ -31,8 +31,6 @@ void Main()
 	for (auto i : step(int(fonts.size()))) ui.fonts.emplace_back(&fonts.at(i));
 	Log(L"fontsの展開が完了 size = ", fonts.size());
 
-	System::SetExitEvent(WindowEvent::CloseButton);
-
 	loadItemData();
 	loadBiomeData();
 	loadEnergyData();

@@ -17,6 +17,7 @@ Buyer::Buyer(int _walletID, int _itemType, int _period, int _target)
 	, target(_target)
 	, progress(0)
 	, period(_period)
+	, topPrice(none)
 {
 
 }

@@ -20,6 +20,7 @@ UI	ui;
 Planet	planet;
 TinyCamera tinyCamera;
 JSONReader incidentJson;
+bool	useMulthThread = false;
 
 Array<Node>		nodes;
 Array<Route>	routes;

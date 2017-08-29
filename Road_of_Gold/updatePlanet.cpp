@@ -5,10 +5,7 @@ void	updatePlanet()
 {
 	if (planet.sandglass.update())
 	{
-		for (auto& i : incidents)
-		{
-			if (int(planet.sandglass.timer) == i.time()) i.action();
-		}
+		for (auto& i : incidents) i.update();
 	}
 
 	tinyCamera.update();

@@ -9,6 +9,14 @@
 
 void	drawUI()
 {
+	if (useMulthThread)
+	{
+		(*ui.fonts[16])(L"マルチスレッドは有効です。無効化:Mキー").draw(560, 0, Palette::Red);
+	}
+	else
+	{
+		(*ui.fonts[16])(L"マルチスレッドは無効です。有効化:Mキー").draw(560, 0, Palette::Red);
+	}
 
 	//Export
 	if (KeyE.down()) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
