@@ -12,6 +12,11 @@ int		VehicleData::id() const { return int(this - &vehicleData.front()); }
 
 void	loadData()
 {
+	JSONReader itemDataJson(L"Assets/ItemData.json");
+	for (auto json : itemDataJson[L"ItemData"].arrayView())
+		itemData.emplace_back(json);
+	Log(L"ItemDataÇÃì«Ç›çûÇ›äÆóπ size = ", itemData.size());
+
 	JSONReader biomeDataJson(L"Assets/BiomeData.json");
 	for (auto json : biomeDataJson[L"BiomeData"].arrayView())
 		biomeData.emplace_back(json);
@@ -31,12 +36,6 @@ void	loadData()
 	for (auto json : vehicleDataJson[L"VehicleData"].arrayView())
 		vehicleData.emplace_back(json);
 	Log(L"VehicleDataÇÃì«Ç›çûÇ›äÆóπ size = ", vehicleData.size());
-
-	JSONReader itemDataJson(L"Assets/ItemData.json");
-	for (auto json : itemDataJson[L"ItemData"].arrayView())
-		itemData.emplace_back(json);
-	Log(L"ItemDataÇÃì«Ç›çûÇ›äÆóπ size = ", itemData.size());
-
 }
 
 CitizenData::CitizenData(const JSONValue& _json)

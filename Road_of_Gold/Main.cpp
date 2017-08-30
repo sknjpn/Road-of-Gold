@@ -7,13 +7,7 @@
 #include"UI.h"
 #include"Sound.h"
 #include"Scuttle.h"
-#include"Incident.h"
-
-#include"BiomeData.h"
-#include"EnergyData.h"
-#include"CitizenData.h"
-#include"VehicleData.h"
-#include"ItemData.h"
+#include"JSON.h"
 
 void Main()
 {
@@ -31,11 +25,7 @@ void Main()
 	for (auto i : step(int(fonts.size()))) ui.fonts.emplace_back(&fonts.at(i));
 	Log(L"fontsの展開が完了 size = ", fonts.size());
 
-	loadItemData();
-	loadBiomeData();
-	loadEnergyData();
-	loadCitizenData();
-	loadVehicleData();
+	loadData();
 
 	initSounds();
 

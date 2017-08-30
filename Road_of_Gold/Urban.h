@@ -12,6 +12,7 @@ struct Node;
 struct Wallet;
 struct Pos;
 struct Route;
+struct Nation;
 
 struct Urban
 {
@@ -19,6 +20,7 @@ struct Urban
 	int		walletID;
 	int		joinedNodeID;
 	double	productivity;
+	Nation*	joinedNation;
 	Sandglass	sandglass;
 	Array<Energy>	energies;
 	Array<Citizen>	citizens;

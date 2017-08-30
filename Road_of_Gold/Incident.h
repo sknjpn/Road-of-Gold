@@ -12,6 +12,6 @@ struct Incident
 	void	addScuttle();
 	void	update();
 };
-extern JSONReader incidentJson;
+extern JSONReader incidentsJson;
 extern Array<Incident>	incidents;
 extern Array<String>	flagTexts;

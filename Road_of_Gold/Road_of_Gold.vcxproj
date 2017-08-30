@@ -207,6 +207,7 @@
     <ClCompile Include="loadData.cpp" />
     <ClCompile Include="loadMap.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Nation.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Sandglass.cpp" />
     <ClCompile Include="Scuttle.cpp" />
@@ -278,6 +279,7 @@
     <ClInclude Include="Incident.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="JSON.h" />
+    <ClInclude Include="Nation.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Planet.h" />

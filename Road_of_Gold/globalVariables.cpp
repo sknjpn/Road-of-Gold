@@ -9,6 +9,7 @@
 #include"Export.h"
 #include"Scuttle.h"
 #include"Incident.h"
+#include"Nation.h"
 
 #include"EnergyData.h"
 #include"CitizenData.h"
@@ -19,7 +20,7 @@
 UI	ui;
 Planet	planet;
 TinyCamera tinyCamera;
-JSONReader incidentJson;
+JSONReader incidentsJson;
 bool	useMulthThread = false;
 
 Array<Node>		nodes;
@@ -31,6 +32,7 @@ Array<Vehicle>	vehicles;
 Array<Export>	exports;
 Array<Scuttle>	scuttles;
 Array<Incident>	incidents;
+Array<Nation>	nations;
 
 Array<EnergyData>	energyData;
 Array<CitizenData>	citizenData;

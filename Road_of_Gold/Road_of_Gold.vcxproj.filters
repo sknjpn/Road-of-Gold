@@ -168,6 +168,9 @@
     <ClCompile Include="Energy.cpp">
       <Filter>Source Files\class</Filter>
     </ClCompile>
+    <ClCompile Include="Nation.cpp">
+      <Filter>Source Files\class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">
@@ -351,6 +354,9 @@
     </ClInclude>
     <ClInclude Include="JSON.h">
       <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Nation.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
