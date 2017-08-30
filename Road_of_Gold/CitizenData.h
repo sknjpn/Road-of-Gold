@@ -15,5 +15,3 @@ struct CitizenData
 };
 
 extern Array<CitizenData>	citizenData;
-
-void	loadCitizenData();

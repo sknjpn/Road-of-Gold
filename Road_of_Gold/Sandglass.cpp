@@ -9,5 +9,6 @@ bool	Sandglass::update()
 {
 	timer += planet.timeSpeed;
 	if (int(timer) != int(timer - planet.timeSpeed)) return true;
+
 	return false;
 }

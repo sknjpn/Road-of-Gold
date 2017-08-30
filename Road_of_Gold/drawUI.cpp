@@ -52,28 +52,7 @@ void	drawUI()
 				auto p2 = e.to->pos().mPos - p*0.02;
 				Triangle(p1, p1.lerp(p2, 0.8) + width*p.rotated(90_deg)*0.01, p1.lerp(p2, 0.8) - width*p.rotated(90_deg)*0.01).draw(ColorF(itemData[e.itemType].color, 0.8));
 				Triangle(p2, p1.lerp(p2, 0.8) + width*p.rotated(90_deg)*0.03, p1.lerp(p2, 0.8) - width*p.rotated(90_deg)*0.03).draw(ColorF(itemData[e.itemType].color, 0.8));
-				/*
-				LineString l;
 
-				for (double x = 0; x <= 1.0; x += 0.01)
-				{
-					double y = 0.25 - pow(x - 0.5, 2.0);
-					l.emplace_back(e.from->pos().mPos.lerp(e.to->pos().mPos, x).movedBy(0, -y*0));
-				}
-
-				for (int j = 0; j < int(l.size() - 20); j++)
-				{
-					auto line = Line(l[j], l[j + 1]);
-					line.draw(width*j / double(int(l.size() - 20)), ColorF(itemData[e.itemType].color));
-				}
-				auto p = (l.at(l.size() - 2) - l.at(l.size() - 1)).normalized();
-				Triangle(e.to->pos().mPos, l[l.size() - 20] + p.rotated(90_deg)*width * 2, l[l.size() - 20] + p.rotated(-90_deg)*width * 2).draw(ColorF(itemData[e.itemType].color));
-
-				//l.draw(width, ColorF(itemData[e.itemType].color,0.8));
-
-				//Line line(e.from->pos().mPos, e.to->pos().mPos);
-				//line.drawArrow(width, Vec2(line.length(), line.length())*0.1, ColorF(itemData[e.itemType].color, 0.8));
-				*/
 			}
 		}
 	}

@@ -32,6 +32,7 @@ void	Incident::update()
 	}
 	action();
 }
+
 void	Incident::addScuttle()
 {
 	//planet.timeSpeed = 0.0;
@@ -74,6 +75,7 @@ void	Incident::addScuttle()
 		scuttles.back().audio.play();
 	}
 }
+
 void	Incident::action()
 {
 	addScuttle();

@@ -57,14 +57,17 @@ void TinyCamera::update()
 	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x >= Window::Size().x - 1) drawingRegion.pos.x += slidingSpeed;
 	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y >= Window::Size().y - 1) drawingRegion.pos.y += slidingSpeed;
 }
+
 Pos TinyCamera::getCursorPos() const
 {
 	return getMat3x2().inversed().transform(Cursor::PosF());
 }
+
 Mat3x2 TinyCamera::getMat3x2(int _delta) const
 {
 	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta * 360_deg, 0.0)).scaled(outputRegion.size.y / smoothDrawingRegion.size.y).translated(outputRegion.center());
 }
+
 Transformer2D TinyCamera::createTransformer(int _delta) const
 {
 	return Transformer2D(getMat3x2(_delta), true);

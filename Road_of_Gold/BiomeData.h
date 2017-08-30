@@ -17,5 +17,3 @@ struct BiomeData
 };
 
 extern Array<BiomeData>	biomeData;
-
-void	loadBiomeData();

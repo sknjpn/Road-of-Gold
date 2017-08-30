@@ -19,5 +19,3 @@ struct VehicleData
 };
 
 extern Array<VehicleData>	vehicleData;
-
-void	loadVehicleData();

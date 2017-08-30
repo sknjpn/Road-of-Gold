@@ -17,5 +17,3 @@ struct ItemData
 };
 
 extern Array<ItemData>	itemData;
-
-void	loadItemData();

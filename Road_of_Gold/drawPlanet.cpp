@@ -7,5 +7,4 @@ void	drawPlanet()
 		const auto transformer = tinyCamera.createTransformer(i);
 		planet.mapTexture.resize(360_deg, 180_deg).drawAt(0, 0);
 	}
-
 }

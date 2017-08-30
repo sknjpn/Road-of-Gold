@@ -159,6 +159,15 @@
     <ClCompile Include="Incident.cpp">
       <Filter>Source Files\class</Filter>
     </ClCompile>
+    <ClCompile Include="drawScuttles.cpp">
+      <Filter>Source Files\draw</Filter>
+    </ClCompile>
+    <ClCompile Include="updateScuttles.cpp">
+      <Filter>Source Files\update</Filter>
+    </ClCompile>
+    <ClCompile Include="Energy.cpp">
+      <Filter>Source Files\class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">
@@ -339,6 +348,9 @@
     </ClInclude>
     <ClInclude Include="Scuttle.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="JSON.h">
+      <Filter>Header Files\Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

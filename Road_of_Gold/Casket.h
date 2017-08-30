@@ -4,8 +4,8 @@ struct ItemData;
 
 struct Casket
 {
-	int	itemType;
-	int	numItem;
+	int		itemType;
+	int		numItem;
 
 	Casket();
 	Casket(int _itemType, int _numItem);

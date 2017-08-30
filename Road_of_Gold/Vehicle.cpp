@@ -26,6 +26,7 @@ Vehicle::Vehicle(int _vehicleType, Urban* _nowUrban)
 {
 	maxVolume = data().volume;
 }
+
 Vec2	Vehicle::pos() const
 {
 	if (route == nullptr) return nodes[nowUrban->joinedNodeID].pos.mPos;
@@ -50,11 +51,10 @@ Vec2	Vehicle::pos() const
 	}
 	return Vec2(0, 0);
 }
+
 bool	Vehicle::mouseOver() const
 {
 	return Circle(pos(), 0.005).mouseOver();
 }
-Wallet&	Vehicle::wallet() const
-{
-	return wallets[walletID];
-}
+
+Wallet&	Vehicle::wallet() const { return wallets[walletID]; }

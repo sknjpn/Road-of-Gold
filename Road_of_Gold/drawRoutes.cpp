@@ -6,7 +6,6 @@
 
 void	drawRotues()
 {
-
 	for (int i = 0; i < 2; ++i)
 	{
 		const auto transformer = tinyCamera.createTransformer(i);
