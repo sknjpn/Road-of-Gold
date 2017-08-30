@@ -3,183 +3,205 @@
 		{
 			"JoinedNodeID": 8025,
 			"Name": "レニングラード",
-			"NumCitizens": 300,
-			"Productivity": 0.25,
+			"NumCitizens": 600,
+			"Productivity": 1.25,
 			"Energies": {
-				"カカオ": 300
+				"農地": 300,
+				"カカオ": 400
 			}
 		},
 		{
 			"JoinedNodeID": 8486,
 			"Name": "アイスランド",
-			"NumCitizens": 40,
-			"Productivity": 0.10,
+			"NumCitizens": 150,
+			"Productivity": 1.25,
 			"Energies": {
-				"キタキツネ": 40
+				"農地": 100,
+				"キタキツネ": 100
 			}
 		},
 		{
 			"JoinedNodeID": 16232,
 			"Name": "グリーンランド",
-			"NumCitizens": 50,
-			"Productivity": 0.10,
+			"NumCitizens": 200,
+			"Productivity": 1.50,
 			"Energies": {
-				"キタキツネ": 50
+				"農地": 100,
+				"キタキツネ": 150
 			}
 		},
 		{
 			"JoinedNodeID": 18502,
 			"Name": "北京",
-			"NumCitizens": 200,
-			"Productivity": 0.1,
+			"NumCitizens": 600,
+			"Productivity": 1.25,
 			"Energies": {
-				"絨毯": 200
+				"農地": 300,
+				"絨毯": 400
 			}
 		},
 		{
 			"JoinedNodeID": 18100,
 			"Name": "新疆",
 			"NumCitizens": 300,
-			"Productivity": 0.1,
+			"Productivity": 0.75,
 			"Energies": {
+				"農地": 100,
 				"絨毯": 300
 			}
 		},
 		{
 			"JoinedNodeID": 9797,
 			"Name": "テューリンゲン",
-			"NumCitizens": 300,
-			"Productivity": 0.25,
+			"NumCitizens": 500,
+			"Productivity": 1.25,
 			"Energies": {
-				"茶葉": 300
+				"農地": 200,
+				"茶葉": 400
 			}
 		},
 		{
 			"JoinedNodeID": 2783,
 			"Name": "ベルリン",
-			"NumCitizens": 1000,
-			"Productivity": 5.0,
+			"NumCitizens": 1500,
+			"Productivity": 1.5,
 			"Energies": {
+				"農地": 1000,
+				"茶葉": 100
 			}
 		},
 		{
 			"JoinedNodeID": 9516,
 			"Name": "ウィーン",
-			"NumCitizens": 200,
-			"Productivity": 0.25,
+			"NumCitizens": 300,
+			"Productivity": 0.75,
 			"Energies": {
+				"農地": 100,
 				"キタキツネ": 200
 			}
 		},
 		{
 			"JoinedNodeID": 6010,
 			"Name": "ライプツィヒ",
-			"NumCitizens": 300,
-			"Productivity": 0.25,
+			"NumCitizens": 500,
+			"Productivity": 1.25,
 			"Energies": {
+				"農地": 200,
 				"茶葉": 300
 			}
 		},
 		{
 			"JoinedNodeID": 12666,
 			"Name": "パリ",
-			"NumCitizens": 1000,
-			"Productivity": 5.0,
+			"NumCitizens": 800,
+			"Productivity": 1.0,
 			"Energies": {
+				"農地": 900
 			}
 		},
 		{
 			"JoinedNodeID": 9719,
 			"Name": "ストラスブール",
 			"NumCitizens": 100,
-			"Productivity": 0.5,
+			"Productivity": 0.75,
 			"Energies": {
-				"キタキツネ": 100
+				"農地": 50,
+				"キタキツネ": 75
 			}
 		},
 		{
 			"JoinedNodeID": 18278,
 			"Name": "ローマ",
 			"NumCitizens": 1000,
-			"Productivity": 5.0,
+			"Productivity": 1.5,
 			"Energies": {
+				"農地": 750
 			}
 		},
 		{
 			"JoinedNodeID": 18770,
 			"Name": "ヴェネツィア",
-			"NumCitizens": 100,
-			"Productivity": 0.25,
+			"NumCitizens": 200,
+			"Productivity": 1.25,
 			"Energies": {
+				"農地": 200,
 				"香辛料": 100
 			}
 		},
 		{
 			"JoinedNodeID": 11529,
 			"Name": "ヴェローナ",
-			"NumCitizens": 300,
-			"Productivity": 0.25,
+			"NumCitizens": 500,
+			"Productivity": 1.25,
 			"Energies": {
-				"香辛料": 100
+				"農地": 200,
+				"香辛料": 200
 			}
 		},
 		{
 			"JoinedNodeID": 17602,
 			"Name": "バチカン",
 			"NumCitizens": 200,
-			"Productivity": 0.25,
+			"Productivity": 1.2,
 			"Energies": {
+				"農地": 100
 			}
 		},
 		{
 			"JoinedNodeID": 11146,
 			"Name": "オルレアン",
 			"NumCitizens": 100,
-			"Productivity": 0.5,
+			"Productivity": 0.75,
 			"Energies": {
-				"キタキツネ": 100
+				"農地": 50,
+				"キタキツネ": 50
 			}
 		},
 		{
 			"JoinedNodeID": 6239,
 			"Name": "モスクワ",
 			"NumCitizens": 1000,
-			"Productivity": 5.0,
+			"Productivity": 1.5,
 			"Energies": {
+				"農地": 800
 			}
 		},
 		{
 			"JoinedNodeID": 5595,
 			"Name": "スモレンスク",
 			"NumCitizens": 200,
-			"Productivity": 0.50,
+			"Productivity": 1.00,
 			"Energies": {
-				"カカオ": 200
+				"農地": 50,
+				"カカオ": 150
 			}
 		},
 		{
 			"JoinedNodeID": 16170,
 			"Name": "ニース",
 			"NumCitizens": 500,
-			"Productivity": 0.50,
+			"Productivity": 1.0,
 			"Energies": {
-				"ブドウ": 500
+				"農地": 200,
+				"ブドウ": 300
 			}
 		},
 		{
 			"JoinedNodeID": 686,
 			"Name": "アディスアベバ",
 			"NumCitizens": 200,
-			"Productivity": 0.25,
+			"Productivity": 0.60,
 			"Energies": {
+				"農地": 100
 			}
 		},
 		{
 			"JoinedNodeID": 8430,
 			"Name": "アクスム",
 			"NumCitizens": 150,
-			"Productivity": 0.25,
+			"Productivity": 0.50,
 			"Energies": {
+				"農地": 75
 			}
 		}
 	]

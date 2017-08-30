@@ -247,7 +247,9 @@ void	drawUI()
 					Rect rect(240, 24 + i * 88, 240, 64);
 					rect.draw(bColor).drawFrame(2, fColor);
 					const int timeScale = 1; //b.tradeLog.time / 120
-					drawGraph(rect, b.tradeLog.numTrade, timeScale, Palette::Blue);
+					drawGraph(rect, b.tradeLog.numExport, timeScale, Palette::Blue);
+					drawGraph(rect, b.tradeLog.numImport, timeScale, Palette::Purple);
+					drawGraph(rect, b.tradeLog.numProduction, timeScale, Palette::Red);
 					drawGraph(rect, b.tradeLog.price, timeScale, Palette::Yellow);
 					data.icon.draw(rect.pos);
 				}

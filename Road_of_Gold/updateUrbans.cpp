@@ -10,29 +10,6 @@ void	updateUrban(Urban& u)
 {
 	if (u.sandglass.update())
 	{
-		//効率の更新
-		for (auto i : step(int(citizenData.size())))
-		{
-			auto& je = u.jobEfficiency[i];
-			auto& data = citizenData[i];
-			auto numCitizen = int(u.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }));
-
-			if (data.needEnergyType == -1) je = 1;
-			else if (!u.energies.any([&data](const Energy& e) { return e.energyType == data.needEnergyType; })) je = 0;
-			else
-			{
-				for (auto j : step(int(u.energies.size())))
-				{
-					auto& e = u.energies[j];
-					if (e.energyType == data.needEnergyType)
-					{
-						if (e.numEnergy == 0) je = 0;
-						else if (e.numEnergy >= numCitizen) je = 1;
-						else je = (double)e.numEnergy / (double)numCitizen;
-					}
-				}
-			}
-		}
 
 		//市民ログの更新
 		for (auto& c : u.citizens)
@@ -81,6 +58,30 @@ void	updateUrban(Urban& u)
 			}
 		}
 
+		//効率の更新
+		for (auto i : step(int(citizenData.size())))
+		{
+			auto& je = u.jobEfficiency[i];
+			auto& data = citizenData[i];
+			auto numCitizen = int(u.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }));
+
+			if (data.needEnergyType == -1) je = 1;
+			else if (!u.energies.any([&data](const Energy& e) { return e.energyType == data.needEnergyType; })) je = 0;
+			else
+			{
+				for (auto j : step(int(u.energies.size())))
+				{
+					auto& e = u.energies[j];
+					if (e.energyType == data.needEnergyType)
+					{
+						if (e.numEnergy == 0) je = 0;
+						else if (numCitizen == 0) je = 1.0;
+						else je = sqrt((double)e.numEnergy / (double)numCitizen)*u.productivity;
+					}
+				}
+			}
+		}
+
 		//市場の更新
 		for (auto i : step(int(u.baskets.size())))
 		{
@@ -89,6 +90,7 @@ void	updateUrban(Urban& u)
 
 																			//TradeLogの更新
 			b.tradeLog.push();
+			
 		}
 
 		//Sellerの更新
@@ -101,6 +103,7 @@ void	updateUrban(Urban& u)
 			{
 				u.sellItem(s.casket.itemType, numSell, Max(1, int(1 + s.wallet().price*Random(1.00, 1.10))), s.walletID);
 				s.casket.numItem -= numSell;
+				u.baskets[s.casket.itemType].tradeLog.numImport.front() += numSell;
 			}
 		}
 		u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
@@ -111,10 +114,11 @@ void	updateUrban(Urban& u)
 			if (b.progress < b.period) b.progress++;
 
 			int numBuy = Min(u.numItem(b.casket.itemType), int(b.target*(b.progress / double(b.period))) - b.casket.numItem);
-			if (numBuy == 0 || (b.topPrice && u.cost(b.casket.itemType) > b.topPrice.value())) continue;
+			if (numBuy == 0) continue;
 
 			u.buyItem(b.casket.itemType, b.walletID, numBuy);
 			b.casket.numItem += numBuy;
+			u.baskets[b.casket.itemType].tradeLog.numExport.front() += numBuy;
 
 		}
 	}
@@ -130,21 +134,12 @@ void	updateUrban(Urban& u)
 
 
 		//if (c.wallet().sellCount == 0)
-		c.jobProgress += je * planet.timeSpeed*c.jobEfficiency;
+		c.jobProgress += je*planet.timeSpeed;
 
-		if (c.jobProgress >= 1.0)
+		c.timer += planet.timeSpeed;
+		if (c.timer >= 1.0)
 		{
-			c.jobProgress -= 1.0;
-
-			c.wallet().add(int(data.wage*u.productivity));
-
-			//Itemの販売
-			if (data.product.numItem > 0)
-			{
-				//目標利益を達成できる場合のみ生産
-				if (u.isSoldOut(data.product.itemType) || u.cost(data.product.itemType) > c.targetRevenue / data.product.numItem)
-					u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
-			}
+			c.timer -= 1.0;
 
 			//購買
 			for (int i = 0; i < int(itemData.size()); i++)
@@ -158,7 +153,24 @@ void	updateUrban(Urban& u)
 				}
 			}
 			c.wallet().pull(c.wallet().money / 10);
+		}
 
+		while (c.jobProgress >= 1.0)
+		{
+			c.jobProgress -= 1.0;
+
+			c.wallet().add(int(data.wage));
+
+			//Itemの販売
+			if (data.product.numItem > 0)
+			{
+				//目標利益を達成できる場合のみ生産
+				if (u.isSoldOut(data.product.itemType) || u.cost(data.product.itemType) > c.targetRevenue / data.product.numItem)
+				{
+					u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
+					u.baskets[data.product.itemType].tradeLog.numProduction.front() += data.product.numItem;
+				}
+			}
 		}
 	}
 }
@@ -170,8 +182,8 @@ void	updateUrbans()
 	{
 		Array<std::thread> threads;
 
-		for (auto& u : urbans) threads.emplace_back(updateUrban, std::ref(u)); 
-		for (auto& t : threads)  t.join(); 
+		for (auto& u : urbans) threads.emplace_back(updateUrban, std::ref(u));
+		for (auto& t : threads)  t.join();
 	}
 	else for (auto& u : urbans) updateUrban(u);
 

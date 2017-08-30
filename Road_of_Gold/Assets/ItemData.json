@@ -3,35 +3,35 @@
     {
       "Name": "毛皮",
       "Volume": 10,
-      "Value": 200,
+      "Value": 300,
       "Color": "#5F220A",
       "Icon": "Assets/Image/Fur.png"
     },
     {
       "Name": "コーヒー",
       "Volue": 10,
-      "Value": 100,
+      "Value": 300,
       "Color": "#050000",
       "Icon": "Assets/Image/Coffee.png"
     },
     {
       "Name": "茶葉",
       "Volume": 10,
-      "Value": 100,
+      "Value": 300,
       "Color": "#037B00",
       "Icon": "Assets/Image/Tea.png"
     },
     {
       "Name": "絨毯",
       "Volume": 10,
-      "Value": 100,
+      "Value": 300,
       "Color": "#B5C2D0",
       "Icon": "Assets/Image/Carpet.png"
     },
     {
       "Name": "香辛料",
       "Volume": 10,
-      "Value": 500,
+      "Value": 300,
       "Color": "#FF4500",
       "Icon": "Assets/Image/Spice.png"
     },
@@ -45,14 +45,14 @@
     {
       "Name": "ワイン",
       "Volume": 10,
-      "Value": 200,
+      "Value": 300,
       "Color": "#9900CC",
       "Icon": "Assets/Image/Wine.png"
     },
     {
       "Name": "ショコラ",
       "Volume": 10,
-      "Value": 100,
+      "Value": 300,
       "Color": "#603835",
       "Icon": "Assets/Image/Chocolate.png"
     }

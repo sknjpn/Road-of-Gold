@@ -31,7 +31,6 @@ struct Vehicle
 	Route*	route;
 	Export	exportLog;
 	bool	stopFlag;	//true‚È‚ç‚Î–‹Æ‚ğ’†’f
-	Optional<int>	topPrice;	//w“üÅ‚‰¿Ši
 
 	int		maxVolume;
 	int		reader;

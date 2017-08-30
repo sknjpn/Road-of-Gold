@@ -11,6 +11,8 @@ struct TradeLog
 	Array<int>	price;			//•½‹Ïæˆø‰¿Ši
 	Array<int>	numProduction;	//s–¯‚É‚æ‚é¶Y—Ê
 	Array<int>	numConsumption;	//s–¯‚É‚æ‚éÁ”ï
+	Array<int>	numExport;		//—Ao—Ê
+	Array<int>	numImport;		//—A“ü—Ê
 	int		time;	//•Û‘¶‚µ‚Ä‚¢‚éŠúŠÔ
 
 	TradeLog()
@@ -20,6 +22,8 @@ struct TradeLog
 		price.resize(time);
 		numProduction.resize(time);
 		numConsumption.resize(time);
+		numExport.resize(time);
+		numImport.resize(time);
 	}
 
 	void	push()
@@ -28,6 +32,8 @@ struct TradeLog
 		price.push_front(price.front());
 		numProduction.push_front(0);
 		numConsumption.push_front(0);
+		numImport.push_front(0);
+		numExport.push_front(0);
 		time++;
 	}
 

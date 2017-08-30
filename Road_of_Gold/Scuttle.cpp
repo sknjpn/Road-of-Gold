@@ -57,6 +57,11 @@ void	updateScuttles()
 			}
 		}
 	}
+
+	if (KeyEnter.down())
+	{
+		if (!scuttles.isEmpty()) scuttles.pop_back();
+	}
 }
 void	drawScuttles()
 {

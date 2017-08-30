@@ -1,66 +1,6 @@
 {
     "Incidents": [
         {
-            "Name": "ロシア帝国の財政難",
-            "Scuttle": {
-                "Title": "ロシアで治安悪化",
-                "Description": "近年のロシア帝国の治安悪化は深刻な税収減少を招いている。\nこれは長期的な生産力低下を引き起こすと思われる。",
-                "Button": "購買力の低下が懸念されるだろう",
-                "Sound": "Assets/Sound/s1.mp3"
-            },
-            "Conditions": [
-                {
-                    "ConditionType": "Random",
-                    "Value": 0.001
-                },
-                {
-                    "ConditionType": "FlagIsFalse",
-                    "FlagText": "ロシアの財政難"
-                }
-            ],
-            "Actions": [
-                {
-                    "ActionType": "AddFlag",
-                    "FlagText": "ロシアの財政難"
-                },
-                {
-                    "ActionType": "CorrectProductivity",
-                    "Urban": "モスクワ",
-                    "Value": 0.8
-                }
-            ]
-        },
-        {
-            "Name": "ロシア帝国の復興",
-            "Scuttle": {
-                "Title": "ロシアで治安悪化",
-                "Description": "長期に渡って続いた財政難は終わった。\nロシア帝国の経済は好調に回復している。",
-                "Button": "素晴らしい！",
-                "Sound": "Assets/Sound/s1.mp3"
-            },
-            "Conditions": [
-                {
-                    "ConditionType": "Random",
-                    "Value": 0.001
-                },
-                {
-                    "ConditionType": "FlagIsTrue",
-                    "FlagText": "ロシアの財政難"
-                }
-            ],
-            "Actions": [
-                {
-                    "ActionType": "RemoveFlag",
-                    "FlagText": "ロシアの財政難"
-                },
-                {
-                    "ActionType": "CorrectProductivity",
-                    "Urban": "モスクワ",
-                    "Value": 1.25
-                }
-            ]
-        },
-        {
             "Name": "エチオピアのコーヒー",
             "Scuttle": {
                 "Title": "エチオピアのコーヒー",
@@ -147,7 +87,7 @@
                 },
                 {
                     "ConditionType": "Random",
-                    "Value": 0.9
+                    "Value": 0.1
                 }
             ],
             "Actions": [

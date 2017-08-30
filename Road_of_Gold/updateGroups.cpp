@@ -37,6 +37,7 @@ void	updateGroups()
 			v.wallet().money = 0;
 			v.wallet().expenses = 0;
 			v.wallet().income = 0;
+
 		}
 	}
 }

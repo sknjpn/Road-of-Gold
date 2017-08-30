@@ -31,10 +31,10 @@ void	updateVehicles()
 
 			int itemType = -1;
 			{
-				for (int j = 0; j < 1; j++)
+				for (int j = 0; j < 10; j++)
 				{
 					auto i = itemData.choice().id();
-					if (u2->isSoldOut(i)) continue;
+					if (u2->isSoldOut(i) || u2->baskets.at(i).tradeLog.numProduction.front() == 0) continue;
 					else
 					{
 						if (u1->isSoldOut(i) || u1->cost(i) > u2->cost(i))
@@ -45,7 +45,11 @@ void	updateVehicles()
 					}
 				}
 			}
-			if (itemType == -1) continue;
+			if (itemType == -1)
+			{
+				v.nowUrban = &urbans.choice();
+				continue;
+			}
 
 			v.route = nullptr;
 			v.reader = 0;
@@ -79,6 +83,9 @@ void	updateVehicles()
 				exports.emplace_back(v.exportLog);
 			}
 			v.timer = 0;
+
+			//”Ì”„‰¿Ši‚ÌÝ’è
+			v.wallet().price = u2->cost(itemType);
 		}
 
 		if (!v.chain.isEmpty() && v.reader < int(v.chain.size()))
@@ -205,16 +212,7 @@ void	updateVehicles()
 						if (!flag)
 						{
 							v.nowUrban->buyers.emplace_back(v.walletID, c.second, int(v.period), v.maxVolume);
-							v.nowUrban->buyers.back().topPrice = v.topPrice;
 						}
-						/*
-						int num = Min(v.maxVolume, v.nowUrban->numItem(c.second));
-						if (num > 0)
-						{
-							v.nowUrban->buyItem(c.second, v.walletID, num);
-							v.cargo = Casket(c.second, num);
-						}
-						*/
 						v.reader++;
 						break;
 					}
@@ -222,8 +220,6 @@ void	updateVehicles()
 						if (v.cargo.numItem > 0)
 						{
 							v.nowUrban->sellers.emplace_back(v.walletID, v.cargo, int(v.period));
-							//v.nowUrban->sellItem(v.cargo, 10000, v.walletID);
-							v.topPrice = v.wallet().price;
 						}
 						v.cargo.numItem = 0;
 						v.reader++;

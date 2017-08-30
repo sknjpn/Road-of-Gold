@@ -2,7 +2,8 @@
   "CitizenData": [
     {
       "Name": "労働者",
-      "Wage": 1000
+      "Wage": 1000,
+      "NeedEnergy": "農地"
     },
     {
       "Name": "狩人",
