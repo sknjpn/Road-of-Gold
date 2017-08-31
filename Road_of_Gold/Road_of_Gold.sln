@@ -9,6 +9,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NodeMapMaker", "..\NodeMapM
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MapEditor", "..\MapEditor\MapEditor.vcxproj", "{EF4E7462-95E5-4639-B7F1-43B23640D4A9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PlanetViewer", "..\PlanetViewer\PlanetViewer.vcxproj", "{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -41,6 +43,14 @@ Global
 		{EF4E7462-95E5-4639-B7F1-43B23640D4A9}.Release|x64.Build.0 = Release|x64
 		{EF4E7462-95E5-4639-B7F1-43B23640D4A9}.Release|x86.ActiveCfg = Release|Win32
 		{EF4E7462-95E5-4639-B7F1-43B23640D4A9}.Release|x86.Build.0 = Release|Win32
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Debug|x64.ActiveCfg = Debug|x64
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Debug|x64.Build.0 = Debug|x64
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Debug|x86.ActiveCfg = Debug|Win32
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Debug|x86.Build.0 = Debug|Win32
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Release|x64.ActiveCfg = Release|x64
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Release|x64.Build.0 = Release|x64
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Release|x86.ActiveCfg = Release|Win32
+		{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -127,7 +127,8 @@ $RECYCLE.BIN/
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -616,8 +617,5 @@ tags
 /Road_of_Gold/Road_of_Gold/
 /Road_of_Gold/NodeMapMaker/
 /Road_of_Gold/MapEditor/
-/Road_of_Gold/example
-/NodeMapMaker/example
-/MapEditor/example
 /Road_of_Gold/AS_DEBUG/
 *_log.html

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -19,35 +19,35 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{396BF707-68A5-48BD-BF52-4EFE99C03D8E}</ProjectGuid>
+    <ProjectGuid>{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Road_of_Gold</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
+    <RootNamespace>PlanetViewer</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -71,47 +71,34 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(ProjectName)\Debug-x86\</OutDir>
-    <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x86\</IntDir>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(ProjectName)\Debug-x64\</OutDir>
-    <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x64\</IntDir>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(ProjectName)\Release-x86\</OutDir>
-    <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x86\</IntDir>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
-    <OutDir>$(SolutionDir)$(ProjectName)\Release-x64\</OutDir>
-    <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x64\</IntDir>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -122,16 +109,12 @@
     <ClCompile>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level4</WarningLevel>
-      <Optimization>MaxSpeed</Optimization>
+      <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
-      <WholeProgramOptimization>true</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,10 +132,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,10 +152,7 @@
       <SDLCheck>true</SDLCheck>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
-      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -185,119 +162,98 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Basket.cpp" />
-    <ClCompile Include="Casket.cpp" />
-    <ClCompile Include="Citizen.cpp" />
-    <ClCompile Include="drawGroups.cpp" />
-    <ClCompile Include="drawPlanet.cpp" />
-    <ClCompile Include="drawRoutes.cpp" />
-    <ClCompile Include="drawScuttles.cpp" />
-    <ClCompile Include="drawUI.cpp" />
-    <ClCompile Include="drawUrbans.cpp" />
-    <ClCompile Include="drawVehicles.cpp" />
-    <ClCompile Include="Energy.cpp" />
-    <ClCompile Include="Export.cpp" />
-    <ClCompile Include="globalVariables.cpp" />
-    <ClCompile Include="Group.cpp" />
-    <ClCompile Include="Incident.cpp" />
-    <ClCompile Include="initGroups.cpp" />
-    <ClCompile Include="initNodes.cpp" />
-    <ClCompile Include="initPlanet.cpp" />
-    <ClCompile Include="initRoutes.cpp" />
-    <ClCompile Include="loadData.cpp" />
-    <ClCompile Include="loadMap.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Nation.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Sandglass.cpp" />
-    <ClCompile Include="Scuttle.cpp" />
-    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="TinyCamera.cpp" />
-    <ClCompile Include="Traders.cpp" />
-    <ClCompile Include="updateGroups.cpp" />
-    <ClCompile Include="updatePlanet.cpp" />
-    <ClCompile Include="updateScuttles.cpp" />
-    <ClCompile Include="updateUrbans.cpp" />
-    <ClCompile Include="updateVehicles.cpp" />
-    <ClCompile Include="Urban.cpp" />
-    <ClCompile Include="Vehicle.cpp" />
-    <ClCompile Include="Wallet.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="..\PlanetViewer\Example\Particle.png" />
-    <Image Include="engine\texture\box-shadow\128.png" />
-    <Image Include="engine\texture\box-shadow\16.png" />
-    <Image Include="engine\texture\box-shadow\256.png" />
-    <Image Include="engine\texture\box-shadow\32.png" />
-    <Image Include="engine\texture\box-shadow\64.png" />
-    <Image Include="engine\texture\box-shadow\8.png" />
-    <Image Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="engine\engine.txt" />
-    <Text Include="engine\font\fontawesome\LICENSE_OFL.txt" />
-    <Text Include="engine\font\noto\LICENSE_OFL.txt" />
+    <Image Include="Engine\Splash.png" />
+    <Image Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
-    <None Include="engine\font\mplus\LICENSE_E" />
-    <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />
-    <None Include="engine\font\mplus\mplus-1p-bold.ttf.zst" />
-    <None Include="engine\font\mplus\mplus-1p-heavy.ttf.zst" />
-    <None Include="engine\font\mplus\mplus-1p-light.ttf.zst" />
-    <None Include="engine\font\mplus\mplus-1p-medium.ttf.zst" />
-    <None Include="engine\font\mplus\mplus-1p-regular.ttf.zst" />
-    <None Include="engine\font\mplus\mplus-1p-thin.ttf.zst" />
-    <None Include="engine\font\noto\NotoColorEmoji.ttf.zst" />
-    <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst" />
-    <None Include="engine\shader\line_dot.ps" />
-    <None Include="engine\shader\line_round_dot.ps" />
-    <None Include="engine\shader\shape.ps" />
-    <None Include="engine\shader\sprite.ps" />
-    <None Include="engine\shader\sprite.vs" />
-    <None Include="engine\shader\sprite_sdf.ps" />
+    <None Include="Engine\Assets\engine_textures.s3a" />
+    <None Include="Engine\Config.ini" />
+    <None Include="Engine\dll(x64)\D3D\d3dcompiler_47.dll" />
+    <None Include="Engine\dll(x64)\libmpg123\libmpg123-0.dll" />
+    <None Include="Engine\dll(x64)\libqrencode\COPYING" />
+    <None Include="Engine\dll(x64)\libqrencode\libqrencode.dll" />
+    <None Include="Engine\dll(x64)\libqrencode\README" />
+    <None Include="Engine\dll(x64)\SoundTouch\SoundTouch.dll" />
+    <None Include="Engine\dll(x64)\TobiiEyeX\Tobii.EyeX.Client.dll" />
+    <None Include="Engine\dll(x86)\D3D\d3dcompiler_47.dll" />
+    <None Include="Engine\dll(x86)\libmpg123\libmpg123-0.dll" />
+    <None Include="Engine\dll(x86)\libqrencode\COPYING" />
+    <None Include="Engine\dll(x86)\libqrencode\libqrencode.dll" />
+    <None Include="Engine\dll(x86)\libqrencode\README" />
+    <None Include="Engine\dll(x86)\SoundTouch\SoundTouch.dll" />
+    <None Include="Engine\dll(x86)\TobiiEyeX\Tobii.EyeX.Client.dll" />
+    <None Include="Engine\Fonts\mplus-1p-black.zip" />
+    <None Include="Engine\Fonts\mplus-1p-bold.zip" />
+    <None Include="Engine\Fonts\mplus-1p-heavy.zip" />
+    <None Include="Engine\Fonts\mplus-1p-light.zip" />
+    <None Include="Engine\Fonts\mplus-1p-medium.zip" />
+    <None Include="Engine\Fonts\mplus-1p-regular.zip" />
+    <None Include="Engine\Fonts\mplus-1p-thin.zip" />
+    <None Include="Engine\Fonts\umeplus-p-gothic.zip" />
+    <None Include="Engine\Objdetect\faceAnime.zip" />
+    <None Include="Engine\Objdetect\facePhoto.zip" />
+    <None Include="Engine\Shaders\D3D11\DeferredFinalize.ps" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh.ps" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh.vs" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh_Shadow.ps" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh_Shadow.vs" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh_Textured.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardLine3D.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardLine3D.vs" />
+    <None Include="Engine\Shaders\D3D11\ForwardMesh.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardMesh.vs" />
+    <None Include="Engine\Shaders\D3D11\ForwardMesh_Textured.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardParticle.vs" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle.vs" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle1xMSAA.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle1xMSAA_Linear.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle2xMSAA.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle2xMSAA_Linear.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle4xMSAA.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle4xMSAA_Linear.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_None.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_Q20.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_Q25.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_Q39.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation.vs" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_ExponentialFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_HeightFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_LinearFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_NoFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_SquaredExponentialFog.ps" />
+    <None Include="Engine\Shaders\D3D11\Shape.ps" />
+    <None Include="Engine\Shaders\D3D11\Shape_Stencil.ps" />
+    <None Include="Engine\Shaders\D3D11\Sprite.ps" />
+    <None Include="Engine\Shaders\D3D11\Sprite.vs" />
+    <None Include="Engine\Shaders\D3D11\Sprite_Font.ps" />
+    <None Include="Engine\Shaders\D3D11\Sprite_Stencil.ps" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Basket.h" />
+    <Text Include="Engine\dll(x64)\libmpg123\COPYING.txt" />
+    <Text Include="Engine\dll(x64)\SoundTouch\COPYING.TXT" />
+    <Text Include="Engine\dll(x86)\libmpg123\COPYING.txt" />
+    <Text Include="Engine\dll(x86)\SoundTouch\COPYING.TXT" />
+    <Text Include="Engine\LogMessages.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="BiomeData.h" />
-    <ClInclude Include="Buyer.h" />
-    <ClInclude Include="Casket.h" />
-    <ClInclude Include="Citizen.h" />
-    <ClInclude Include="CitizenData.h" />
-    <ClInclude Include="Energy.h" />
-    <ClInclude Include="EnergyData.h" />
-    <ClInclude Include="Export.h" />
-    <ClInclude Include="Group.h" />
-    <ClInclude Include="Incident.h" />
-    <ClInclude Include="ItemData.h" />
-    <ClInclude Include="JSON.h" />
-    <ClInclude Include="Nation.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="Path.h" />
+    <ClInclude Include="Pi.h" />
     <ClInclude Include="Planet.h" />
-    <ClInclude Include="Pos.h" />
-    <ClInclude Include="Ring.h" />
-    <ClInclude Include="Route.h" />
-    <ClInclude Include="Sandglass.h" />
-    <ClInclude Include="Scuttle.h" />
-    <ClInclude Include="Seller.h" />
-    <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="TinyCamera.h" />
-    <ClInclude Include="UI.h" />
     <ClInclude Include="Urban.h" />
-    <ClInclude Include="Vehicle.h" />
-    <ClInclude Include="VehicleData.h" />
-    <ClInclude Include="Wallet.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

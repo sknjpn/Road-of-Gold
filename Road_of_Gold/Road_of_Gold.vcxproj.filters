@@ -194,6 +194,9 @@
     <Image Include="engine\texture\box-shadow\32.png">
       <Filter>Resource Files\engine\texture\box-shadow</Filter>
     </Image>
+    <Image Include="..\PlanetViewer\Example\Particle.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
