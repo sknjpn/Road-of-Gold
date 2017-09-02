@@ -19,13 +19,11 @@ struct VirtualNode
 
 void	initRoutes()
 {
+	Stopwatch	stopwatch(true);
 	Array<int>	tempNodeIDs;
 	Array<VirtualNode>	virtualNodes;
 
-
 	virtualNodes.resize(nodes.size());
-
-
 
 	for (int k = 0; k < 2; k++)
 	{
@@ -106,4 +104,5 @@ void	initRoutes()
 			if (r.fromUrban == &u) u.ownRoutes.emplace_back(&r);
 		}
 	}
+	Log(L"ƒ‹[ƒg¶¬ŽžŠÔ:", stopwatch.ms(), L"ms");
 }

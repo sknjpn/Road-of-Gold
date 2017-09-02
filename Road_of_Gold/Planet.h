@@ -12,7 +12,7 @@ struct Planet
 	Planet()
 		: mapTexture()
 		, timeSpeed(0)
-		, sandglass(1492 * 360)
+		, sandglass()
 	{}
 };
 

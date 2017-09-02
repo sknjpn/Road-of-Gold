@@ -226,9 +226,17 @@ void	drawUI()
 					Rect rect(240, 24 + i * 88, 240, 64);
 					rect.draw(bColor).drawFrame(2, fColor);
 					const int timeScale = 1; //b.tradeLog.time / 120
-					drawGraph(rect, b.tradeLog.numExport, timeScale, Palette::Blue);
-					drawGraph(rect, b.tradeLog.numImport, timeScale, Palette::Purple);
-					drawGraph(rect, b.tradeLog.numProduction, timeScale, Palette::Red);
+					
+					int max =Max(1, b.tradeLog.numConsumption.take(rect.size.x).sorted().back());
+					max = Max(max, b.tradeLog.numExport.take(rect.size.x).sorted().back());
+					max = Max(max, b.tradeLog.numImport.take(rect.size.x).sorted().back());
+					max = Max(max, b.tradeLog.numProduction.take(rect.size.x).sorted().back());
+
+					drawGraph(rect, b.tradeLog.numExport, timeScale, Palette::Blue, max);
+					drawGraph(rect, b.tradeLog.numImport, timeScale, Palette::Purple, max);
+					drawGraph(rect, b.tradeLog.numConsumption, timeScale, Palette::Yellowgreen, max);
+					drawGraph(rect, b.tradeLog.numProduction, timeScale, Palette::Red, max);
+
 					drawGraph(rect, b.tradeLog.price, timeScale, Palette::Yellow);
 					data.icon.draw(rect.pos);
 				}
@@ -345,6 +353,7 @@ void	drawGraph(const Rect& _rect, Array<int> _log, int _timeScale, Color _color)
 	int max = 1;
 	int before = 0;
 	int now = 0;
+
 	for (int i = 0; i < _rect.size.x*_timeScale; i++) if (i < int(_log.size()) && max < _log[i]) max = _log[i];
 
 	for (int x = 0; x < _rect.size.x; x++)
@@ -352,8 +361,27 @@ void	drawGraph(const Rect& _rect, Array<int> _log, int _timeScale, Color _color)
 		if ((x + 1)*_timeScale < int(_log.size()))
 		{
 			int sum = 0;
+
 			for (int i = x*_timeScale; i < (x + 1)*_timeScale; i++) sum += _log[i];
 			now = sum * _rect.size.y / max / _timeScale;
+			Line(_rect.size.x - x, _rect.size.y - before, _rect.size.x - x - 1, _rect.size.y - now).movedBy(_rect.pos).draw(_color);
+			before = now;
+		}
+	}
+}
+void	drawGraph(const Rect& _rect, Array<int> _log, int _timeScale, Color _color, int _max)
+{
+	int before = 0;
+	int now = 0;
+
+	for (int x = 0; x < _rect.size.x; x++)
+	{
+		if ((x + 1)*_timeScale < int(_log.size()))
+		{
+			int sum = 0;
+
+			for (int i = x*_timeScale; i < (x + 1)*_timeScale; i++) sum += _log[i];
+			now = sum * _rect.size.y / _max / _timeScale;
 			Line(_rect.size.x - x, _rect.size.y - before, _rect.size.x - x - 1, _rect.size.y - now).movedBy(_rect.pos).draw(_color);
 			before = now;
 		}

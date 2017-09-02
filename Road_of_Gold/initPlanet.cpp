@@ -4,46 +4,23 @@
 
 void	initPlanet()
 {
-	Grid<Node*>	voronoiMap;
-	const bool useOutlineEnabled = false;
-	Image reader(L"Assets/VoronoiMap.png");
-
 	//VoronoiMap‚Ì“Ç‚İ‚İ
-	if (!reader.isEmpty())
+	Image image(L"Assets/VoronoiMap.png");
+	const bool useOutlineEnabled = false;
+
+	for (auto p : step(image.size()))
 	{
-		voronoiMap.resize(reader.size());
-		for (auto p : step(reader.size()))
-		{
-			//VoronoiMap‚©‚çNode‚ğ“K—p
-			int id = reader[p.y][p.x].r + (reader[p.y][p.x].g << 8) + (reader[p.y][p.x].b << 16);
+		auto& n = nodes.at(image[p.y][p.x].r + (image[p.y][p.x].g << 8) + (image[p.y][p.x].b << 16));
 
-			if (id > int(nodes.size()))
-			{
-				LOG_ERROR(L"Assets/VoronoiMap.png‚©‚çˆÙí‚È”’l‚ğŒŸo");
-				System::Exit();
-				return;
-			}
-
-			voronoiMap[p.y][p.x] = &nodes[id];
-		}
+		image[p.y][p.x] = n.color;
 	}
-	else
-	{
-		LOG_ERROR(L"Assets/VoronoiMap.png‚Ì“Ç‚İ‚İ‚É¸”s");
-		System::Exit();
-		return;
-	}
-	Log(L"VoronoiMap‚Ì“Ç‚İ‚İ‚ªŠ®—¹");
-
-	//Image‚ÉF‚ğ“]Ê
-	Image image(reader.size());
-	for (auto& p : step(reader.size()))
-		image[p.y][p.x] = voronoiMap[p.y][p.x]->color;
 
 	//—ÖŠsü‚Ì•`‰æ
 	if (useOutlineEnabled)
 	{
-		for (auto& p1 : step(reader.size()))
+		Image original(image);
+
+		for (auto& p1 : step(image.size()))
 		{
 			for (int m = 0; m < 4; m++)
 			{
@@ -56,10 +33,10 @@ void	initPlanet()
 				case 3: p2 = { p1.x ,p1.y + 1 }; break;
 				}
 				//—áŠO”»’è
-				if (p2.y < 0 || p2.y >= reader.size().y) continue;
-				if (p2.x < 0) p2.x = reader.size().x - 1;
-				if (p2.x >= reader.size().x) p2.x = 0;
-				if (voronoiMap[p1.y][p1.x] != voronoiMap[p2.y][p2.x]) image[p1.y][p1.x] = Palette::Black;
+				if (p2.y < 0 || p2.y >= image.size().y) continue;
+				if (p2.x < 0) p2.x = image.size().x - 1;
+				if (p2.x >= image.size().x) p2.x = 0;
+				if (original[p1.y][p1.x] != original[p2.y][p2.x]) image[p1.y][p1.x] = Palette::Black;
 			}
 		}
 	}

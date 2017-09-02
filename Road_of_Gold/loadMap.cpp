@@ -16,10 +16,18 @@ void	loadMap()
 	{
 		if (FileSystem::IsDirectory(item) && FileSystem::Exists(item + L"BiomeData.bin"))
 		{
+			//Planetデータのロード
+			{
+				JSONReader reader(item + L"Planet.json");
+				auto j = reader[L"Planet"][L"StartTime"];
+
+				planet.sandglass.timer = j[L"Year"].getOr<int>(0) * 360 + (j[L"Month"].getOr<int>(0) - 1) * 30 + (j[L"Day"].getOr<int>(0) - 1);
+			}
+
 			//バイオームデータのロード
 			{
 				BinaryReader reader(item + L"BiomeData.bin");
-				
+
 				for (auto& n : nodes)
 				{
 					reader.read(n.biomeType);
@@ -33,7 +41,7 @@ void	loadMap()
 			if (FileSystem::Exists(item + L"Urbans.json"))
 			{
 				JSONReader reader(item + L"Urbans.json");
-				
+
 				for (auto json : reader[L"Urbans"].arrayView())
 					urbans.emplace_back(json);
 
@@ -54,7 +62,7 @@ void	loadMap()
 			if (FileSystem::Exists(item + L"Groups.json"))
 			{
 				auto json = JSONReader(item + L"Groups.json");
-				
+
 				for (auto j : json[L"Groups"].arrayView())
 					groups.emplace_back(j);
 			}
@@ -63,7 +71,7 @@ void	loadMap()
 			if (FileSystem::Exists(item + L"Nations.json"))
 			{
 				auto json = JSONReader(item + L"Nations.json");
-				
+
 				for (auto j : json[L"Nations"].arrayView())
 					nations.emplace_back(j);
 				for (auto n : nations)

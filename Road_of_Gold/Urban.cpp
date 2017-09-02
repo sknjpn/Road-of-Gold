@@ -76,6 +76,7 @@ void	Urban::sellItem(int _itemType, int _numItem, int _price, int _ownerWalletID
 	}
 	else b.rings.emplace_back(_itemType, _numItem, _price, _ownerWalletID);
 
+	if (wallets[_ownerWalletID].owner == Owner::Citizen) b.tradeLog.numProduction.front() += _numItem;
 
 	b.numItem += _numItem;
 
@@ -116,6 +117,7 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 	int num = _numItem;
 	for (;;)
 	{
+		int	numBuy = 0;
 		auto& r = b.rings.front();
 
 		if (r.casket.numItem < num)
@@ -123,8 +125,9 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			b.tradeLog.addTrade(r.price, r.casket.numItem);
 			b.numItem -= r.casket.numItem;
 			wallets[_walletID].sendTo(&wallets[r.ownerWalletID], r.casket.numItem*r.price);
-			num -= r.casket.numItem;
+			numBuy = r.casket.numItem;
 			wallets[r.ownerWalletID].price = r.price;
+
 			b.rings.pop_front();
 		}
 		else if (r.casket.numItem == num)
@@ -133,8 +136,8 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			b.numItem -= num;
 			wallets[_walletID].sendTo(&wallets[r.ownerWalletID], num*r.price);
 			wallets[r.ownerWalletID].price = r.price;
+			numBuy = num;
 			b.rings.pop_front();
-			return;
 		}
 		else
 		{
@@ -142,13 +145,17 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			b.numItem -= num;
 			wallets[_walletID].sendTo(&wallets[r.ownerWalletID], num*r.price);
 			r.casket.numItem -= num;
+			numBuy = num;
 			wallets[r.ownerWalletID].price = r.price;
-			return;
 		}
-	}
 
-	LOG_ERROR(L"ˆÙí‚ÈŠÖ”ŒÄ‚Ño‚µ‚ª‚³‚ê‚Ü‚µ‚½BUrban::buyItem()");
-	return;
+		if (wallets[_walletID].owner == Owner::Vehicle) b.tradeLog.numExport.front() += num;
+		if (r.owner() == Owner::Vehicle) b.tradeLog.numImport.front() += num;
+		if (wallets[_walletID].owner == Owner::Citizen) b.tradeLog.numConsumption.front() += num;
+
+		num -= numBuy;
+		if (num == 0) break;
+	}
 }
 void	TradeLog::addTrade(int _price, int _num)
 {

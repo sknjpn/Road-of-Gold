@@ -1,7 +1,5 @@
 #pragma once
 
-struct Node;
-
 struct Path
 {
 	int		toID;

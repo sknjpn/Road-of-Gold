@@ -9,6 +9,8 @@ Array<Node> nodes;
 void Main()
 {
 	Window::Resize(1280, 720);
+	Window::SetTitle(L"Planet Viewer");
+	//Window::SetFullscreen(true, Graphics::GetFullScreenSize().back());
 
 	Texture mapTexture;
 
@@ -50,40 +52,22 @@ void Main()
 				}
 			}
 
-			//Urbansデータのロード
-			/*
-			if (FileSystem::Exists(item + L"Urbans.json"))
-			{
-				JSONReader reader(item + L"Urbans.json");
-
-				for (auto json : reader[L"Urbans"].arrayView())
-					urbans.emplace_back(json);
-
-				for (auto& u : urbans)
-					for (auto& b : u.baskets)
-						b.joinedUrban = &u;
-			}
-			*/
-
 			break;
 		}
 	}
 
 	//VoronoiMapの読み込み
 	{
-		Image	reader(L"Assets/VoronoiMap.png");
-		Image	image(reader.size);
-		Grid<int>	voronoiMap(reader.size);
+		Image	image(L"Assets/VoronoiMap.png");
 
-		for (auto p : step(reader.size))
+		for (auto p : step(image.size))
 		{
-			auto& n = nodes.at(reader[p.y][p.x].r + (reader[p.y][p.x].g << 8) + (reader[p.y][p.x].b << 16));
+			auto& n = nodes.at(image[p.y][p.x].r + (image[p.y][p.x].g << 8) + (image[p.y][p.x].b << 16));
+
 			image[p.y][p.x] = n.color;
 		}
 
-
 		mapTexture = Texture(image);
-		//mapTexture = Texture(L"Example/Earth.jpg");
 	}
 
 	Array<Particle> particles;
@@ -108,7 +92,7 @@ void Main()
 			}
 		}
 	}
-	const Texture texture(L"Particle.png", TextureDesc::For3D);
+	const Texture texture(L"Assets/Particle.png", TextureDesc::For3D);
 
 	Graphics3D::SetBlendStateForward(BlendState::Additive);
 	Graphics3D::SetDepthStateForward(DepthState::TestOnly);
@@ -122,7 +106,7 @@ void Main()
 	double	angleX = 0;
 	double	angleY = 0;
 	double	distance = 4;
-	Vec3	sPos;
+	Vec3	sPos = Vec3::Right*1.2;
 	camera.lookat = Vec3::Zero;
 	camera.pos = Vec3(4, 0, 0);
 
@@ -139,7 +123,7 @@ void Main()
 		if (Input::KeyA.pressed) angleX -= 0.025;
 		if (Input::KeyW.pressed) angleY = Min(angleY + 0.025, HalfPi - 0.01);
 		if (Input::KeyS.pressed) angleY = Max(angleY - 0.025, -HalfPi + 0.01);
-		if (Input::KeyF1.clicked) timeSpeed *= 0.5;
+		if (Input::KeyF1.clicked) timeSpeed = Max(Pow(0.5, 15), timeSpeed*0.5);
 		if (Input::KeyF2.clicked) timeSpeed = Min(1.0, timeSpeed*2.0);
 		distance *= (1 + double(Mouse::Wheel())*0.05);
 		distance = Max(1.2, distance);
@@ -147,7 +131,7 @@ void Main()
 
 		sPos = sPos.lerp(Vec3(Cos(angleX)*Cos(angleY), Sin(angleY), Sin(angleX)*Cos(angleY))*distance, 0.1);
 
-		camera.pos = Vec3(planetPos.x, 0, planetPos.y) +sPos;
+		camera.pos = Vec3(planetPos.x, 0, planetPos.y) + sPos;
 		camera.lookat = Vec3(planetPos.x, 0, planetPos.y);
 
 		Graphics3D::SetCamera(camera);

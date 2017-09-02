@@ -14,9 +14,9 @@ void Main()
 	JSONReader json(L"起動設定.json");
 	if (json[L"FullScreen"].getOr<bool>(false)) Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
 	else Window::Resize(1280, 720);
-	Window::SetTitle(L"Road of Gold v2.00");
+	Window::SetTitle(L"Road of Gold");
 
-	Log(L"WindowSIze:", Window::Size());
+	Log(L"WindowSize:", Window::Size());
 	Log(L"FullScreen:", Window::GetState().fullScreen);
 
 	//Fontの展開

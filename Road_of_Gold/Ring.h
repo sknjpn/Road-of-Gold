@@ -2,6 +2,9 @@
 
 #include"Casket.h"
 
+struct Wallet;
+enum struct Owner;
+
 struct Ring
 {
 	Casket	casket;
@@ -18,4 +21,6 @@ struct Ring
 		, price(_price)
 		, ownerWalletID(_ownerWalletID)
 	{}
+	Wallet& wallet() const;
+	Owner	owner() const;
 };

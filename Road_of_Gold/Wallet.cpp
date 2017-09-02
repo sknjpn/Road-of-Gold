@@ -10,6 +10,7 @@ Wallet::Wallet()
 	, price(0)
 	, expenses(0)
 	, income(0)
+	, owner(Owner::Citizen)
 {}
 int		Wallet::id() const { return int(this - &wallets.front()); }
 void	Wallet::sendTo(Wallet* _wallet, int	_money)	//‘—‹à

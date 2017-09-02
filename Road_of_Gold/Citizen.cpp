@@ -12,6 +12,7 @@ Citizen::Citizen(int _citizenType)
 {
 	incomeLog.resize(5);
 	wallet().price = 1000;
+	wallet().owner = Owner::Citizen;
 }
 
 CitizenData&	Citizen::data() const { return citizenData.at(citizenType); }

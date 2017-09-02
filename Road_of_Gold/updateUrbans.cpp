@@ -25,6 +25,7 @@ void	updateUrban(Urban& u)
 			if (u.jobEfficiency[c.citizenType] == 0 || RandomBool(0.003))	//“]E
 			{
 				int sum = 0;
+
 				for (auto t : u.citizens) sum += t.avgIncome();
 
 				sum = Random(sum);
@@ -76,7 +77,7 @@ void	updateUrban(Urban& u)
 					{
 						if (e.numEnergy == 0) je = 0;
 						else if (numCitizen == 0) je = 1.0;
-						else je = sqrt((double)e.numEnergy / (double)numCitizen)*u.productivity;
+						else je = Min(1.0, sqrt((double)e.numEnergy / (double)numCitizen)*u.productivity);
 					}
 				}
 			}
@@ -86,11 +87,11 @@ void	updateUrban(Urban& u)
 		for (auto i : step(int(u.baskets.size())))
 		{
 			auto& b = u.baskets[i];
+
 			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//‰¿Ši’á‰º
 
-																			//TradeLog‚ÌXV
+			//TradeLog‚ÌXV
 			b.tradeLog.push();
-			
 		}
 
 		//Seller‚ÌXV
@@ -103,7 +104,7 @@ void	updateUrban(Urban& u)
 			{
 				u.sellItem(s.casket.itemType, numSell, Max(1, int(1 + s.wallet().price*Random(1.00, 1.10))), s.walletID);
 				s.casket.numItem -= numSell;
-				u.baskets[s.casket.itemType].tradeLog.numImport.front() += numSell;
+				//u.baskets[s.casket.itemType].tradeLog.numImport.front() += numSell;
 			}
 		}
 		u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
@@ -118,7 +119,7 @@ void	updateUrban(Urban& u)
 
 			u.buyItem(b.casket.itemType, b.walletID, numBuy);
 			b.casket.numItem += numBuy;
-			u.baskets[b.casket.itemType].tradeLog.numExport.front() += numBuy;
+			//u.baskets[b.casket.itemType].tradeLog.numExport.front() += numBuy;
 
 		}
 	}
@@ -131,11 +132,9 @@ void	updateUrban(Urban& u)
 
 		if (je == 0) c.jobProgress = 0;
 
-
-
-		//if (c.wallet().sellCount == 0)
 		c.jobProgress += je*planet.timeSpeed;
 
+		//w”ƒ
 		c.timer += planet.timeSpeed;
 		if (c.timer >= 1.0)
 		{
@@ -145,16 +144,20 @@ void	updateUrban(Urban& u)
 			for (int i = 0; i < int(itemData.size()); i++)
 			{
 				const double h = Random(0.1, 5.0);
-				auto itemType = Random(int(itemData.size() - 1));
+				auto itemType = itemData.choice().id();
+
 				if (!u.isSoldOut(itemType))
 				{
 					if (itemData[itemType].value / double(u.cost(itemType)) > h && u.cost(itemType) < c.wallet().money)
+					{
 						u.buyItem(itemType, c.walletID);
+					}
 				}
 			}
 			c.wallet().pull(c.wallet().money / 10);
 		}
 
+		//¶ŽY
 		while (c.jobProgress >= 1.0)
 		{
 			c.jobProgress -= 1.0;
@@ -168,7 +171,7 @@ void	updateUrban(Urban& u)
 				if (u.isSoldOut(data.product.itemType) || u.cost(data.product.itemType) > c.targetRevenue / data.product.numItem)
 				{
 					u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
-					u.baskets[data.product.itemType].tradeLog.numProduction.front() += data.product.numItem;
+					//u.baskets[data.product.itemType].tradeLog.numProduction.front() += data.product.numItem;
 				}
 			}
 		}
@@ -185,7 +188,10 @@ void	updateUrbans()
 		for (auto& u : urbans) threads.emplace_back(updateUrban, std::ref(u));
 		for (auto& t : threads)  t.join();
 	}
-	else for (auto& u : urbans) updateUrban(u);
+	else
+	{
+		for (auto& u : urbans) updateUrban(u);
+	}
 
 	if (MouseL.down())
 	{

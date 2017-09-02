@@ -24,12 +24,10 @@ void	updateGroups()
 					min = v.wallet().money;
 				}
 			}
-			if (i == 0) Log(L"Å’á:", min);
 			if (target != nullptr) target->stopFlag = true;
 		}
 		int avg = 0;
 		for (auto& v : vehicles) avg += v.wallet().money;
-		Log(L"•½‹Ï:", avg / double(vehicles.size()));
 
 		for (auto& v : vehicles)
 		{

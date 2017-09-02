@@ -10,7 +10,7 @@ struct TradeLog
 	Array<int>	numTrade;		//æˆø¬—§”
 	Array<int>	price;			//•½‹Ïæˆø‰¿Ši
 	Array<int>	numProduction;	//s–¯‚É‚æ‚é¶Y—Ê
-	Array<int>	numConsumption;	//s–¯‚É‚æ‚éÁ”ï
+	Array<int>	numConsumption;	//s–¯‚É‚æ‚éÁ”ï—Ê
 	Array<int>	numExport;		//—Ao—Ê
 	Array<int>	numImport;		//—A“ü—Ê
 	int		time;	//•Û‘¶‚µ‚Ä‚¢‚éŠúŠÔ
@@ -40,6 +40,7 @@ struct TradeLog
 	void	addTrade(int _price, int _num = 1);
 };
 void	drawGraph(const Rect& _rect, Array<int> _log, int _timeScale, Color _color);
+void	drawGraph(const Rect& _rect, Array<int> _log, int _timeScale, Color _color, int _max);
 
 struct Basket
 {

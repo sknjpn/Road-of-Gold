@@ -171,6 +171,9 @@
     <ClCompile Include="Nation.cpp">
       <Filter>Source Files\class</Filter>
     </ClCompile>
+    <ClCompile Include="Ring.cpp">
+      <Filter>Source Files\class</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">

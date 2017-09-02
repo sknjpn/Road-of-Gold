@@ -25,6 +25,7 @@ Vehicle::Vehicle(int _vehicleType, Urban* _nowUrban)
 	, stopFlag(false)
 {
 	maxVolume = data().volume;
+	wallet().owner = Owner::Vehicle;
 }
 
 Vec2	Vehicle::pos() const
