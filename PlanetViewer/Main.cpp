@@ -16,7 +16,7 @@ void Main()
 
 	//Nodeの読み込み
 	{
-		BinaryReader reader(L"Assets/NodeMap.bin");
+		BinaryReader reader(L"Assets/NodeMap/NodeMap.bin");
 		int	nodesSize;
 
 		reader.read(nodesSize);
@@ -58,7 +58,7 @@ void Main()
 
 	//VoronoiMapの読み込み
 	{
-		Image	image(L"Assets/VoronoiMap.png");
+		Image	image(L"Assets/NodeMap/VoronoiMap.png");
 
 		for (auto p : step(image.size))
 		{

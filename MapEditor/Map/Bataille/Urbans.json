@@ -1,1 +1,62 @@
-﻿{	"Urbans": [		{			"JoinedNodeID": 3565,			"Name": "ヨークタウン",			"NumCitizens": 100,			"Productivity": 0,			"Energies": {				"農地": 50,				"茶葉": 20			}		},		{			"JoinedNodeID": 3369,			"Name": "ナシュア",			"NumCitizens": 300,			"Productivity": 8354191860087475000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,			"Energies": {				"農地": 150,				"香辛料": 100			}		},		{			"JoinedNodeID": 3823,			"Name": "アンカレッジ",			"NumCitizens": 500,			"Productivity": 0,			"Energies": {				"農地": 300			}		},		{			"JoinedNodeID": 13447,			"Name": "セイラム",			"NumCitizens": 500,			"Productivity": 0,			"Energies": {				"農地": 300			}		},		{			"JoinedNodeID": 21938,			"Name": "ユバシティ",			"NumCitizens": 200,			"Productivity": 0,			"Energies": {				"農地": 50,				"香辛料": 50			}		},		{			"JoinedNodeID": 9726,			"Name": "ロチェスター",			"NumCitizens": 300,			"Productivity": 0,			"Energies": {				"農地": 100,				"茶葉": 100			}		},		{			"JoinedNodeID": 1407,			"Name": "hogeTown",			"NumCitizens": 1,			"Productivity": 0,			"Energies": {			}		}	]}
+﻿{
+	"Urbans": [
+		{
+			"JoinedNodeID": 3565,
+			"Name": "ヨークタウン",
+			"NumCitizens": 100,
+			"Productivity": 0,
+			"Energies": {
+				"農地": 50,
+				"茶葉": 20
+			}
+		},
+		{
+			"JoinedNodeID": 3369,
+			"Name": "ナシュア",
+			"NumCitizens": 300,
+			"Productivity": 8354191860087475000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000,
+			"Energies": {
+				"農地": 150,
+				"香辛料": 100
+			}
+		},
+		{
+			"JoinedNodeID": 3823,
+			"Name": "アンカレッジ",
+			"NumCitizens": 500,
+			"Productivity": 0,
+			"Energies": {
+				"農地": 300
+			}
+		},
+		{
+			"JoinedNodeID": 13447,
+			"Name": "セイラム",
+			"NumCitizens": 500,
+			"Productivity": 0,
+			"Energies": {
+				"農地": 300
+			}
+		},
+		{
+			"JoinedNodeID": 21938,
+			"Name": "ユバシティ",
+			"NumCitizens": 200,
+			"Productivity": 0,
+			"Energies": {
+				"農地": 50,
+				"香辛料": 50
+			}
+		},
+		{
+			"JoinedNodeID": 9726,
+			"Name": "ロチェスター",
+			"NumCitizens": 300,
+			"Productivity": 0,
+			"Energies": {
+				"農地": 100,
+				"茶葉": 100
+			}
+		}
+	]
+}
