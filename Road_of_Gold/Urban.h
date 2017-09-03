@@ -7,6 +7,7 @@
 #include"Sandglass.h"
 #include"Seller.h"
 #include"Buyer.h"
+#include"Customer.h"
 
 struct Node;
 struct Wallet;
@@ -29,6 +30,7 @@ struct Urban
 	Array<Seller>	sellers;
 	Array<Buyer>	buyers;
 	Array<Basket>	baskets;
+	Array<Customer>	customers;
 
 	Urban(const JSONValue& _json);
 	void	addEnergy(const String _name, int _num);

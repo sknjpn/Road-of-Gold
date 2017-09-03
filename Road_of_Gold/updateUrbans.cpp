@@ -5,6 +5,7 @@
 #include"ItemData.h"
 #include"Sound.h"
 #include<thread>
+#include<numeric>
 
 void	updateUrban(Urban& u)
 {
@@ -83,16 +84,6 @@ void	updateUrban(Urban& u)
 			}
 		}
 
-		//市場の更新
-		for (auto i : step(int(u.baskets.size())))
-		{
-			auto& b = u.baskets[i];
-
-			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//価格低下
-
-			//TradeLogの更新
-			b.tradeLog.push();
-		}
 
 		//Sellerの更新
 		for (auto& s : u.sellers)
@@ -107,7 +98,6 @@ void	updateUrban(Urban& u)
 				//u.baskets[s.casket.itemType].tradeLog.numImport.front() += numSell;
 			}
 		}
-		u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
 
 		//Buyerの更新
 		for (auto& b : u.buyers)
@@ -119,8 +109,42 @@ void	updateUrban(Urban& u)
 
 			u.buyItem(b.casket.itemType, b.walletID, numBuy);
 			b.casket.numItem += numBuy;
-			//u.baskets[b.casket.itemType].tradeLog.numExport.front() += numBuy;
 
+		}
+		u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
+
+		//Customerの更新
+		int sum = std::accumulate(u.citizens.begin(), u.citizens.end(), 0, [](int _sum, Citizen& _c) { return _sum+_c.wallet().money; });
+		for (auto& c : u.citizens) c.wallet().money = 0;
+		for (auto& c : u.customers)
+		{
+			c.wallet().money = c.rate*sum;
+
+			//購買
+			for (int i = 0; i < int(itemData.size()); i++)
+			{
+				const double h = Random(0.1, 5.0);
+				auto itemType = itemData.choice().id();
+
+				if (!u.isSoldOut(itemType))
+				{
+					if (itemData[itemType].value / double(u.cost(itemType)) > h && u.cost(itemType) < c.wallet().money)
+					{
+						u.buyItem(itemType, c.walletID);
+					}
+				}
+			}
+			c.wallet().pull(c.wallet().money / 10);
+		}
+		//市場の更新
+		for (auto i : step(int(u.baskets.size())))
+		{
+			auto& b = u.baskets[i];
+
+			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//価格低下
+
+																			//TradeLogの更新
+			b.tradeLog.push();
 		}
 	}
 
@@ -140,6 +164,7 @@ void	updateUrban(Urban& u)
 		{
 			c.timer -= 1.0;
 
+			/*
 			//購買
 			for (int i = 0; i < int(itemData.size()); i++)
 			{
@@ -155,6 +180,7 @@ void	updateUrban(Urban& u)
 				}
 			}
 			c.wallet().pull(c.wallet().money / 10);
+			*/
 		}
 
 		//生産

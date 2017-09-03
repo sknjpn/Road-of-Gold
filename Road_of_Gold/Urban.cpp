@@ -5,6 +5,7 @@
 #include"Wallet.h"
 #include"TinyCamera.h"
 #include"ItemData.h"
+#include<numeric>
 
 Urban::Urban(const JSONValue& _json)
 	: name(_json[L"Name"].getString())
@@ -33,16 +34,24 @@ Urban::Urban(const JSONValue& _json)
 		}
 	}
 
-	//Citizen‚Ì’Ç‰Á
-	for (auto i : step(int(citizenData.size())))
+	//Customer‚ÌrateŒˆ’è—pŠÖ”
+	const auto customersRateFunc = []()
 	{
-		for (int j = 0; j < 3; j++)
-			citizens.emplace_back(i);
+		double k = Random(1.0);
+		return 2.0* pow(k, 5) + 1.0*k + 0.4;
+	};
+
+	//Citizens‚ÆCustomers‚Ì’Ç‰Á
+	for (int i = 0; i < _json[L"NumCitizens"].getOr<int>(0); i++)
+	{
+		citizens.emplace_back(0);
+		customers.emplace_back(customersRateFunc());
 	}
 
-	//˜J“­Ò‚Ì’Ç‰Á
-	for (int i = 0; i < int(_json[L"NumCitizens"].getOr<int>(0) - int(citizenData.size()) * 3); i++)
-		citizens.emplace_back(0);
+	//customers‚Ì®—
+	double sum = std::accumulate(customers.begin(), customers.end(), 0.0, [](double _sum, Customer& _c) { return _sum + _c.rate; });
+	for (auto& c : customers) c.rate /= sum;
+	customers.sort_by([](Customer& _x, Customer& _y) { return _x.rate < _y.rate; });
 }
 Pos		Urban::pos() const { return nodes.at(joinedNodeID).pos; }
 Circle	Urban::shape() const { return Circle(pos().mPos, 0.01); }
@@ -128,6 +137,9 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			numBuy = r.casket.numItem;
 			wallets[r.ownerWalletID].price = r.price;
 
+			if (wallets[_walletID].owner == Owner::Vehicle) b.tradeLog.numExport.front() += numBuy;
+			if (r.owner() == Owner::Vehicle) b.tradeLog.numImport.front() += numBuy;
+			if (wallets[_walletID].owner == Owner::Citizen) b.tradeLog.numConsumption.front() += numBuy;
 			b.rings.pop_front();
 		}
 		else if (r.casket.numItem == num)
@@ -137,6 +149,9 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			wallets[_walletID].sendTo(&wallets[r.ownerWalletID], num*r.price);
 			wallets[r.ownerWalletID].price = r.price;
 			numBuy = num;
+			if (wallets[_walletID].owner == Owner::Vehicle) b.tradeLog.numExport.front() += numBuy;
+			if (r.owner() == Owner::Vehicle) b.tradeLog.numImport.front() += numBuy;
+			if (wallets[_walletID].owner == Owner::Citizen) b.tradeLog.numConsumption.front() += numBuy;
 			b.rings.pop_front();
 		}
 		else
@@ -146,12 +161,12 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			wallets[_walletID].sendTo(&wallets[r.ownerWalletID], num*r.price);
 			r.casket.numItem -= num;
 			numBuy = num;
+			if (wallets[_walletID].owner == Owner::Vehicle) b.tradeLog.numExport.front() += numBuy;
+			if (r.owner() == Owner::Vehicle) b.tradeLog.numImport.front() += numBuy;
+			if (wallets[_walletID].owner == Owner::Citizen) b.tradeLog.numConsumption.front() += numBuy;
 			wallets[r.ownerWalletID].price = r.price;
 		}
 
-		if (wallets[_walletID].owner == Owner::Vehicle) b.tradeLog.numExport.front() += num;
-		if (r.owner() == Owner::Vehicle) b.tradeLog.numImport.front() += num;
-		if (wallets[_walletID].owner == Owner::Citizen) b.tradeLog.numConsumption.front() += num;
 
 		num -= numBuy;
 		if (num == 0) break;

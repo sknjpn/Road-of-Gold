@@ -3,10 +3,10 @@
 void	initNodes()
 {
 	//Node‚Ì“Ç‚İ‚İ
-	BinaryReader reader(L"Assets/NodeMap.bin");
+	BinaryReader reader(L"Assets/NodeMap/NodeMap.bin");
 	if (!reader)
 	{
-		LOG_ERROR(L"Assets/NodeMap.bin‚Ì“Ç‚İ‚İ‚É¸”s");
+		LOG_ERROR(L"Assets/NodeMap/NodeMap.bin‚Ì“Ç‚İ‚İ‚É¸”s");
 		System::Exit();
 		return;
 	}

@@ -224,6 +224,7 @@
     <None Include="engine\shader\sprite_sdf.ps" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="HugeImage.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Pi.h" />
     <ClInclude Include="Pos.h" />

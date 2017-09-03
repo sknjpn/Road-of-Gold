@@ -10,7 +10,7 @@ void	updateGroups()
 	tmr += planet.timeSpeed;
 	if (tmr > 0.0)
 	{
-		tmr -= 50.0;
+		tmr -= 30.0;
 		//‰ºˆÊ1/4‚ÌŽ–‹ÆŒ©’¼‚µ
 		for (int i = 0; i < int(vehicles.size() / 10); i++)
 		{

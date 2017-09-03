@@ -6,6 +6,7 @@
 #include"Route.h"
 #include"Vehicle.h"
 #include"Export.h"
+#include<numeric>
 
 void	drawUI()
 {
@@ -226,8 +227,8 @@ void	drawUI()
 					Rect rect(240, 24 + i * 88, 240, 64);
 					rect.draw(bColor).drawFrame(2, fColor);
 					const int timeScale = 1; //b.tradeLog.time / 120
-					
-					int max =Max(1, b.tradeLog.numConsumption.take(rect.size.x).sorted().back());
+
+					int max = Max(1, b.tradeLog.numConsumption.take(rect.size.x).sorted().back());
 					max = Max(max, b.tradeLog.numExport.take(rect.size.x).sorted().back());
 					max = Max(max, b.tradeLog.numImport.take(rect.size.x).sorted().back());
 					max = Max(max, b.tradeLog.numProduction.take(rect.size.x).sorted().back());
@@ -237,8 +238,17 @@ void	drawUI()
 					drawGraph(rect, b.tradeLog.numConsumption, timeScale, Palette::Yellowgreen, max);
 					drawGraph(rect, b.tradeLog.numProduction, timeScale, Palette::Red, max);
 
+
 					drawGraph(rect, b.tradeLog.price, timeScale, Palette::Yellow);
 					data.icon.draw(rect.pos);
+					
+					{
+						int nex = std::accumulate(b.tradeLog.numExport.begin()+1, b.tradeLog.numExport.begin()+11,0);
+						int nco = std::accumulate(b.tradeLog.numConsumption.begin()+1, b.tradeLog.numConsumption.begin()+11, 0);
+						if (nex + nco > 0)
+							Circle(336, 56 + i * 88, 24).draw(Palette::Yellowgreen).drawPie(0, nex * 360_deg / (nex + nco), Palette::Blue);
+					}
+
 				}
 				/*
 				{

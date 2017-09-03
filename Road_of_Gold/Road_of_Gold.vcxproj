@@ -188,6 +188,7 @@
     <ClCompile Include="Basket.cpp" />
     <ClCompile Include="Casket.cpp" />
     <ClCompile Include="Citizen.cpp" />
+    <ClCompile Include="Customer.cpp" />
     <ClCompile Include="drawGroups.cpp" />
     <ClCompile Include="drawPlanet.cpp" />
     <ClCompile Include="drawRoutes.cpp" />
@@ -274,6 +275,7 @@
     <ClInclude Include="Casket.h" />
     <ClInclude Include="Citizen.h" />
     <ClInclude Include="CitizenData.h" />
+    <ClInclude Include="Customer.h" />
     <ClInclude Include="Energy.h" />
     <ClInclude Include="EnergyData.h" />
     <ClInclude Include="Export.h" />

@@ -163,5 +163,8 @@
     <ClInclude Include="Pi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="HugeImage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

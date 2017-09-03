@@ -65,6 +65,7 @@ void Main()
 	for (auto i : step(energyData.size()))
 		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 106 + i * 20), none);
 
+
 	while (System::Update())
 	{
 
