@@ -5,18 +5,15 @@ struct Pos;
 struct Urban
 {
 	int		numCitizens;
-	double	productivity;
-	String	name;
 	int		joinedNodeID;
+	String	name;
+	double	productivity;
 	Array<int>	energies;
 
 	Urban();
 	Urban(const JSONValue _json);
 	Urban(int _joinedNodeID);
-	void	update();
-	void	draw() const;
 	Pos&	getPos() const;
-	String	getTimeAsString() const;
 	int		id() const;
 
 };

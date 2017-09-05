@@ -1,7 +1,7 @@
 {
   "Window": {
     "SetFullScreen": false,
-    "WindowSize": [ 1920, 1080 ]
+    "WindowSize": [ 1280, 720 ]
   },
   "NumVehicles": 500,
   "comment": "もしFullScreenにしない場合はこのファイルごと削除するか、falseに変更してください。"

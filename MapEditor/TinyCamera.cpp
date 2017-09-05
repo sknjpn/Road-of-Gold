@@ -1,11 +1,11 @@
 #include"TinyCamera.h"
+#include"GlobalVariables.h"
 
 TinyCamera::TinyCamera()
-	: restrictedRegion(-360_deg, -90_deg, 360_deg, 90_deg)
+	: restrictedRegion(-180_deg, -90_deg, 360_deg, 90_deg)
 	, drawingRegion(-180_deg, -90_deg, 180_deg, 90_deg)
 	, smoothDrawingRegion(drawingRegion)
 	, gazePoint(none)
-	, outputRegion(1280, 720)
 {}
 
 void TinyCamera::update()
@@ -51,7 +51,7 @@ void TinyCamera::update()
 	}
 	//スライダー
 	const double slidingSpeed = (drawingRegion.size.y / 180_deg)*0.05;
-	const bool useKeyViewControl = true;
+	const bool useKeyViewControl = keyControlEnabled;
 	if ((useKeyViewControl && KeyA.pressed()) || Cursor::Pos().x <= 0) drawingRegion.pos.x -= slidingSpeed;
 	if ((useKeyViewControl && KeyW.pressed()) || Cursor::Pos().y <= 0) drawingRegion.pos.y -= slidingSpeed;
 	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x >= Window::Size().x - 1) drawingRegion.pos.x += slidingSpeed;
@@ -63,7 +63,7 @@ Pos TinyCamera::getCursorPos() const
 }
 Mat3x2 TinyCamera::getMat3x2(int _delta) const
 {
-	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta * 360_deg, 0.0)).scaled(outputRegion.size.y / smoothDrawingRegion.size.y).translated(outputRegion.center());
+	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta * 360_deg, 0.0)).scaled(Window::Size().y / smoothDrawingRegion.size.y).translated(Window::ClientRect().center());
 }
 Transformer2D TinyCamera::createTransformer(int _delta) const
 {

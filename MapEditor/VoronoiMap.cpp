@@ -1,6 +1,5 @@
 #include"Planet.h"
 #include"Node.h"
-#include"Pi.h"
 
 
 bool	Planet::loadVoronoiMap()
@@ -12,6 +11,7 @@ bool	Planet::loadVoronoiMap()
 
 		int	nodesSize, pathsSize;
 		reader.read(nodesSize);
+		nodes.reserve(nodesSize);
 		for (int i = 0; i < nodesSize; ++i)
 		{
 			Vec3 ePos;
@@ -28,18 +28,13 @@ bool	Planet::loadVoronoiMap()
 		}
 		for (auto& n : nodes)
 		{
-			for (auto& p : n.paths)
-			{
-				paths.emplace_back(&p);
-			}
+			for (auto& p : n.paths) paths.emplace_back(&p);
 		}
 	}
-	
+
 
 	//VoronoiMap‚Ì“Ç‚Ýž‚Ý
 	{
-
-
 		Image reader(L"Assets/NodeMap/VoronoiMap.png");
 		if (!reader.isEmpty())
 		{
@@ -54,8 +49,9 @@ bool	Planet::loadVoronoiMap()
 		//Image‚ÉF‚ð“]ŽÊ
 		image.resize(reader.size());
 		for (auto& p : step(reader.size()))
-			if (voronoiMap[p.y][p.x] != -1)
-				image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].getColor();
+		{
+			if (voronoiMap[p.y][p.x] != -1) image[p.y][p.x] = nodes[voronoiMap[p.y][p.x]].getColor();
+		}
 
 		//—ÖŠsü‚Ì•`‰æ
 		Image outlineImage(reader.size());

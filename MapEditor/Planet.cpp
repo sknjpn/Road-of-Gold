@@ -1,5 +1,4 @@
 #include"Planet.h"
-#include"Pi.h"
 #include"Node.h"
 #include"BiomeData.h"
 
@@ -11,7 +10,7 @@ void	Planet::updateImage(Array<Node*> _nodeList)
 {
 	for (auto n : _nodeList)
 	{
-		const auto& p = (n->pos.mPos / TwoPi).movedBy(0.5, 0.25)*voronoiMap.size().x;
+		const auto& p = (n->pos.mPos / 360_deg).movedBy(0.5, 0.25)*voronoiMap.size().x;
 		Array<Point> temp;
 		temp.emplace_back(int(p.x), int(p.y));
 		while (!temp.isEmpty())

@@ -17,7 +17,4 @@ void	initPlanet()
 	//mapTexture‚É“K—p
 	planet.mapTexture = Texture(image);
 	Log(L"MapTextrue‚Ìì¬‚ªŠ®—¹");
-
-	//TinyCamera‚Ìİ’è
-	tinyCamera.outputRegion = Window::ClientRect();
 }

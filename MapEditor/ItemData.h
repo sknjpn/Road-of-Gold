@@ -7,15 +7,11 @@ struct ItemData
 	Color	color;
 	Texture	icon;
 
-	ItemData(const JSONValue& _json)
-		: name(_json[L"Name"].getOr<String>(L""))
-		, value(_json[L"Value"].getOr<int>(0))
-		, color(_json[L"Color"].getOr<String>(L"#FFFFFF"))
-		, icon(_json[L"Icon"].getOr<String>(L""))
-	{}
+	ItemData(const JSONValue& _json);
 	int		id() const;
 };
 
 extern Array<ItemData>	itemData;
 
-void	loadItemData();
+ItemData*	getItemData(const String& _name);
+int	getItemType(const String& _name);

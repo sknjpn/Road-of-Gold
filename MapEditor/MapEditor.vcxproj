@@ -209,14 +209,15 @@
     <None Include="engine\shader\sprite.ps" />
     <None Include="engine\shader\sprite.vs" />
     <None Include="engine\shader\sprite_sdf.ps" />
+    <None Include="起動設定.json" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BiomeData.h" />
+    <ClInclude Include="Data.h" />
     <ClInclude Include="EnergyData.h" />
     <ClInclude Include="GlobalVariables.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="Pi.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="Pos.h" />
     <ClInclude Include="stdafx.h" />

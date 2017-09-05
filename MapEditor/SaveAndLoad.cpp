@@ -1,33 +1,10 @@
 #include"Node.h"
 #include"Planet.h"
-#include"Pi.h"
 #include"BiomeData.h"
 #include"EnergyData.h"
 #include"Urban.h"
 #include"GlobalVariables.h"
 
-Urban::Urban(const JSONValue _json)
-	: name(_json[L"Name"].getString())
-	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))
-	, productivity(_json[L"Productivity"].getOr<double>(1.0))
-	, numCitizens(_json[L"NumCitizens"].getOr<int>(1))
-{
-
-	//Ž‘Œ¹”z’u
-	energies.resize(energyData.size());
-	for (auto i : _json[L"Energies"].objectView())
-	{
-		for (int j = 0; j < int(energyData.size()); j++)
-		{
-			auto& data = energyData.at(j);
-			if (data.name == i.name)
-			{
-				energies.at(j) = i.value.getOr<int>(0);
-				break;
-			}
-		}
-	} 
-}
 
 bool loadMapData(const FilePath& _path)
 {

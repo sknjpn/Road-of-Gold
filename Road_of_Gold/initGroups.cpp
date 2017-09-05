@@ -7,6 +7,8 @@ void	initGroups()
 {
 	JSONReader json(L"‹N“®İ’è.json");
 	int numVehicles = json[L"NumVehicles"].getOr<int>(100);
-	for (int i = 0; i < 100; i++)
+	vehicles.reserve(numVehicles);
+
+	for (int i = 0; i < numVehicles; i++)
 		vehicles.emplace_back(vehicleData.choice().id(), &urbans.choice());
 }

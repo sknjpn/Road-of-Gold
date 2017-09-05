@@ -6,7 +6,6 @@ struct CitizenData
 {
 	String	name;
 	int		wage;
-	int		cost;
 	int		needEnergyType;
 	Casket	product;
 
@@ -15,3 +14,6 @@ struct CitizenData
 };
 
 extern Array<CitizenData>	citizenData;
+
+CitizenData*	getCitizenData(const String& _name);
+int	getCitizenType(const String& _name);

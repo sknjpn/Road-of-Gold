@@ -1,10 +1,12 @@
 ﻿#include"Planet.h"
 #include"Node.h"
-#include"Pi.h"
-#include"EnergyData.h"
-#include"BiomeData.h"
 #include"Urban.h"
 #include"TinyCamera.h"
+#include"Data.h"
+#include"EnergyData.h"
+#include"BiomeData.h"
+#include"VehicleData.h"
+#include"ItemData.h"
 /*
 Road of Gold専用マップエディタ
 */
@@ -19,9 +21,34 @@ Urban*	selectedUrban = nullptr;
 
 //ファイル名入力欄
 TextBox textBox;
+bool	keyControlEnabled = true;
 
 void Main()
 {
+	{
+		Window::SetTitle(L"MapEditor");
+
+		JSONReader json(L"起動設定.json");
+		if (json[L"Window"][L"SetFullScreen"].get<bool>())
+		{
+			Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
+		}
+		else
+		{
+			Size size(1280, 720);
+			auto s = json[L"Window"][L"WindowSize"].arrayView();
+			if (json[L"Window"][L"WindowSize"].arrayCount() == 2)
+			{
+				if (s[0].getOr<int>(0) > 0 && s[1].getOr<int>(0) > 0)
+				{
+					size.x = s[0].getOr<int>(0);
+					size.y = s[1].getOr<int>(0);
+				}
+			}
+			Window::Resize(size);
+		}
+	}
+
 	const Rect uiRect(32, 32, 320, 720 - 64);
 	const Font font12(12);
 	const Font font16(16);
@@ -44,11 +71,7 @@ void Main()
 	bool	drawOutlineEnabled = true;
 	Node*	nearestNode = &nodes[0];
 
-	Window::SetTitle(L"MapEditor");
-	Window::Resize(1280, 720);
-
-	loadBiomeData();
-	loadEnergyData();
+	loadData();
 
 	//データの読み込み
 	if (!planet.loadVoronoiMap()) return;
@@ -63,14 +86,20 @@ void Main()
 
 	Array<TextBox> resourceTextBox;
 	for (auto i : step(energyData.size()))
+	{
 		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 106 + i * 20), none);
-
+	}
 
 	while (System::Update())
 	{
+		if (numCitizensTextBox.isActive() ||
+			urbanNameTextBox.isActive() ||
+			textBox.isActive() ||
+			resourceTextBox.any([](const TextBox& _t) { return _t.isActive(); })) keyControlEnabled = false;
+		else keyControlEnabled = true;
 
 		//キー入力
-		if (!textBox.isActive())
+		if (keyControlEnabled)
 		{
 			if (KeyG.down()) drawOutlineEnabled = !drawOutlineEnabled;
 			if (Key1.down()) selectedBiome = 0;
@@ -98,8 +127,8 @@ void Main()
 		for (int i = 0; i < 2; ++i) {
 			const auto t1 = tinyCamera.createTransformer(i);
 
-			planet.mapTexture.resize(TwoPi, Pi).drawAt(0, 0);
-			if (drawOutlineEnabled) planet.outlineTexture.resize(TwoPi, Pi).drawAt(0, 0);
+			planet.mapTexture.resize(360_deg, 180_deg).drawAt(0, 0);
+			if (drawOutlineEnabled) planet.outlineTexture.resize(360_deg, 180_deg).drawAt(0, 0);
 		}
 
 		//都市の描画
@@ -107,7 +136,9 @@ void Main()
 			const auto t1 = tinyCamera.createTransformer(i);
 
 			for (auto& u : urbans)
+			{
 				Circle(u.getPos().mPos, 0.012).draw(Palette::Red).drawFrame(0.002, 0.0, Palette::Black);
+			}
 		}
 
 		//selectedUrbanの描画
@@ -126,7 +157,7 @@ void Main()
 
 			//nearestNodeの設定
 			{
-				const auto& p = (tinyCamera.getCursorPos().mPos / TwoPi).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
+				const auto& p = (tinyCamera.getCursorPos().mPos / 360_deg).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
 				nearestNode = &nodes[planet.voronoiMap[int(p.y)][int(p.x)]];
 			}
 
@@ -357,7 +388,7 @@ void Main()
 				if (selectedUrban != nullptr) selectedUrban->name = urbanNameTextBox.getText();
 				else urbanNameTextBox.setText(L"");
 				urbanNameTextBox.draw();
-				
+
 				const Rect rect(32, 64, 44, 20);
 				rect.drawFrame(2, Palette::Skyblue);
 				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
@@ -404,7 +435,7 @@ void Main()
 
 		case UIMode::saveAndLoad:
 		{
-			font16(L"クリックしただけで読み込みが開始されます").draw(32,64);
+			font16(L"クリックしただけで読み込みが開始されます").draw(32, 64);
 
 			//ロードファイルリストの表示
 			{

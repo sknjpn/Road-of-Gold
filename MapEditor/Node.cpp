@@ -1,6 +1,5 @@
 #include"Node.h"
 #include"Planet.h"
-#include"Pi.h"
 #include"BiomeData.h"
 #include"Urban.h"
 
@@ -22,10 +21,10 @@ Line	Path::getLine() const
 {
 	auto p1 = getParent().pos.mPos;
 	auto p2 = getChild().pos.mPos;
-	if (abs(p1.x - p2.x) > Pi)
+	if (abs(p1.x - p2.x) > 180_deg)
 	{
-		if (p1.x > 0) p1.x -= TwoPi;
-		else p2.x -= TwoPi;
+		if (p1.x > 0) p1.x -= 360_deg;
+		else p2.x -= 360_deg;
 	}
 	return Line(p1, p2);
 }

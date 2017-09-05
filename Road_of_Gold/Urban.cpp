@@ -24,14 +24,8 @@ Urban::Urban(const JSONValue& _json)
 	//‘Œ¹”z’u
 	for (auto i : _json[L"Energies"].objectView())
 	{
-		for (auto type : step(int(energyData.size())))
-		{
-			if (energyData.at(type).name == i.name)
-			{
-				energies.emplace_back(type, i.value.getOr<int>(0));
-				break;
-			}
-		}
+		if (getEnergyType(i.name) == -1) LOG_ERROR(L"‘¶İ‚µ‚È‚¢Energy‚ª“Ç‚İ‚Ü‚ê‚Ü‚µ‚½");
+		else energies.emplace_back(getEnergyType(i.name), i.value.getOr<int>(0));
 	}
 
 	//Customer‚ÌrateŒˆ’è—pŠÖ”

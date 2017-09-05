@@ -51,5 +51,5 @@ struct Basket
 
 	Basket();
 	int		itemType() const;
-	ItemData	data() const;
+	ItemData&	data() const;
 };

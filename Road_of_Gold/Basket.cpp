@@ -10,7 +10,7 @@ int		Basket::itemType() const
 {
 	return int(this - &joinedUrban->baskets.front());
 }
-ItemData	Basket::data() const
+ItemData&	Basket::data() const
 {
 	return itemData[this - &joinedUrban->baskets.front()];
 }

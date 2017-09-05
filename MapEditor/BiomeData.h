@@ -7,15 +7,11 @@ struct BiomeData
 	double	movingCost;
 	bool	isSea;
 
-	BiomeData(const JSONValue& _json)
-		: name(_json[L"Name"].getOr<String>(L""))
-		, color(_json[L"Color"].getOr<String>(L"#FFFFFF"))
-		, movingCost(_json[L"MovingCost"].getOr<double>(1.0))
-		, isSea(_json[L"IsSea"].getOr<bool>(false))
-	{}
+	BiomeData(const JSONValue& _json);
 	int		id() const;
 };
 
 extern Array<BiomeData>	biomeData;
 
-void	loadBiomeData();
+BiomeData*	getBiomeData(const String& _name);
+int	getBiomeType(const String& _name);

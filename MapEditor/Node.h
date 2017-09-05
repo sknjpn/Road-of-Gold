@@ -13,7 +13,6 @@ struct Path
 	Node&	getChild() const;
 	Node&	getParent() const;
 	Line	getLine() const;
-
 };
 extern Array<Path*> paths;
 

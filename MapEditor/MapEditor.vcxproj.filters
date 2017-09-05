@@ -132,6 +132,9 @@
     <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst">
       <Filter>Resource Files\engine\font\noto</Filter>
     </None>
+    <None Include="起動設定.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pos.h">
@@ -152,9 +155,6 @@
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Pi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Planet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -168,6 +168,9 @@
       <Filter>Header Files\Data</Filter>
     </ClInclude>
     <ClInclude Include="VehicleData.h">
+      <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
       <Filter>Header Files\Data</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,14 +7,33 @@
 #include"UI.h"
 #include"Sound.h"
 #include"Scuttle.h"
-#include"JSON.h"
+#include"Data.h"
 
 void Main()
 {
-	JSONReader json(L"起動設定.json");
-	if (json[L"FullScreen"].getOr<bool>(false)) Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
-	else Window::Resize(1280, 720);
-	Window::SetTitle(L"Road of Gold");
+	{
+		Window::SetTitle(L"Road of Gold");
+
+		JSONReader json(L"起動設定.json");
+		if (json[L"Window"][L"SetFullScreen"].get<bool>())
+		{
+			Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
+		}
+		else
+		{
+			Size size(1280, 720);
+			auto s = json[L"Window"][L"WindowSize"].arrayView();
+			if (json[L"Window"][L"WindowSize"].arrayCount() == 2)
+			{
+				if (s[0].getOr<int>(0) > 0 && s[1].getOr<int>(0) > 0)
+				{
+					size.x = s[0].getOr<int>(0);
+					size.y = s[1].getOr<int>(0);
+				}
+			}
+			Window::Resize(size);
+		}
+	}
 
 	Log(L"WindowSize:", Window::Size());
 	Log(L"FullScreen:", Window::GetState().fullScreen);

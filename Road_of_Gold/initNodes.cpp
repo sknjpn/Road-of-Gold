@@ -12,9 +12,10 @@ void	initNodes()
 	}
 
 	int	nodesSize, pathsSize;
-	
+
 	//Node‚ÌˆÊ’u‚Ì“Ç‚İ‚İ
 	reader.read(nodesSize);
+	nodes.reserve(nodesSize);
 	for (int i = 0; i < nodesSize; ++i)
 	{
 		Vec3 ePos;
@@ -31,7 +32,7 @@ void	initNodes()
 		reader.read(parentNodeID);
 		reader.read(childNodeID);
 
-		if (parentNodeID<0 || parentNodeID >= nodesSize || childNodeID<0 || childNodeID >= nodesSize)
+		if (parentNodeID < 0 || parentNodeID >= nodesSize || childNodeID < 0 || childNodeID >= nodesSize)
 		{
 			LOG_ERROR(L"NodeMap.bin‚©‚çˆÙí‚È”’l‚ğŒŸo");
 			System::Exit();
