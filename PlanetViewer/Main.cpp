@@ -8,9 +8,29 @@ Array<Node> nodes;
 
 void Main()
 {
-	Window::Resize(1280, 720);
-	Window::SetTitle(L"Planet Viewer");
-	//Window::SetFullscreen(true, Graphics::GetFullScreenSize().back());
+	{
+		Window::SetTitle(L"Planet Viewer");
+
+		JSONReader json(L"起動設定.json");
+		if (json[L"Window"][L"SetFullScreen"].get<bool>())
+		{
+			Window::SetFullscreen(true, Graphics::GetFullScreenSize().back());
+		}
+		else
+		{
+			Size size(1280, 720);
+			auto s = json[L"Window"][L"WindowSize"].getArray();
+			if (s.size() == 2)
+			{
+				if (s[0].getOr<int>(0) > 0 && s[1].getOr<int>(0) > 0)
+				{
+					size.x = s[0].getOr<int>(0);
+					size.y = s[1].getOr<int>(0);
+				}
+			}
+			Window::Resize(size);
+		}
+	}
 
 	Texture mapTexture;
 

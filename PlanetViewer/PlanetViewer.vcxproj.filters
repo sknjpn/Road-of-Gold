@@ -273,6 +273,9 @@
     <None Include="Engine\Config.ini">
       <Filter>リソース ファイル\Engine</Filter>
     </None>
+    <None Include="起動設定.json">
+      <Filter>リソース ファイル</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Engine\dll(x64)\libmpg123\COPYING.txt">
@@ -299,9 +302,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Planet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pi.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
