@@ -67,7 +67,7 @@ bool saveMapData(const FilePath& _path)
 			text += Format(L",\r\t\t\t\"NumCitizens\": ", u.numCitizens);
 
 			//¶Y«‚Ì•Û‘¶
-			text += Format(L",\r\t\t\t\"Productivity\": ", u.productivity);
+			//text += Format(L",\r\t\t\t\"Productivity\": ", u.productivity);
 
 			//Resourcesƒf[ƒ^‚Ì•Û‘¶
 			text += L",\r\t\t\t\"Energies\": {";

@@ -17,9 +17,7 @@ Buyer::Buyer(int _walletID, int _itemType, int _period, int _target)
 	, target(_target)
 	, progress(0)
 	, period(_period)
-{
-
-}
+{}
 
 Wallet& Seller::wallet() const { return wallets[walletID]; }
 Wallet& Buyer::wallet() const { return wallets[walletID]; }

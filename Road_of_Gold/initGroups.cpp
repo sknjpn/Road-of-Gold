@@ -5,10 +5,10 @@
 
 void	initGroups()
 {
-	JSONReader json(L"‹N“®İ’è.json");
-	int numVehicles = json[L"NumVehicles"].getOr<int>(100);
-	vehicles.reserve(numVehicles);
+	INIReader iniReader(L"config.ini");
+	int numVehicles = iniReader.getOr<int>(L"Groups", L"NumVehicles", 0);
 
+	vehicles.reserve(numVehicles);
 	for (int i = 0; i < numVehicles; i++)
 		vehicles.emplace_back(vehicleData.choice().id(), &urbans.choice());
 }

@@ -10,7 +10,7 @@
 void	loadMap()
 {
 	//Mapデータの選択
-	auto items = FileSystem::DirectoryContents(L"Map/");
+	auto items = FileSystem::DirectoryContents(L"map/");
 
 	for (auto& item : items)
 	{
@@ -21,7 +21,7 @@ void	loadMap()
 				JSONReader reader(item + L"Planet.json");
 				auto j = reader[L"Planet"][L"StartTime"];
 
-				planet.sandglass.timer = j[L"Year"].getOr<int>(0) * 360 + (j[L"Month"].getOr<int>(0) - 1) * 30 + (j[L"Day"].getOr<int>(0) - 1);
+				planet.sandglass.timer = j[L"Year"].getOr<int>(0) * 360 + (j[L"Month"].getOr<int>(1) - 1) * 30 + (j[L"Day"].getOr<int>(1) - 1);
 			}
 
 			//バイオームデータのロード

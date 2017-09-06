@@ -15,27 +15,27 @@ void	loadData()
 {
 	JSONReader json;
 
-	json.open(L"Assets/ItemData.json");
+	json.open(L"assets/data/itemData.json");
 	for (auto j : json[L"ItemData"].arrayView())
 		itemData.emplace_back(j);
 	Log(L"ItemData‚Ì“Ç‚İ‚İŠ®—¹ size = ", itemData.size());
 
-	json.open(L"Assets/BiomeData.json");
+	json.open(L"assets/data/biomeData.json");
 	for (auto j : json[L"BiomeData"].arrayView())
 		biomeData.emplace_back(j);
 	Log(L"BiomeData‚Ì“Ç‚İ‚İŠ®—¹ size = ", biomeData.size());
 
-	json.open(L"Assets/EnergyData.json");
+	json.open(L"assets/data/energyData.json");
 	for (auto j : json[L"EnergyData"].arrayView())
 		energyData.emplace_back(j);
 	Log(L"EnergyData‚Ì“Ç‚İ‚İŠ®—¹ size = ", energyData.size());
 
-	json.open(L"Assets/CitizenData.json");
+	json.open(L"assets/data/citizenData.json");
 	for (auto j : json[L"CitizenData"].arrayView())
 		citizenData.emplace_back(j);
 	Log(L"CitizenData‚Ì“Ç‚İ‚İŠ®—¹ size = ", citizenData.size());
 
-	json.open(L"Assets/VehicleData.json");
+	json.open(L"assets/data/vehicleData.json");
 	for (auto j : json[L"VehicleData"].arrayView())
 		vehicleData.emplace_back(j);
 	Log(L"VehicleData‚Ì“Ç‚İ‚İŠ®—¹ size = ", vehicleData.size());

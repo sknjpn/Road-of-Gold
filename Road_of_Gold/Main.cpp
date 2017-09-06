@@ -14,25 +14,9 @@ void Main()
 	{
 		Window::SetTitle(L"Road of Gold");
 
-		JSONReader json(L"起動設定.json");
-		if (json[L"Window"][L"SetFullScreen"].get<bool>())
-		{
-			Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
-		}
-		else
-		{
-			Size size(1280, 720);
-			auto s = json[L"Window"][L"WindowSize"].arrayView();
-			if (json[L"Window"][L"WindowSize"].arrayCount() == 2)
-			{
-				if (s[0].getOr<int>(0) > 0 && s[1].getOr<int>(0) > 0)
-				{
-					size.x = s[0].getOr<int>(0);
-					size.y = s[1].getOr<int>(0);
-				}
-			}
-			Window::Resize(size);
-		}
+		INIReader iniReader(L"config.ini");
+		if (iniReader.getOr<bool>(L"Window", L"FullScreen", false)) Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
+		else Window::Resize(iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
 	}
 
 	Log(L"WindowSize:", Window::Size());
@@ -60,7 +44,7 @@ void Main()
 
 	Log(L"MainLoopの開始");
 
-	auto bgmItems = FileSystem::DirectoryContents(L"Assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == L"mp3"; });
+	auto bgmItems = FileSystem::DirectoryContents(L"assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == L"mp3"; });
 
 
 	while (System::Update())

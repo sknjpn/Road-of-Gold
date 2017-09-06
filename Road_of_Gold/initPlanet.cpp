@@ -5,7 +5,7 @@
 void	initPlanet()
 {
 	//VoronoiMap‚Ì“Ç‚İ‚İ
-	Image image(L"Assets/NodeMap/VoronoiMap.png");
+	Image image(L"assets/nodemap/voronoiMap.png");
 
 	for (auto p : step(image.size()))
 	{

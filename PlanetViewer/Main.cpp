@@ -11,32 +11,16 @@ void Main()
 	{
 		Window::SetTitle(L"Planet Viewer");
 
-		JSONReader json(L"起動設定.json");
-		if (json[L"Window"][L"SetFullScreen"].get<bool>())
-		{
-			Window::SetFullscreen(true, Graphics::GetFullScreenSize().back());
-		}
-		else
-		{
-			Size size(1280, 720);
-			auto s = json[L"Window"][L"WindowSize"].getArray();
-			if (s.size() == 2)
-			{
-				if (s[0].getOr<int>(0) > 0 && s[1].getOr<int>(0) > 0)
-				{
-					size.x = s[0].getOr<int>(0);
-					size.y = s[1].getOr<int>(0);
-				}
-			}
-			Window::Resize(size);
-		}
+		INIReader iniReader(L"config.ini");
+		if (iniReader.getOr<bool>(L"Window.FullScreen", false)) Window::SetFullscreen(true, Graphics::GetFullScreenSize().back());
+		else Window::Resize(iniReader.getOr<Size>(L"Window.WindowSize", Size(1280, 720)));
 	}
 
 	Texture mapTexture;
 
 	//Nodeの読み込み
 	{
-		BinaryReader reader(L"Assets/NodeMap/NodeMap.bin");
+		BinaryReader reader(L"assets/nodemap/nodeMap.bin");
 		int	nodesSize;
 
 		reader.read(nodesSize);
@@ -50,12 +34,12 @@ void Main()
 
 	//BiomeData
 	{
-		JSONReader json(L"Assets/BiomeData.json");
+		JSONReader json(L"assets/data/biomeData.json");
 		for (auto j : json[L"BiomeData"].getArray())
 			biomeData.emplace_back(j);
 	}
 	//Mapデータの選択
-	for (auto item : FileSystem::DirectoryContents(L"Map/"))
+	for (auto item : FileSystem::DirectoryContents(L"map/"))
 	{
 		if (FileSystem::IsDirectory(item) && FileSystem::Exists(item + L"BiomeData.bin"))
 		{
@@ -78,7 +62,7 @@ void Main()
 
 	//VoronoiMapの読み込み
 	{
-		Image	image(L"Assets/NodeMap/VoronoiMap.png");
+		Image	image(L"assets/nodemap/voronoiMap.png");
 
 		for (auto p : step(image.size))
 		{
@@ -112,7 +96,7 @@ void Main()
 			}
 		}
 	}
-	const Texture texture(L"Assets/Particle.png", TextureDesc::For3D);
+	const Texture texture(L"assets/image/particle.png", TextureDesc::For3D);
 
 	Graphics3D::SetBlendStateForward(BlendState::Additive);
 	Graphics3D::SetDepthStateForward(DepthState::TestOnly);

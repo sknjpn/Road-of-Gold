@@ -1,5 +1,4 @@
-﻿#include <Siv3D.hpp> // OpenSiv3D v0.1.5
-#include"Node.h"
+﻿#include"Node.h"
 #include"Pi.h"
 #include"Pos.h"
 #include"HugeImage.h"
@@ -221,7 +220,7 @@ void Main()
 				paths.emplace_back(&p);
 		}
 		Window::SetTitle(paths.size());
-		BinaryWriter writer(L"Assets/NodeMap.bin");
+		BinaryWriter writer(L"assets/nodemap/nodeMap.bin");
 		writer.write(int(nodes.size()));
 		for (int i = 0; i < int(nodes.size()); ++i)
 		{
@@ -242,7 +241,7 @@ void Main()
 
 		for (auto p : step(Size(image.size().x / size.x, image.size().y / size.y)))
 		{
-			image.saveImg(Rect(Point(p.x*size.x, p.y*size.y), size), Format(L"Assets/VoronoiMap_", p.x, L"_", p.y, L".png"));
+			image.saveImg(Rect(Point(p.x*size.x, p.y*size.y), size), Format(L"assets/VoronoiMap_", p.x, L"_", p.y, L".png"));
 		}
 	}
 

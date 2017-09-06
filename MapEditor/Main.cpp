@@ -12,7 +12,7 @@ Road of Gold専用マップエディタ
 */
 
 Array<Urban> urbans;
-Planet planet;
+Planet	planet;
 TinyCamera tinyCamera;
 int		selectedBiome = 0;
 int		selectedBrush = 0;
@@ -28,25 +28,9 @@ void Main()
 	{
 		Window::SetTitle(L"MapEditor");
 
-		JSONReader json(L"起動設定.json");
-		if (json[L"Window"][L"SetFullScreen"].get<bool>())
-		{
-			Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
-		}
-		else
-		{
-			Size size(1280, 720);
-			auto s = json[L"Window"][L"WindowSize"].arrayView();
-			if (json[L"Window"][L"WindowSize"].arrayCount() == 2)
-			{
-				if (s[0].getOr<int>(0) > 0 && s[1].getOr<int>(0) > 0)
-				{
-					size.x = s[0].getOr<int>(0);
-					size.y = s[1].getOr<int>(0);
-				}
-			}
-			Window::Resize(size);
-		}
+		INIReader iniReader(L"config.ini");
+		if (iniReader.getOr<bool>(L"Window", L"FullScreen", false)) Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
+		else Window::Resize(iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
 	}
 
 	const Rect uiRect(32, 32, 320, 720 - 64);
@@ -154,7 +138,6 @@ void Main()
 
 		if (!uiRect.mouseOver())
 		{
-
 			//nearestNodeの設定
 			{
 				const auto& p = (tinyCamera.getCursorPos().mPos / 360_deg).movedBy(0.5, 0.25)*planet.voronoiMap.size().x;
@@ -354,7 +337,7 @@ void Main()
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked())
 				{
-					FilePath filePath = L"Map/" + textBox.getText() + L"/";
+					FilePath filePath = L"map/" + textBox.getText() + L"/";
 					saveMapData(filePath);
 				}
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
@@ -408,7 +391,7 @@ void Main()
 				t.update();
 				if (selectedUrban != nullptr)
 				{
-					selectedUrban->energies[i] = ParseInt<int>(t.getText()) % 10000;
+					selectedUrban->energies[i] = Min(ParseInt<int>(t.getText(), Arg::radix = 10), 10000);
 					t.setText(Format(selectedUrban->energies[i]));
 				}
 				else t.setText(L"");
@@ -420,7 +403,7 @@ void Main()
 				numCitizensTextBox.update();
 				if (selectedUrban != nullptr)
 				{
-					selectedUrban->numCitizens = ParseInt<int>(numCitizensTextBox.getText());
+					selectedUrban->numCitizens = Min(ParseInt<int>(numCitizensTextBox.getText(), Arg::radix = 10), 10000);
 					numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 				}
 				else numCitizensTextBox.setText(L"");
@@ -439,7 +422,7 @@ void Main()
 
 			//ロードファイルリストの表示
 			{
-				auto items = FileSystem::DirectoryContents(L"Map/");
+				auto items = FileSystem::DirectoryContents(L"map/");
 				items.remove_if([](FilePath& _item) {
 					return !FileSystem::IsDirectory(_item) || !FileSystem::Exists(_item + L"BiomeData.bin");
 				});
@@ -452,9 +435,9 @@ void Main()
 					{
 						for (int j = 0;; j++)
 						{
-							if (!FileSystem::Exists(Format(L"Map/_autosave/", j, L"/")))
+							if (!FileSystem::Exists(Format(L"map/_autosave/", j, L"/")))
 							{
-								saveMapData(Format(L"Map/_autosave/", j, L"/"));
+								saveMapData(Format(L"map/_autosave/", j, L"/"));
 								break;
 							}
 						}

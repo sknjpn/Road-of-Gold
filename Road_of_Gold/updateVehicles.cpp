@@ -24,11 +24,14 @@ void	updateVehicles()
 			auto rs = u2->ownRoutes.filter([&v](const Route* r) { return r->isSeaRoute == v.data().isShip && r->movingCost <= v.data().range; });
 
 			//ルートがない場合、再生成
-			if (rs.isEmpty()) continue;
-
+			if (rs.isEmpty())
+			{
+				v.nowUrban = &urbans.choice();
+				continue;
+			}
 			auto* r = rs.choice();
 			auto* u1 = r->toUrban;
-
+			 
 			int itemType = -1;
 			{
 				for (int j = 0; j < 10; j++)
@@ -63,8 +66,6 @@ void	updateVehicles()
 				{ Code::Move, u2->id() },
 				{ Code::MVol, 100 },
 				{ Code::Buy,  itemType },	//Buyerに指示&商品受け取り
-
-
 				{ Code::Jump, 0 }
 			};
 			bool flag = true;

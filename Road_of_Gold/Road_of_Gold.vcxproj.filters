@@ -55,6 +55,18 @@
     <Filter Include="Source Files\load">
       <UniqueIdentifier>{5fe2bdea-1fcb-4b8e-9254-ab8c8f59c5b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Urban">
+      <UniqueIdentifier>{979c8ff0-b827-4fe1-8c7e-cb1275525d64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Urban\Market">
+      <UniqueIdentifier>{851b9b9c-95e9-4990-9243-46db7b3a63c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Node">
+      <UniqueIdentifier>{ef71ce95-160f-4e02-89ce-a512dc1fc21e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Group">
+      <UniqueIdentifier>{1749b1a5-73ba-4748-8b82-c688be40c8dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -283,55 +295,19 @@
     <ClInclude Include="UI.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Urban.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vehicle.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Wallet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Basket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Buyer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Casket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Citizen.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Energy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Group.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Path.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Planet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Pos.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Ring.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Route.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Sandglass.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Seller.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
@@ -367,11 +343,47 @@
     <ClInclude Include="Nation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Customer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data.h">
       <Filter>Header Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Basket.h">
+      <Filter>Header Files\Urban\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="Customer.h">
+      <Filter>Header Files\Urban</Filter>
+    </ClInclude>
+    <ClInclude Include="Citizen.h">
+      <Filter>Header Files\Urban</Filter>
+    </ClInclude>
+    <ClInclude Include="Buyer.h">
+      <Filter>Header Files\Urban</Filter>
+    </ClInclude>
+    <ClInclude Include="Seller.h">
+      <Filter>Header Files\Urban</Filter>
+    </ClInclude>
+    <ClInclude Include="Urban.h">
+      <Filter>Header Files\Urban</Filter>
+    </ClInclude>
+    <ClInclude Include="Ring.h">
+      <Filter>Header Files\Urban\Market</Filter>
+    </ClInclude>
+    <ClInclude Include="Path.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Pos.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\Node</Filter>
+    </ClInclude>
+    <ClInclude Include="Route.h">
+      <Filter>Header Files\Urban</Filter>
+    </ClInclude>
+    <ClInclude Include="Vehicle.h">
+      <Filter>Header Files\Group</Filter>
+    </ClInclude>
+    <ClInclude Include="Group.h">
+      <Filter>Header Files\Group</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

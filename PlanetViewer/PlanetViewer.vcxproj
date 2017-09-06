@@ -104,6 +104,39 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  uploadingFiles
+robocopy    Road_of_Gold\assets    uploadingFiles\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map       uploadingFiles\map /MIR /COPY:D
+robocopy    Road_of_Gold\engine    uploadingFiles\engine /MIR /COPY:D
+robocopy    PlanetViewer\Engine    uploadingFiles\Engine /MIR /COPY:D
+copy        Road_of_Gold\Road_of_Gold\Release-x86\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x86.exe
+copy        Road_of_Gold\Road_of_Gold\Release-x64\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x64.exe
+copy        Road_of_Gold\MapEditor\Release-x86\MapEditor.exe        uploadingFiles\MapEditor_x86.exe
+copy        Road_of_Gold\MapEditor\Release-x64\MapEditor.exe        uploadingFiles\MapEditor_x64.exe
+copy        Road_of_Gold\Release\PlanetViewer.exe                   uploadingFiles\PlanetViewer_x86.exe
+copy        Road_of_Gold\x64\Release\PlanetViewer.exe               uploadingFiles\PlanetViewer_x64.exe
+copy        Road_of_Gold\config.ini                                 uploadingFiles\config.ini</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  PlanetViewer\assets
+del         /q  PlanetViewer\map
+del         /q  PlanetViewer\config.ini
+robocopy    Road_of_Gold\assets     PlanetViewer\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        PlanetViewer\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini PlanetViewer\config.ini
+
+del         /q  MapEditor\assets
+del         /q  MapEditor\map
+del         /q  MapEditor\config.ini
+robocopy    Road_of_Gold\assets     MapEditor\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        MapEditor\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini MapEditor\config.ini</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -120,6 +153,39 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  uploadingFiles
+robocopy    Road_of_Gold\assets    uploadingFiles\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map       uploadingFiles\map /MIR /COPY:D
+robocopy    Road_of_Gold\engine    uploadingFiles\engine /MIR /COPY:D
+robocopy    PlanetViewer\Engine    uploadingFiles\Engine /MIR /COPY:D
+copy        Road_of_Gold\Road_of_Gold\Release-x86\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x86.exe
+copy        Road_of_Gold\Road_of_Gold\Release-x64\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x64.exe
+copy        Road_of_Gold\MapEditor\Release-x86\MapEditor.exe        uploadingFiles\MapEditor_x86.exe
+copy        Road_of_Gold\MapEditor\Release-x64\MapEditor.exe        uploadingFiles\MapEditor_x64.exe
+copy        Road_of_Gold\Release\PlanetViewer.exe                   uploadingFiles\PlanetViewer_x86.exe
+copy        Road_of_Gold\x64\Release\PlanetViewer.exe               uploadingFiles\PlanetViewer_x64.exe
+copy        Road_of_Gold\config.ini                                 uploadingFiles\config.ini</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  PlanetViewer\assets
+del         /q  PlanetViewer\map
+del         /q  PlanetViewer\config.ini
+robocopy    Road_of_Gold\assets     PlanetViewer\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        PlanetViewer\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini PlanetViewer\config.ini
+
+del         /q  MapEditor\assets
+del         /q  MapEditor\map
+del         /q  MapEditor\config.ini
+robocopy    Road_of_Gold\assets     MapEditor\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        MapEditor\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini MapEditor\config.ini</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -140,6 +206,39 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  uploadingFiles
+robocopy    Road_of_Gold\assets    uploadingFiles\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map       uploadingFiles\map /MIR /COPY:D
+robocopy    Road_of_Gold\engine    uploadingFiles\engine /MIR /COPY:D
+robocopy    PlanetViewer\Engine    uploadingFiles\Engine /MIR /COPY:D
+copy        Road_of_Gold\Road_of_Gold\Release-x86\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x86.exe
+copy        Road_of_Gold\Road_of_Gold\Release-x64\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x64.exe
+copy        Road_of_Gold\MapEditor\Release-x86\MapEditor.exe        uploadingFiles\MapEditor_x86.exe
+copy        Road_of_Gold\MapEditor\Release-x64\MapEditor.exe        uploadingFiles\MapEditor_x64.exe
+copy        Road_of_Gold\Release\PlanetViewer.exe                   uploadingFiles\PlanetViewer_x86.exe
+copy        Road_of_Gold\x64\Release\PlanetViewer.exe               uploadingFiles\PlanetViewer_x64.exe
+copy        Road_of_Gold\config.ini                                 uploadingFiles\config.ini</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  PlanetViewer\assets
+del         /q  PlanetViewer\map
+del         /q  PlanetViewer\config.ini
+robocopy    Road_of_Gold\assets     PlanetViewer\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        PlanetViewer\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini PlanetViewer\config.ini
+
+del         /q  MapEditor\assets
+del         /q  MapEditor\map
+del         /q  MapEditor\config.ini
+robocopy    Road_of_Gold\assets     MapEditor\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        MapEditor\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini MapEditor\config.ini</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -160,6 +259,39 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <PostBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  uploadingFiles
+robocopy    Road_of_Gold\assets    uploadingFiles\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map       uploadingFiles\map /MIR /COPY:D
+robocopy    Road_of_Gold\engine    uploadingFiles\engine /MIR /COPY:D
+robocopy    PlanetViewer\Engine    uploadingFiles\Engine /MIR /COPY:D
+copy        Road_of_Gold\Road_of_Gold\Release-x86\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x86.exe
+copy        Road_of_Gold\Road_of_Gold\Release-x64\Road_of_Gold.exe  uploadingFiles\Road_of_Gold_x64.exe
+copy        Road_of_Gold\MapEditor\Release-x86\MapEditor.exe        uploadingFiles\MapEditor_x86.exe
+copy        Road_of_Gold\MapEditor\Release-x64\MapEditor.exe        uploadingFiles\MapEditor_x64.exe
+copy        Road_of_Gold\Release\PlanetViewer.exe                   uploadingFiles\PlanetViewer_x86.exe
+copy        Road_of_Gold\x64\Release\PlanetViewer.exe               uploadingFiles\PlanetViewer_x64.exe
+copy        Road_of_Gold\config.ini                                 uploadingFiles\config.ini</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>chdir $(ProjectDir)
+chdir ..
+del         /q  PlanetViewer\assets
+del         /q  PlanetViewer\map
+del         /q  PlanetViewer\config.ini
+robocopy    Road_of_Gold\assets     PlanetViewer\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        PlanetViewer\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini PlanetViewer\config.ini
+
+del         /q  MapEditor\assets
+del         /q  MapEditor\map
+del         /q  MapEditor\config.ini
+robocopy    Road_of_Gold\assets     MapEditor\assets /MIR /COPY:D
+robocopy    Road_of_Gold\map        MapEditor\map /MIR /COPY:D
+copy        Road_of_Gold\config.ini MapEditor\config.ini</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp" />
