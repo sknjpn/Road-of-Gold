@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>Planet_Viewer</RootNamespace>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v140</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SIV3D_20160812)\Inc;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_20160812)\Lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>chdir $(SolutionDir)
+call copy.bat</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>chdir $(SolutionDir)
+call copy.bat</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>chdir $(SolutionDir)
+call copy.bat</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level4</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>NDEBUG;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <SDLCheck>true</SDLCheck>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+    <PreBuildEvent>
+      <Command>chdir $(SolutionDir)
+call copy.bat</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Engine\Splash.png" />
+    <Image Include="Icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\assets\config.ini" />
+    <None Include="Engine\Assets\engine_textures.s3a" />
+    <None Include="Engine\Config.ini" />
+    <None Include="Engine\dll(x64)\D3D\d3dcompiler_47.dll" />
+    <None Include="Engine\dll(x64)\libmpg123\libmpg123-0.dll" />
+    <None Include="Engine\dll(x64)\libqrencode\COPYING" />
+    <None Include="Engine\dll(x64)\libqrencode\libqrencode.dll" />
+    <None Include="Engine\dll(x64)\libqrencode\README" />
+    <None Include="Engine\dll(x64)\SoundTouch\SoundTouch.dll" />
+    <None Include="Engine\dll(x64)\TobiiEyeX\Tobii.EyeX.Client.dll" />
+    <None Include="Engine\dll(x86)\D3D\d3dcompiler_47.dll" />
+    <None Include="Engine\dll(x86)\libmpg123\libmpg123-0.dll" />
+    <None Include="Engine\dll(x86)\libqrencode\COPYING" />
+    <None Include="Engine\dll(x86)\libqrencode\libqrencode.dll" />
+    <None Include="Engine\dll(x86)\libqrencode\README" />
+    <None Include="Engine\dll(x86)\SoundTouch\SoundTouch.dll" />
+    <None Include="Engine\dll(x86)\TobiiEyeX\Tobii.EyeX.Client.dll" />
+    <None Include="Engine\Fonts\mplus-1p-black.zip" />
+    <None Include="Engine\Fonts\mplus-1p-bold.zip" />
+    <None Include="Engine\Fonts\mplus-1p-heavy.zip" />
+    <None Include="Engine\Fonts\mplus-1p-light.zip" />
+    <None Include="Engine\Fonts\mplus-1p-medium.zip" />
+    <None Include="Engine\Fonts\mplus-1p-regular.zip" />
+    <None Include="Engine\Fonts\mplus-1p-thin.zip" />
+    <None Include="Engine\Fonts\umeplus-p-gothic.zip" />
+    <None Include="Engine\Objdetect\faceAnime.zip" />
+    <None Include="Engine\Objdetect\facePhoto.zip" />
+    <None Include="Engine\Shaders\D3D11\DeferredFinalize.ps" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh.ps" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh.vs" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh_Shadow.ps" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh_Shadow.vs" />
+    <None Include="Engine\Shaders\D3D11\DeferredMesh_Textured.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardLine3D.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardLine3D.vs" />
+    <None Include="Engine\Shaders\D3D11\ForwardMesh.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardMesh.vs" />
+    <None Include="Engine\Shaders\D3D11\ForwardMesh_Textured.ps" />
+    <None Include="Engine\Shaders\D3D11\ForwardParticle.vs" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle.vs" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle1xMSAA.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle1xMSAA_Linear.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle2xMSAA.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle2xMSAA_Linear.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle4xMSAA.ps" />
+    <None Include="Engine\Shaders\D3D11\FullScreenTriangle4xMSAA_Linear.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_None.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_Q20.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_Q25.ps" />
+    <None Include="Engine\Shaders\D3D11\FXAA_Q39.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation.vs" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_ExponentialFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_HeightFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_LinearFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_NoFog.ps" />
+    <None Include="Engine\Shaders\D3D11\LightAccumulation_SquaredExponentialFog.ps" />
+    <None Include="Engine\Shaders\D3D11\Shape.ps" />
+    <None Include="Engine\Shaders\D3D11\Shape_Stencil.ps" />
+    <None Include="Engine\Shaders\D3D11\Sprite.ps" />
+    <None Include="Engine\Shaders\D3D11\Sprite.vs" />
+    <None Include="Engine\Shaders\D3D11\Sprite_Font.ps" />
+    <None Include="Engine\Shaders\D3D11\Sprite_Stencil.ps" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Engine\dll(x64)\libmpg123\COPYING.txt" />
+    <Text Include="Engine\dll(x64)\SoundTouch\COPYING.TXT" />
+    <Text Include="Engine\dll(x86)\libmpg123\COPYING.txt" />
+    <Text Include="Engine\dll(x86)\SoundTouch\COPYING.TXT" />
+    <Text Include="Engine\LogMessages.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="BiomeData.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="Planet.h" />
+    <ClInclude Include="Pos.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="Urban.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

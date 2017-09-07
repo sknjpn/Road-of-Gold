@@ -614,9 +614,17 @@ tags
 
 
 ### Road of Gold
-/Road_of_Gold/Road_of_Gold/
-/Road_of_Gold/NodeMapMaker/
-/Road_of_Gold/MapEditor/
-/Road_of_Gold/AS_DEBUG/
 *_log.html
-/uploadingFiles
+/Road-of-Gold/Map-Editor/assets
+/Road-of-Gold/Map-Editor/Intermediate
+/Road-of-Gold/Map-Editor/Release-x64
+/Road-of-Gold/Map-Editor/Release-x86
+/Road-of-Gold/Node-Map-Maker/Intermediate
+/Road-of-Gold/Node-Map-Maker/Release-x64
+/Road-of-Gold/Node-Map-Maker/Release-x86
+/Road-of-Gold/Planet-Viewer/assets
+/Road-of-Gold/Road-of-Gold/assets
+/Road-of-Gold/Road-of-Gold/Intermediate
+/Road-of-Gold/Road-of-Gold/Release-x64
+/Road-of-Gold/Road-of-Gold/Release-x86
+/uploader
