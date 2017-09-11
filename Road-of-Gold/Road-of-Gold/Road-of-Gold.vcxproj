@@ -115,7 +115,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
+      <Command>chdir $(SolutionDir) 
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -136,7 +136,7 @@ call copy.bat</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
+      <Command>chdir $(SolutionDir) 
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -161,7 +161,7 @@ call copy.bat</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
+      <Command>chdir $(SolutionDir) 
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -186,7 +186,7 @@ call copy.bat</Command>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
+      <Command>chdir $(SolutionDir) 
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -256,6 +256,12 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\config.ini" />
+    <None Include="..\assets\data\biomeData.json" />
+    <None Include="..\assets\data\citizenData.json" />
+    <None Include="..\assets\data\energyData.json" />
+    <None Include="..\assets\data\groupName.json" />
+    <None Include="..\assets\data\itemData.json" />
+    <None Include="..\assets\data\vehicleData.json" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />

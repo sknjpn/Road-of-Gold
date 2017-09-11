@@ -41,6 +41,7 @@ struct Vehicle
 	Vehicle(int _vehicleType, Urban* _nowUrban);
 	VehicleData&	data() const;
 	Vec2	pos() const;
+	double	angle() const;
 	Wallet&	wallet() const;
 	bool	mouseOver() const;
 };

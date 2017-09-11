@@ -1,31 +1,38 @@
-{
-  "EnergyData": [
-    {
-      "Name": "農地"
-    },
-    {
-      "Name": "キタキツネ"
-    },
-    {
-      "Name": "コーヒー"
-    },
-    {
-      "Name": "茶葉"
-    },
-    {
-      "Name": "絨毯"
-    },
-    {
-      "Name": "香辛料"
-    },
-    {
-      "Name": "金山"
-    },
-    {
-      "Name": "ブドウ"
-    },
-    {
-      "Name": "カカオ"
-    }
-  ]
-}
+[
+  {
+    "Name": "農地",
+    "Icon": "assets/energy/item/farm.png"
+  },
+  {
+    "Name": "キタキツネ",
+    "Icon": "assets/energy/item/fur.png"
+  },
+  {
+    "Name": "コーヒー",
+    "Icon": "assets/energy/item/coffee.png"
+  },
+  {
+    "Name": "茶葉",
+    "Icon": "assets/energy/item/tea.png"
+  },
+  {
+    "Name": "絨毯",
+    "Icon": "assets/energy/item/carpet.png"
+  },
+  {
+    "Name": "香辛料",
+    "Icon": "assets/energy/item/spice.png"
+  },
+  {
+    "Name": "金山",
+    "Icon": "assets/energy/item/gold.png"
+  },
+  {
+    "Name": "ブドウ",
+    "Icon": "assets/energy/item/wine.png"
+  },
+  {
+    "Name": "カカオ",
+    "Icon": "assets/energy/item/chocolate.png"
+  }
+]

@@ -254,6 +254,24 @@
     <None Include="..\assets\config.ini">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="..\assets\data\groupName.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\assets\data\itemData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\assets\data\vehicleData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\assets\data\biomeData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\assets\data\citizenData.json">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\assets\data\energyData.json">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Ring.h">

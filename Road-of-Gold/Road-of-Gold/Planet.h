@@ -6,8 +6,8 @@
 struct Planet
 {
 	Sandglass	sandglass;
-	Texture	mapTexture;
-	double	timeSpeed;
+	Texture		mapTexture;
+	double		timeSpeed;
 
 	Planet()
 		: mapTexture()
@@ -18,7 +18,7 @@ struct Planet
 
 extern Planet	planet;
 
-void	loadMap();
-void	initPlanet();
+void	loadMap(const FilePath& _path);
+void	selectMap();
 void	updatePlanet();
 void	drawPlanet();

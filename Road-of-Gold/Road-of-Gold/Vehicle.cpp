@@ -27,6 +27,31 @@ Vehicle::Vehicle(int _vehicleType, Urban* _nowUrban)
 	maxVolume = data().volume;
 	wallet().owner = Owner::Vehicle;
 }
+double	Vehicle::angle() const
+{
+	if (route == nullptr) return 0.0;
+	else
+	{
+		double progress = routeProgress*data().speed;
+		auto* bn = &nodes[route->fromUrban->joinedNodeID];
+		for (int i = 0; i < int(route->paths.size()); i++)
+		{
+			auto* p = route->paths[i];
+			auto* an = &nodes[route->paths[i]->toID];
+
+			double movingCost = p->length * (biomeData[bn->biomeType].movingCost + biomeData[an->biomeType].movingCost) / 2.0;
+			if (progress <= movingCost)
+			{
+				auto angle = (an->pos.mPos - bn->pos.mPos).normalized();
+				return atan2(angle.y, angle.x);
+			}
+			else progress -= movingCost;
+			bn = an;
+		}
+		LOG_ERROR(Format(L"àŸèÌ", progress));
+	}
+	return 0.0;
+}
 
 Vec2	Vehicle::pos() const
 {

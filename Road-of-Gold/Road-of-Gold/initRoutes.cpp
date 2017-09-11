@@ -52,7 +52,10 @@ void	initRoutes()
 					{
 						if (!n2.isSea() && !n2.hasUrban()) continue;
 					}
-					else if (n2.isSea()) continue;
+					else
+					{
+						if (n2.isSea()) continue;
+					}
 
 					double movingCost = p.length * (biomeData[n1.biomeType].movingCost + biomeData[n2.biomeType].movingCost) / 2.0;
 

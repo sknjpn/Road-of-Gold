@@ -8,6 +8,15 @@
 #include"Export.h"
 #include<numeric>
 
+void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color)
+{
+	auto p = (_to.pos().mPos - _from.pos().mPos).normalized();
+	auto p1 = _from.pos().mPos + p*0.02;
+	auto p2 = _to.pos().mPos - p*0.02;
+	Triangle(p1, p1.lerp(p2, 0.8) + _value*p.rotated(90_deg)*0.01, p1.lerp(p2, 0.8) - _value*p.rotated(90_deg)*0.01).draw(_color);
+	Triangle(p2, p1.lerp(p2, 0.8) + _value*p.rotated(90_deg)*0.03, p1.lerp(p2, 0.8) - _value*p.rotated(90_deg)*0.03).draw(_color);
+}
+
 void	drawUI()
 {
 	if (useMulthThread)
@@ -38,22 +47,55 @@ void	drawUI()
 	}
 
 	//–îˆó
-	for (int i = 0; i < 2; i++)
+	if (ui.drawExportLineEnabled)
 	{
-		auto t = tinyCamera.createTransformer(i);
-
-		for (auto& e : exports)
+		for (int i = 0; i < 2; i++)
 		{
-			if ((ui.drawExportLineEnabled && (ui.selectedItemType == -1 || ui.selectedItemType == e.itemType)) || (ui.selectedUrbanID != -1 && (e.from->id() == ui.selectedUrbanID || e.to->id() == ui.selectedUrbanID)))
+			auto t = tinyCamera.createTransformer(i);
+
+			if (ui.selectedItemType != -1)
 			{
-				double width = 0.05*e.numItemPerDay;
+				for (auto& e : exports)
+				{
+					if (ui.selectedItemType == e.itemType)
+					{
+						drawArrow(*e.from, *e.to, 0.05*e.numItemPerDay, ColorF(itemData[e.itemType].color, 0.8));
+					}
+				}
+			}
+			else
+			{
+				if (ui.selectedUrbanID != -1)
+				{
+					auto& u1 = urbans[ui.selectedUrbanID];
 
-				auto p = (e.to->pos().mPos - e.from->pos().mPos).normalized();
-				auto p1 = e.from->pos().mPos + p*0.02;
-				auto p2 = e.to->pos().mPos - p*0.02;
-				Triangle(p1, p1.lerp(p2, 0.8) + width*p.rotated(90_deg)*0.01, p1.lerp(p2, 0.8) - width*p.rotated(90_deg)*0.01).draw(ColorF(itemData[e.itemType].color, 0.8));
-				Triangle(p2, p1.lerp(p2, 0.8) + width*p.rotated(90_deg)*0.03, p1.lerp(p2, 0.8) - width*p.rotated(90_deg)*0.03).draw(ColorF(itemData[e.itemType].color, 0.8));
+					for (auto& u2 : urbans)
+					{
+						double sum = 0.0;
+						for (auto& e : exports)
+						{
+							if (e.from == &u1 && e.to == &u2) sum += e.numItemPerDay;
+						}
 
+						drawArrow(u1, u2, 0.05*sum, ColorF(Palette::Red, 0.8));
+					}
+				}
+				else
+				{
+					for (auto& u1 : urbans)
+					{
+						for (auto& u2 : urbans)
+						{
+							double sum = 0.0;
+							for (auto& e : exports)
+							{
+								if (e.from == &u1 && e.to == &u2) sum += e.numItemPerDay;
+							}
+
+							drawArrow(u1, u2, 0.05*sum, ColorF(Palette::Red, 0.8));
+						}
+					}
+				}
 			}
 		}
 	}
@@ -98,7 +140,7 @@ void	drawUI()
 
 		//‘S‘Ì˜g
 		{
-			Rect rect(240, Window::Size().y);
+			Rect rect(480, Window::Size().y);
 			rect.draw(bColor).drawFrame(2, fColor);
 		}
 
@@ -112,6 +154,9 @@ void	drawUI()
 		//Route
 		{
 			int p = 200;
+
+			ui.selectedRoute = nullptr;
+
 			//ŠC˜H
 			{
 				{
@@ -127,8 +172,10 @@ void	drawUI()
 				for (auto i : step(int(list.size())))
 				{
 					Rect rect(0, p + i * 17, 240, 17);
-					rect.drawFrame(2, fColor);
 					auto* r = list[i];
+
+					rect.draw(rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, fColor);
+					if (rect.mouseOver()) ui.selectedRoute = r;
 
 					const int width = int((*ui.fonts[12])(int(r->movingCost * 1000), L"mt").region().w);
 					(*ui.fonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
@@ -154,8 +201,10 @@ void	drawUI()
 				for (auto i : step(int(list.size())))
 				{
 					Rect rect(0, p + i * 17, 240, 17);
-					rect.drawFrame(2, fColor);
 					auto* r = list[i];
+
+					rect.draw(rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, fColor);
+					if (rect.mouseOver()) ui.selectedRoute = r;
 
 					const int width = int((*ui.fonts[12])(int(r->movingCost * 1000), L"mt").region().w);
 					(*ui.fonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
@@ -173,18 +222,18 @@ void	drawUI()
 				auto& je = su.jobEfficiency[i];
 				{
 					Rect rect(0, 32 + 17 * i, 80, 17);
-					rect.drawFrame();
+					rect.drawFrame(2, fColor);
 					(*ui.fonts[12])(data.name).draw(rect.pos.movedBy(4, 0));
 				}
 				{
 					Rect rect(80, 32 + 17 * i, 48, 17);
-					rect.drawFrame();
+					rect.drawFrame(2, fColor);
 					const int width = int((*ui.fonts[12])(su.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }), L"l").region().size.x);
 					(*ui.fonts[12])(su.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }), L"l").draw(rect.pos.movedBy(44 - width, 0));
 				}
 				{
 					Rect rect(128, 32 + 17 * i, 40, 17);
-					rect.drawFrame();
+					rect.drawFrame(2, fColor);
 					const int width = int((*ui.fonts[12])(int(je * 100), L"%").region().size.x);
 					(*ui.fonts[12])(int(je * 100), L"%").draw(rect.pos.movedBy(36 - width, 0));
 				}
@@ -201,7 +250,7 @@ void	drawUI()
 					if (num > 0)
 					{
 						Rect rect(168, 32 + 17 * i, 52, 17);
-						rect.drawFrame();
+						rect.drawFrame(2, fColor);
 						const int width = int((*ui.fonts[12])(sum / num, L"G").region().size.x);
 						(*ui.fonts[12])(sum / num, L"G").draw(rect.pos.movedBy(48 - width, 0));
 					}
@@ -217,15 +266,15 @@ void	drawUI()
 
 				{
 					Rect rect(240, i * 88, 240, 24);
-					rect.draw(bColor).drawFrame(2, fColor);
+					rect.drawFrame(2, fColor);
 					(*ui.fonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
 					if (!b.rings.isEmpty())
-						(*ui.fonts[16])(b.rings.front().price).draw(rect.pos.movedBy(64 + 4, 0));
-					(*ui.fonts[16])(b.numItem).draw(rect.pos.movedBy(128 + 4, 0));
+						(*ui.fonts[16])(b.rings.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
+					(*ui.fonts[16])(b.numItem, L"ŒÂ").draw(rect.pos.movedBy(128 + 4, 0));
 				}
 				{
 					Rect rect(240, 24 + i * 88, 240, 64);
-					rect.draw(bColor).drawFrame(2, fColor);
+					rect.drawFrame(2, fColor);
 					const int timeScale = 1; //b.tradeLog.time / 120
 
 					int max = Max(1, b.tradeLog.numConsumption.take(rect.size.x).sorted().back());
@@ -241,10 +290,10 @@ void	drawUI()
 
 					drawGraph(rect, b.tradeLog.price, timeScale, Palette::Yellow);
 					data.icon.draw(rect.pos);
-					
+
 					{
-						int nex = std::accumulate(b.tradeLog.numExport.begin()+1, b.tradeLog.numExport.begin()+11,0);
-						int nco = std::accumulate(b.tradeLog.numConsumption.begin()+1, b.tradeLog.numConsumption.begin()+11, 0);
+						int nex = std::accumulate(b.tradeLog.numExport.begin() + 1, b.tradeLog.numExport.begin() + 11, 0);
+						int nco = std::accumulate(b.tradeLog.numConsumption.begin() + 1, b.tradeLog.numConsumption.begin() + 11, 0);
 						if (nex + nco > 0)
 							Circle(336, 56 + i * 88, 24).draw(Palette::Yellowgreen).drawPie(0, nex * 360_deg / (nex + nco), Palette::Blue);
 					}

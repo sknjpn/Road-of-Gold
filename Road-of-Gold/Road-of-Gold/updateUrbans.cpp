@@ -114,11 +114,11 @@ void	updateUrban(Urban& u)
 		u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
 
 		//CustomerÇÃçXêV
-		int sum = std::accumulate(u.citizens.begin(), u.citizens.end(), 0, [](int _sum, Citizen& _c) { return _sum+_c.wallet().money; });
+		int sum = std::accumulate(u.citizens.begin(), u.citizens.end(), 0, [](int _sum, Citizen& _c) { return _sum + _c.wallet().money; });
 		for (auto& c : u.citizens) c.wallet().money = 0;
 		for (auto& c : u.customers)
 		{
-			c.wallet().money = c.rate*sum;
+			c.wallet().money = int(c.rate*sum);
 
 			//çwîÉ
 			for (int i = 0; i < int(itemData.size()); i++)

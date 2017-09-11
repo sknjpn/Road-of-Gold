@@ -21,8 +21,7 @@ void	updateVehicles()
 			v.vehicleType = vehicleData.choice().id();
 
 			auto* u2 = v.nowUrban;
-			auto rs = u2->ownRoutes.filter([&v](const Route* r) { return r->isSeaRoute == v.data().isShip && r->movingCost <= v.data().range; });
-
+			auto rs = u2->ownRoutes.filter([&v](const Route* r) { return (r->isSeaRoute == v.data().isShip) && (r->movingCost <= v.data().range); });
 			//ルートがない場合、再生成
 			if (rs.isEmpty())
 			{
@@ -184,7 +183,7 @@ void	updateVehicles()
 					{
 					case Code::Move:
 						for (auto& r : v.nowUrban->ownRoutes)
-							if (r->toUrban->id() == c.second) v.route = r;
+							if (r->isSeaRoute == v.data().isShip && r->toUrban->id() == c.second) v.route = r;
 						if (v.route == nullptr) LOG_ERROR(L"Chainの指す都市が異常です。");
 						v.reader++;
 						break;

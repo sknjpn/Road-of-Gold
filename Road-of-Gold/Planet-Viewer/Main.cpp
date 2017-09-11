@@ -6,6 +6,7 @@
 Array<BiomeData>	biomeData;
 Array<Node> nodes;
 
+
 void Main()
 {
 	{
@@ -35,28 +36,52 @@ void Main()
 	//BiomeData
 	{
 		JSONReader json(L"assets/data/biomeData.json");
-		for (auto j : json[L"BiomeData"].getArray())
+		for (auto j : json.root().getArray())
 			biomeData.emplace_back(j);
 	}
-	//Mapデータの選択
-	for (auto item : FileSystem::DirectoryContents(L"assets/map/"))
+
 	{
-		if (FileSystem::IsDirectory(item) && FileSystem::Exists(item + L"BiomeData.bin"))
+		auto items = FileSystem::DirectoryContents(L"assets/map/");
+		std::remove_if(items.begin(), items.end(), [](const FilePath& _path) {
+			return FileSystem::IsDirectory(_path) && FileSystem::Exists(_path + L"BiomeData.bin");
+		});
+
+		if (items.empty())
 		{
-			//バイオームデータのロード
+			LOG_ERROR(L"使用可能なマップが存在しません");
+			System::Exit();
+			return;
+		}
+
+		const Font font(24);
+		bool flag = false;
+		for (;;)
+		{
+			font(L"使用するマップを選択してください").draw();
+			for (int i = 0; i < int(items.size()); i++)
 			{
-				BinaryReader reader(item + L"BiomeData.bin");
 
-				for (auto& n : nodes)
+				Rect rect(0, 48 + i * 48, Window::Size().x, 48);
+				rect.draw(rect.mouseOver ? ColorF(Palette::White, 0.5) : Color(0, 0)).drawFrame(2, 0, Palette::White);
+				font(FileSystem::BaseName(items[i])).draw(0, 48 + i * 48);
+				if (rect.leftClicked)
 				{
-					reader.read(n.biomeType);
+					BinaryReader reader(items[i] + L"BiomeData.bin");
 
-					//Nodeに色の適用
-					n.color = n.data().color.lerp(RandomColor(), 0.05);
+					for (auto& n : nodes)
+					{
+						reader.read(n.biomeType);
+
+						//Nodeに色の適用
+						n.color = n.data().color.lerp(RandomColor(), 0.05);
+					}
+
+					flag = true;
+					break;
 				}
 			}
-
-			break;
+			if (flag) break;
+			if (!System::Update()) return;
 		}
 	}
 

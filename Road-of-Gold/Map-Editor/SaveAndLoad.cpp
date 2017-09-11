@@ -31,7 +31,7 @@ bool loadMapData(const FilePath& _path)
 	if (FileSystem::Exists(_path + L"Urbans.json"))
 	{
 		JSONReader reader(_path + L"Urbans.json");
-		for (auto json : reader[L"Urbans"].arrayView())
+		for (auto json : reader.arrayView())
 			urbans.emplace_back(json);
 	}
 
@@ -45,6 +45,11 @@ bool saveMapData(const FilePath& _path)
 	{
 		BinaryWriter writer(_path + L"BiomeData.bin");
 		for (auto& n : nodes) writer.write(n.biomeType);
+	}
+
+	//マップをpngにして保存
+	{
+		planet.image.save(_path + L"MapImage.png");
 	}
 
 	//Urbansデータのセーブ

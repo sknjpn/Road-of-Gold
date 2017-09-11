@@ -433,6 +433,7 @@ void Main()
 					if (rect.mouseOver()) rect.draw(Palette::Orange);
 					if (rect.leftClicked())
 					{
+						/*	オートセーブ機能
 						for (int j = 0;; j++)
 						{
 							if (!FileSystem::Exists(Format(L"assets/map/_autosave/", j, L"/")))
@@ -441,6 +442,7 @@ void Main()
 								break;
 							}
 						}
+						*/
 						loadMapData(item);
 					}
 					rect.drawFrame(2, Palette::Skyblue);

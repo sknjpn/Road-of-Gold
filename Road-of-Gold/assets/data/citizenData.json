@@ -1,81 +1,79 @@
-{
-  "CitizenData": [
-    {
-      "Name": "労働者",
-      "Wage": 1000,
-      "NeedEnergy": "農地"
-    },
-    {
-      "Name": "狩人",
-      "Cost": 1000,
-      "NeedEnergy": "キタキツネ",
-      "Product": {
-        "ItemName": "毛皮",
-        "NumItem": 5
-      }
-    },
-    {
-      "Name": "コーヒー農家",
-      "Cost": 1000,
-      "NeedEnergy": "コーヒー",
-      "Product": {
-        "ItemName": "コーヒー",
-        "NumItem": 10
-      }
-    },
-    {
-      "Name": "茶葉農家",
-      "Cost": 1000,
-      "NeedEnergy": "茶葉",
-      "Product": {
-        "ItemName": "茶葉",
-        "NumItem": 10
-      }
-    },
-    {
-      "Name": "絨毯職人",
-      "Cost": 1000,
-      "NeedEnergy": "絨毯",
-      "Product": {
-        "ItemName": "絨毯",
-        "NumItem": 10
-      }
-    },
-    {
-      "Name": "香辛料農家",
-      "Cost": 1000,
-      "NeedEnergy": "香辛料",
-      "Product": {
-        "ItemName": "香辛料",
-        "NumItem": 2
-      }
-    },
-    {
-      "Name": "金鉱労働者",
-      "Cost": 1000,
-      "NeedEnergy": "金山",
-      "Product": {
-        "ItemName": "貴金属",
-        "NumItem": 1
-      }
-    },
-    {
-      "Name": "ブドウ農家",
-      "Cost": 1000,
-      "NeedEnergy": "ブドウ",
-      "Product": {
-        "ItemName": "ワイン",
-        "NumItem": 5
-      }
-    },
-    {
-      "Name": "カカオ農家",
-      "Cost": 1000,
-      "NeedEnergy": "カカオ",
-      "Product": {
-        "ItemName": "ショコラ",
-        "NumItem": 10
-      }
+[
+  {
+    "Name": "労働者",
+    "Wage": 1000,
+    "NeedEnergy": "農地"
+  },
+  {
+    "Name": "狩人",
+    "Cost": 1000,
+    "NeedEnergy": "キタキツネ",
+    "Product": {
+      "ItemName": "毛皮",
+      "NumItem": 5
     }
-  ]
-}
+  },
+  {
+    "Name": "コーヒー農家",
+    "Cost": 1000,
+    "NeedEnergy": "コーヒー",
+    "Product": {
+      "ItemName": "コーヒー",
+      "NumItem": 10
+    }
+  },
+  {
+    "Name": "茶葉農家",
+    "Cost": 1000,
+    "NeedEnergy": "茶葉",
+    "Product": {
+      "ItemName": "茶葉",
+      "NumItem": 10
+    }
+  },
+  {
+    "Name": "絨毯職人",
+    "Cost": 1000,
+    "NeedEnergy": "絨毯",
+    "Product": {
+      "ItemName": "絨毯",
+      "NumItem": 10
+    }
+  },
+  {
+    "Name": "香辛料農家",
+    "Cost": 1000,
+    "NeedEnergy": "香辛料",
+    "Product": {
+      "ItemName": "香辛料",
+      "NumItem": 2
+    }
+  },
+  {
+    "Name": "金鉱労働者",
+    "Cost": 1000,
+    "NeedEnergy": "金山",
+    "Product": {
+      "ItemName": "貴金属",
+      "NumItem": 1
+    }
+  },
+  {
+    "Name": "ブドウ農家",
+    "Cost": 1000,
+    "NeedEnergy": "ブドウ",
+    "Product": {
+      "ItemName": "ワイン",
+      "NumItem": 5
+    }
+  },
+  {
+    "Name": "カカオ農家",
+    "Cost": 1000,
+    "NeedEnergy": "カカオ",
+    "Product": {
+      "ItemName": "ショコラ",
+      "NumItem": 10
+    }
+  }
+]

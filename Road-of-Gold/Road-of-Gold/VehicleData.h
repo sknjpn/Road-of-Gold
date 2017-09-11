@@ -7,6 +7,7 @@ struct VehicleData
 	int		volume;
 	double	range;
 	bool	isShip;
+	Texture	icon;
 
 	VehicleData(const JSONValue& _json);
 	int		id() const;

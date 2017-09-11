@@ -1,5 +1,7 @@
 #pragma once
 
+struct Route;
+
 struct UI
 {
 	int		selectedUrbanID;
@@ -8,6 +10,7 @@ struct UI
 	Array<Font*>	fonts;
 	bool	drawExportLineEnabled;
 	bool	drawExportImportPowerEnabled;
+	Route*	selectedRoute;
 
 	UI()
 		: selectedUrbanID(-1)
@@ -15,6 +18,7 @@ struct UI
 		, selectedItemType(-1)
 		, drawExportLineEnabled(false)
 		, drawExportImportPowerEnabled(false)
+		, selectedRoute(nullptr)
 	{}
 };
 

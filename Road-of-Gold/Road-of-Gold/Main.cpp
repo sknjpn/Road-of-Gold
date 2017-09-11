@@ -34,18 +34,15 @@ void Main()
 
 	initNodes();
 
-	loadMap();
+	selectMap();
 
 	initRoutes();
-
-	initPlanet();
 
 	initGroups();
 
 	Log(L"MainLoopの開始");
 
 	auto bgmItems = FileSystem::DirectoryContents(L"assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == L"mp3"; });
-
 
 	while (System::Update())
 	{
@@ -63,7 +60,7 @@ void Main()
 		updateScuttles();
 
 		drawPlanet();
-		//drawRotues();
+		drawRotues();
 		drawVehicles();
 		drawUrbans();
 		drawGroups();
