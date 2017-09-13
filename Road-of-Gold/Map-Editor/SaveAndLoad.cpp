@@ -55,42 +55,44 @@ bool saveMapData(const FilePath& _path)
 	//Urbansデータのセーブ
 	if (!urbans.isEmpty())
 	{
-		String text(L"{\r\t\"Urbans\": [");
+		String text(L"[");
+
 		for (auto i : step(int(urbans.size())))
 		{
 			auto& u = urbans[i];
-			if (i == 0) text += L"\r\t\t{";
-			else text += L",\r\t\t{";
+
+			if (i == 0) text += L"\r\t{";
+			else text += L",\r\t{";
 
 			//都市座標の保存
-			text += Format(L"\r\t\t\t\"JoinedNodeID\": ", u.joinedNodeID);
+			text += Format(L"\r\t\t\"JoinedNodeID\": ", u.joinedNodeID);
 
 			//都市名の保存
-			text += Format(L",\r\t\t\t\"Name\": \"", u.name, L"\"");
+			text += Format(L",\r\t\t\"Name\": \"", u.name, L"\"");
 
 			//人口の保存
-			text += Format(L",\r\t\t\t\"NumCitizens\": ", u.numCitizens);
+			text += Format(L",\r\t\t\"NumCitizens\": ", u.numCitizens);
 
 			//生産性の保存
 			//text += Format(L",\r\t\t\t\"Productivity\": ", u.productivity);
 
 			//Resourcesデータの保存
-			text += L",\r\t\t\t\"Energies\": {";
+			text += L",\r\t\t\"Energies\": {";
 			bool isFirst = true;
 			for (auto j : step(energyData.size()))
 			{
 				if (u.energies[j] > 0)
 				{
-					if (isFirst) { text += L"\r"; isFirst = false; }
-					else text += L",\r";
-					text += Format(L"\t\t\t\t\"", energyData[j].name, L"\": ", u.energies[j]);
+					if (isFirst) { text += L"\r\t\t\t\""; isFirst = false; }
+					else text += L",\r\t\t\t\"";
+					text += Format(energyData[j].name, L"\": ", u.energies[j]);
 				}
 			}
-			text += L"\r\t\t\t}";
-
 			text += L"\r\t\t}";
+
+			text += L"\r\t}";
 		}
-		text += L"\r\t]\r}";
+		text += L"\r]";
 		TextWriter writer(_path + L"Urbans.json");
 		writer.write(text);
 		writer.close();

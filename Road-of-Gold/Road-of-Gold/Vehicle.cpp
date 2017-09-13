@@ -23,6 +23,8 @@ Vehicle::Vehicle(int _vehicleType, Urban* _nowUrban)
 	, period(0)
 	, exportLog()
 	, stopFlag(false)
+	, planFixed(false)
+	, isError(false)
 {
 	maxVolume = data().volume;
 	wallet().owner = Owner::Vehicle;
@@ -84,3 +86,4 @@ bool	Vehicle::mouseOver() const
 }
 
 Wallet&	Vehicle::wallet() const { return wallets[walletID]; }
+int		Vehicle::id() const { return int(this - &vehicles.front()); }

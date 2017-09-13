@@ -1,38 +1,38 @@
 [
   {
     "Name": "農地",
-    "Icon": "assets/energy/item/farm.png"
+    "Icon": "assets/image/energy/farm.png"
   },
   {
-    "Name": "キタキツネ",
-    "Icon": "assets/energy/item/fur.png"
+    "Name": "キツネ",
+    "Icon": "assets/image/energy/fur.png"
   },
   {
     "Name": "コーヒー",
-    "Icon": "assets/energy/item/coffee.png"
+    "Icon": "assets/image/energy/coffee.png"
   },
   {
     "Name": "茶葉",
-    "Icon": "assets/energy/item/tea.png"
+    "Icon": "assets/image/energy/tea.png"
   },
   {
     "Name": "絨毯",
-    "Icon": "assets/energy/item/carpet.png"
+    "Icon": "assets/image/energy/carpet.png"
   },
   {
     "Name": "香辛料",
-    "Icon": "assets/energy/item/spice.png"
+    "Icon": "assets/image/energy/spice.png"
   },
   {
     "Name": "金山",
-    "Icon": "assets/energy/item/gold.png"
+    "Icon": "assets/image/energy/gold.png"
   },
   {
     "Name": "ブドウ",
-    "Icon": "assets/energy/item/wine.png"
+    "Icon": "assets/image/energy/wine.png"
   },
   {
     "Name": "カカオ",
-    "Icon": "assets/energy/item/chocolate.png"
+    "Icon": "assets/image/energy/chocolate.png"
   }
 ]

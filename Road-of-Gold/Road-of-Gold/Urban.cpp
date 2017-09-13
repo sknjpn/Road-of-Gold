@@ -5,6 +5,7 @@
 #include"Wallet.h"
 #include"TinyCamera.h"
 #include"ItemData.h"
+#include"Route.h"
 #include<numeric>
 
 Urban::Urban(const JSONValue& _json)
@@ -217,4 +218,13 @@ void	Urban::pullEnergy(const String _name, int _num)
 			return;
 		}
 	}
+}
+bool	Urban::hasRoute() const { return !ownRoutes.isEmpty(); }
+bool	Urban::hasSeaRoute() const
+{
+	return ownRoutes.any([](const Route* _u) { return _u->isSeaRoute; });
+}
+bool	Urban::hasLandRoute() const
+{
+	return ownRoutes.any([](const Route* _u) { return !_u->isSeaRoute; });
 }

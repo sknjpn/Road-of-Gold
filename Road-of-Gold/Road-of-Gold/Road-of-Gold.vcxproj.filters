@@ -159,6 +159,9 @@
     <ClCompile Include="updateVehicles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Route.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">

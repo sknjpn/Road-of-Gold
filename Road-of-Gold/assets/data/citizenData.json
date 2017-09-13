@@ -7,7 +7,7 @@
   {
     "Name": "狩人",
     "Cost": 1000,
-    "NeedEnergy": "キタキツネ",
+    "NeedEnergy": "キツネ",
     "Product": {
       "ItemName": "毛皮",
       "NumItem": 5

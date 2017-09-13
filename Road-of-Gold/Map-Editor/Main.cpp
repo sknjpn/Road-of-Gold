@@ -23,8 +23,28 @@ Urban*	selectedUrban = nullptr;
 TextBox textBox;
 bool	keyControlEnabled = true;
 
+Array<std::pair<Texture, String>> textureAssets;
+
+Texture*	getTexture(const String& _name)
+{
+	for (auto& tex : textureAssets)
+	{
+		if (tex.second == _name) return &tex.first;
+	}
+	return nullptr;
+}
+void	addTexture(const FilePath& _path, const String& _name)
+{
+	textureAssets.emplace_back(Texture(_path), _name);
+}
+
 void Main()
 {
+	addTexture(L"assets/image/button/minus.png", L"minus");
+	addTexture(L"assets/image/button/minusMouseOver.png", L"minusMouseOver");
+	addTexture(L"assets/image/button/plus.png", L"plus");
+	addTexture(L"assets/image/button/plusMouseOver.png", L"plusMouseOver");
+
 	{
 		Window::SetTitle(L"MapEditor");
 
@@ -68,18 +88,11 @@ void Main()
 	//人口入力欄
 	TextBox numCitizensTextBox(textBoxFont, Vec2(78, 86), 112);
 
-	Array<TextBox> resourceTextBox;
-	for (auto i : step(energyData.size()))
-	{
-		resourceTextBox.emplace_back(textBoxFont, Vec2(134, 106 + i * 20), none);
-	}
-
 	while (System::Update())
 	{
 		if (numCitizensTextBox.isActive() ||
 			urbanNameTextBox.isActive() ||
-			textBox.isActive() ||
-			resourceTextBox.any([](const TextBox& _t) { return _t.isActive(); })) keyControlEnabled = false;
+			textBox.isActive()) keyControlEnabled = false;
 		else keyControlEnabled = true;
 
 		//キー入力
@@ -231,8 +244,6 @@ void Main()
 						selectedUrban = &urbans[nearestNode->ownUrbanID()];
 						urbanNameTextBox.setText(selectedUrban->name);
 						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
-						for (auto i : step(energyData.size()))
-							resourceTextBox[i].setText(Format(selectedUrban->energies[i]));
 					}
 					break;
 				case ActionMode::set:
@@ -242,8 +253,6 @@ void Main()
 						selectedUrban = &urbans.back();
 						urbanNameTextBox.setText(selectedUrban->name);
 						numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
-						for (auto i : step(energyData.size()))
-							resourceTextBox[i].setText(Format(selectedUrban->energies[i]));
 					}
 					break;
 				case ActionMode::remove:
@@ -351,20 +360,20 @@ void Main()
 		case UIMode::setUrban:
 		{
 			{
-				const Rect rect(192, 64, 160, 24);
+				const Rect rect(192, 64, 160, 20);
 				rect.drawFrame(2, Palette::Skyblue);
-				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
+				const Rect s(rect.pos.movedBy(2, 2), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
 				s.draw(actionMode == ActionMode::set ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
-				font16(L"都市配置モード").draw(rect.pos.movedBy(28, 0));
+				font12(L"都市配置モード").draw(rect.pos.movedBy(28, 1));
 			}
 			{
-				const Rect rect(192, 88, 160, 24);
+				const Rect rect(192, 84, 160, 20);
 				rect.drawFrame(2, Palette::Skyblue);
-				const Rect s(rect.pos.movedBy(4, 4), 16, 16);
+				const Rect s(rect.pos.movedBy(2, 2), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
-				font16(L"都市削除モード").draw(rect.pos.movedBy(28, 0));
+				font12(L"都市削除モード").draw(rect.pos.movedBy(28, 1));
 			}
 			{
 				urbanNameTextBox.update();
@@ -378,25 +387,47 @@ void Main()
 			}
 			for (auto& i : step(int(energyData.size())))
 			{
-				const Rect rect(32, 104 + i * 20, 100, 20);
+				const Rect rect(32, 104 + i * 20, 72, 20);
 				rect.drawFrame(2, Palette::Skyblue);
 				font12(energyData[i].name).draw(rect.pos.movedBy(4, 1));
 			}
 			for (auto& i : step(int(energyData.size())))
 			{
-				const Rect rect(132, 104 + i * 20, 60, 20);
-				rect.drawFrame(2, Palette::Skyblue);
-				auto& t = resourceTextBox[i];
-				t.setWidth(56);
-				t.update();
+				const Rect rect(104, 104 + i * 20, 100, 20);
+				auto& data = energyData[i];
+
+				data.icon.resize(16, 16).draw(106, 106 + i * 20);
+
+				Point p1(124, 106 + i * 20);
+				Point p2(144, 106 + i * 20);
+
 				if (selectedUrban != nullptr)
 				{
-					selectedUrban->energies[i] = Min(ParseInt<int>(t.getText(), Arg::radix = 10), 10000);
-					t.setText(Format(selectedUrban->energies[i]));
+					auto& energy = selectedUrban->energies[i];
+					const int amount = KeyShift.pressed() ? 100 : KeyControl.pressed() ? 10 : 1;
+
+					if (Rect(p1, 16, 16).leftClicked()) energy -= amount;
+					if (Rect(p2, 16, 16).leftClicked()) energy += amount;
+					if (energy < 0) energy = 0;
+
+					const int width = int(font12(energy).region().size.x);
+					font12(energy).draw(200 - width, 106 + i * 20);
 				}
-				else t.setText(L"");
-				t.draw();
+				if (Rect(p1, 16, 16).mouseOver()) getTexture(L"minusMouseOver")->resize(16, 16).draw(p1);
+				else getTexture(L"minus")->resize(16, 16).draw(p1);
+				if (Rect(p2, 16, 16).mouseOver()) getTexture(L"plusMouseOver")->resize(16, 16).draw(p2);
+				else getTexture(L"plus")->resize(16, 16).draw(p2);
+
+				rect.drawFrame(2, Palette::Skyblue);
 			}
+			font12(L"Ctrl :  x10").draw(208, 108);
+			font12(L"Shift: x100").draw(208, 124);
+			if (selectedUrban != nullptr && selectedUrban->energies[0] == 0)
+			{
+				font12(L"都市に農地がない場合").draw(208, 140, Palette::Red);
+				font12(L"資金生産が出来ません").draw(208, 156, Palette::Red);
+			}
+
 
 			//都市人口の設定
 			{

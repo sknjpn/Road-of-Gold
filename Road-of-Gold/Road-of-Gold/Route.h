@@ -12,15 +12,19 @@ struct Route
 	Urban*	toUrban;
 	bool	isSeaRoute;
 	double	movingCost;
+	int		numVehicles;
 
 	Route(Urban* _fromUrban, Urban* _toUrban, Array<Path*> _paths, bool _isSeaRoute, double _movingCost)
 		: fromUrban(_fromUrban)
 		, toUrban(_toUrban)
 		, isSeaRoute(_isSeaRoute)
 		, movingCost(_movingCost)
+		, numVehicles(0)
 	{
 		paths = _paths;
 	}
+	void	addVehicle();
+	void	pullVehicle();
 };
 
 extern Array<Route> routes;

@@ -48,6 +48,7 @@ void TinyCamera::update()
 		smoothDrawingRegion.pos = smoothDrawingRegion.pos*(1.0 - followingSpeed) + drawingRegion.pos*followingSpeed;
 		smoothDrawingRegion.size = smoothDrawingRegion.size*(1.0 - followingSpeed) + drawingRegion.size*followingSpeed;
 	}
+
 	//スライダー
 	const double slidingSpeed = (drawingRegion.size.y / 180_deg)*0.05;
 	const bool useKeyViewControl = true;

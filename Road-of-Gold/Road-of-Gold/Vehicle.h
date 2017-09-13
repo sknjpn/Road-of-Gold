@@ -12,12 +12,14 @@ struct Route;
 
 enum struct Code
 {
+	None,
 	Move,	//引数のIDの都市に移動
 	Jump,	//引数の番地にジャンプ
 	Wait,	//一日休止
 	Buy,
 	Sell,
 	MVol,	//最大容量
+	ERR,	//異常な値
 };
 
 struct Vehicle
@@ -31,6 +33,8 @@ struct Vehicle
 	Route*	route;
 	Export	exportLog;
 	bool	stopFlag;	//trueならば事業を中断
+	bool	planFixed;
+	bool	isError;	//chain続行不可
 
 	int		maxVolume;
 	int		reader;
@@ -44,6 +48,7 @@ struct Vehicle
 	double	angle() const;
 	Wallet&	wallet() const;
 	bool	mouseOver() const;
+	int		id() const;
 };
 
 extern Array<Vehicle> vehicles;

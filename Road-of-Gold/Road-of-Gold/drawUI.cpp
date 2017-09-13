@@ -7,6 +7,7 @@
 #include"Vehicle.h"
 #include"Export.h"
 #include<numeric>
+#include"VehicleData.h"
 
 void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color)
 {
@@ -16,6 +17,8 @@ void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color
 	Triangle(p1, p1.lerp(p2, 0.8) + _value*p.rotated(90_deg)*0.01, p1.lerp(p2, 0.8) - _value*p.rotated(90_deg)*0.01).draw(_color);
 	Triangle(p2, p1.lerp(p2, 0.8) + _value*p.rotated(90_deg)*0.03, p1.lerp(p2, 0.8) - _value*p.rotated(90_deg)*0.03).draw(_color);
 }
+
+bool	useRouteMenu = false;
 
 void	drawUI()
 {
@@ -100,38 +103,312 @@ void	drawUI()
 		}
 	}
 
-	//ItemSelect
-	if (ui.selectedUrbanID == -1 && ui.selectedVehicleID == -1)
+
+	if (KeyR.down()) useRouteMenu = !useRouteMenu;
+	if (useRouteMenu)
 	{
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
 
-		if (MouseL.down()) ui.selectedItemType = -1;
-
-		for (int i = 0; i<int(itemData.size()); i++)
+		//全体枠
 		{
-			auto& data = itemData[i];
+			Rect rect(480, Window::Size().y);
+			rect.draw(bColor).drawFrame(2, fColor);
+		}
+		{
+			Array<Route*> rs;
+			for (auto& r : routes)
 			{
-				Rect rect(32 + i * 64, 8, 64, 24);
-				rect.draw(bColor).drawFrame(2, fColor);
-				(*ui.fonts[16])(data.name).drawAt(rect.center());
+				if (r.isSeaRoute && !rs.any([&r](const Route* t) { return t->isSeaRoute == r.isSeaRoute && t->toUrban == r.fromUrban && t->fromUrban == r.toUrban; }))
+				{
+					rs.emplace_back(&r);
+				}
 			}
+			rs.sort_by([](Route* r1, Route* r2) { return r1->numVehicles > r2->numVehicles; });
+
+			for (int i = 0; i < int(rs.size()); i++)
 			{
-				Rect rect(32 + i * 64, 32, 64, 64);
-				if (rect.leftClicked()) ui.selectedItemType = i;
-				rect.draw(rect.mouseOver() ? Palette::Orange : ui.selectedItemType == i ? Palette::Red : bColor).drawFrame(2, fColor);
-				data.icon.resize(64).drawAt(rect.center());
+				auto& r = rs[i];
+				Rect rect(0, 20 * i, 240, 20);
+				rect.drawFrame(2, fColor);
+				(*ui.fonts[12])(r->fromUrban->name, L" ", r->toUrban->name, L" ", r->numVehicles, L"隻").draw(rect.pos.movedBy(4, 1));
+			}
+		}
+		{
+			Array<Route*> rs;
+			for (auto& r : routes)
+			{
+				if (!r.isSeaRoute && !rs.any([&r](const Route* t) { return t->isSeaRoute == r.isSeaRoute && t->toUrban == r.fromUrban && t->fromUrban == r.toUrban; }))
+				{
+					rs.emplace_back(&r);
+				}
+			}
+			rs.sort_by([](Route* r1, Route* r2) { return r1->numVehicles > r2->numVehicles; });
+
+			for (int i = 0; i < int(rs.size()); i++)
+			{
+				auto& r = rs[i];
+				Rect rect(240, 20 * i, 240, 20);
+				rect.drawFrame(2, fColor);
+				(*ui.fonts[12])(r->fromUrban->name, L" ", r->toUrban->name, L" ", r->numVehicles, L"台").draw(rect.pos.movedBy(4, 1));
+			}
+		}
+	}
+	else if (ui.selectedVehicleID != -1)
+	{
+		auto& sv = vehicles[ui.selectedVehicleID];
+		tinyCamera.gazePoint.emplace(sv.pos());
+
+		const auto fColor = Palette::Skyblue;
+		const auto bColor = Color(Palette::Darkcyan, 192);
+
+		//全体枠
+		{
+			Rect rect(480, Window::Size().y);
+			rect.draw(bColor).drawFrame(2, fColor);
+		}
+
+		//ユニット名
+		{
+			Rect rect(240, 32);
+			rect.drawFrame(2, fColor);
+			(*ui.fonts[24])(sv.id(), L" ", sv.data().name).drawAt(rect.center());
+		}
+
+		//ユニットセレクト
+		{
+			Rect rect1(240, 0, 32, 32);
+			if (rect1.mouseOver()) rect1.draw(Palette::Orange);
+			rect1.drawFrame(2, fColor);
+			if (rect1.leftClicked())
+			{
+				if (KeyShift.pressed()) ui.selectedVehicleID -= 100;
+				else if (KeyControl.pressed()) ui.selectedVehicleID -= 10;
+				else ui.selectedVehicleID--;
+				if (ui.selectedVehicleID < 0) ui.selectedVehicleID += int(vehicles.size());
+			}
+			(*ui.fonts[24])(L"←").drawAt(rect1.center());
+
+			Rect rect2(272, 0, 32, 32);
+			if (rect2.mouseOver()) rect2.draw(Palette::Orange);
+			rect2.drawFrame(2, fColor);
+			if (rect2.leftClicked())
+			{
+				if (KeyShift.pressed()) ui.selectedVehicleID += 100;
+				else if (KeyControl.pressed()) ui.selectedVehicleID += 10;
+				else ui.selectedVehicleID++;
+				if (ui.selectedVehicleID >= int(vehicles.size())) ui.selectedVehicleID -= int(vehicles.size());
+			}
+			(*ui.fonts[24])(L"→").drawAt(rect2.center());
+
+		}
+
+		//状態
+		{
+			Rect rect(0, 32, 240, 24);
+			rect.drawFrame(2, fColor);
+
+			if (sv.chain.isEmpty() || sv.reader >= int(sv.chain.size()))
+			{
+				(*ui.fonts[16])(L"状態:エラー").draw(rect.pos.movedBy(4, 1));
+			}
+			else if (sv.route != nullptr)
+			{
+				auto* r = sv.route;
+
+				RectF(rect.pos, rect.w*sv.routeProgress * sv.data().speed / r->movingCost, rect.h).draw(Color(Palette::Orange, 192));
+				(*ui.fonts[16])(L"状態:航行中:", r->fromUrban->name, L"-", r->toUrban->name, L"間 ", int(100.0*sv.routeProgress * sv.data().speed / r->movingCost), L"%").draw(rect.pos.movedBy(4, 1));
+			}
+			else if (sv.sleepTimer > 0)
+			{
+				(*ui.fonts[16])(L"状態:停止").draw(rect.pos.movedBy(4, 2));
 			}
 		}
 
-	}
+		//状態2
+		{
+			Rect rect(240, 32, 240, 24);
+			rect.drawFrame(2, fColor);
+			if (sv.cargo.numItem == 0) (*ui.fonts[16])(L"積載物:").draw(rect.pos.movedBy(4, 1));
+			else
+			{
+				RectF(rect.pos, rect.w*sv.cargo.numItem / sv.maxVolume, rect.h).draw(Color(Palette::Orange, 192));
+				(*ui.fonts[16])(L"積載物:", sv.cargo.data().name, L" ", sv.cargo.numItem, L"個").draw(rect.pos.movedBy(4, 1));
+			}
+		}
 
-	//基本UI
-	if (ui.selectedVehicleID != -1)
-	{
-		tinyCamera.gazePoint.emplace(vehicles.at(ui.selectedVehicleID).pos());
+		//コマンドビュー
+		{
+			for (int i = 0; i < int(sv.chain.size()); i++)
+			{
+				auto& c = sv.chain[i];
+				Rect rect1(24, 56 + 24 * i, 48, 24);
+				Rect rect2(72, 56 + 24 * i, 168, 24);
+				Rect rect3(0, 56 + 24 * i, 24, 24);
+				if (sv.reader == i) rect1.draw(Color(Palette::Orange, 192));
+				rect1.drawFrame(2, fColor);
+				rect2.drawFrame(2, fColor);
+				rect3.drawFrame(2, fColor);
+				(*ui.fonts[16])(i).drawAt(rect3.center());
+				switch (c.first)
+				{
+				case Code::Move:
+					if (sv.reader == i && !sv.isError) RectF(rect2.pos, rect2.w*sv.routeProgress * sv.data().speed / sv.route->movingCost, rect2.h).draw(Color(Palette::Orange, 192));
+					(*ui.fonts[16])(L"Move").drawAt(rect1.center());
+					(*ui.fonts[16])(urbans[c.second].name, L"へ航行").draw(rect2.pos.movedBy(4, 1));
+					break;
+				case Code::Wait:
+					(*ui.fonts[16])(L"Wait").drawAt(rect1.center());
+					break;
+				case Code::Jump:
+					(*ui.fonts[16])(L"Jump").drawAt(rect1.center());
+					(*ui.fonts[16])(c.second, L"番地").draw(rect2.pos.movedBy(4, 1));
+					break;
+				case Code::Buy:
+					if (sv.reader == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
+					(*ui.fonts[16])(L"Buy").drawAt(rect1.center());
+					(*ui.fonts[16])(itemData[c.second].name, L"を購入").draw(rect2.pos.movedBy(4, 1));
+					break;
+				case Code::Sell:
+					if (sv.reader == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
+					(*ui.fonts[16])(L"Sell").drawAt(rect1.center());
+					(*ui.fonts[16])(L"全商品の売却").draw(rect2.pos.movedBy(4, 1));
+					break;
+				case Code::MVol:
+					(*ui.fonts[16])(L"MVol").drawAt(rect1.center());
+					(*ui.fonts[16])(L"積載量を変更", c.second).draw(rect2.pos.movedBy(4, 1));
+					break;
+				case Code::None:
+					(*ui.fonts[16])(L"None").drawAt(rect1.center());
+					(*ui.fonts[16])(i + 1, L"番地に移動").draw(rect2.pos.movedBy(4, 1));
+					break;
+				}
+				if (sv.isError && sv.reader == i)
+				{
+					rect2.draw(Color(Palette::Red, 192));
+					(*ui.fonts[16])(L"深刻なエラー").drawAt(rect2.center());
+				}
+			}
+		}
+
+		//コマンドセットビュー
+		{
+			for (int i = 0; i < int(ui.newChain.size()); i++)
+			{
+				auto& c = ui.newChain[i];
+				Rect rect1(240, 56 + 24 * i, 48, 24);
+				Rect rect2(288, 56 + 24 * i, 192, 24);
+				Rect rect3(0, 56 + 24 * i, 24, 24);
+				if (rect1.leftClicked())
+				{
+					c = { Code(int(c.first) + 1), 0 };
+					if (c.first == Code::ERR) c.first = Code(0);
+				}
+				if (rect1.rightClicked())
+				{
+					if (int(c.first) == int(Code::None)) c = { Code(int(Code::ERR) - 1), 0 };
+					else c = { Code(int(c.first) - 1), 0 };
+				}
+				if (rect1.mouseOver()) rect1.draw(Palette::Orange);
+				if (rect2.mouseOver()) rect2.draw(Palette::Orange);
+				rect1.drawFrame(2, fColor);
+				rect2.drawFrame(2, fColor);
+				rect3.drawFrame(2, fColor);
+				(*ui.fonts[16])(i).drawAt(rect3.center());
+				switch (c.first)
+				{
+				case Code::Move:
+					(*ui.fonts[16])(L"Move").drawAt(rect1.center());
+					(*ui.fonts[16])(urbans[c.second].name, L"へ航行").draw(rect2.pos.movedBy(4, 1));
+					if (rect2.leftClicked())
+					{
+						c.second++;
+						if (c.second >= int(urbans.size())) c.second = 0;
+					}
+					if (rect2.rightClicked())
+					{
+						c.second--;
+						if (c.second < 0) c.second = int(urbans.size()) - 1;
+					}
+					break;
+				case Code::Wait:
+					(*ui.fonts[16])(L"Wait").drawAt(rect1.center());
+					break;
+				case Code::Jump:
+					(*ui.fonts[16])(L"Jump").drawAt(rect1.center());
+					(*ui.fonts[16])(c.second, L"番地").draw(rect2.pos.movedBy(4, 1));
+					if (rect2.leftClicked())
+					{
+						c.second++;
+						if (c.second >= int(ui.newChain.size())) c.second = 0;
+					}
+					if (rect2.rightClicked())
+					{
+						c.second--;
+						if (c.second < 0) c.second = int(ui.newChain.size()) - 1;
+					}
+					break;
+				case Code::Buy:
+					(*ui.fonts[16])(L"Buy").drawAt(rect1.center());
+					(*ui.fonts[16])(itemData[c.second].name, L"を購入").draw(rect2.pos.movedBy(4, 1));
+					if (rect2.leftClicked())
+					{
+						c.second++;
+						if (c.second >= int(itemData.size())) c.second = 0;
+					}
+					if (rect2.rightClicked())
+					{
+						c.second--;
+						if (c.second < 0) c.second = int(itemData.size()) - 1;
+					}
+					break;
+				case Code::Sell:
+					(*ui.fonts[16])(L"Sell").drawAt(rect1.center());
+					(*ui.fonts[16])(L"全商品の売却").draw(rect2.pos.movedBy(4, 1));
+					break;
+				case Code::MVol:
+					(*ui.fonts[16])(L"MVol").drawAt(rect1.center());
+					(*ui.fonts[16])(L"積載量を変更", c.second).draw(rect2.pos.movedBy(4, 1));
+					break;
+				case Code::None:
+					(*ui.fonts[16])(L"None").drawAt(rect1.center());
+					(*ui.fonts[16])(i + 1, L"番地に移動").draw(rect2.pos.movedBy(4, 1));
+					break;
+				}
+			}
+
+			//コピー１
+			{
+				Rect rect(0, 296, 240, 24);
+				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
+				rect.drawFrame(2, fColor);
+				(*ui.fonts[16])(L"Copy→").drawAt(rect.center());
+				if (rect.leftClicked()) ui.newChain = sv.chain;
+			}
+			//コピー２
+			{
+				Rect rect(0, 320, 240, 24);
+				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
+				rect.drawFrame(2, fColor);
+				(*ui.fonts[16])(L"Copy←").drawAt(rect.center());
+				if (rect.leftClicked())
+				{
+					sv.chain = ui.newChain;
+					sv.isError = false;
+				}
+			}
+			//設定
+			{
+				Rect rect(0, 344, 240, 24);
+				if (sv.planFixed) rect.draw(Palette::Red);
+				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
+				rect.drawFrame(2, fColor);
+				(*ui.fonts[16])(L"事業固定").drawAt(rect.center());
+				if (rect.leftClicked()) sv.planFixed = !sv.planFixed;
+			}
+		}
 	}
-	if (ui.selectedUrbanID != -1)
+	else if (ui.selectedUrbanID != -1)
 	{
 		auto& su = urbans[ui.selectedUrbanID];
 
@@ -180,6 +457,7 @@ void	drawUI()
 					const int width = int((*ui.fonts[12])(int(r->movingCost * 1000), L"mt").region().w);
 					(*ui.fonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
 					(*ui.fonts[12])(r->toUrban->name).draw(rect.pos.movedBy(96, 0));
+					(*ui.fonts[12])(r->numVehicles, L"隻").draw(rect.pos.movedBy(160, 0));
 				}
 				p += int(list.size()) * 17;
 			}
@@ -209,6 +487,8 @@ void	drawUI()
 					const int width = int((*ui.fonts[12])(int(r->movingCost * 1000), L"mt").region().w);
 					(*ui.fonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
 					(*ui.fonts[12])(r->toUrban->name).draw(rect.pos.movedBy(96, 0));
+					(*ui.fonts[12])(r->numVehicles, L"台").draw(rect.pos.movedBy(160, 0));
+
 				}
 			}
 
@@ -287,32 +567,41 @@ void	drawUI()
 					drawGraph(rect, b.tradeLog.numConsumption, timeScale, Palette::Yellowgreen, max);
 					drawGraph(rect, b.tradeLog.numProduction, timeScale, Palette::Red, max);
 
-
 					drawGraph(rect, b.tradeLog.price, timeScale, Palette::Yellow);
 					data.icon.draw(rect.pos);
 
 					{
 						int nex = std::accumulate(b.tradeLog.numExport.begin() + 1, b.tradeLog.numExport.begin() + 11, 0);
 						int nco = std::accumulate(b.tradeLog.numConsumption.begin() + 1, b.tradeLog.numConsumption.begin() + 11, 0);
-						if (nex + nco > 0)
-							Circle(336, 56 + i * 88, 24).draw(Palette::Yellowgreen).drawPie(0, nex * 360_deg / (nex + nco), Palette::Blue);
-					}
-
-				}
-				/*
-				{
-					for (auto j : step(int(b.rings.size())))
-					{
-						const auto& r = b.rings[j];
-						Rect rect(320 + i * 120, 152 + j * 16, 120, 16);
-
-						rect.drawFrame(2, fColor);
-						(*ui.fonts[12])(r.price, L"G ", r.casket.numItem, L"個").draw(rect.pos.movedBy(4, 0));
+						if (nex + nco > 0) Circle(336, 56 + i * 88, 24).draw(Palette::Yellowgreen).drawPie(0, nex * 360_deg / (nex + nco), Palette::Blue);
 					}
 				}
-				*/
 			}
 		}
+	}
+	else //ItemSelect
+	{
+		const auto fColor = Palette::Skyblue;
+		const auto bColor = Color(Palette::Darkcyan, 192);
+
+		if (MouseL.down()) ui.selectedItemType = -1;
+
+		for (int i = 0; i<int(itemData.size()); i++)
+		{
+			auto& data = itemData[i];
+			{
+				Rect rect(32 + i * 64, 8, 64, 24);
+				rect.draw(bColor).drawFrame(2, fColor);
+				(*ui.fonts[16])(data.name).drawAt(rect.center());
+			}
+			{
+				Rect rect(32 + i * 64, 32, 64, 64);
+				if (rect.leftClicked()) ui.selectedItemType = i;
+				rect.draw(rect.mouseOver() ? Palette::Orange : ui.selectedItemType == i ? Palette::Red : bColor).drawFrame(2, fColor);
+				data.icon.resize(64).drawAt(rect.center());
+			}
+		}
+
 	}
 
 	//タイムスケールの変更

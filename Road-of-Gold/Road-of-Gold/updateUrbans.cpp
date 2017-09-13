@@ -11,7 +11,6 @@ void	updateUrban(Urban& u)
 {
 	if (u.sandglass.update())
 	{
-
 		//ésñØÉçÉOÇÃçXêV
 		for (auto& c : u.citizens)
 		{
@@ -95,7 +94,6 @@ void	updateUrban(Urban& u)
 			{
 				u.sellItem(s.casket.itemType, numSell, Max(1, int(1 + s.wallet().price*Random(1.00, 1.10))), s.walletID);
 				s.casket.numItem -= numSell;
-				//u.baskets[s.casket.itemType].tradeLog.numImport.front() += numSell;
 			}
 		}
 
@@ -105,11 +103,10 @@ void	updateUrban(Urban& u)
 			if (b.progress < b.period) b.progress++;
 
 			int numBuy = Min(u.numItem(b.casket.itemType), int(b.target*(b.progress / double(b.period))) - b.casket.numItem);
-			if (numBuy == 0) continue;
+			if (numBuy <= 0) continue;
 
 			u.buyItem(b.casket.itemType, b.walletID, numBuy);
 			b.casket.numItem += numBuy;
-
 		}
 		u.sellers.remove_if([](const Seller& s) { return s.progress == s.period; });
 
@@ -188,7 +185,7 @@ void	updateUrban(Urban& u)
 		{
 			c.jobProgress -= 1.0;
 
-			c.wallet().add(int(data.wage));
+			c.wallet().add(data.wage);
 
 			//ItemÇÃîÃîÑ
 			if (data.product.numItem > 0)

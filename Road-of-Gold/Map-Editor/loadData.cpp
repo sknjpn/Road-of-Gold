@@ -45,6 +45,7 @@ BiomeData::BiomeData(const JSONValue& _json)
 {}
 EnergyData::EnergyData(const JSONValue& _json)
 	: name(_json[L"Name"].getOr<String>(L""))
+	, icon(_json[L"Icon"].getOr<String>(L""))
 {}
 ItemData::ItemData(const JSONValue& _json)
 	: name(_json[L"Name"].getOr<String>(L""))

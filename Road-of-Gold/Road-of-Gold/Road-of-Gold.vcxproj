@@ -217,6 +217,7 @@ call copy.bat</Command>
     <ClCompile Include="Nation.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Ring.cpp" />
+    <ClCompile Include="Route.cpp" />
     <ClCompile Include="Sandglass.cpp" />
     <ClCompile Include="Scuttle.cpp" />
     <ClCompile Include="Sound.cpp" />
