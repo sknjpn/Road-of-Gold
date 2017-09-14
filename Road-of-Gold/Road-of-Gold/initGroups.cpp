@@ -15,6 +15,5 @@ void	initGroups()
 	int numVehicles = iniReader.getOr<int>(L"Groups", L"NumVehicles", 0);
 
 	vehicles.reserve(numVehicles);
-	for (int i = 0; i < numVehicles; i++)
-		vehicles.emplace_back(vehicleData.choice().id(), &urbans.choice());
+	for (int i = 0; i < numVehicles; i++) vehicles.emplace_back(vehicleData.choice().id(), &urbans.choice());
 }

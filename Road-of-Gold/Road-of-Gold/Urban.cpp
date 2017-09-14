@@ -98,7 +98,7 @@ int		Urban::cost(int _itemType, int _numItem) const
 	const auto& b = baskets[_itemType];
 	int	totalCost = 0;
 	int num = _numItem;
-	for (auto r : b.rings)
+	for (auto& r : b.rings)
 	{
 		if (r.casket.numItem < num)
 		{

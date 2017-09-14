@@ -9,7 +9,7 @@ void	drawRotues()
 {
 	if (ui.selectedUrbanID != -1)
 	{
-		for (auto r : urbans[ui.selectedUrbanID].ownRoutes) drawRotue(*r, Color(Palette::White, 128));
+		for (auto* r : urbans[ui.selectedUrbanID].ownRoutes) drawRotue(*r, Color(Palette::White, 128));
 
 		if (ui.selectedRoute != nullptr) drawRotue(*ui.selectedRoute, Palette::Red);
 	}

@@ -22,14 +22,6 @@ bool	useRouteMenu = false;
 
 void	drawUI()
 {
-	if (useMulthThread)
-	{
-		(*ui.fonts[16])(L"マルチスレッドは有効です。無効化:Mキー").draw(560, 0, Palette::Red);
-	}
-	else
-	{
-		(*ui.fonts[16])(L"マルチスレッドは無効です。有効化:Mキー").draw(560, 0, Palette::Red);
-	}
 
 	//Export
 	if (KeyE.down()) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
@@ -43,8 +35,10 @@ void	drawUI()
 			{
 				double sum = 0;
 				for (auto& e : exports)
+				{
 					if (e.from == &u || e.to == &u) sum += e.numItemPerDay;
-				Circle(u.pos().mPos, 0.0060*pow(sum, 0.5)).draw(Palette::Red);
+				}
+				Circle(u.pos().mPos, 0.0020*pow(sum, 0.5)).draw(Palette::Red);
 			}
 		}
 	}
@@ -62,7 +56,7 @@ void	drawUI()
 				{
 					if (ui.selectedItemType == e.itemType)
 					{
-						drawArrow(*e.from, *e.to, 0.05*e.numItemPerDay, ColorF(itemData[e.itemType].color, 0.8));
+						drawArrow(*e.from, *e.to, 0.02*e.numItemPerDay, ColorF(itemData[e.itemType].color, 0.8));
 					}
 				}
 			}
@@ -80,7 +74,7 @@ void	drawUI()
 							if (e.from == &u1 && e.to == &u2) sum += e.numItemPerDay;
 						}
 
-						drawArrow(u1, u2, 0.05*sum, ColorF(Palette::Red, 0.8));
+						drawArrow(u1, u2, 0.02*sum, ColorF(Palette::Red, 0.8));
 					}
 				}
 				else
@@ -95,7 +89,7 @@ void	drawUI()
 								if (e.from == &u1 && e.to == &u2) sum += e.numItemPerDay;
 							}
 
-							drawArrow(u1, u2, 0.05*sum, ColorF(Palette::Red, 0.8));
+							drawArrow(u1, u2, 0.02*sum, ColorF(Palette::Red, 0.8));
 						}
 					}
 				}
@@ -210,6 +204,7 @@ void	drawUI()
 
 			if (sv.chain.isEmpty() || sv.reader >= int(sv.chain.size()))
 			{
+				rect.draw(Color(Palette::Red, 192));
 				(*ui.fonts[16])(L"状態:エラー").draw(rect.pos.movedBy(4, 1));
 			}
 			else if (sv.route != nullptr)
@@ -519,11 +514,11 @@ void	drawUI()
 				}
 				{
 					int sum = 0, num = 0;
-					for (auto c : su.citizens)
+					for (auto& c : su.citizens)
 					{
 						if (c.citizenType == i)
 						{
-							sum += c.avgIncome();
+							sum += c.avgIncome;
 							num++;
 						}
 					}

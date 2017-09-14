@@ -8,6 +8,7 @@
 #include"Sound.h"
 #include"Scuttle.h"
 #include"Data.h"
+#include"VehicleData.h"
 
 void Main()
 {
@@ -28,15 +29,9 @@ void Main()
 	for (auto i : step(int(fonts.size()))) ui.fonts.emplace_back(&fonts.at(i));
 	Log(L"fontsの展開が完了 size = ", fonts.size());
 
-	loadData();
-
 	initSounds();
 
-	initNodes();
-
-	selectMap();
-
-	initRoutes();
+	if (!selectMap()) return;
 
 	initGroups();
 
@@ -50,6 +45,11 @@ void Main()
 		{
 			bgm = Audio(bgmItems.choice());
 			bgm.play();
+		}
+
+		if (KeyB.down())
+		{
+			for (int i = 0; i < 100; i++) vehicles.emplace_back(vehicleData.choice().id(), &urbans.choice());
 		}
 
 		updatePlanet();

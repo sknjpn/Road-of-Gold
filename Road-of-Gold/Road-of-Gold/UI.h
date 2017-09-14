@@ -26,6 +26,5 @@ struct UI
 };
 
 extern UI	ui;
-extern bool	useMulthThread;
 
 void	drawUI();

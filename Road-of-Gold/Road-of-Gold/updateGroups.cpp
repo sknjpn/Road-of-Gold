@@ -11,8 +11,8 @@ double tmr = 0.0;
 
 void	updateGroups()
 {
-
 	tmr += planet.timeSpeed;
+
 	if (tmr > 0.0)
 	{
 		tmr -= 30.0;

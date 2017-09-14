@@ -17,10 +17,14 @@ void	updateVehicles()
 
 		if (!v.chain.isEmpty() && v.reader < int(v.chain.size()) && !v.isError)
 		{
-			for (;;)
+			for (int cnt = 0;; cnt++)
 			{
-				if (v.isError) break;
-				if (v.route != nullptr)
+				//エラー処理
+				if (cnt == 100) v.isError = true;	//ループから抜けられない場合
+				if (v.reader >= int(v.chain.size())) v.isError = true;	//読み込み位置がプログラムから外れている場合
+				if (v.isError) break;	//エラーがあるならば抜ける
+
+				if (v.route != nullptr)	//実行中のルートがあるならば
 				{
 					if (v.route->movingCost / v.data().speed <= v.routeProgress + actionTime)
 					{
@@ -40,7 +44,7 @@ void	updateVehicles()
 						break;
 					}
 				}
-				else if (v.sleepTimer > 0)
+				else if (v.sleepTimer > 0)	//休憩中ならば
 				{
 					if (v.sleepTimer <= actionTime)
 					{
@@ -86,11 +90,7 @@ void	updateVehicles()
 					switch (c.first)
 					{
 					case Code::None:
-						if (v.reader + 1 == int(v.chain.size()))
-						{
-							v.isError = true;
-						}
-						else v.reader++;
+						v.reader++;
 						break;
 					case Code::Move:
 						for (auto& r : v.nowUrban->ownRoutes)
@@ -125,7 +125,7 @@ void	updateVehicles()
 								v.cargo = b.casket;
 								b.casket.numItem = 0;
 								b.target = v.maxVolume;
-								b.period = v.period;
+								b.period = int(v.period);
 								flag = true;
 								break;
 							}

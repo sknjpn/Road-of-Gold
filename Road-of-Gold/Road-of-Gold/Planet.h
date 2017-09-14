@@ -19,6 +19,6 @@ struct Planet
 extern Planet	planet;
 
 void	loadMap(const FilePath& _path);
-void	selectMap();
+bool	selectMap();
 void	updatePlanet();
 void	drawPlanet();

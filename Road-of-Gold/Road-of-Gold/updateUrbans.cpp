@@ -6,6 +6,7 @@
 #include"Sound.h"
 #include<thread>
 #include<numeric>
+#include<boost\range\numeric.hpp>
 
 void	updateUrban(Urban& u)
 {
@@ -16,6 +17,7 @@ void	updateUrban(Urban& u)
 		{
 			c.incomeLog.push_front(c.wallet().income);
 			c.incomeLog.pop_back();
+			c.avgIncome = int(c.incomeLog.sum() / c.incomeLog.size());
 			c.wallet().income = 0;	//û“ü‚ğƒŠƒZƒbƒg
 		}
 
@@ -24,22 +26,21 @@ void	updateUrban(Urban& u)
 		{
 			if (u.jobEfficiency[c.citizenType] == 0 || RandomBool(0.003))	//“]E
 			{
-				int sum = 0;
-
-				for (auto t : u.citizens) sum += t.avgIncome();
+				int sum = boost::accumulate(u.citizens, 0, [](int sum, const Citizen& c) {return sum + c.avgIncome; });
+				//for (auto& t : u.citizens) sum += t.avgIncome;
 
 				sum = Random(sum);
-				for (auto t : u.citizens)
+				for (auto& t : u.citizens)
 				{
-					sum -= t.avgIncome();
+					sum -= t.avgIncome;
 					if (sum < 0)
 					{
-						if (c.avgIncome() < t.avgIncome())
+						if (c.avgIncome < t.avgIncome)
 						{
 							c.incomeLog.fill(0);
 							c.citizenType = t.citizenType;
 							//–Ú•W—˜‰v‚ğ˜J“­Ò‚Ìû‰v‚ğŒ³‚Éİ’è
-							c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
+							c.targetRevenue = 0;// Random(int(citizenData.front().wage*u.productivity));
 
 							//”Ì”„‰¿Ši‚ÌƒRƒs[
 							c.wallet().price = t.wallet().price;
@@ -53,12 +54,19 @@ void	updateUrban(Urban& u)
 					{
 						c.citizenType = i;
 						//–Ú•W—˜‰v‚ğ˜J“­Ò‚Ìû‰v‚ğŒ³‚Éİ’è
-						c.targetRevenue = Random(int(citizenData.front().wage*u.productivity));
+						c.targetRevenue = 0;// Random(int(citizenData.front().wage*u.productivity));
 					}
 				}
 			}
 		}
-
+		/*
+		//–Ú•W—˜‰v‚Ìİ’è
+		for (int i = 0; i < int(citizenData.size()); i++)
+		{
+			int sum = 0;
+			for(auto&)
+		}
+		*/
 		//Œø—¦‚ÌXV
 		for (auto i : step(int(citizenData.size())))
 		{
@@ -140,8 +148,7 @@ void	updateUrban(Urban& u)
 
 			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//‰¿Ši’á‰º
 
-																			//TradeLog‚ÌXV
-			b.tradeLog.push();
+			b.tradeLog.push(); //TradeLog‚ÌXV
 		}
 	}
 
@@ -155,36 +162,12 @@ void	updateUrban(Urban& u)
 
 		c.jobProgress += je*planet.timeSpeed;
 
-		//w”ƒ
-		c.timer += planet.timeSpeed;
-		if (c.timer >= 1.0)
-		{
-			c.timer -= 1.0;
-
-			/*
-			//w”ƒ
-			for (int i = 0; i < int(itemData.size()); i++)
-			{
-				const double h = Random(0.1, 5.0);
-				auto itemType = itemData.choice().id();
-
-				if (!u.isSoldOut(itemType))
-				{
-					if (itemData[itemType].value / double(u.cost(itemType)) > h && u.cost(itemType) < c.wallet().money)
-					{
-						u.buyItem(itemType, c.walletID);
-					}
-				}
-			}
-			c.wallet().pull(c.wallet().money / 10);
-			*/
-		}
-
 		//¶Y
 		while (c.jobProgress >= 1.0)
 		{
 			c.jobProgress -= 1.0;
 
+			//’À‹à‚Ì‰ÁZ
 			c.wallet().add(data.wage);
 
 			//Item‚Ì”Ì”„
@@ -194,7 +177,6 @@ void	updateUrban(Urban& u)
 				if (u.isSoldOut(data.product.itemType) || u.cost(data.product.itemType) > c.targetRevenue / data.product.numItem)
 				{
 					u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
-					//u.baskets[data.product.itemType].tradeLog.numProduction.front() += data.product.numItem;
 				}
 			}
 		}
@@ -202,23 +184,20 @@ void	updateUrban(Urban& u)
 }
 void	updateUrbans()
 {
-	if (KeyM.down()) useMulthThread = !useMulthThread;
 
-	if (useMulthThread)
+	//ƒ}ƒ‹ƒ`ƒXƒŒƒbƒh‚É‚æ‚éˆ—‚ğs‚¤
 	{
 		Array<std::thread> threads;
 
 		for (auto& u : urbans) threads.emplace_back(updateUrban, std::ref(u));
 		for (auto& t : threads)  t.join();
 	}
-	else
-	{
-		for (auto& u : urbans) updateUrban(u);
-	}
 
+	//Urban‚Ì‘I‘ğ
 	if (MouseL.down())
 	{
 		ui.selectedUrbanID = -1;
+
 		for (int i = 0; i < 2; ++i) {
 			const auto transformer = tinyCamera.createTransformer(i);
 

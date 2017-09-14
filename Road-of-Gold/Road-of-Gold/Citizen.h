@@ -9,13 +9,12 @@ struct Citizen
 	int		walletID;
 	int		targetRevenue;	//ñ⁄ïWîÑÇËè„Ç∞
 	double	jobProgress;
-	double	timer;
 	Array<int>	incomeLog;
 	double	personality;
 	double	jobEfficiency;
+	int		avgIncome;
 
 	Citizen(int _citizenType);
 	CitizenData&	data() const;
 	Wallet&	wallet() const;
-	int	avgIncome() const { return int(incomeLog.sum() / incomeLog.size()); }
 };
