@@ -1,15 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.6
+VisualStudioVersion = 15.0.26730.15
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Road-of-Gold", "Road-of-Gold\Road-of-Gold.vcxproj", "{396BF707-68A5-48BD-BF52-4EFE99C03D8E}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Map-Editor", "Map-Editor\Map-Editor.vcxproj", "{704E9D54-52FD-4FC1-8D39-69112DB81589}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Planet-Viewer", "Planet-Viewer\Planet-Viewer.vcxproj", "{9F5A5474-73E0-4FF4-B48D-EB59009B9D4A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Node-Map-Maker", "Node-Map-Maker\Node-Map-Maker.vcxproj", "{D23B891D-7EFD-4B91-8436-5CA45E7C717D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Road-of-Gold", "Road-of-Gold\Road-of-Gold.vcxproj", "{396BF707-68A5-48BD-BF52-4EFE99C03D8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,14 +19,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x64.ActiveCfg = Debug|x64
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x64.Build.0 = Debug|x64
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x86.ActiveCfg = Debug|Win32
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x86.Build.0 = Debug|Win32
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x64.ActiveCfg = Release|x64
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x64.Build.0 = Release|x64
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x86.ActiveCfg = Release|Win32
-		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x86.Build.0 = Release|Win32
 		{704E9D54-52FD-4FC1-8D39-69112DB81589}.Debug|x64.ActiveCfg = Debug|x64
 		{704E9D54-52FD-4FC1-8D39-69112DB81589}.Debug|x64.Build.0 = Debug|x64
 		{704E9D54-52FD-4FC1-8D39-69112DB81589}.Debug|x86.ActiveCfg = Debug|Win32
@@ -51,8 +43,19 @@ Global
 		{D23B891D-7EFD-4B91-8436-5CA45E7C717D}.Release|x64.Build.0 = Release|x64
 		{D23B891D-7EFD-4B91-8436-5CA45E7C717D}.Release|x86.ActiveCfg = Release|Win32
 		{D23B891D-7EFD-4B91-8436-5CA45E7C717D}.Release|x86.Build.0 = Release|Win32
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x64.ActiveCfg = Debug|x64
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x64.Build.0 = Debug|x64
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x86.ActiveCfg = Debug|Win32
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Debug|x86.Build.0 = Debug|Win32
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x64.ActiveCfg = Release|x64
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x64.Build.0 = Release|x64
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x86.ActiveCfg = Release|Win32
+		{396BF707-68A5-48BD-BF52-4EFE99C03D8E}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5F4019B7-9A40-450F-AC40-37B1F6FE1C6E}
 	EndGlobalSection
 EndGlobal
