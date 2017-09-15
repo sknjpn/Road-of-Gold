@@ -17,7 +17,7 @@ void	updateUrban(Urban& u)
 		{
 			c.incomeLog.push_front(c.wallet().income);
 			c.incomeLog.pop_back();
-			c.avgIncome = int(c.incomeLog.sum() / c.incomeLog.size());
+			c.avgIncome = int(boost::accumulate(c.incomeLog, 0, [](int sum, int i) { return sum + i; }) / c.incomeLog.size());
 			c.wallet().income = 0;	//Žû“ü‚ðƒŠƒZƒbƒg
 		}
 
