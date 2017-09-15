@@ -120,12 +120,21 @@ void Main()
 		//カメラの更新
 		tinyCamera.update();
 
+		if (DragDrop::HasNewFilePaths())
+		{
+			auto items = DragDrop::GetDroppedFilePaths();
+			for (auto item : items)
+			{
+				if (FileSystem::IsFile(item.path)) planet.coverTexture = Texture(item.path);
+			}
+		}
 		//マップの描画
 		for (int i = 0; i < 2; ++i) {
 			const auto t1 = tinyCamera.createTransformer(i);
 
 			planet.mapTexture.resize(360_deg, 180_deg).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(360_deg, 180_deg).drawAt(0, 0);
+			if (planet.coverTexture) planet.coverTexture.resize(360_deg, 180_deg).drawAt(0, 0, ColorF(Palette::White, planet.coverRate));
 		}
 
 		//都市の描画
@@ -353,6 +362,17 @@ void Main()
 				font16(L"セーブ").draw(rect.pos.movedBy(4, 0));
 				textBox.update();
 				textBox.draw();
+			}
+			//CoverRate
+			{
+				const Rect rect(192, 304, 160, 24);
+				rect.drawFrame(2, Palette::Skyblue);
+				Line(212, 316, 332, 316).draw(4,Palette::White);
+				Rect(210 + int(planet.coverRate*120), 308, 4, 16).draw(Palette::Black);
+				if (rect.leftPressed())
+				{
+					planet.coverRate = Min(1.0, Max(0.0, double(Cursor::Pos().x - 210) / 120.0));
+				}
 			}
 
 			break;

@@ -9,7 +9,9 @@ struct Planet
 	Grid<int>	voronoiMap;
 	DynamicTexture mapTexture;
 	Texture outlineTexture;
+	Texture coverTexture;	//上から載せるテクスチャ
 	Image	image;
+	double	coverRate;
 
 	Planet();
 	bool	loadVoronoiMap();

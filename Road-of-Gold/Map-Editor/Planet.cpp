@@ -4,6 +4,8 @@
 
 Planet::Planet()
 	: mapTexture()
+	, coverTexture()
+	, coverRate(0.5)
 {}
 
 void	Planet::updateImage(Array<Node*> _nodeList)

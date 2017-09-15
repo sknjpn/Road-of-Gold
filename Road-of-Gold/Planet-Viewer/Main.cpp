@@ -66,6 +66,10 @@ void Main()
 				font(FileSystem::BaseName(items[i])).draw(0, 48 + i * 48);
 				if (rect.leftClicked)
 				{
+					if (FileSystem::Exists(items[i] + L"MapImage.png"))
+					{
+						mapTexture = Texture(items[i] + L"MapImage.png");
+					}
 					BinaryReader reader(items[i] + L"BiomeData.bin");
 
 					for (auto& n : nodes)
@@ -86,6 +90,7 @@ void Main()
 	}
 
 	//VoronoiMapの読み込み
+	if(!mapTexture)
 	{
 		Image	image(L"assets/nodeMap/voronoiMap.png");
 
