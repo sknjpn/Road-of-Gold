@@ -516,7 +516,7 @@ void Main()
 		auto items = DragDrop::GetDroppedFilePaths();
 		for (auto item : items)
 		{
-			Log(item.path);
+			LOG_INFO(item.path);
 			if (loadMapData(item.path)) break;
 		}
 	}

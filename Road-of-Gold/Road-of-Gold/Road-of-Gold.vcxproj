@@ -71,29 +71,29 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Debug-x86\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Debug-x64\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x64\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Release-x86\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Release-x64\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x64\</IntDir>
   </PropertyGroup>

@@ -50,7 +50,6 @@ void	initNodes()
 			p.length = nodes[p.toID].pos.distanceFrom(n.pos);
 		}
 	}
-
-	Log(L"nodes‚¨‚æ‚Ñpaths‚Ì“Ç‚İ‚İŠ®—¹");
-	Log(L"‘Node”:", nodes.size());
+	LOG_INFO(L"nodes‚¨‚æ‚Ñpaths‚Ì“Ç‚İ‚İŠ®—¹");
+	LOG_INFO(L"‘Node”:", nodes.size());
 }
