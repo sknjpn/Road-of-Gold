@@ -106,6 +106,8 @@ struct SetItemData : MyApp::Scene
 			font16(L"新アイテム追加").draw(rect.movedBy(4, 0));
 		}
 
+		if (itemData.isEmpty()) return;
+
 		//上下キー対応
 		{
 			if (KeyUp.down() && getData().selectedItemType > 0) --getData().selectedItemType;
@@ -179,6 +181,18 @@ struct SetItemData : MyApp::Scene
 			i.colorTextBox.update();
 			i.colorTextBox.draw();
 
+		}
+
+		{
+			Rect rect(720, 72, 120, 24);
+			if (rect.mouseOver()) rect.draw(Palette::Orange);
+			if (rect.leftClicked())
+			{
+				itemData.erase(itemData.begin() + getData().selectedItemType);
+				if (getData().selectedItemType == int(itemData.size()) && getData().selectedItemType > 0) getData().selectedItemType--;
+			}
+			rect.drawFrame(2);
+			font16(L"項目の削除").drawAt(rect.center());
 		}
 	}
 };

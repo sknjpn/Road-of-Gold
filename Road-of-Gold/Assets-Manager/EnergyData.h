@@ -98,6 +98,8 @@ struct SetEnergyData : MyApp::Scene
 			font16(L"V‘Œ¹’Ç‰Á").draw(rect.movedBy(4, 0));
 		}
 
+		if (energyData.isEmpty()) return;
+
 		//ã‰ºƒL[‘Î‰
 		{
 			if (KeyUp.down() && getData().selectedEnergyType > 0) --getData().selectedEnergyType;
@@ -141,6 +143,18 @@ struct SetEnergyData : MyApp::Scene
 			}
 			Rect(432, 24, 128, 128).draw(DragDrop::DragOver() ? Palette::Gray : Color(0, 0)).drawFrame(4);
 			if (e.iconTexture) e.iconTexture.resize(128, 128).draw(432, 24);
+		}
+
+		{
+			Rect rect(720, 72, 120, 24);
+			if (rect.mouseOver()) rect.draw(Palette::Orange);
+			if (rect.leftClicked())
+			{
+				energyData.erase(energyData.begin() + getData().selectedEnergyType);
+				if (getData().selectedEnergyType == int(energyData.size()) && getData().selectedEnergyType > 0) getData().selectedEnergyType--;
+			}
+			rect.drawFrame(2);
+			font16(L"€–Ú‚Ìíœ").drawAt(rect.center());
 		}
 	}
 };

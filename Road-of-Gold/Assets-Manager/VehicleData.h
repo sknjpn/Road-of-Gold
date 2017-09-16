@@ -104,6 +104,8 @@ struct SetVehicleData : MyApp::Scene
 			font16(L"新アイテム追加").draw(rect.movedBy(4, 0));
 		}
 
+		if (vehicleData.isEmpty()) return;
+
 		//上下キー対応
 		{
 			if (KeyUp.down() && getData().selectedVehicleType > 0) --getData().selectedVehicleType;
@@ -185,6 +187,18 @@ struct SetVehicleData : MyApp::Scene
 			i.isShipTextBox.update();
 			i.isShipTextBox.draw();
 
+		}
+
+		{
+			Rect rect(720, 72, 120, 24);
+			if (rect.mouseOver()) rect.draw(Palette::Orange);
+			if (rect.leftClicked())
+			{
+				vehicleData.erase(vehicleData.begin() + getData().selectedVehicleType);
+				if (getData().selectedVehicleType == int(vehicleData.size()) && getData().selectedVehicleType > 0) getData().selectedVehicleType--;
+			}
+			rect.drawFrame(2);
+			font16(L"項目の削除").drawAt(rect.center());
 		}
 	}
 };

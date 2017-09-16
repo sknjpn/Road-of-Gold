@@ -98,6 +98,8 @@ struct SetCitizenData : MyApp::Scene
 			font16(L"Vs–¯’Ç‰Á").draw(rect.movedBy(4, 0));
 		}
 
+		if (citizenData.isEmpty()) return;
+
 		//ã‰ºƒL[‘Î‰
 		{
 			if (KeyUp.down() && getData().selectedCitizenType > 0) --getData().selectedCitizenType;
@@ -161,6 +163,19 @@ struct SetCitizenData : MyApp::Scene
 			c.numProductTextBox.update();
 			c.numProductTextBox.draw();
 
+		}
+
+		{
+			Rect rect(720, 72, 120, 24);
+			if (rect.mouseOver()) rect.draw(Palette::Orange);
+			if (rect.leftClicked())
+			{
+				citizenData.erase(citizenData.begin() + getData().selectedCitizenType);
+
+				if (getData().selectedCitizenType == int(citizenData.size()) && getData().selectedCitizenType > 0) getData().selectedCitizenType--;
+			}
+			rect.drawFrame(2);
+			font16(L"€–Ú‚Ìíœ").drawAt(rect.center());
 		}
 	}
 };
