@@ -21,7 +21,7 @@
   <PropertyGroup Label="Globals">
     <ProjectGuid>{396BF707-68A5-48BD-BF52-4EFE99C03D8E}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>Road_of_Gold</RootNamespace>
+    <RootNamespace>OpenSiv3D_0_1_7_</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -71,29 +71,29 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Debug-x86\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Debug-x64\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Debug-x64\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Release-x86\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x86\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(SIV3D_0_1_6)\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(SIV3D_0_1_6)\Lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(SIV3D_0_1_7)\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(SIV3D_0_1_7)\Lib;$(LibraryPath)</LibraryPath>
     <OutDir>$(SolutionDir)$(ProjectName)\Release-x64\</OutDir>
     <IntDir>$(SolutionDir)$(ProjectName)\Intermediate\Release-x64\</IntDir>
   </PropertyGroup>
@@ -109,15 +109,13 @@
       <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>C:\boost_1_65_0\include\boost-1_65</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\boost_1_65_0\lib\xOO</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir) 
+      <Command>chdir $(SolutionDir)
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -132,15 +130,13 @@ call copy.bat</Command>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>C:\boost_1_65_0\include\boost-1_65</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\boost_1_65_0\lib\xOO</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir) 
+      <Command>chdir $(SolutionDir)
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -157,17 +153,15 @@ call copy.bat</Command>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>C:\boost_1_65_0\include\boost-1_65</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\boost_1_65_0\lib\xOO</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir) 
+      <Command>chdir $(SolutionDir)
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -184,68 +178,18 @@ call copy.bat</Command>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <ForcedIncludeFiles>stdafx.h</ForcedIncludeFiles>
-      <AdditionalIncludeDirectories>C:\boost_1_65_0\include\boost-1_65</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>C:\boost_1_65_0\lib\xOO</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
-      <Command>chdir $(SolutionDir) 
+      <Command>chdir $(SolutionDir)
 call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Basket.cpp" />
-    <ClCompile Include="Casket.cpp" />
-    <ClCompile Include="Citizen.cpp" />
-    <ClCompile Include="Customer.cpp" />
-    <ClCompile Include="drawGroups.cpp" />
-    <ClCompile Include="drawPlanet.cpp" />
-    <ClCompile Include="drawRoutes.cpp" />
-    <ClCompile Include="drawScuttles.cpp" />
-    <ClCompile Include="drawUI.cpp" />
-    <ClCompile Include="drawUrbans.cpp" />
-    <ClCompile Include="drawVehicles.cpp" />
-    <ClCompile Include="Energy.cpp" />
-    <ClCompile Include="Export.cpp" />
-    <ClCompile Include="globalVariables.cpp" />
-    <ClCompile Include="Group.cpp" />
-    <ClCompile Include="Incident.cpp" />
-    <ClCompile Include="initGroups.cpp" />
-    <ClCompile Include="initNodes.cpp" />
-    <ClCompile Include="initPlanet.cpp" />
-    <ClCompile Include="initRoutes.cpp" />
-    <ClCompile Include="loadData.cpp" />
-    <ClCompile Include="loadMap.cpp" />
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Nation.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Ring.cpp" />
-    <ClCompile Include="Route.cpp" />
-    <ClCompile Include="Sandglass.cpp" />
-    <ClCompile Include="Scuttle.cpp" />
-    <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-    <ClCompile Include="TinyCamera.cpp" />
-    <ClCompile Include="Traders.cpp" />
-    <ClCompile Include="updateGroups.cpp" />
-    <ClCompile Include="updatePlanet.cpp" />
-    <ClCompile Include="updateScuttles.cpp" />
-    <ClCompile Include="updateUrbans.cpp" />
-    <ClCompile Include="updateVehicles.cpp" />
-    <ClCompile Include="Urban.cpp" />
-    <ClCompile Include="Vehicle.cpp" />
-    <ClCompile Include="Wallet.cpp" />
-  </ItemGroup>
   <ItemGroup>
     <Image Include="engine\texture\box-shadow\128.png" />
     <Image Include="engine\texture\box-shadow\16.png" />
@@ -264,13 +208,10 @@ call copy.bat</Command>
     <Text Include="engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\assets\config.ini" />
-    <None Include="..\assets\data\biomeData.json" />
-    <None Include="..\assets\data\citizenData.json" />
-    <None Include="..\assets\data\energyData.json" />
-    <None Include="..\assets\data\groupName.json" />
-    <None Include="..\assets\data\itemData.json" />
-    <None Include="..\assets\data\vehicleData.json" />
+    <None Include="dll_x64\d3d\d3dcompiler_47.dll" />
+    <None Include="dll_x64\tobii\tobii_stream_engine.dll" />
+    <None Include="dll_x86\d3d\d3dcompiler_47.dll" />
+    <None Include="dll_x86\tobii\tobii_stream_engine.dll" />
     <None Include="engine\font\fontawesome\FontAwesome.otf.zst" />
     <None Include="engine\font\mplus\LICENSE_E" />
     <None Include="engine\font\mplus\mplus-1p-black.ttf.zst" />
@@ -288,6 +229,7 @@ call copy.bat</Command>
     <None Include="engine\shader\sprite.ps" />
     <None Include="engine\shader\sprite.vs" />
     <None Include="engine\shader\sprite_sdf.ps" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basket.h" />
@@ -323,7 +265,64 @@ call copy.bat</Command>
     <ClInclude Include="VehicleData.h" />
     <ClInclude Include="Wallet.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Basket.cpp" />
+    <ClCompile Include="Casket.cpp" />
+    <ClCompile Include="Citizen.cpp" />
+    <ClCompile Include="Customer.cpp" />
+    <ClCompile Include="drawGroups.cpp" />
+    <ClCompile Include="drawPlanet.cpp" />
+    <ClCompile Include="drawRoutes.cpp" />
+    <ClCompile Include="drawScuttles.cpp" />
+    <ClCompile Include="drawUI.cpp" />
+    <ClCompile Include="drawUrbans.cpp" />
+    <ClCompile Include="drawVehicles.cpp" />
+    <ClCompile Include="Energy.cpp" />
+    <ClCompile Include="Export.cpp" />
+    <ClCompile Include="globalVariables.cpp" />
+    <ClCompile Include="Group.cpp" />
+    <ClCompile Include="Incident.cpp" />
+    <ClCompile Include="initGroups.cpp" />
+    <ClCompile Include="initNodes.cpp" />
+    <ClCompile Include="initPlanet.cpp" />
+    <ClCompile Include="initRoutes.cpp" />
+    <ClCompile Include="loadData.cpp" />
+    <ClCompile Include="loadMap.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Nation.cpp" />
+    <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Ring.cpp" />
+    <ClCompile Include="Route.cpp" />
+    <ClCompile Include="Sandglass.cpp" />
+    <ClCompile Include="Scuttle.cpp" />
+    <ClCompile Include="SelectItem.cpp" />
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="TinyCamera.cpp" />
+    <ClCompile Include="Traders.cpp" />
+    <ClCompile Include="updateGroups.cpp" />
+    <ClCompile Include="updatePlanet.cpp" />
+    <ClCompile Include="updateScuttles.cpp" />
+    <ClCompile Include="updateTimeSpeed.cpp" />
+    <ClCompile Include="updateUrbans.cpp" />
+    <ClCompile Include="updateVehicles.cpp" />
+    <ClCompile Include="Urban.cpp" />
+    <ClCompile Include="Vehicle.cpp" />
+    <ClCompile Include="Wallet.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\boost.1.65.1.0\build\native\boost.targets" Condition="Exists('..\packages\boost.1.65.1.0\build\native\boost.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\boost.1.65.1.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.65.1.0\build\native\boost.targets'))" />
+  </Target>
 </Project>

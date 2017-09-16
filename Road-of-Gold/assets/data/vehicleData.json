@@ -12,6 +12,7 @@
     "Speed": 0.25,
     "Volume": 1000,
     "Range": 6.0,
+    "IsShip": false,
     "Icon": "assets/image/vehicle/coveredWagon.png"
   }
 ]

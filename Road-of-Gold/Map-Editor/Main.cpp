@@ -367,8 +367,8 @@ void Main()
 			{
 				const Rect rect(192, 304, 160, 24);
 				rect.drawFrame(2, Palette::Skyblue);
-				Line(212, 316, 332, 316).draw(4,Palette::White);
-				Rect(210 + int(planet.coverRate*120), 308, 4, 16).draw(Palette::Black);
+				Line(212, 316, 332, 316).draw(4, Palette::White);
+				Rect(210 + int(planet.coverRate * 120), 308, 4, 16).draw(Palette::Black);
 				if (rect.leftPressed())
 				{
 					planet.coverRate = Min(1.0, Max(0.0, double(Cursor::Pos().x - 210) / 120.0));
@@ -516,7 +516,7 @@ void Main()
 		auto items = DragDrop::GetDroppedFilePaths();
 		for (auto item : items)
 		{
-			Log(item.path);
+			Output << item.path;
 			if (loadMapData(item.path)) break;
 		}
 	}

@@ -27,7 +27,7 @@ Urban::Urban(const JSONValue _json)
 	energies.resize(energyData.size(), 0);
 	for (auto i : _json[L"Energies"].objectView())
 	{
-		if (getEnergyType(i.name) == -1) LOG_ERROR(L"ë∂ç›ÇµÇ»Ç¢EnergyÇ™ì«Ç›çûÇ‹ÇÍÇ‹ÇµÇΩ");
+		if (getEnergyType(i.name) == -1) Output << L"ë∂ç›ÇµÇ»Ç¢EnergyÇ™ì«Ç›çûÇ‹ÇÍÇ‹ÇµÇΩ";
 		else energies.at(getEnergyType(i.name)) = i.value.getOr<int>(0);
 	}
 }

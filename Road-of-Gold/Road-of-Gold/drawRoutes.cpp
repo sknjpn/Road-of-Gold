@@ -19,7 +19,6 @@ void	drawRotue(const Route& _r, const Color& _color)
 	for (int i = 0; i < 2; ++i)
 	{
 		const auto transformer = tinyCamera.createTransformer(i);
-
 		auto* bn = &nodes[_r.fromUrban->joinedNodeID];
 
 		for (int j = 0; j < int(_r.paths.size()); j++)

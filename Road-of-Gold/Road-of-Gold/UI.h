@@ -28,3 +28,5 @@ struct UI
 extern UI	ui;
 
 void	drawUI();
+void	selectItem();
+void	updateTimeSpeed();

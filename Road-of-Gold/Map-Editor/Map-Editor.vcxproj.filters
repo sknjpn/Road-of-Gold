@@ -37,38 +37,24 @@
     <Filter Include="Resource Files\engine\font\noto">
       <UniqueIdentifier>{f7208394-61be-44c0-9992-57a2a749ba60}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="loadData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="GenerateBiome.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="TinyCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Urban.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="VoronoiMap.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Node.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Planet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="SaveAndLoad.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
+    <Filter Include="Resource Files\dll_x64">
+      <UniqueIdentifier>{5a1582e3-1e58-4e93-b3d9-43dee2efb89c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\dll_x86">
+      <UniqueIdentifier>{dcffb9df-15af-4adc-889d-922fd21261a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\dll_x64\d3d">
+      <UniqueIdentifier>{13d251a8-1bc7-4510-98f7-4fc349cf8482}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\dll_x64\tobii">
+      <UniqueIdentifier>{273a25db-0ea2-4cbd-9300-183356db5104}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\dll_x86\d3d">
+      <UniqueIdentifier>{5c426d29-7ef4-498d-bff4-3c03430449c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\dll_x86\tobii">
+      <UniqueIdentifier>{00092991-0e64-42e3-be02-06c90ba3a9cb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">
@@ -161,48 +147,86 @@
     <None Include="engine\font\noto\NotoEmoji-Regular.ttf.zst">
       <Filter>Resource Files\engine\font\noto</Filter>
     </None>
-    <None Include="..\assets\nodeMap\nodeMap.bin">
-      <Filter>Resource Files</Filter>
+    <None Include="dll_x64\d3d\d3dcompiler_47.dll">
+      <Filter>Resource Files\dll_x64\d3d</Filter>
     </None>
-    <None Include="..\assets\config.ini">
-      <Filter>Resource Files</Filter>
+    <None Include="dll_x64\tobii\tobii_stream_engine.dll">
+      <Filter>Resource Files\dll_x64\tobii</Filter>
+    </None>
+    <None Include="dll_x86\tobii\tobii_stream_engine.dll">
+      <Filter>Resource Files\dll_x86\tobii</Filter>
+    </None>
+    <None Include="dll_x86\d3d\d3dcompiler_47.dll">
+      <Filter>Resource Files\dll_x86\d3d</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Node.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Planet.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Pos.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="TinyCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Urban.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="VehicleData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="BiomeData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="EnergyData.h">
+    <ClCompile Include="Node.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="loadData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GenerateBiome.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="VoronoiMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Urban.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="TinyCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveAndLoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ItemData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GlobalVariables.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ItemData.h">
+    <ClInclude Include="EnergyData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BiomeData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VehicleData.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Urban.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TinyCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Pos.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

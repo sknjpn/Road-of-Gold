@@ -6,23 +6,22 @@
 #include"Route.h"
 #include"Vehicle.h"
 #include"Export.h"
-#include<numeric>
 #include"VehicleData.h"
+#include<boost\range\numeric.hpp>
+
+bool	useRouteMenu = false;
 
 void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color)
 {
 	auto p = (_to.pos().mPos - _from.pos().mPos).normalized();
 	auto p1 = _from.pos().mPos + p*0.02;
 	auto p2 = _to.pos().mPos - p*0.02;
+
 	Triangle(p1, p1.lerp(p2, 0.8) + _value*p.rotated(90_deg)*0.01, p1.lerp(p2, 0.8) - _value*p.rotated(90_deg)*0.01).draw(_color);
 	Triangle(p2, p1.lerp(p2, 0.8) + _value*p.rotated(90_deg)*0.03, p1.lerp(p2, 0.8) - _value*p.rotated(90_deg)*0.03).draw(_color);
 }
-
-bool	useRouteMenu = false;
-
 void	drawUI()
 {
-
 	//Export
 	if (KeyE.down()) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
 	if (KeyR.down()) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;

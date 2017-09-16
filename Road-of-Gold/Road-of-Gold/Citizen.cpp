@@ -14,6 +14,5 @@ Citizen::Citizen(int _citizenType)
 	wallet().price = 1000;
 	wallet().owner = Owner::Citizen;
 }
-
 CitizenData&	Citizen::data() const { return citizenData.at(citizenType); }
 Wallet&	Citizen::wallet() const { return wallets[walletID]; }

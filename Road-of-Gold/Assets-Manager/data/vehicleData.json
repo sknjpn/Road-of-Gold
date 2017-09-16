@@ -1,0 +1,1 @@
+﻿[{"Name":"小帆船","Speed":0.25,"Volume":1000,"Range":12.0,"IsShip":true,"Icon":"assets/image/vehicle/sailingShip.png"},{"Name":"幌馬車","Speed":0.25,"Volume":1000,"Range":6.0,"IsShip":false,"Icon":"assets/image/vehicle/coveredWagon.png"}]
