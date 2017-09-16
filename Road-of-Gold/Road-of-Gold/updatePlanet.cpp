@@ -20,8 +20,11 @@ void	updatePlanet()
 	}
 	if (KeyF4.down()) planet.timeSpeed = 1;
 
-	if (planet.sandglass.update())
+	if (planet.timeSpeed > 0)
 	{
-		for (auto& i : incidents) i.update();
+		if (planet.sandglass.update())
+		{
+			for (auto& i : incidents) i.update();
+		}
 	}
 }

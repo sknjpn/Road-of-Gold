@@ -56,7 +56,6 @@ void Main()
 		updateVehicles();
 		updateUrbans();
 		updateGroups();
-		updateVehicles();
 		updateScuttles();
 
 		drawPlanet();

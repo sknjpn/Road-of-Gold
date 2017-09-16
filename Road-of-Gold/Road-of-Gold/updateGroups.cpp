@@ -93,7 +93,7 @@ void	updateGroups()
 			v.routeProgress = 0;
 			v.sleepTimer = 0;
 			v.chain.clear();
-			v.period = (r->movingCost / v.data().speed);	//ü‰ñ‚É—v‚·‚éŠÔ
+			v.period = (2 * r->movingCost / v.data().speed + 1.0);	//ü‰ñ‚É—v‚·‚éŠÔ
 			v.chain = {
 				{ Code::MVol, 50 },
 				{ Code::Move, u1->id() },
