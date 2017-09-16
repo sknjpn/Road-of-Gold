@@ -10,6 +10,7 @@
 
 void	updateUrban(Urban& u)
 {
+
 	if (u.sandglass.update())
 	{
 		//s–¯ƒƒO‚ÌXV
