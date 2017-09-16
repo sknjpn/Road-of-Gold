@@ -17,23 +17,23 @@ void	loadData()
 
 	json.open(L"assets/data/itemData.json");
 	for (auto j : json.arrayView()) itemData.emplace_back(j);
-	LOG_INFO(L"ItemData‚Ì“Ç‚İ‚İŠ®—¹ size = ", itemData.size());
+	Output << L"ItemData‚Ì“Ç‚İ‚İŠ®—¹ size = ", itemData.size();
 
 	json.open(L"assets/data/biomeData.json");
 	for (auto j : json.arrayView()) biomeData.emplace_back(j);
-	LOG_INFO(L"BiomeData‚Ì“Ç‚İ‚İŠ®—¹ size = ", biomeData.size());
+	Output << L"BiomeData‚Ì“Ç‚İ‚İŠ®—¹ size = ", biomeData.size();
 
 	json.open(L"assets/data/energyData.json");
 	for (auto j : json.arrayView()) energyData.emplace_back(j);
-	LOG_INFO(L"EnergyData‚Ì“Ç‚İ‚İŠ®—¹ size = ", energyData.size());
+	Output << L"EnergyData‚Ì“Ç‚İ‚İŠ®—¹ size = ", energyData.size();
 
 	json.open(L"assets/data/citizenData.json");
 	for (auto j : json.arrayView()) citizenData.emplace_back(j);
-	LOG_INFO(L"CitizenData‚Ì“Ç‚İ‚İŠ®—¹ size = ", citizenData.size());
+	Output << L"CitizenData‚Ì“Ç‚İ‚İŠ®—¹ size = ", citizenData.size();
 
 	json.open(L"assets/data/vehicleData.json");
 	for (auto j : json.arrayView()) vehicleData.emplace_back(j);
-	LOG_INFO(L"VehicleData‚Ì“Ç‚İ‚İŠ®—¹ size = ", vehicleData.size());
+	Output << L"VehicleData‚Ì“Ç‚İ‚İŠ®—¹ size = ", vehicleData.size();
 }
 
 CitizenData::CitizenData(const JSONValue& _json)

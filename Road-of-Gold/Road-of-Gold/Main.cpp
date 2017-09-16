@@ -20,14 +20,14 @@ void Main()
 		else Window::Resize(iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
 	}
 
-	LOG_INFO(L"WindowSize:", Window::Size());
-	LOG_INFO(L"FullScreen:", Window::GetState().fullScreen);
+	Output << L"WindowSize:", Window::Size();
+	Output << L"FullScreen:", Window::GetState().fullScreen;
 
 	//Fontの展開
 	Array<Font> fonts;
 	for (auto i : step(int(1024))) fonts.emplace_back(i);
 	for (auto i : step(int(fonts.size()))) ui.fonts.emplace_back(&fonts.at(i));
-	LOG_INFO(L"fontsの展開が完了 size = ", fonts.size());
+	Output << L"fontsの展開が完了 size = ", fonts.size();
 
 	initSounds();
 
@@ -35,7 +35,7 @@ void Main()
 
 	initGroups();
 
-	LOG_INFO(L"MainLoopの開始");
+	Output << L"MainLoopの開始";
 
 	auto bgmItems = FileSystem::DirectoryContents(L"assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == L"mp3"; });
 

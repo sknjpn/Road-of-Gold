@@ -107,5 +107,5 @@ void	initRoutes()
 			if (r.fromUrban == &u) u.ownRoutes.emplace_back(&r);
 		}
 	}
-	LOG_INFO(L"ルート生成時間:", stopwatch.ms(), L"ms");
+	Output << L"ルート生成時間:", stopwatch.ms(), L"ms";
 }
