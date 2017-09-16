@@ -58,6 +58,8 @@ void Main()
 		updateGroups();
 		updateScuttles();
 
+		selectItem();
+
 		drawPlanet();
 		drawRotues();
 		drawVehicles();

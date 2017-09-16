@@ -192,24 +192,4 @@ void	updateUrbans()
 		for (auto& u : urbans) threads.emplace_back(updateUrban, std::ref(u));
 		for (auto& t : threads)  t.join();
 	}
-
-	//Urban‚Ì‘I‘ð
-	if (MouseL.down())
-	{
-		ui.selectedUrbanID = -1;
-
-		for (int i = 0; i < 2; ++i) {
-			const auto transformer = tinyCamera.createTransformer(i);
-
-			for (auto j : step(int(urbans.size())))
-			{
-				if (urbans[j].mouseOver())
-				{
-					ui.selectedVehicleID = -1;
-					ui.selectedUrbanID = j;
-					sounds.at(0).play();
-				}
-			}
-		}
-	}
 }
