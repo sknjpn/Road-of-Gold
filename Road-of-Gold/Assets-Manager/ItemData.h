@@ -64,6 +64,7 @@ struct SetItemData : MyApp::Scene
 		}
 
 		//左メニューキー操作
+		if(false)
 		{
 			if (KeyW.down() && getData().selectedSceneID > 0)
 			{
