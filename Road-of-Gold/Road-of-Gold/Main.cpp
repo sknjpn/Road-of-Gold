@@ -52,13 +52,18 @@ void Main()
 			for (int i = 0; i < 100; i++) vehicles.emplace_back(vehicleData.choice().id(), &urbans.choice());
 		}
 
-		updatePlanet();
-		updateVehicles();
-		updateUrbans();
-		updateGroups();
+		tinyCamera.update();
+		updateTimeSpeed();
 		updateScuttles();
-
 		selectItem();
+
+		if (planet.timeSpeed > 0)
+		{
+			updatePlanet();
+			updateVehicles();
+			updateUrbans();
+			updateGroups();
+		}
 
 		drawPlanet();
 		drawRotues();

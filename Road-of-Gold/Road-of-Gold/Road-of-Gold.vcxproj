@@ -308,6 +308,7 @@ call copy.bat</Command>
     <ClCompile Include="updateGroups.cpp" />
     <ClCompile Include="updatePlanet.cpp" />
     <ClCompile Include="updateScuttles.cpp" />
+    <ClCompile Include="updateTimeSpeed.cpp" />
     <ClCompile Include="updateUrbans.cpp" />
     <ClCompile Include="updateVehicles.cpp" />
     <ClCompile Include="Urban.cpp" />
