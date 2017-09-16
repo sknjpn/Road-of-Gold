@@ -240,7 +240,12 @@ call copy.bat</Command>
     <None Include="engine\shader\sprite_sdf.ps" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CitizenData.h" />
+    <ClInclude Include="EnergyData.h" />
+    <ClInclude Include="ItemData.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="united.h" />
+    <ClInclude Include="VehicleData.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

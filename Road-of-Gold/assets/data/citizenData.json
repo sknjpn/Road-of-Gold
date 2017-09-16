@@ -6,7 +6,6 @@
   },
   {
     "Name": "狩人",
-    "Cost": 1000,
     "NeedEnergy": "キツネ",
     "Product": {
       "ItemName": "毛皮",
@@ -15,7 +14,6 @@
   },
   {
     "Name": "コーヒー農家",
-    "Cost": 1000,
     "NeedEnergy": "コーヒー",
     "Product": {
       "ItemName": "コーヒー",
@@ -24,7 +22,6 @@
   },
   {
     "Name": "茶葉農家",
-    "Cost": 1000,
     "NeedEnergy": "茶葉",
     "Product": {
       "ItemName": "茶葉",
@@ -33,7 +30,6 @@
   },
   {
     "Name": "絨毯職人",
-    "Cost": 1000,
     "NeedEnergy": "絨毯",
     "Product": {
       "ItemName": "絨毯",
@@ -42,7 +38,6 @@
   },
   {
     "Name": "香辛料農家",
-    "Cost": 1000,
     "NeedEnergy": "香辛料",
     "Product": {
       "ItemName": "香辛料",
@@ -51,7 +46,6 @@
   },
   {
     "Name": "金鉱労働者",
-    "Cost": 1000,
     "NeedEnergy": "金山",
     "Product": {
       "ItemName": "貴金属",
@@ -60,7 +54,6 @@
   },
   {
     "Name": "ブドウ農家",
-    "Cost": 1000,
     "NeedEnergy": "ブドウ",
     "Product": {
       "ItemName": "ワイン",
@@ -69,7 +62,6 @@
   },
   {
     "Name": "カカオ農家",
-    "Cost": 1000,
     "NeedEnergy": "カカオ",
     "Product": {
       "ItemName": "ショコラ",
