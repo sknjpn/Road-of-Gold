@@ -105,7 +105,7 @@ void	updateVehicles()
 						if (v.route == nullptr)
 						{
 							v.isError = true;
-							LOG_ERROR(L"Chain‚Ìw‚·“ss‚ªˆÙí‚Å‚·B");
+							Output << L"Chain‚Ìw‚·“ss‚ªˆÙí‚Å‚·B";
 						}
 						break;
 					case Code::Wait:

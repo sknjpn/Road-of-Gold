@@ -28,7 +28,7 @@ void	Incident::update()
 			int time = c[L"Year"].get<int>() * 360 + (c[L"Month"].get<int>() - 1) * 30 + (c[L"Day"].get<int>() - 1);
 			if (int(planet.sandglass.timer) != time) return;
 		}
-		else LOG_ERROR(L"ë∂ç›ÇµÇ»Ç¢Condition");
+		else Output << L"ë∂ç›ÇµÇ»Ç¢Condition";
 	}
 	action();
 }
@@ -105,6 +105,6 @@ void	Incident::action()
 		{
 			flagTexts.remove(a[L"FlagText"].getString());
 		}
-		else LOG_ERROR(L"ë∂ç›ÇµÇ»Ç¢Action");
+		else Output << L"ë∂ç›ÇµÇ»Ç¢Action";
 	}
 }

@@ -42,7 +42,7 @@ double	Vehicle::angle() const
 			auto* p = route->paths[i];
 			auto* an = &nodes[route->paths[i]->toID];
 			double movingCost = p->length * (biomeData[bn->biomeType].movingCost + biomeData[an->biomeType].movingCost) / 2.0;
-			
+
 			if (progress <= movingCost)
 			{
 				auto angle = (an->pos.mPos - bn->pos.mPos).normalized();
@@ -53,7 +53,7 @@ double	Vehicle::angle() const
 			bn = an;
 		}
 
-		LOG_ERROR(Format(L"àŸèÌ", progress));
+		Output << L"àŸèÌ", progress;
 	}
 
 	return 0.0;
@@ -66,7 +66,7 @@ Vec2	Vehicle::pos() const
 	{
 		double progress = routeProgress*data().speed;
 		auto* bn = &nodes[route->fromUrban->joinedNodeID];
-		
+
 		for (int i = 0; i < int(route->paths.size()); i++)
 		{
 			auto* p = route->paths[i];
@@ -81,7 +81,7 @@ Vec2	Vehicle::pos() const
 			bn = an;
 		}
 
-		LOG_ERROR(Format(L"àŸèÌ", progress));
+		Output << L"àŸèÌ", progress;
 	}
 
 	return Vec2(0, 0);

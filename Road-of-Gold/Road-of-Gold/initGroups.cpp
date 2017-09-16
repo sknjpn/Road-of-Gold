@@ -7,7 +7,7 @@ void	initGroups()
 {
 	if (urbans.isEmpty())
 	{
-		LOG_ERROR(L"都市が存在しないために交易ユニット展開に失敗しました");
+		Output << L"都市が存在しないために交易ユニット展開に失敗しました";
 		return;
 	}
 

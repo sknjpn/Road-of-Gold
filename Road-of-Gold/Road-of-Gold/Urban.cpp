@@ -25,7 +25,7 @@ Urban::Urban(const JSONValue& _json)
 	//資源配置
 	for (auto i : _json[L"Energies"].objectView())
 	{
-		if (getEnergyType(i.name) == -1) LOG_ERROR(L"存在しないEnergyが読み込まれました");
+		if (getEnergyType(i.name) == -1) Output << L"存在しないEnergyが読み込まれました";
 		else energies.emplace_back(getEnergyType(i.name), i.value.getOr<int>(0));
 	}
 
@@ -112,7 +112,7 @@ int		Urban::cost(int _itemType, int _numItem) const
 		}
 	}
 
-	LOG_ERROR(L"異常な関数呼び出しがされました。Urban::cost()");
+	Output << L"異常な関数呼び出しがされました。Urban::cost()";
 	return -1;
 }
 void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
@@ -171,7 +171,7 @@ void	TradeLog::addTrade(int _price, int _num)
 {
 	if (_num == 0)
 	{
-		LOG_ERROR(L"異常な関数呼び出しがされました。TradeLog::addTrade()");
+		Output << L"異常な関数呼び出しがされました。TradeLog::addTrade()";
 		return;
 	}
 	const int n = price.front()*numTrade.front() + _price*_num;

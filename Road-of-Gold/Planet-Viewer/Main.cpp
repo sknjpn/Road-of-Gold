@@ -48,7 +48,6 @@ void Main()
 
 		if (items.empty())
 		{
-			LOG_ERROR(L"使用可能なマップが存在しません");
 			System::Exit();
 			return;
 		}
@@ -90,7 +89,7 @@ void Main()
 	}
 
 	//VoronoiMapの読み込み
-	if(!mapTexture)
+	if (!mapTexture)
 	{
 		Image	image(L"assets/nodeMap/voronoiMap.png");
 

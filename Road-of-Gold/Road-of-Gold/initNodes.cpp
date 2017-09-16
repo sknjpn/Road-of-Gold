@@ -6,7 +6,7 @@ void	initNodes()
 	BinaryReader reader(L"assets/nodeMap/nodeMap.bin");
 	if (!reader)
 	{
-		LOG_ERROR(L"assets/nodeMap/nodeMap.binの読み込みに失敗");
+		Output << L"assets/nodeMap/nodeMap.binの読み込みに失敗";
 		System::Exit();
 		return;
 	}
@@ -34,7 +34,7 @@ void	initNodes()
 
 		if (parentNodeID < 0 || parentNodeID >= nodesSize || childNodeID < 0 || childNodeID >= nodesSize)
 		{
-			LOG_ERROR(L"NodeMap.binから異常な数値を検出");
+			Output << L"NodeMap.binから異常な数値を検出";
 			System::Exit();
 			return;
 		}
