@@ -5,7 +5,6 @@
 #include"ItemData.h"
 #include"Sound.h"
 #include<thread>
-#include<numeric>
 #include<boost\range\numeric.hpp>
 
 void	updateUrban(Urban& u)
