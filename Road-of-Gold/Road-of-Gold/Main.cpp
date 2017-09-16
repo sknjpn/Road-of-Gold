@@ -25,9 +25,13 @@ void Main()
 
 	//Fontの展開
 	Array<Font> fonts;
-	for (auto i : step(int(1024))) fonts.emplace_back(i);
-	for (auto i : step(int(fonts.size()))) ui.fonts.emplace_back(&fonts.at(i));
-	Output << L"fontsの展開が完了 size = ", fonts.size();
+	{
+		size_t size = 1024;
+		fonts.reserve(size);
+		ui.fonts.reserve(size);
+		for (auto i : step(size)) fonts.emplace_back(i);
+		for (auto i : step(size)) ui.fonts.emplace_back(&fonts.at(i));
+	}
 
 	initSounds();
 
