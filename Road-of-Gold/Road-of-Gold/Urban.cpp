@@ -15,8 +15,9 @@ Urban::Urban(const JSONValue& _json)
 	, sandglass(0.5 + pos().mPos.x / 360_deg)
 	, walletID(getNewWalletID())
 {
-	//Basket
-	baskets.resize(itemData.size());
+	buyers.reserve(1024);
+	//Shelf
+	shelves.resize(itemData.size());
 
 	//Œø—¦
 	jobEfficiency.resize(citizenData.size());
@@ -69,16 +70,16 @@ void	Urban::sellItem(const Casket& _casket, int _price, int _ownerWalletID)
 }
 void	Urban::sellItem(int _itemType, int _numItem, int _price, int _ownerWalletID)
 {
-	auto& b = baskets[_itemType];
+	auto& b = shelves[_itemType];
 
 	_price = int(b.tradeLog.price.front()*Random(1.0, 1.1)) + 1;
 
-	if (!b.rings.isEmpty() && _price < b.rings.back().price)
+	if (!b.baskets.isEmpty() && _price < b.baskets.back().price)
 	{
-		b.rings.emplace_back(_itemType, _numItem, _price, _ownerWalletID);
-		b.rings.sort_by([](const Ring& x, const Ring& y) { return x.price < y.price; });
+		b.baskets.emplace_back(_itemType, _numItem, _price, _ownerWalletID);
+		b.baskets.sort_by([](const Basket& x, const Basket& y) { return x.price < y.price; });
 	}
-	else b.rings.emplace_back(_itemType, _numItem, _price, _ownerWalletID);
+	else b.baskets.emplace_back(_itemType, _numItem, _price, _ownerWalletID);
 
 	if (wallets[_ownerWalletID].owner == Owner::Citizen) b.tradeLog.numProduction.front() += _numItem;
 
@@ -87,18 +88,18 @@ void	Urban::sellItem(int _itemType, int _numItem, int _price, int _ownerWalletID
 }
 int		Urban::numItem(int _itemType) const
 {
-	return baskets[_itemType].numItem;
+	return shelves[_itemType].numItem;
 }
 bool	Urban::isSoldOut(int _itemType) const
 {
-	return baskets[_itemType].rings.isEmpty();
+	return shelves[_itemType].baskets.isEmpty();
 }
 int		Urban::cost(int _itemType, int _numItem) const
 {
-	const auto& b = baskets[_itemType];
+	const auto& b = shelves[_itemType];
 	int	totalCost = 0;
 	int num = _numItem;
-	for (auto& r : b.rings)
+	for (auto& r : b.baskets)
 	{
 		if (r.casket.numItem < num)
 		{
@@ -117,12 +118,12 @@ int		Urban::cost(int _itemType, int _numItem) const
 }
 void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 {
-	auto& b = baskets[_itemType];
+	auto& b = shelves[_itemType];
 	int num = _numItem;
 	for (;;)
 	{
 		int	numBuy = 0;
-		auto& r = b.rings.front();
+		auto& r = b.baskets.front();
 
 		if (r.casket.numItem < num)
 		{
@@ -135,7 +136,7 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			if (wallets[_walletID].owner == Owner::Vehicle) b.tradeLog.numExport.front() += numBuy;
 			if (r.owner() == Owner::Vehicle) b.tradeLog.numImport.front() += numBuy;
 			if (wallets[_walletID].owner == Owner::Citizen) b.tradeLog.numConsumption.front() += numBuy;
-			b.rings.pop_front();
+			b.baskets.pop_front();
 		}
 		else if (r.casket.numItem == num)
 		{
@@ -147,7 +148,7 @@ void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
 			if (wallets[_walletID].owner == Owner::Vehicle) b.tradeLog.numExport.front() += numBuy;
 			if (r.owner() == Owner::Vehicle) b.tradeLog.numImport.front() += numBuy;
 			if (wallets[_walletID].owner == Owner::Citizen) b.tradeLog.numConsumption.front() += numBuy;
-			b.rings.pop_front();
+			b.baskets.pop_front();
 		}
 		else
 		{

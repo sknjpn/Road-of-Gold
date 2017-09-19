@@ -17,31 +17,32 @@ void	updateUrban(Urban& u)
 		{
 			c.incomeLog.push_front(c.wallet().income);
 			c.incomeLog.pop_back();
-			c.avgIncome = int(boost::accumulate(c.incomeLog, 0, [](int sum, int i) { return sum + i; }) / c.incomeLog.size());
+			c.averageIncome = int(boost::accumulate(c.incomeLog, 0, [](int sum, int i) { return sum + i; }) / c.incomeLog.size());
 			c.wallet().income = 0;	//û“ü‚ğƒŠƒZƒbƒg
 		}
+		u.averageIncome = int(boost::accumulate(u.citizens, 0, [](int sum, const Citizen& c) { return sum + c.averageIncome; }) / u.citizens.size());
 
 		//s–¯‚Ì“]E
 		for (auto& c : u.citizens)
 		{
+			//–Ú•W—˜‰v‚ğ˜J“­Ò‚Ìû‰v‚ğŒ³‚Éİ’è
+			c.targetRevenue = int(Random(0.8, 1.0)*u.averageIncome);
+
 			if (u.jobEfficiency[c.citizenType] == 0 || RandomBool(0.003))	//“]E
 			{
-				int sum = boost::accumulate(u.citizens, 0, [](int sum, const Citizen& c) {return sum + c.avgIncome; });
-				//for (auto& t : u.citizens) sum += t.avgIncome;
+				int sum = boost::accumulate(u.citizens, 0, [](int sum, const Citizen& c) {return sum + c.averageIncome; });
+				//for (auto& t : u.citizens) sum += t.averageIncome;
 
 				sum = Random(sum);
 				for (auto& t : u.citizens)
 				{
-					sum -= t.avgIncome;
+					sum -= t.averageIncome;
 					if (sum < 0)
 					{
-						if (c.avgIncome < t.avgIncome)
+						if (c.averageIncome < t.averageIncome)
 						{
 							c.incomeLog.fill(0);
 							c.citizenType = t.citizenType;
-							//–Ú•W—˜‰v‚ğ˜J“­Ò‚Ìû‰v‚ğŒ³‚Éİ’è
-							c.targetRevenue = 0;// Random(int(citizenData.front().wage*u.productivity));
-
 							//”Ì”„‰¿Ši‚ÌƒRƒs[
 							c.wallet().price = t.wallet().price;
 						}
@@ -53,20 +54,10 @@ void	updateUrban(Urban& u)
 					if (u.jobEfficiency[i] != 0 && !u.citizens.any([&i](const Citizen& t) { return t.citizenType == i; }))
 					{
 						c.citizenType = i;
-						//–Ú•W—˜‰v‚ğ˜J“­Ò‚Ìû‰v‚ğŒ³‚Éİ’è
-						c.targetRevenue = 0;// Random(int(citizenData.front().wage*u.productivity));
 					}
 				}
 			}
 		}
-		/*
-		//–Ú•W—˜‰v‚Ìİ’è
-		for (int i = 0; i < int(citizenData.size()); i++)
-		{
-			int sum = 0;
-			for(auto&)
-		}
-		*/
 		//Œø—¦‚ÌXV
 		for (auto i : step(int(citizenData.size())))
 		{
@@ -111,7 +102,9 @@ void	updateUrban(Urban& u)
 			if (b.progress < b.period) b.progress++;
 
 			int numBuy = Min(u.numItem(b.casket.itemType), int(b.target*(b.progress / double(b.period))) - b.casket.numItem);
-			if (numBuy <= 0) continue;
+			if (numBuy <= 1) continue;
+			if (u.cost(b.casket.itemType, numBuy) > b.price*numBuy) continue;
+
 
 			u.buyItem(b.casket.itemType, b.walletID, numBuy);
 			b.casket.numItem += numBuy;
@@ -142,11 +135,11 @@ void	updateUrban(Urban& u)
 			c.wallet().pull(c.wallet().money / 10);
 		}
 		//sê‚ÌXV
-		for (auto i : step(int(u.baskets.size())))
+		for (auto i : step(int(u.shelves.size())))
 		{
-			auto& b = u.baskets[i];
+			auto& b = u.shelves[i];
 
-			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//‰¿Ši’á‰º
+			for (auto& r : b.baskets) r.price = Max(1, int(r.price*0.95));	//‰¿Ši’á‰º
 
 			b.tradeLog.push(); //TradeLog‚ÌXV
 		}

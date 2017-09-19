@@ -216,9 +216,6 @@
     <ClInclude Include="BiomeData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Basket.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Wallet.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -255,7 +252,10 @@
     <ClInclude Include="Route.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Ring.h">
+    <ClInclude Include="Shelf.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Chain.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -300,9 +300,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Route.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Ring.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Node.cpp">
@@ -377,9 +374,6 @@
     <ClCompile Include="Casket.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Basket.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Wallet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -387,6 +381,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="updateTimeSpeed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Shelf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Chain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

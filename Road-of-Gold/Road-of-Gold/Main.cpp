@@ -64,9 +64,9 @@ void Main()
 		if (planet.timeSpeed > 0)
 		{
 			updatePlanet();
+			updateGroups();
 			updateVehicles();
 			updateUrbans();
-			updateGroups();
 		}
 
 		drawPlanet();

@@ -15,7 +15,7 @@ void	updateGroups()
 
 	if (tmr > 0.0)
 	{
-		tmr -= 30.0;
+		tmr -= Random(50.0, 100.0);
 		//下位1/4の事業見直し
 		for (int i = 0; i < int(vehicles.size() / 10); i++)
 		{
@@ -45,9 +45,12 @@ void	updateGroups()
 
 	for (auto& v : vehicles)
 	{
-		if ((v.chain.isEmpty() || v.reader >= int(v.chain.size()) || v.isError) && !v.planFixed)
+		if (v.chain.isError && !v.planFixed)
 		{
-			v.isError = false;
+			v.nowUrban = &urbans.choice();
+			v.vehicleType = vehicleData.choice().id();
+
+			v.chain.isError = false;
 			auto* u2 = v.nowUrban;
 			auto rs = u2->ownRoutes.filter([&v](const Route* r) { return (r->isSeaRoute == v.data().isShip) && (r->movingCost <= v.data().range); });
 
@@ -69,8 +72,9 @@ void	updateGroups()
 			{
 				auto i = itemData.choice().id();
 
-				if (u2->isSoldOut(i) || u2->baskets.at(i).tradeLog.numProduction.front() == 0) continue;
-				else
+				//if (u2->isSoldOut(i) || u2->shelves.at(i).tradeLog.numProduction.front() == 0) continue;
+				//else
+				if (!u2->isSoldOut(i))
 				{
 					if (u1->isSoldOut(i) || u1->cost(i) > u2->cost(i))
 					{
@@ -89,20 +93,20 @@ void	updateGroups()
 			}
 
 			v.route = nullptr;
-			v.reader = 0;
 			v.routeProgress = 0;
 			v.sleepTimer = 0;
 			v.chain.clear();
-			v.period = (2 * r->movingCost / v.data().speed + 1.0);	//周回に要する時間
-			v.chain = {
-				{ Code::MVol, 50 },
-				{ Code::Move, u1->id() },
-				{ Code::Sell, 0 },
-				{ Code::Move, u2->id() },
-				{ Code::Buy,  itemType },	//Buyerに指示&商品受け取り
-				{ Code::Jump, 1 }
-			};
-			v.chain.resize(10, { Code::None, 0 });
+			v.period = (2.0 * r->movingCost / v.data().speed + 1.0);	//周回に要する時間
+			v.chain.rings.emplace_back(0, Code::Move, u1->id());
+			v.chain.rings.emplace_back(1, Code::Sell, 0);
+			v.chain.rings.emplace_back(2, Code::Move, u2->id());
+			v.chain.rings.emplace_back(3, Code::Buy, itemType);
+			v.chain.rings.emplace_back(4, Code::Jump, 0);
+			v.chain.rings.emplace_back(5, Code::None, 0);
+			v.chain.rings.emplace_back(6, Code::None, 0);
+			v.chain.rings.emplace_back(7, Code::None, 0);
+			v.chain.rings.emplace_back(8, Code::None, 0);
+			v.chain.rings.emplace_back(9, Code::None, 0);
 			bool flag = true;
 			v.exportLog = Export(u2, u1, itemType, 50 / v.period);
 			for (auto& e : exports)

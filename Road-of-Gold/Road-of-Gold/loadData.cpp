@@ -54,6 +54,7 @@ EnergyData::EnergyData(const JSONValue& _json)
 ItemData::ItemData(const JSONValue& _json)
 	: name(_json[L"Name"].getOr<String>(L""))
 	, value(_json[L"Value"].getOr<int>(0))
+	, volume(_json[L"Volume"].getOr<int>(0))
 	, color(_json[L"Color"].getOr<String>(L"#FFFFFF"))
 	, icon(_json[L"Icon"].getOr<String>(L""))
 {}

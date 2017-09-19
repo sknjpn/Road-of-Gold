@@ -100,7 +100,7 @@ void	loadMap(const FilePath& _path)
 			urbans.emplace_back(json);
 
 		for (auto& u : urbans)
-			for (auto& b : u.baskets)
+			for (auto& b : u.shelves)
 				b.joinedUrban = &u;
 	}
 	initRoutes();

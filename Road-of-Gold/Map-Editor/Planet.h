@@ -17,6 +17,7 @@ struct Planet
 	bool	loadVoronoiMap();
 	void	updateImage(Array<Node*> _nodeList);
 	void	generateBiome();
+	void	setCoverImage();
 };
 
 extern Planet planet;

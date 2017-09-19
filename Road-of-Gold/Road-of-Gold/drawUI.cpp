@@ -9,7 +9,6 @@
 #include"VehicleData.h"
 #include<boost\range\numeric.hpp>
 
-bool	useRouteMenu = false;
 
 void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color)
 {
@@ -27,12 +26,14 @@ void	drawUI()
 	if (KeyR.down()) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;
 	if (ui.drawExportImportPowerEnabled)
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; ++i)
 		{
 			auto t = tinyCamera.createTransformer(i);
+
 			for (auto& u : urbans)
 			{
 				double sum = 0;
+
 				for (auto& e : exports)
 				{
 					if (e.from == &u || e.to == &u) sum += e.numItemPerDay;
@@ -45,7 +46,7 @@ void	drawUI()
 	//矢印
 	if (ui.drawExportLineEnabled)
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; ++i)
 		{
 			auto t = tinyCamera.createTransformer(i);
 
@@ -53,10 +54,7 @@ void	drawUI()
 			{
 				for (auto& e : exports)
 				{
-					if (ui.selectedItemType == e.itemType)
-					{
-						drawArrow(*e.from, *e.to, 0.02*e.numItemPerDay, ColorF(itemData[e.itemType].color, 0.8));
-					}
+					if (ui.selectedItemType == e.itemType) drawArrow(*e.from, *e.to, 0.02*e.numItemPerDay, ColorF(itemData[e.itemType].color, 0.8));
 				}
 			}
 			else
@@ -97,8 +95,80 @@ void	drawUI()
 	}
 
 
-	if (KeyR.down()) useRouteMenu = !useRouteMenu;
-	if (useRouteMenu)
+	if (KeyR.down()) ui.useRouteMenu = !ui.useRouteMenu;
+	if (KeyU.down()) ui.useUrbanMenu = !ui.useUrbanMenu;
+	if (ui.useUrbanMenu)
+	{
+		const auto fColor = Palette::Skyblue;
+		const auto bColor = Color(Palette::Darkcyan, 192);
+		Array<String> list = { L"総取引量", L"輸出数", L"輸入数", L"生産数", L"消費数" };
+
+		//全体枠
+		{
+			Rect rect(960, Window::Size().y);
+			rect.draw(bColor).drawFrame(2, fColor);
+		}
+
+		for (int i = 0; i < int(list.size()); i++)
+		{
+			Rect rect(32, 480 + i * 24, 256, 24);
+			if (rect.mouseOver()) rect.draw(Palette::Orange);
+			if (ui.urbanDrawState == i) rect.draw(Palette::Red);
+			if (rect.leftClicked()) ui.urbanDrawState = i;
+			rect.drawFrame(2, fColor);
+			(*ui.fonts[16])(list[i]).drawAt(rect.center());
+		}
+
+		for (int j = 0; j < int(itemData.size()); j++)
+		{
+			Rect rect(160 + j * 64, 0, 64, 20);
+			rect.drawFrame(2, fColor);
+
+			(*ui.fonts[12])(itemData[j].name).draw(rect.pos.movedBy(4, 1));
+		}
+		for (int i = 0; i < int(urbans.size()); i++)
+		{
+			auto& u = urbans[i];
+			{
+				Rect rect(0, i * 20 + 20, 160, 20);
+				Rect(rect.pos, int(rect.w*u.productivity), rect.h).draw(Palette::Orange);
+				rect.drawFrame(2, fColor);
+				(*ui.fonts[12])(u.name).draw(rect.pos.movedBy(4, 1));
+				if (rect.leftPressed()) u.productivity = (Cursor::Pos() - rect.pos).x / double(rect.w);
+			}
+			for (int j = 0; j < int(itemData.size()); j++)
+			{
+				auto& b = u.shelves[j];
+				Rect rect(160 + j * 64, i * 20 + 20, 64, 20);
+
+				rect.drawFrame(2, fColor);
+				int sum = 0;
+				switch (ui.urbanDrawState)
+				{
+				case 0:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numTrade[k] * b.tradeLog.price[k];
+					break;
+				case 1:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numExport[k];
+					break;
+				case 2:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numImport[k];
+					break;
+				case 3:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numProduction[k];
+					break;
+				case 4:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numConsumption[k];
+					break;
+				default:
+					break;
+				}
+				auto s = (*ui.fonts[12])(sum / 10);
+				s.draw(rect.tr().movedBy(-4 - int(s.region().w), 1));
+			}
+		}
+	}
+	else if (ui.useRouteMenu)
 	{
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
@@ -150,7 +220,7 @@ void	drawUI()
 	else if (ui.selectedVehicleID != -1)
 	{
 		auto& sv = vehicles[ui.selectedVehicleID];
-		tinyCamera.gazePoint.emplace(sv.pos());
+		tinyCamera.gazePoint = Pos(sv.pos());
 
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
@@ -201,7 +271,7 @@ void	drawUI()
 			Rect rect(0, 32, 240, 24);
 			rect.drawFrame(2, fColor);
 
-			if (sv.chain.isEmpty() || sv.reader >= int(sv.chain.size()))
+			if (sv.chain.isError)
 			{
 				rect.draw(Color(Palette::Red, 192));
 				(*ui.fonts[16])(L"状態:エラー").draw(rect.pos.movedBy(4, 1));
@@ -226,7 +296,8 @@ void	drawUI()
 			if (sv.cargo.numItem == 0) (*ui.fonts[16])(L"積載物:").draw(rect.pos.movedBy(4, 1));
 			else
 			{
-				RectF(rect.pos, rect.w*sv.cargo.numItem / sv.maxVolume, rect.h).draw(Color(Palette::Orange, 192));
+				int volume = int(sv.data().volume / itemData[sv.cargo.itemType].volume);
+				RectF(rect.pos, rect.w*sv.cargo.numItem / volume, rect.h).draw(Color(Palette::Orange, 192));
 				(*ui.fonts[16])(L"積載物:", sv.cargo.data().name, L" ", sv.cargo.numItem, L"個").draw(rect.pos.movedBy(4, 1));
 			}
 		}
@@ -235,49 +306,30 @@ void	drawUI()
 		{
 			for (int i = 0; i < int(sv.chain.size()); i++)
 			{
-				auto& c = sv.chain[i];
+				auto& ring = sv.chain.rings[i];
 				Rect rect1(24, 56 + 24 * i, 48, 24);
 				Rect rect2(72, 56 + 24 * i, 168, 24);
 				Rect rect3(0, 56 + 24 * i, 24, 24);
-				if (sv.reader == i) rect1.draw(Color(Palette::Orange, 192));
 				rect1.drawFrame(2, fColor);
 				rect2.drawFrame(2, fColor);
 				rect3.drawFrame(2, fColor);
+				if (int(sv.chain.readerPos) == i) rect1.draw(Color(Palette::Orange, 192));
 				(*ui.fonts[16])(i).drawAt(rect3.center());
-				switch (c.first)
+				switch (ring.code)
 				{
 				case Code::Move:
-					if (sv.reader == i && !sv.isError) RectF(rect2.pos, rect2.w*sv.routeProgress * sv.data().speed / sv.route->movingCost, rect2.h).draw(Color(Palette::Orange, 192));
-					(*ui.fonts[16])(L"Move").drawAt(rect1.center());
-					(*ui.fonts[16])(urbans[c.second].name, L"へ航行").draw(rect2.pos.movedBy(4, 1));
-					break;
-				case Code::Wait:
-					(*ui.fonts[16])(L"Wait").drawAt(rect1.center());
-					break;
-				case Code::Jump:
-					(*ui.fonts[16])(L"Jump").drawAt(rect1.center());
-					(*ui.fonts[16])(c.second, L"番地").draw(rect2.pos.movedBy(4, 1));
+					if (int(sv.chain.readerPos) == i && !sv.chain.isError) RectF(rect2.pos, rect2.w*sv.routeProgress * sv.data().speed / sv.route->movingCost, rect2.h).draw(Color(Palette::Orange, 192));
 					break;
 				case Code::Buy:
-					if (sv.reader == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
-					(*ui.fonts[16])(L"Buy").drawAt(rect1.center());
-					(*ui.fonts[16])(itemData[c.second].name, L"を購入").draw(rect2.pos.movedBy(4, 1));
+					if (int(sv.chain.readerPos) == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
 					break;
 				case Code::Sell:
-					if (sv.reader == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
-					(*ui.fonts[16])(L"Sell").drawAt(rect1.center());
-					(*ui.fonts[16])(L"全商品の売却").draw(rect2.pos.movedBy(4, 1));
-					break;
-				case Code::MVol:
-					(*ui.fonts[16])(L"MVol").drawAt(rect1.center());
-					(*ui.fonts[16])(L"積載量を変更", c.second).draw(rect2.pos.movedBy(4, 1));
-					break;
-				case Code::None:
-					(*ui.fonts[16])(L"None").drawAt(rect1.center());
-					(*ui.fonts[16])(i + 1, L"番地に移動").draw(rect2.pos.movedBy(4, 1));
+					if (int(sv.chain.readerPos) == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
 					break;
 				}
-				if (sv.isError && sv.reader == i)
+				(*ui.fonts[16])(ring.codeText()).drawAt(rect1.center());
+				(*ui.fonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
+				if (sv.chain.isError && int(sv.chain.readerPos) == i)
 				{
 					rect2.draw(Color(Palette::Red, 192));
 					(*ui.fonts[16])(L"深刻なエラー").drawAt(rect2.center());
@@ -289,19 +341,19 @@ void	drawUI()
 		{
 			for (int i = 0; i < int(ui.newChain.size()); i++)
 			{
-				auto& c = ui.newChain[i];
+				auto& ring = ui.newChain.rings[i];
 				Rect rect1(240, 56 + 24 * i, 48, 24);
 				Rect rect2(288, 56 + 24 * i, 192, 24);
 				Rect rect3(0, 56 + 24 * i, 24, 24);
 				if (rect1.leftClicked())
 				{
-					c = { Code(int(c.first) + 1), 0 };
-					if (c.first == Code::ERR) c.first = Code(0);
+					ring.set(Code(int(ring.code) + 1), 0);
+					if (ring.code == Code::ERR) ring.code = Code(0);
 				}
-				if (rect1.rightClicked())
+				else if (rect1.rightClicked())
 				{
-					if (int(c.first) == int(Code::None)) c = { Code(int(Code::ERR) - 1), 0 };
-					else c = { Code(int(c.first) - 1), 0 };
+					if (ring.code == Code(0)) ring.set(Code(int(Code::ERR) - 1), 0);
+					else ring.set(Code(int(ring.code) - 1), 0);
 				}
 				if (rect1.mouseOver()) rect1.draw(Palette::Orange);
 				if (rect2.mouseOver()) rect2.draw(Palette::Orange);
@@ -309,66 +361,47 @@ void	drawUI()
 				rect2.drawFrame(2, fColor);
 				rect3.drawFrame(2, fColor);
 				(*ui.fonts[16])(i).drawAt(rect3.center());
-				switch (c.first)
+				switch (ring.code)
 				{
 				case Code::Move:
-					(*ui.fonts[16])(L"Move").drawAt(rect1.center());
-					(*ui.fonts[16])(urbans[c.second].name, L"へ航行").draw(rect2.pos.movedBy(4, 1));
 					if (rect2.leftClicked())
 					{
-						c.second++;
-						if (c.second >= int(urbans.size())) c.second = 0;
+						ring.value++;
+						if (ring.value >= int(urbans.size())) ring.value = 0;
 					}
-					if (rect2.rightClicked())
+					else if (rect2.rightClicked())
 					{
-						c.second--;
-						if (c.second < 0) c.second = int(urbans.size()) - 1;
+						ring.value--;
+						if (ring.value < 0) ring.value = int(urbans.size()) - 1;
 					}
-					break;
-				case Code::Wait:
-					(*ui.fonts[16])(L"Wait").drawAt(rect1.center());
 					break;
 				case Code::Jump:
-					(*ui.fonts[16])(L"Jump").drawAt(rect1.center());
-					(*ui.fonts[16])(c.second, L"番地").draw(rect2.pos.movedBy(4, 1));
 					if (rect2.leftClicked())
 					{
-						c.second++;
-						if (c.second >= int(ui.newChain.size())) c.second = 0;
+						ring.value++;
+						if (ring.value >= int(ui.newChain.size())) ring.value = 0;
 					}
-					if (rect2.rightClicked())
+					else if (rect2.rightClicked())
 					{
-						c.second--;
-						if (c.second < 0) c.second = int(ui.newChain.size()) - 1;
+						ring.value--;
+						if (ring.value < 0) ring.value = int(ui.newChain.size()) - 1;
 					}
 					break;
 				case Code::Buy:
-					(*ui.fonts[16])(L"Buy").drawAt(rect1.center());
-					(*ui.fonts[16])(itemData[c.second].name, L"を購入").draw(rect2.pos.movedBy(4, 1));
 					if (rect2.leftClicked())
 					{
-						c.second++;
-						if (c.second >= int(itemData.size())) c.second = 0;
+						ring.value++;
+						if (ring.value >= int(itemData.size())) ring.value = 0;
 					}
-					if (rect2.rightClicked())
+					else if (rect2.rightClicked())
 					{
-						c.second--;
-						if (c.second < 0) c.second = int(itemData.size()) - 1;
+						ring.value--;
+						if (ring.value < 0) ring.value = int(itemData.size()) - 1;
 					}
-					break;
-				case Code::Sell:
-					(*ui.fonts[16])(L"Sell").drawAt(rect1.center());
-					(*ui.fonts[16])(L"全商品の売却").draw(rect2.pos.movedBy(4, 1));
-					break;
-				case Code::MVol:
-					(*ui.fonts[16])(L"MVol").drawAt(rect1.center());
-					(*ui.fonts[16])(L"積載量を変更", c.second).draw(rect2.pos.movedBy(4, 1));
-					break;
-				case Code::None:
-					(*ui.fonts[16])(L"None").drawAt(rect1.center());
-					(*ui.fonts[16])(i + 1, L"番地に移動").draw(rect2.pos.movedBy(4, 1));
 					break;
 				}
+				(*ui.fonts[16])(ring.codeText()).drawAt(rect1.center());
+				(*ui.fonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
 			}
 
 			//コピー１
@@ -377,7 +410,12 @@ void	drawUI()
 				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
 				(*ui.fonts[16])(L"Copy→").drawAt(rect.center());
-				if (rect.leftClicked()) ui.newChain = sv.chain;
+				if (rect.leftClicked())
+				{
+					ui.newChain = sv.chain;
+					ui.newChain.isError = false;
+					ui.newChain.readerPos = 0;
+				}
 			}
 			//コピー２
 			{
@@ -385,11 +423,7 @@ void	drawUI()
 				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
 				(*ui.fonts[16])(L"Copy←").drawAt(rect.center());
-				if (rect.leftClicked())
-				{
-					sv.chain = ui.newChain;
-					sv.isError = false;
-				}
+				if (rect.leftClicked()) sv.chain = ui.newChain;
 			}
 			//設定
 			{
@@ -517,7 +551,7 @@ void	drawUI()
 					{
 						if (c.citizenType == i)
 						{
-							sum += c.avgIncome;
+							sum += c.averageIncome;
 							num++;
 						}
 					}
@@ -531,30 +565,25 @@ void	drawUI()
 				}
 			}
 		}
-		//Basket
+		//Shelf
 		{
-			for (auto i : step(int(su.baskets.size())))
+			for (auto i : step(int(su.shelves.size())))
 			{
-				const auto& b = su.baskets[i];
+				const auto& b = su.shelves[i];
 				const auto& data = b.data();
 
 				{
-					Rect rect(240, i * 88, 240, 24);
-					rect.drawFrame(2, fColor);
-					(*ui.fonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
-					if (!b.rings.isEmpty())
-						(*ui.fonts[16])(b.rings.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
-					(*ui.fonts[16])(b.numItem, L"個").draw(rect.pos.movedBy(128 + 4, 0));
-				}
-				{
 					Rect rect(240, 24 + i * 88, 240, 64);
-					rect.drawFrame(2, fColor);
-					const int timeScale = 1; //b.tradeLog.time / 120
+					const int timeScale = 1;
 
-					int max = Max(1, b.tradeLog.numConsumption.take(rect.size.x).sorted().back());
-					max = Max(max, b.tradeLog.numExport.take(rect.size.x).sorted().back());
-					max = Max(max, b.tradeLog.numImport.take(rect.size.x).sorted().back());
-					max = Max(max, b.tradeLog.numProduction.take(rect.size.x).sorted().back());
+					int max = 1;
+					for (int j = 0; j < rect.size.x; j++)
+					{
+						max = Max(max, b.tradeLog.numConsumption[j]);
+						max = Max(max, b.tradeLog.numExport[j]);
+						max = Max(max, b.tradeLog.numImport[j]);
+						max = Max(max, b.tradeLog.numProduction[j]);
+					}
 
 					drawGraph(rect, b.tradeLog.numExport, timeScale, Palette::Blue, max);
 					drawGraph(rect, b.tradeLog.numImport, timeScale, Palette::Purple, max);
@@ -569,6 +598,17 @@ void	drawUI()
 						int nco = std::accumulate(b.tradeLog.numConsumption.begin() + 1, b.tradeLog.numConsumption.begin() + 11, 0);
 						if (nex + nco > 0) Circle(336, 56 + i * 88, 24).draw(Palette::Yellowgreen).drawPie(0, nex * 360_deg / (nex + nco), Palette::Blue);
 					}
+
+					rect.drawFrame(2, fColor);
+				}
+
+				{
+					Rect rect(240, i * 88, 240, 24);
+					rect.drawFrame(2, fColor);
+					(*ui.fonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
+					if (!b.baskets.isEmpty())
+						(*ui.fonts[16])(b.baskets.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
+					(*ui.fonts[16])(b.numItem, L"個").draw(rect.pos.movedBy(128 + 4, 0));
 				}
 			}
 		}

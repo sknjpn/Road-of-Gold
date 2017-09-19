@@ -17,16 +17,13 @@ Vehicle::Vehicle(int _vehicleType, Urban* _nowUrban)
 	, sleepTimer(0)
 	, routeProgress(0)
 	, nowUrban(_nowUrban)
-	, reader(0)
 	, route(nullptr)
 	, timer(0)
 	, period(0)
 	, exportLog()
 	, stopFlag(false)
 	, planFixed(false)
-	, isError(false)
 {
-	maxVolume = data().volume;
 	wallet().owner = Owner::Vehicle;
 }
 double	Vehicle::angle() const
@@ -71,8 +68,8 @@ Vec2	Vehicle::pos() const
 		{
 			auto* p = route->paths[i];
 			auto* an = &nodes[route->paths[i]->toID];
-
 			double movingCost = p->length * (biomeData[bn->biomeType].movingCost + biomeData[an->biomeType].movingCost) / 2.0;
+
 			if (progress <= movingCost)
 			{
 				return bn->pos.mPos.lerp(an->pos.mPos, progress / movingCost);
