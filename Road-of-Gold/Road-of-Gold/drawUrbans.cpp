@@ -11,7 +11,7 @@ void	drawUrbans()
 		for (const auto& u : urbans)
 		{
 			const auto color = u.mouseOver() ? Palette::Orange : Palette::Red;
-			
+
 			u.shape().draw(color).drawFrame(0.002, 0.000, Palette::Black);
 		}
 	}

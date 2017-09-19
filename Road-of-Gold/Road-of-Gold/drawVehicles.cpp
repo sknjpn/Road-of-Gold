@@ -2,6 +2,7 @@
 #include"Vehicle.h"
 #include"ItemData.h"
 #include"VehicleData.h"
+
 void	drawVehicles()
 {
 	for (int i = 0; i < 2; ++i)

@@ -26,12 +26,14 @@ void	drawUI()
 	if (KeyR.down()) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;
 	if (ui.drawExportImportPowerEnabled)
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; ++i)
 		{
 			auto t = tinyCamera.createTransformer(i);
+
 			for (auto& u : urbans)
 			{
 				double sum = 0;
+
 				for (auto& e : exports)
 				{
 					if (e.from == &u || e.to == &u) sum += e.numItemPerDay;
@@ -44,7 +46,7 @@ void	drawUI()
 	//–îˆó
 	if (ui.drawExportLineEnabled)
 	{
-		for (int i = 0; i < 2; i++)
+		for (int i = 0; i < 2; ++i)
 		{
 			auto t = tinyCamera.createTransformer(i);
 
@@ -52,10 +54,7 @@ void	drawUI()
 			{
 				for (auto& e : exports)
 				{
-					if (ui.selectedItemType == e.itemType)
-					{
-						drawArrow(*e.from, *e.to, 0.02*e.numItemPerDay, ColorF(itemData[e.itemType].color, 0.8));
-					}
+					if (ui.selectedItemType == e.itemType) drawArrow(*e.from, *e.to, 0.02*e.numItemPerDay, ColorF(itemData[e.itemType].color, 0.8));
 				}
 			}
 			else
@@ -102,7 +101,6 @@ void	drawUI()
 	{
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
-
 		Array<String> list = { L"‘æˆø—Ê", L"—Ao”", L"—A“ü”", L"¶Y”", L"Á”ï”" };
 
 		//‘S‘Ì˜g
@@ -115,7 +113,7 @@ void	drawUI()
 		{
 			Rect rect(32, 480 + i * 24, 256, 24);
 			if (rect.mouseOver()) rect.draw(Palette::Orange);
-			if(ui.urbanDrawState == i) rect.draw(Palette::Red);
+			if (ui.urbanDrawState == i) rect.draw(Palette::Red);
 			if (rect.leftClicked()) ui.urbanDrawState = i;
 			rect.drawFrame(2, fColor);
 			(*ui.fonts[16])(list[i]).drawAt(rect.center());
@@ -166,7 +164,7 @@ void	drawUI()
 					break;
 				}
 				auto s = (*ui.fonts[12])(sum / 10);
-				s.draw(rect.tr().movedBy(-4 - s.region().w, 1));
+				s.draw(rect.tr().movedBy(-4 - int(s.region().w), 1));
 			}
 		}
 	}
@@ -222,7 +220,7 @@ void	drawUI()
 	else if (ui.selectedVehicleID != -1)
 	{
 		auto& sv = vehicles[ui.selectedVehicleID];
-		tinyCamera.gazePoint.emplace(sv.pos());
+		tinyCamera.gazePoint = Pos(sv.pos());
 
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
