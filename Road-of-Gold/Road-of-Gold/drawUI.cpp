@@ -9,9 +9,6 @@
 #include"VehicleData.h"
 #include<boost\range\numeric.hpp>
 
-bool	useRouteMenu = false;
-bool	useUrbanMenu = false;
-int		urbanDrawState = 0;
 
 void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color)
 {
@@ -99,9 +96,9 @@ void	drawUI()
 	}
 
 
-	if (KeyR.down()) useRouteMenu = !useRouteMenu;
-	if (KeyU.down()) useUrbanMenu = !useUrbanMenu;
-	if (useUrbanMenu)
+	if (KeyR.down()) ui.useRouteMenu = !ui.useRouteMenu;
+	if (KeyU.down()) ui.useUrbanMenu = !ui.useUrbanMenu;
+	if (ui.useUrbanMenu)
 	{
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
@@ -118,8 +115,8 @@ void	drawUI()
 		{
 			Rect rect(32, 480 + i * 24, 256, 24);
 			if (rect.mouseOver()) rect.draw(Palette::Orange);
-			if(urbanDrawState == i) rect.draw(Palette::Red);
-			if (rect.leftClicked()) urbanDrawState = i;
+			if(ui.urbanDrawState == i) rect.draw(Palette::Red);
+			if (rect.leftClicked()) ui.urbanDrawState = i;
 			rect.drawFrame(2, fColor);
 			(*ui.fonts[16])(list[i]).drawAt(rect.center());
 		}
@@ -148,7 +145,7 @@ void	drawUI()
 
 				rect.drawFrame(2, fColor);
 				int sum = 0;
-				switch (urbanDrawState)
+				switch (ui.urbanDrawState)
 				{
 				case 0:
 					for (int k = 0; k < 10; k++) sum += b.tradeLog.numTrade[k] * b.tradeLog.price[k];
@@ -173,7 +170,7 @@ void	drawUI()
 			}
 		}
 	}
-	else if (useRouteMenu)
+	else if (ui.useRouteMenu)
 	{
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);

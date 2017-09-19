@@ -5,6 +5,9 @@ struct Route;
 
 struct UI
 {
+	bool	useRouteMenu;
+	bool	useUrbanMenu;
+	int		urbanDrawState;
 	int		selectedUrbanID;
 	int		selectedVehicleID;
 	int		selectedItemType;
@@ -16,7 +19,10 @@ struct UI
 	Array<std::pair<Code, int>> newChain;
 
 	UI()
-		: selectedUrbanID(-1)
+		: urbanDrawState(0)
+		, useRouteMenu(false)
+		, useUrbanMenu(false)
+		, selectedUrbanID(-1)
 		, selectedVehicleID(-1)
 		, selectedItemType(-1)
 		, drawExportLineEnabled(false)
