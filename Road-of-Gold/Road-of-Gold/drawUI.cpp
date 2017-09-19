@@ -138,7 +138,7 @@ void	drawUI()
 			}
 			for (int j = 0; j < int(itemData.size()); j++)
 			{
-				auto& b = u.baskets[j];
+				auto& b = u.shelves[j];
 				Rect rect(160 + j * 64, i * 20 + 20, 64, 20);
 
 				rect.drawFrame(2, fColor);
@@ -594,11 +594,11 @@ void	drawUI()
 				}
 			}
 		}
-		//Basket
+		//Shelf
 		{
-			for (auto i : step(int(su.baskets.size())))
+			for (auto i : step(int(su.shelves.size())))
 			{
-				const auto& b = su.baskets[i];
+				const auto& b = su.shelves[i];
 				const auto& data = b.data();
 
 				{
@@ -635,8 +635,8 @@ void	drawUI()
 					Rect rect(240, i * 88, 240, 24);
 					rect.drawFrame(2, fColor);
 					(*ui.fonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
-					if (!b.rings.isEmpty())
-						(*ui.fonts[16])(b.rings.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
+					if (!b.baskets.isEmpty())
+						(*ui.fonts[16])(b.baskets.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
 					(*ui.fonts[16])(b.numItem, L"ŒÂ").draw(rect.pos.movedBy(128 + 4, 0));
 				}
 			}

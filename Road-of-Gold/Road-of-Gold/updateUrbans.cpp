@@ -135,11 +135,11 @@ void	updateUrban(Urban& u)
 			c.wallet().pull(c.wallet().money / 10);
 		}
 		//sê‚ÌXV
-		for (auto i : step(int(u.baskets.size())))
+		for (auto i : step(int(u.shelves.size())))
 		{
-			auto& b = u.baskets[i];
+			auto& b = u.shelves[i];
 
-			for (auto& r : b.rings) r.price = Max(1, int(r.price*0.95));	//‰¿Ši’á‰º
+			for (auto& r : b.baskets) r.price = Max(1, int(r.price*0.95));	//‰¿Ši’á‰º
 
 			b.tradeLog.push(); //TradeLog‚ÌXV
 		}

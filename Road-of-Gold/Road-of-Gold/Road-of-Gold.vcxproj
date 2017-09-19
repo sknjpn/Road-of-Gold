@@ -232,7 +232,7 @@ call copy.bat</Command>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Basket.h" />
+    <ClInclude Include="Shelf.h" />
     <ClInclude Include="BiomeData.h" />
     <ClInclude Include="Buyer.h" />
     <ClInclude Include="Casket.h" />
@@ -251,7 +251,6 @@ call copy.bat</Command>
     <ClInclude Include="Path.h" />
     <ClInclude Include="Planet.h" />
     <ClInclude Include="Pos.h" />
-    <ClInclude Include="Ring.h" />
     <ClInclude Include="Route.h" />
     <ClInclude Include="Sandglass.h" />
     <ClInclude Include="Scuttle.h" />
@@ -266,7 +265,7 @@ call copy.bat</Command>
     <ClInclude Include="Wallet.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Basket.cpp" />
+    <ClCompile Include="Shelf.cpp" />
     <ClCompile Include="Casket.cpp" />
     <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Customer.cpp" />
@@ -291,7 +290,6 @@ call copy.bat</Command>
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Nation.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Ring.cpp" />
     <ClCompile Include="Route.cpp" />
     <ClCompile Include="Sandglass.cpp" />
     <ClCompile Include="Scuttle.cpp" />

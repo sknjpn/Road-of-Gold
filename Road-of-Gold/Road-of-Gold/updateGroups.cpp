@@ -72,7 +72,7 @@ void	updateGroups()
 			{
 				auto i = itemData.choice().id();
 
-				//if (u2->isSoldOut(i) || u2->baskets.at(i).tradeLog.numProduction.front() == 0) continue;
+				//if (u2->isSoldOut(i) || u2->shelves.at(i).tradeLog.numProduction.front() == 0) continue;
 				//else
 				if (!u2->isSoldOut(i))
 				{

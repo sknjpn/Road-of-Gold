@@ -1,7 +1,7 @@
 #pragma once
 
 #include"Citizen.h"
-#include"Basket.h"
+#include"Shelf.h"
 #include"Wallet.h"
 #include"Energy.h"
 #include"Sandglass.h"
@@ -30,7 +30,7 @@ struct Urban
 	Array<Route*>	ownRoutes;
 	Array<Seller>	sellers;
 	Array<Buyer>	buyers;
-	Array<Basket>	baskets;
+	Array<Shelf>	shelves;
 	Array<Customer>	customers;
 
 	Urban(const JSONValue& _json);
