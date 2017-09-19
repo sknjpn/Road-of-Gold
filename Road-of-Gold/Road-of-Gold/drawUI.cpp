@@ -10,6 +10,8 @@
 #include<boost\range\numeric.hpp>
 
 bool	useRouteMenu = false;
+bool	useUrbanMenu = false;
+int		urbanDrawState = 0;
 
 void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color)
 {
@@ -98,7 +100,80 @@ void	drawUI()
 
 
 	if (KeyR.down()) useRouteMenu = !useRouteMenu;
-	if (useRouteMenu)
+	if (KeyU.down()) useUrbanMenu = !useUrbanMenu;
+	if (useUrbanMenu)
+	{
+		const auto fColor = Palette::Skyblue;
+		const auto bColor = Color(Palette::Darkcyan, 192);
+
+		Array<String> list = { L"‘æˆø—Ê", L"—Ao”", L"—A“ü”", L"¶Y”", L"Á”ï”" };
+
+		//‘S‘Ì˜g
+		{
+			Rect rect(960, Window::Size().y);
+			rect.draw(bColor).drawFrame(2, fColor);
+		}
+
+		for (int i = 0; i < int(list.size()); i++)
+		{
+			Rect rect(32, 480 + i * 24, 256, 24);
+			if (rect.mouseOver()) rect.draw(Palette::Orange);
+			if(urbanDrawState == i) rect.draw(Palette::Red);
+			if (rect.leftClicked()) urbanDrawState = i;
+			rect.drawFrame(2, fColor);
+			(*ui.fonts[16])(list[i]).drawAt(rect.center());
+		}
+
+		for (int j = 0; j < int(itemData.size()); j++)
+		{
+			Rect rect(160 + j * 64, 0, 64, 20);
+			rect.drawFrame(2, fColor);
+
+			(*ui.fonts[12])(itemData[j].name).draw(rect.pos.movedBy(4, 1));
+		}
+		for (int i = 0; i < int(urbans.size()); i++)
+		{
+			auto& u = urbans[i];
+			{
+				Rect rect(0, i * 20 + 20, 160, 20);
+				Rect(rect.pos, int(rect.w*u.productivity), rect.h).draw(Palette::Orange);
+				rect.drawFrame(2, fColor);
+				(*ui.fonts[12])(u.name).draw(rect.pos.movedBy(4, 1));
+				if (rect.leftPressed()) u.productivity = (Cursor::Pos() - rect.pos).x / double(rect.w);
+			}
+			for (int j = 0; j < int(itemData.size()); j++)
+			{
+				auto& b = u.baskets[j];
+				Rect rect(160 + j * 64, i * 20 + 20, 64, 20);
+
+				rect.drawFrame(2, fColor);
+				int sum = 0;
+				switch (urbanDrawState)
+				{
+				case 0:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numTrade[k] * b.tradeLog.price[k];
+					break;
+				case 1:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numExport[k];
+					break;
+				case 2:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numImport[k];
+					break;
+				case 3:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numProduction[k];
+					break;
+				case 4:
+					for (int k = 0; k < 10; k++) sum += b.tradeLog.numConsumption[k];
+					break;
+				default:
+					break;
+				}
+				auto s = (*ui.fonts[12])(sum / 10);
+				s.draw(rect.tr().movedBy(-4 - s.region().w, 1));
+			}
+		}
+	}
+	else if (useRouteMenu)
 	{
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
@@ -226,7 +301,8 @@ void	drawUI()
 			if (sv.cargo.numItem == 0) (*ui.fonts[16])(L"ÏÚ•¨:").draw(rect.pos.movedBy(4, 1));
 			else
 			{
-				RectF(rect.pos, rect.w*sv.cargo.numItem / sv.maxVolume, rect.h).draw(Color(Palette::Orange, 192));
+				int volume = int(sv.data().volume / itemData[sv.cargo.itemType].volume);
+				RectF(rect.pos, rect.w*sv.cargo.numItem / volume, rect.h).draw(Color(Palette::Orange, 192));
 				(*ui.fonts[16])(L"ÏÚ•¨:", sv.cargo.data().name, L" ", sv.cargo.numItem, L"ŒÂ").draw(rect.pos.movedBy(4, 1));
 			}
 		}
@@ -267,10 +343,6 @@ void	drawUI()
 					if (sv.reader == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
 					(*ui.fonts[16])(L"Sell").drawAt(rect1.center());
 					(*ui.fonts[16])(L"‘S¤•i‚Ì”„‹p").draw(rect2.pos.movedBy(4, 1));
-					break;
-				case Code::MVol:
-					(*ui.fonts[16])(L"MVol").drawAt(rect1.center());
-					(*ui.fonts[16])(L"ÏÚ—Ê‚ğ•ÏX", c.second).draw(rect2.pos.movedBy(4, 1));
 					break;
 				case Code::None:
 					(*ui.fonts[16])(L"None").drawAt(rect1.center());
@@ -359,10 +431,6 @@ void	drawUI()
 				case Code::Sell:
 					(*ui.fonts[16])(L"Sell").drawAt(rect1.center());
 					(*ui.fonts[16])(L"‘S¤•i‚Ì”„‹p").draw(rect2.pos.movedBy(4, 1));
-					break;
-				case Code::MVol:
-					(*ui.fonts[16])(L"MVol").drawAt(rect1.center());
-					(*ui.fonts[16])(L"ÏÚ—Ê‚ğ•ÏX", c.second).draw(rect2.pos.movedBy(4, 1));
 					break;
 				case Code::None:
 					(*ui.fonts[16])(L"None").drawAt(rect1.center());
@@ -517,7 +585,7 @@ void	drawUI()
 					{
 						if (c.citizenType == i)
 						{
-							sum += c.avgIncome;
+							sum += c.averageIncome;
 							num++;
 						}
 					}
@@ -539,22 +607,17 @@ void	drawUI()
 				const auto& data = b.data();
 
 				{
-					Rect rect(240, i * 88, 240, 24);
-					rect.drawFrame(2, fColor);
-					(*ui.fonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
-					if (!b.rings.isEmpty())
-						(*ui.fonts[16])(b.rings.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
-					(*ui.fonts[16])(b.numItem, L"ŒÂ").draw(rect.pos.movedBy(128 + 4, 0));
-				}
-				{
 					Rect rect(240, 24 + i * 88, 240, 64);
-					rect.drawFrame(2, fColor);
-					const int timeScale = 1; //b.tradeLog.time / 120
+					const int timeScale = 1;
 
-					int max = Max(1, b.tradeLog.numConsumption.take(rect.size.x).sorted().back());
-					max = Max(max, b.tradeLog.numExport.take(rect.size.x).sorted().back());
-					max = Max(max, b.tradeLog.numImport.take(rect.size.x).sorted().back());
-					max = Max(max, b.tradeLog.numProduction.take(rect.size.x).sorted().back());
+					int max = 1;
+					for (int j = 0; j < rect.size.x; j++)
+					{
+						max = Max(max, b.tradeLog.numConsumption[j]);
+						max = Max(max, b.tradeLog.numExport[j]);
+						max = Max(max, b.tradeLog.numImport[j]);
+						max = Max(max, b.tradeLog.numProduction[j]);
+					}
 
 					drawGraph(rect, b.tradeLog.numExport, timeScale, Palette::Blue, max);
 					drawGraph(rect, b.tradeLog.numImport, timeScale, Palette::Purple, max);
@@ -569,6 +632,17 @@ void	drawUI()
 						int nco = std::accumulate(b.tradeLog.numConsumption.begin() + 1, b.tradeLog.numConsumption.begin() + 11, 0);
 						if (nex + nco > 0) Circle(336, 56 + i * 88, 24).draw(Palette::Yellowgreen).drawPie(0, nex * 360_deg / (nex + nco), Palette::Blue);
 					}
+
+					rect.drawFrame(2, fColor);
+				}
+
+				{
+					Rect rect(240, i * 88, 240, 24);
+					rect.drawFrame(2, fColor);
+					(*ui.fonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
+					if (!b.rings.isEmpty())
+						(*ui.fonts[16])(b.rings.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
+					(*ui.fonts[16])(b.numItem, L"ŒÂ").draw(rect.pos.movedBy(128 + 4, 0));
 				}
 			}
 		}

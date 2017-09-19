@@ -18,7 +18,6 @@ enum struct Code
 	Wait,	//一日休止
 	Buy,
 	Sell,
-	MVol,	//最大容量
 	ERR,	//異常な値
 };
 
@@ -35,8 +34,6 @@ struct Vehicle
 	bool	stopFlag;	//trueならば事業を中断
 	bool	planFixed;
 	bool	isError;	//chain続行不可
-
-	int		maxVolume;
 	int		reader;
 	double	timer;	//運用期間
 	double	period;	//一周するのに要する時間

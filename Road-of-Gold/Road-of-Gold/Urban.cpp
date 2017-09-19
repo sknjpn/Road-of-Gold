@@ -15,6 +15,7 @@ Urban::Urban(const JSONValue& _json)
 	, sandglass(0.5 + pos().mPos.x / 360_deg)
 	, walletID(getNewWalletID())
 {
+	buyers.reserve(1024);
 	//Basket
 	baskets.resize(itemData.size());
 

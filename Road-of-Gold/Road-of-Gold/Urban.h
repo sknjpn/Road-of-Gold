@@ -20,6 +20,7 @@ struct Urban
 	String	name;
 	int		walletID;
 	int		joinedNodeID;
+	int		averageIncome;
 	double	productivity;
 	Nation*	joinedNation;
 	Sandglass	sandglass;

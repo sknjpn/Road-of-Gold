@@ -12,7 +12,7 @@ struct Citizen
 	Array<int>	incomeLog;
 	double	personality;
 	double	jobEfficiency;
-	int		avgIncome;
+	int		averageIncome;
 
 	Citizen(int _citizenType);
 	CitizenData&	data() const;

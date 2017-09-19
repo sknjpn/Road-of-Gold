@@ -6,7 +6,7 @@
 void	selectItem()
 {
 	//Urban‚Ì‘I‘ð
-	if (MouseL.down())
+	if (MouseL.down() && (!Rect(480, Window::Size().y).mouseOver() || (ui.selectedUrbanID == -1 && ui.selectedVehicleID == -1)))
 	{
 		ui.selectedUrbanID = -1;
 
@@ -23,30 +23,25 @@ void	selectItem()
 				}
 			}
 		}
-	}
 
-	//Vehicle‚Ì‘I‘ð
-	if (MouseL.down())
-	{
-		if (!Rect(480, Window::Size().y).mouseOver() || ui.selectedVehicleID == -1)
+		//Vehicle‚Ì‘I‘ð
+		ui.selectedVehicleID = -1;
+		if (ui.selectedUrbanID == -1)
 		{
-			ui.selectedVehicleID = -1;
-			if (ui.selectedUrbanID == -1)
-			{
-				for (int i = 0; i < 2; ++i) {
-					const auto transformer = tinyCamera.createTransformer(i);
+			for (int i = 0; i < 2; ++i) {
+				const auto transformer = tinyCamera.createTransformer(i);
 
-					for (auto j : step(int(vehicles.size())))
+				for (auto j : step(int(vehicles.size())))
+				{
+					if (vehicles[j].mouseOver())
 					{
-						if (vehicles[j].mouseOver())
-						{
-							ui.selectedVehicleID = j;
-							sounds.at(0).play();
-							ui.newChain = vehicles[j].chain;
-						}
+						ui.selectedVehicleID = j;
+						sounds.at(0).play();
+						ui.newChain = vehicles[j].chain;
 					}
 				}
 			}
 		}
 	}
+
 }

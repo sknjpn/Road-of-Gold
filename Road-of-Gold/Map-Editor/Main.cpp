@@ -38,6 +38,8 @@ void	addTexture(const FilePath& _path, const String& _name)
 	textureAssets.emplace_back(Texture(_path), _name);
 }
 
+Array<Node*>	river;
+
 void Main()
 {
 	addTexture(L"assets/image/button/minus.png", L"minus");
@@ -88,8 +90,10 @@ void Main()
 	//人口入力欄
 	TextBox numCitizensTextBox(textBoxFont, Vec2(78, 86), 112);
 
+
 	while (System::Update())
 	{
+
 		if (numCitizensTextBox.isActive() ||
 			urbanNameTextBox.isActive() ||
 			textBox.isActive()) keyControlEnabled = false;
@@ -120,14 +124,8 @@ void Main()
 		//カメラの更新
 		tinyCamera.update();
 
-		if (DragDrop::HasNewFilePaths())
-		{
-			auto items = DragDrop::GetDroppedFilePaths();
-			for (auto item : items)
-			{
-				if (FileSystem::IsFile(item.path)) planet.coverTexture = Texture(item.path);
-			}
-		}
+		planet.setCoverImage();
+
 		//マップの描画
 		for (int i = 0; i < 2; ++i) {
 			const auto t1 = tinyCamera.createTransformer(i);
@@ -135,6 +133,37 @@ void Main()
 			planet.mapTexture.resize(360_deg, 180_deg).drawAt(0, 0);
 			if (drawOutlineEnabled) planet.outlineTexture.resize(360_deg, 180_deg).drawAt(0, 0);
 			if (planet.coverTexture) planet.coverTexture.resize(360_deg, 180_deg).drawAt(0, 0, ColorF(Palette::White, planet.coverRate));
+		}
+
+		if (KeyR.down())
+		{
+			river.clear();
+			for (int i = 0; i < 1000; i++)
+			{
+				auto& n = nodes.choice();
+				if (biomeData[n.biomeType].isSea && n.paths.any([](const Path& p) { return !biomeData[p.getChild().biomeType].isSea; }))
+				{
+					river.emplace_back(&n);
+					break;
+				}
+			}
+			if (!river.isEmpty())
+			{
+				for (int i = 0; i < 1000; i++)
+				{
+					auto* n = &river.back()->paths.choice().getChild();
+					if (!biomeData[n->biomeType].isSea && !river.include(n)) river.emplace_back(n);
+				}
+			}
+		}
+		if (river.size() >= 2)
+		{
+			LineString ls;
+			for (auto* n : river) ls.emplace_back(n->pos.mPos);
+			for (int i = 0; i < 2; ++i) {
+				const auto t1 = tinyCamera.createTransformer(i);
+				ls.draw(0.0025, biomeData[0].color);
+			}
 		}
 
 		//都市の描画
@@ -277,6 +306,7 @@ void Main()
 				break;
 			}
 		}
+
 
 		//UIの描画
 		uiRect.draw(Color(Palette::Darkcyan, 192)).drawFrame(2, Palette::Skyblue);

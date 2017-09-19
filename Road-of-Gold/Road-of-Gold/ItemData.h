@@ -4,6 +4,7 @@ struct ItemData
 {
 	String	name;
 	int		value;
+	int		volume;
 	Color	color;
 	Texture	icon;
 

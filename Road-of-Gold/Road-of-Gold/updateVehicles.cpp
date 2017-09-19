@@ -117,6 +117,8 @@ void	updateVehicles()
 					case Code::Buy:
 					{
 						bool flag = false;
+						int volume = int(v.data().volume / itemData[c.second].volume);
+
 						for (auto& b : v.nowUrban->buyers)
 						{
 							if (b.walletID == v.walletID)
@@ -124,7 +126,7 @@ void	updateVehicles()
 								b.progress = 0;
 								v.cargo = b.casket;
 								b.casket.numItem = 0;
-								b.target = v.maxVolume;
+								b.target = volume;
 								b.period = int(v.period);
 								flag = true;
 								break;
@@ -132,7 +134,8 @@ void	updateVehicles()
 						}
 						if (!flag)
 						{
-							v.nowUrban->buyers.emplace_back(v.walletID, c.second, int(v.period), v.maxVolume);
+							auto* u = v.nowUrban;
+							u->buyers.emplace_back(v.walletID, c.second, int(v.period), volume);
 						}
 						v.sleepTimer = 0.5;
 						break;
@@ -144,10 +147,6 @@ void	updateVehicles()
 						}
 						v.cargo.numItem = 0;
 						v.sleepTimer = 0.5;
-						break;
-					case Code::MVol:
-						v.maxVolume = c.second;
-						v.reader++;
 						break;
 					}
 				}

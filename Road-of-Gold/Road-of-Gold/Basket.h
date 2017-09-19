@@ -24,6 +24,7 @@ struct TradeLog
 		numConsumption.resize(time);
 		numExport.resize(time);
 		numImport.resize(time);
+		price.fill(1);
 	}
 
 	void	push()
