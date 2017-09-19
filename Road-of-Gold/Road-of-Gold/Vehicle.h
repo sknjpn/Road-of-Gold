@@ -2,6 +2,7 @@
 
 #include"Casket.h"
 #include"Export.h"
+#include"Chain.h"
 
 struct Wallet;
 struct VehicleData;
@@ -9,17 +10,6 @@ struct Fleet;
 struct Pos;
 struct Urban;
 struct Route;
-
-enum struct Code
-{
-	None,
-	Move,	//ˆø”‚ÌID‚Ì“ss‚ÉˆÚ“®
-	Jump,	//ˆø”‚Ì”Ô’n‚ÉƒWƒƒƒ“ƒv
-	Wait,	//ˆê“ú‹x~
-	Buy,
-	Sell,
-	ERR,	//ˆÙí‚È’l
-};
 
 struct Vehicle
 {
@@ -33,11 +23,9 @@ struct Vehicle
 	Export	exportLog;
 	bool	stopFlag;	//true‚È‚ç‚Î–‹Æ‚ğ’†’f
 	bool	planFixed;
-	bool	isError;	//chain‘±s•s‰Â
-	int		reader;
 	double	timer;	//‰^—pŠúŠÔ
 	double	period;	//ˆêü‚·‚é‚Ì‚É—v‚·‚éŠÔ
-	Array<std::pair<Code, int>> chain;
+	Chain	chain;
 
 	Vehicle(int _vehicleType, Urban* _nowUrban);
 	VehicleData&	data() const;

@@ -17,14 +17,12 @@ Vehicle::Vehicle(int _vehicleType, Urban* _nowUrban)
 	, sleepTimer(0)
 	, routeProgress(0)
 	, nowUrban(_nowUrban)
-	, reader(0)
 	, route(nullptr)
 	, timer(0)
 	, period(0)
 	, exportLog()
 	, stopFlag(false)
 	, planFixed(false)
-	, isError(false)
 {
 	wallet().owner = Owner::Vehicle;
 }

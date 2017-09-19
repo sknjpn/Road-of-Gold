@@ -1,5 +1,6 @@
 #pragma once
 #include"Vehicle.h"
+#include"Chain.h"
 
 struct Route;
 
@@ -15,8 +16,7 @@ struct UI
 	bool	drawExportLineEnabled;
 	bool	drawExportImportPowerEnabled;
 	Route*	selectedRoute;
-
-	Array<std::pair<Code, int>> newChain;
+	Chain	newChain;
 
 	UI()
 		: urbanDrawState(0)

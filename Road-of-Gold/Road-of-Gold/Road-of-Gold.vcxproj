@@ -232,6 +232,7 @@ call copy.bat</Command>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Chain.h" />
     <ClInclude Include="Shelf.h" />
     <ClInclude Include="BiomeData.h" />
     <ClInclude Include="Buyer.h" />
@@ -265,6 +266,7 @@ call copy.bat</Command>
     <ClInclude Include="Wallet.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Chain.cpp" />
     <ClCompile Include="Shelf.cpp" />
     <ClCompile Include="Casket.cpp" />
     <ClCompile Include="Citizen.cpp" />
