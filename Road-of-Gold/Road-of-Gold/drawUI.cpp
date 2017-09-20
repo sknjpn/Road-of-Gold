@@ -324,17 +324,23 @@ void	drawUI()
 				rect3.drawFrame(2, fColor);
 				if (int(sv.chain.readerPos) == i) rect1.draw(Color(Palette::Orange, 192));
 				(*ui.fonts[16])(i).drawAt(rect3.center());
-				switch (ring.code)
+				if (int(sv.chain.readerPos) == i)
 				{
-				case Code::Move:
-					if (int(sv.chain.readerPos) == i && sv.route != nullptr) RectF(rect2.pos, rect2.w*sv.routeProgress * sv.data().speed / sv.route->movingCost, rect2.h).draw(Color(Palette::Orange, 192));
-					break;
-				case Code::Buy:
-					if (int(sv.chain.readerPos) == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
-					break;
-				case Code::Sell:
-					if (int(sv.chain.readerPos) == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
-					break;
+					switch (ring.code)
+					{
+					case Code::Move:
+						if (sv.route != nullptr) RectF(rect2.pos, rect2.w*sv.routeProgress * sv.data().speed / sv.route->movingCost, rect2.h).draw(Color(Palette::Orange, 192));
+						break;
+					case Code::Buy:
+						RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
+						break;
+					case Code::Sell:
+						RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
+						break;
+					case Code::Wait:
+						RectF(rect2.pos, rect2.w*(ring.value / 24.0 - sv.sleepTimer) / (ring.value / 24.0), rect2.h).draw(Color(Palette::Orange, 192));
+						break;
+					}
 				}
 				(*ui.fonts[16])(ring.codeText()).drawAt(rect1.center());
 				(*ui.fonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
@@ -408,6 +414,17 @@ void	drawUI()
 						if (ring.value < 0) ring.value = int(itemData.size()) - 1;
 					}
 					break;
+				case Code::Wait:
+					if (rect2.leftClicked())
+					{
+						ring.value += KeyShift.pressed() ? 100 : KeyControl.pressed() ? 10 : 1;
+					}
+					else if (rect2.rightClicked())
+					{
+						ring.value -= KeyShift.pressed() ? 100 : KeyControl.pressed() ? 10 : 1;
+						if (ring.value < 0) ring.value = 0;
+					}
+					break;
 				}
 				(*ui.fonts[16])(ring.codeText()).drawAt(rect1.center());
 				(*ui.fonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
@@ -432,7 +449,13 @@ void	drawUI()
 			if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 			rect.drawFrame(2, fColor);
 			(*ui.fonts[16])(L"Copy©").drawAt(rect.center());
-			if (rect.leftClicked()) sv.chain = ui.newChain;
+			if (rect.leftClicked())
+			{
+				sv.chain = ui.newChain;
+				sv.chain.readerPos = 0;
+				sv.chain.isError = false;
+				sv.sleepTimer = 0;
+			}
 		}
 		//Ý’è
 		{

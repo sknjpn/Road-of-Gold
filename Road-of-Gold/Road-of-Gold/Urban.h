@@ -54,5 +54,6 @@ struct Urban
 extern Array<Urban> urbans;
 
 void	updateUrbans();
-void	drawUrbans();
+void	drawUrbanIcon();
+void	drawUrbanName();
 Urban*	getUrban(const String& _name);

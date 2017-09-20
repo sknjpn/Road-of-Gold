@@ -58,17 +58,22 @@ void TinyCamera::update()
 	if ((useKeyViewControl && KeyS.pressed()) || Cursor::Pos().y >= Window::Size().y - 1) drawingRegion.pos.y += slidingSpeed;
 }
 
-Pos TinyCamera::getCursorPos() const
+Pos	TinyCamera::getCursorPos() const
 {
 	return getMat3x2().inversed().transform(Cursor::PosF());
 }
 
-Mat3x2 TinyCamera::getMat3x2(int _delta) const
+Mat3x2	TinyCamera::getMat3x2(int _delta, double _r) const
 {
-	return Mat3x2::Translate(-smoothDrawingRegion.center().movedBy(-_delta * 360_deg, 0.0)).scaled(Window::Size().y / smoothDrawingRegion.size.y).translated(Window::ClientRect().center());
+	return Mat3x2::Scale(1.0 / _r).translated(-smoothDrawingRegion.center().movedBy(-_delta * 360_deg, 0.0)).scaled(Window::Size().y / smoothDrawingRegion.size.y).translated(Window::ClientRect().center());
 }
 
-Transformer2D TinyCamera::createTransformer(int _delta) const
+Transformer2D	TinyCamera::createTransformer(int _delta, double _r) const
 {
-	return Transformer2D(getMat3x2(_delta), true);
+	return Transformer2D(getMat3x2(_delta, _r), true);
+}
+
+double	TinyCamera::getMagnification() const
+{
+	return Window::Size().y / smoothDrawingRegion.size.y;
 }

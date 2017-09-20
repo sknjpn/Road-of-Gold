@@ -15,7 +15,7 @@ void	updateGroups()
 
 	if (tmr > 0.0)
 	{
-		tmr -= Random(50.0, 100.0);
+		tmr -= 100.0;
 		//‰ºˆÊ1/4‚ÌŽ–‹ÆŒ©’¼‚µ
 		for (int i = 0; i < int(vehicles.size() / 10); i++)
 		{

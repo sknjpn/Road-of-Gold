@@ -69,7 +69,8 @@ void Main()
 		drawPlanet();
 		drawRotues();
 		drawVehicles();
-		drawUrbans();
+		drawUrbanIcon();
+		drawUrbanName();
 		drawUI();
 		drawScuttles();
 	}

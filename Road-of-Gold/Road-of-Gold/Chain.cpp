@@ -17,7 +17,10 @@ String	Ring::valueText() const
 	case Code::None:return Format(adress, L"番地にジャンプ");
 	case Code::Move:return Format(urbans[value].name, L"に移動");
 	case Code::Jump:return Format(value, L"番地にジャンプ");
-	case Code::Wait:return Format(value, L"時間待つ");
+	case Code::Wait:
+		if (value >= 24 && value % 24 == 0) return Format(value / 24, L"日待つ");
+		if (value >= 24 && value % 24 != 0) return Format(value / 24, L"日と", value % 24, L"時間待つ");
+		if (value < 24) return Format(value, L"時間待つ");
 	case Code::Buy:	return Format(itemData[value].name, L"を購入");
 	case Code::Sell:return Format(L"アイテムをすべて売却");
 	case Code::ERR:	return Format(L"異常なコード");
@@ -54,7 +57,7 @@ bool	Chain::update(Vehicle* _v)
 {
 	for (int cnt = 0;; cnt++)
 	{
-		if (readerPos < 0 || readerPos >= rings.size() || cnt > 100) isError = true;
+		if (readerPos < 0 || readerPos >= rings.size() || cnt > rings.size()) isError = true;
 		if (isError) return true;
 		if (_v->route != nullptr || _v->sleepTimer > 0) return false;
 		auto& ring = rings[readerPos];
@@ -77,8 +80,8 @@ bool	Chain::update(Vehicle* _v)
 			if (_v->route == nullptr) readerPos++;
 			break;
 		case Code::Wait:
-			_v->sleepTimer = ring.value / 24.0;
-			if (_v->sleepTimer == 0) readerPos++;
+			if (ring.value == 0) readerPos++;
+			else _v->sleepTimer = ring.value / 24.0;
 			break;
 		case Code::Jump:
 			readerPos = ring.value;
