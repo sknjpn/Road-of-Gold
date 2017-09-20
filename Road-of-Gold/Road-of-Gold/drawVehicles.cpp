@@ -1,26 +1,27 @@
 #include"TinyCamera.h"
-#include"Vehicle.h"
+#include"Fleet.h"
 #include"ItemData.h"
 #include"VehicleData.h"
+#include"Vehicle.h"
 
-void	drawVehicles()
+void	drawFleets()
 {
 	for (int i = 0; i < 2; ++i)
 	{
 		const auto transformer = tinyCamera.createTransformer(i);
 
-		for (const auto& v : vehicles)
+		for (const auto& f : fleets)
 		{
-			auto pos = v.pos();
-			auto color = v.cargo.isEmpty() ? Color(0, 0) : v.cargo.data().color;
+			auto pos = f.pos();
+			//auto color = f.cargo.isEmpty() ? Color(0, 0) : vehicleData.front().color;
 			//Circle(pos, 0.005).drawFrame(0.001, 0.000, Palette::Black);
 
-			v.data().icon.resize(0.005).rotate(v.angle()).drawAt(pos);
+			f.ownVehicles.front()->data().icon.resize(0.005).rotate(f.angle()).drawAt(pos);
 
 			/*
-			if (!v.cargo.isEmpty())
+			if (!f.cargo.isEmpty())
 			{
-				auto& data = v.cargo.data();
+				auto& data = f.cargo.data();
 
 				data.icon.resize(0.01).drawAt(pos);
 			}

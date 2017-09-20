@@ -255,15 +255,15 @@
     <ClInclude Include="Trader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Fleet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Vehicle.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Urban.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="updateVehicles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="updateUrbans.cpp">
@@ -378,6 +378,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Chain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Fleet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="updateFleets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

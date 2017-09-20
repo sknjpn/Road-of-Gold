@@ -8,6 +8,7 @@
 #include"Sound.h"
 #include"Scuttle.h"
 #include"Data.h"
+#include"Fleet.h"
 #include"VehicleData.h"
 
 void Main()
@@ -53,7 +54,25 @@ void Main()
 
 		if (KeyB.down())
 		{
-			for (int i = 0; i < 100; i++) vehicles.emplace_back(vehicleData.choice().id(), &urbans.choice());
+			for (int j = 0; j < 100; j++)
+			{
+				for (;;)
+				{
+					auto* u = &urbans.choice();
+					int i = vehicleData.choice().id();
+					bool flag = false;
+					for (auto* r : u->ownRoutes)
+					{
+						if (r->movingCost < vehicleData[i].range || r->isSeaRoute == vehicleData[i].isShip)
+						{
+							flag = true;
+							fleets.emplace_back(i, u);
+							break;
+						}
+					}
+					if (flag) break;
+				}
+			}
 		}
 
 		tinyCamera.update();
@@ -63,12 +82,12 @@ void Main()
 
 		updatePlanet();
 		updateGroups();
-		updateVehicles();
+		updateFleets();
 		updateUrbans();
 
 		drawPlanet();
 		drawRotues();
-		drawVehicles();
+		drawFleets();
 		drawUrbanIcon();
 		drawUrbanName();
 		drawUI();

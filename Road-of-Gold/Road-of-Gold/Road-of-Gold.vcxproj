@@ -233,6 +233,7 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chain.h" />
+    <ClInclude Include="Fleet.h" />
     <ClInclude Include="Shelf.h" />
     <ClInclude Include="BiomeData.h" />
     <ClInclude Include="Casket.h" />
@@ -266,6 +267,7 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chain.cpp" />
+    <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="Shelf.cpp" />
     <ClCompile Include="Casket.cpp" />
     <ClCompile Include="Citizen.cpp" />
@@ -302,12 +304,12 @@ call copy.bat</Command>
     </ClCompile>
     <ClCompile Include="TinyCamera.cpp" />
     <ClCompile Include="Traders.cpp" />
+    <ClCompile Include="updateFleets.cpp" />
     <ClCompile Include="updateGroups.cpp" />
     <ClCompile Include="updatePlanet.cpp" />
     <ClCompile Include="updateScuttles.cpp" />
     <ClCompile Include="updateTimeSpeed.cpp" />
     <ClCompile Include="updateUrbans.cpp" />
-    <ClCompile Include="updateVehicles.cpp" />
     <ClCompile Include="Urban.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Wallet.cpp" />

@@ -10,7 +10,7 @@ struct UI
 	bool	useUrbanMenu;
 	int		urbanDrawState;
 	int		selectedUrbanID;
-	int		selectedVehicleID;
+	int		selectedFleetID;
 	int		selectedItemType;
 	Array<Font*>	fonts;
 	bool	drawExportLineEnabled;
@@ -18,12 +18,18 @@ struct UI
 	Route*	selectedRoute;
 	Chain	newChain;
 
+	//autoCode
+	int		destinationUrbanID;
+	int		transportItemType;
+
 	UI()
-		: urbanDrawState(0)
+		: transportItemType(0)
+		, destinationUrbanID(0)
+		, urbanDrawState(0)
 		, useRouteMenu(false)
 		, useUrbanMenu(false)
 		, selectedUrbanID(-1)
-		, selectedVehicleID(-1)
+		, selectedFleetID(-1)
 		, selectedItemType(-1)
 		, drawExportLineEnabled(false)
 		, drawExportImportPowerEnabled(false)

@@ -1,6 +1,6 @@
 #pragma once
 
-struct Vehicle;
+struct Fleet;
 
 enum struct Code
 {
@@ -37,7 +37,7 @@ struct Chain
 
 	Chain() : readerPos(0), isError(false) {}
 	size_t	size() const { return rings.size(); }
-	bool	update(Vehicle* _v);
+	bool	update(Fleet* _f);
 	void	clear();
 	Chain&	operator =(const Chain& _chain);
 };
