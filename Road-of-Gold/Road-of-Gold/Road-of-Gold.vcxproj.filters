@@ -210,9 +210,6 @@
     <ClInclude Include="Casket.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Buyer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="BiomeData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -240,9 +237,6 @@
     <ClInclude Include="Sound.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Seller.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Scuttle.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -256,6 +250,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Chain.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Trader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -320,9 +317,6 @@
     <ClCompile Include="initRoutes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="initPlanet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="initNodes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -360,9 +354,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="drawPlanet.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="drawGroups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Customer.cpp">

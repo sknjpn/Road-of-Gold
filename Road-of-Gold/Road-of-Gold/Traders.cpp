@@ -1,5 +1,4 @@
-#include"Seller.h"
-#include"Buyer.h"
+#include"Trader.h"
 #include"Vehicle.h"
 #include"Wallet.h"
 

@@ -10,8 +10,8 @@ struct Route
 	Array<Path*> paths;
 	Urban*	fromUrban;
 	Urban*	toUrban;
-	bool	isSeaRoute;
 	double	movingCost;
+	bool	isSeaRoute;
 	int		numVehicles;
 
 	Route(Urban* _fromUrban, Urban* _toUrban, Array<Path*> _paths, bool _isSeaRoute, double _movingCost)

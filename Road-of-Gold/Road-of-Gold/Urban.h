@@ -5,8 +5,7 @@
 #include"Wallet.h"
 #include"Energy.h"
 #include"Sandglass.h"
-#include"Seller.h"
-#include"Buyer.h"
+#include"Trader.h"
 #include"Customer.h"
 
 struct Node;

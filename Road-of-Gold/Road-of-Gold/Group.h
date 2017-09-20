@@ -15,5 +15,4 @@ struct Group
 extern Array<Group>	groups;
 
 void	updateGroups();
-void	drawGroups();
 void	initGroups();

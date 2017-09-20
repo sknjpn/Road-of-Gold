@@ -46,6 +46,27 @@ void	drawUI()
 	//矢印
 	if (ui.drawExportLineEnabled)
 	{
+		const auto fColor = Palette::Skyblue;
+		const auto bColor = Color(Palette::Darkcyan, 192);
+
+		if (MouseL.down()) ui.selectedItemType = -1;
+
+		for (int i = 0; i<int(itemData.size()); i++)
+		{
+			auto& data = itemData[i];
+			{
+				Rect rect(32 + i * 64, 8, 64, 24);
+				rect.draw(bColor).drawFrame(2, fColor);
+				(*ui.fonts[16])(data.name).drawAt(rect.center());
+			}
+			{
+				Rect rect(32 + i * 64, 32, 64, 64);
+				if (rect.leftClicked()) ui.selectedItemType = i;
+				rect.draw(rect.mouseOver() ? Palette::Orange : ui.selectedItemType == i ? Palette::Red : bColor).drawFrame(2, fColor);
+				data.icon.resize(64).drawAt(rect.center());
+			}
+		}
+
 		for (int i = 0; i < 2; ++i)
 		{
 			auto t = tinyCamera.createTransformer(i);
@@ -93,7 +114,6 @@ void	drawUI()
 			}
 		}
 	}
-
 
 	if (KeyR.down()) ui.useRouteMenu = !ui.useRouteMenu;
 	if (KeyU.down()) ui.useUrbanMenu = !ui.useUrbanMenu;
@@ -145,23 +165,12 @@ void	drawUI()
 				int sum = 0;
 				switch (ui.urbanDrawState)
 				{
-				case 0:
-					for (int k = 0; k < 10; k++) sum += b.tradeLog.numTrade[k] * b.tradeLog.price[k];
-					break;
-				case 1:
-					for (int k = 0; k < 10; k++) sum += b.tradeLog.numExport[k];
-					break;
-				case 2:
-					for (int k = 0; k < 10; k++) sum += b.tradeLog.numImport[k];
-					break;
-				case 3:
-					for (int k = 0; k < 10; k++) sum += b.tradeLog.numProduction[k];
-					break;
-				case 4:
-					for (int k = 0; k < 10; k++) sum += b.tradeLog.numConsumption[k];
-					break;
-				default:
-					break;
+				case 0: for (int k = 0; k < 10; k++) sum += b.tradeLog.numTrade[k] * b.tradeLog.price[k]; break;
+				case 1: for (int k = 0; k < 10; k++) sum += b.tradeLog.numExport[k]; break;
+				case 2: for (int k = 0; k < 10; k++) sum += b.tradeLog.numImport[k]; break;
+				case 3: for (int k = 0; k < 10; k++) sum += b.tradeLog.numProduction[k]; break;
+				case 4: for (int k = 0; k < 10; k++) sum += b.tradeLog.numConsumption[k]; break;
+				default: break;
 				}
 				auto s = (*ui.fonts[12])(sum / 10);
 				s.draw(rect.tr().movedBy(-4 - int(s.region().w), 1));
@@ -612,30 +621,6 @@ void	drawUI()
 				}
 			}
 		}
-	}
-	else //ItemSelect
-	{
-		const auto fColor = Palette::Skyblue;
-		const auto bColor = Color(Palette::Darkcyan, 192);
-
-		if (MouseL.down()) ui.selectedItemType = -1;
-
-		for (int i = 0; i<int(itemData.size()); i++)
-		{
-			auto& data = itemData[i];
-			{
-				Rect rect(32 + i * 64, 8, 64, 24);
-				rect.draw(bColor).drawFrame(2, fColor);
-				(*ui.fonts[16])(data.name).drawAt(rect.center());
-			}
-			{
-				Rect rect(32 + i * 64, 32, 64, 64);
-				if (rect.leftClicked()) ui.selectedItemType = i;
-				rect.draw(rect.mouseOver() ? Palette::Orange : ui.selectedItemType == i ? Palette::Red : bColor).drawFrame(2, fColor);
-				data.icon.resize(64).drawAt(rect.center());
-			}
-		}
-
 	}
 
 	//タイムスケールの変更
