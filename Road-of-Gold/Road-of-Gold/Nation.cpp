@@ -6,7 +6,7 @@ Nation::Nation(const JSONValue& _json)
 {
 	for (auto j : _json[L"OwnUrbans"].arrayView())
 	{
-		auto u = getUrban(j.getString());
+		auto* u = getUrban(j.getString());
 
 		if (u != nullptr) ownUrbans.emplace_back(u);
 	}

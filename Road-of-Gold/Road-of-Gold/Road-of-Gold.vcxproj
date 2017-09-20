@@ -233,9 +233,9 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Chain.h" />
+    <ClInclude Include="Fleet.h" />
     <ClInclude Include="Shelf.h" />
     <ClInclude Include="BiomeData.h" />
-    <ClInclude Include="Buyer.h" />
     <ClInclude Include="Casket.h" />
     <ClInclude Include="Citizen.h" />
     <ClInclude Include="CitizenData.h" />
@@ -255,10 +255,10 @@ call copy.bat</Command>
     <ClInclude Include="Route.h" />
     <ClInclude Include="Sandglass.h" />
     <ClInclude Include="Scuttle.h" />
-    <ClInclude Include="Seller.h" />
     <ClInclude Include="Sound.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TinyCamera.h" />
+    <ClInclude Include="Trader.h" />
     <ClInclude Include="UI.h" />
     <ClInclude Include="Urban.h" />
     <ClInclude Include="Vehicle.h" />
@@ -267,11 +267,11 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chain.cpp" />
+    <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="Shelf.cpp" />
     <ClCompile Include="Casket.cpp" />
     <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Customer.cpp" />
-    <ClCompile Include="drawGroups.cpp" />
     <ClCompile Include="drawPlanet.cpp" />
     <ClCompile Include="drawRoutes.cpp" />
     <ClCompile Include="drawScuttles.cpp" />
@@ -285,7 +285,6 @@ call copy.bat</Command>
     <ClCompile Include="Incident.cpp" />
     <ClCompile Include="initGroups.cpp" />
     <ClCompile Include="initNodes.cpp" />
-    <ClCompile Include="initPlanet.cpp" />
     <ClCompile Include="initRoutes.cpp" />
     <ClCompile Include="loadData.cpp" />
     <ClCompile Include="loadMap.cpp" />
@@ -305,12 +304,12 @@ call copy.bat</Command>
     </ClCompile>
     <ClCompile Include="TinyCamera.cpp" />
     <ClCompile Include="Traders.cpp" />
+    <ClCompile Include="updateFleets.cpp" />
     <ClCompile Include="updateGroups.cpp" />
     <ClCompile Include="updatePlanet.cpp" />
     <ClCompile Include="updateScuttles.cpp" />
     <ClCompile Include="updateTimeSpeed.cpp" />
     <ClCompile Include="updateUrbans.cpp" />
-    <ClCompile Include="updateVehicles.cpp" />
     <ClCompile Include="Urban.cpp" />
     <ClCompile Include="Vehicle.cpp" />
     <ClCompile Include="Wallet.cpp" />

@@ -45,10 +45,7 @@ void	loadMap(const FilePath& _path)
 	//MapImageの作成or読み込み
 	auto mapImageFunc = [&_path]() {
 		{
-			if (FileSystem::Exists(_path + L"MapImage.png"))
-			{
-				planet.mapTexture = Texture(_path + L"MapImage.png");
-			}
+			if (FileSystem::Exists(_path + L"MapImage.png")) planet.mapTexture = Texture(_path + L"MapImage.png");
 			else
 			{
 				//VoronoiMapの読み込み
@@ -96,22 +93,19 @@ void	loadMap(const FilePath& _path)
 	{
 		JSONReader reader(_path + L"Urbans.json");
 
-		for (auto json : reader.arrayView())
-			urbans.emplace_back(json);
-
+		for (auto json : reader.arrayView()) urbans.emplace_back(json);
 		for (auto& u : urbans)
-			for (auto& b : u.shelves)
-				b.joinedUrban = &u;
+		{
+			for (auto& b : u.shelves) b.joinedUrban = &u;
+		}
 	}
 	initRoutes();
-
 
 	//Incidentsデータのロード
 	if (FileSystem::Exists(_path + L"Incidents.json"))
 	{
 		incidentsJson = JSONReader(_path + L"Incidents.json");
-		for (auto json : incidentsJson.arrayView())
-			incidents.emplace_back(json);
+		for (auto json : incidentsJson.arrayView()) incidents.emplace_back(json);
 	}
 
 	//Groupsデータのロード
@@ -119,8 +113,7 @@ void	loadMap(const FilePath& _path)
 	{
 		auto json = JSONReader(_path + L"Groups.json");
 
-		for (auto j : json.arrayView())
-			groups.emplace_back(j);
+		for (auto j : json.arrayView()) groups.emplace_back(j);
 	}
 
 	//Nationsデータのロード
@@ -128,8 +121,7 @@ void	loadMap(const FilePath& _path)
 	{
 		auto json = JSONReader(_path + L"Nations.json");
 
-		for (auto j : json.arrayView())
-			nations.emplace_back(j);
+		for (auto j : json.arrayView()) nations.emplace_back(j);
 		for (auto& n : nations)
 		{
 			for (auto& u : n.ownUrbans) u->joinedNation = &n;

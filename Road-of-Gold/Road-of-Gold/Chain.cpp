@@ -1,7 +1,7 @@
 #include"Chain.h"
 #include"Urban.h"
 #include"ItemData.h"
-#include"Vehicle.h"
+#include"Fleet.h"
 #include"Route.h"
 #include"VehicleData.h"
 
@@ -17,7 +17,10 @@ String	Ring::valueText() const
 	case Code::None:return Format(adress, L"番地にジャンプ");
 	case Code::Move:return Format(urbans[value].name, L"に移動");
 	case Code::Jump:return Format(value, L"番地にジャンプ");
-	case Code::Wait:return Format(value, L"時間待つ");
+	case Code::Wait:
+		if (value >= 24 && value % 24 == 0) return Format(value / 24, L"日待つ");
+		if (value >= 24 && value % 24 != 0) return Format(value / 24, L"日と", value % 24, L"時間待つ");
+		if (value < 24) return Format(value, L"時間待つ");
 	case Code::Buy:	return Format(itemData[value].name, L"を購入");
 	case Code::Sell:return Format(L"アイテムをすべて売却");
 	case Code::ERR:	return Format(L"異常なコード");
@@ -50,13 +53,13 @@ Chain&	Chain::operator =(const Chain& _chain) {
 	isError = _chain.isError;
 	return *this;
 }
-bool	Chain::update(Vehicle* _v)
+bool	Chain::update(Fleet* _f)
 {
 	for (int cnt = 0;; cnt++)
 	{
-		if (readerPos < 0 || readerPos >= rings.size() || cnt > 100) isError = true;
+		if (readerPos < 0 || readerPos >= rings.size() || cnt > int(rings.size())) isError = true;
 		if (isError) return true;
-		if (_v->route != nullptr || _v->sleepTimer > 0) return false;
+		if (_f->route != nullptr || _f->sleepTimer > 0) return false;
 		auto& ring = rings[readerPos];
 
 		switch (ring.code)
@@ -65,20 +68,20 @@ bool	Chain::update(Vehicle* _v)
 			readerPos++;
 			break;
 		case Code::Move:
-			for (auto& r : _v->nowUrban->ownRoutes)
+			for (auto& r : _f->nowUrban->ownRoutes)
 			{
-				if (r->isSeaRoute == _v->data().isShip && r->toUrban->id() == ring.value && r->movingCost < _v->data().range)
+				if (r->isSeaRoute == _f->data.isShip && r->toUrban->id() == ring.value && r->movingCost < _f->data.range)
 				{
-					_v->route = r;
+					_f->route = r;
 					r->addVehicle();
 					break;
 				}
 			}
-			if (_v->route == nullptr) isError = true;
+			if (_f->route == nullptr) readerPos++;
 			break;
 		case Code::Wait:
-			_v->sleepTimer = ring.value / 24.0;
-			if (_v->sleepTimer == 0) readerPos++;
+			if (ring.value == 0) readerPos++;
+			else _f->sleepTimer = ring.value / 24.0;
 			break;
 		case Code::Jump:
 			readerPos = ring.value;
@@ -86,36 +89,36 @@ bool	Chain::update(Vehicle* _v)
 		case Code::Buy:
 		{
 			bool flag = false;
-			int volume = int(_v->data().volume / itemData[ring.value].volume);
+			int volume = int(_f->data.volume / itemData[ring.value].volume);
 
-			for (auto& b : _v->nowUrban->buyers)
+			for (auto& b : _f->nowUrban->buyers)
 			{
-				if (b.walletID == _v->walletID)
+				if (b.walletID == _f->walletID)
 				{
 					b.progress = 0;
-					_v->cargo = b.casket;
+					_f->cargo = b.casket;
 					b.casket.numItem = 0;
 					b.target = volume;
-					b.period = int(_v->period);
+					b.period = int(_f->period);
 					flag = true;
 					break;
 				}
 			}
 			if (!flag)
 			{
-				auto* u = _v->nowUrban;
-				u->buyers.emplace_back(_v->walletID, ring.value, int(_v->period), volume);
+				auto* u = _f->nowUrban;
+				u->buyers.emplace_back(_f->walletID, ring.value, int(_f->period), volume);
 			}
-			_v->sleepTimer = 0.5;
+			_f->sleepTimer = 0.5;
 			break;
 		}
 		case Code::Sell:
-			if (_v->cargo.numItem > 0)
+			if (_f->cargo.numItem > 0)
 			{
-				_v->nowUrban->sellers.emplace_back(_v->walletID, _v->cargo, int(_v->period));
+				_f->nowUrban->sellers.emplace_back(_f->walletID, _f->cargo, int(_f->period));
 			}
-			_v->cargo.numItem = 0;
-			_v->sleepTimer = 0.5;
+			_f->cargo.numItem = 0;
+			_f->sleepTimer = 0.5;
 			break;
 		case Code::ERR:
 			isError = true;

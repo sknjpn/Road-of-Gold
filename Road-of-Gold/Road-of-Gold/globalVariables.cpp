@@ -10,6 +10,7 @@
 #include"Scuttle.h"
 #include"Incident.h"
 #include"Nation.h"
+#include"Fleet.h"
 
 #include"EnergyData.h"
 #include"CitizenData.h"
@@ -32,7 +33,7 @@ Array<Export>	exports;
 Array<Scuttle>	scuttles;
 Array<Incident>	incidents;
 Array<Nation>	nations;
-
+Array<Fleet>	fleets;
 Array<EnergyData>	energyData;
 Array<CitizenData>	citizenData;
 Array<BiomeData>	biomeData;

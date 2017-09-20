@@ -6,6 +6,7 @@
 #include"Vehicle.h"
 #include"ItemData.h"
 #include"VehicleData.h"
+#include"Fleet.h"
 
 double tmr = 0.0;
 
@@ -15,52 +16,48 @@ void	updateGroups()
 
 	if (tmr > 0.0)
 	{
-		tmr -= Random(50.0, 100.0);
+		tmr -= 100.0;
 		//下位1/4の事業見直し
 		for (int i = 0; i < int(vehicles.size() / 10); i++)
 		{
 			int min = 0;
-			Vehicle* target = nullptr;
-			for (auto& v : vehicles)
+			Fleet* target = nullptr;
+			for (auto& f : fleets)
 			{
-				if (!v.stopFlag && (target == nullptr || min > v.wallet().money))
+				if (!f.stopFlag && (target == nullptr || min > f.wallet().money))
 				{
-					target = &v;
-					min = v.wallet().money;
+					target = &f;
+					min = f.wallet().money;
 				}
 			}
 			if (target != nullptr && !target->planFixed) target->stopFlag = true;
 		}
 		int avg = 0;
-		for (auto& v : vehicles) avg += v.wallet().money;
+		for (auto& f : fleets) avg += f.wallet().money;
 
-		for (auto& v : vehicles)
+		for (auto& f : fleets)
 		{
-			if (v.wallet().money <= 0 && !v.planFixed) v.stopFlag = true;
-			v.wallet().money = 0;
-			v.wallet().expenses = 0;
-			v.wallet().income = 0;
+			if (f.wallet().money <= 0 && !f.planFixed) f.stopFlag = true;
+			f.wallet().money = 0;
+			f.wallet().expenses = 0;
+			f.wallet().income = 0;
 		}
 	}
 
-	for (auto& v : vehicles)
+	for (auto& f : fleets)
 	{
-		if (v.chain.isError && !v.planFixed)
+		if (f.chain.isError && !f.planFixed)
 		{
-			v.nowUrban = &urbans.choice();
-			v.vehicleType = vehicleData.choice().id();
+			f.nowUrban = &urbans.choice();
 
-			v.chain.isError = false;
-			auto* u2 = v.nowUrban;
-			auto rs = u2->ownRoutes.filter([&v](const Route* r) { return (r->isSeaRoute == v.data().isShip) && (r->movingCost <= v.data().range); });
+			f.chain.isError = false;
+			auto* u2 = f.nowUrban;
+			auto rs = u2->ownRoutes.filter([&f](const Route* r) { return (r->isSeaRoute == f.data.isShip) && (r->movingCost <= f.data.range); });
 
 			//ルートがない場合、再生成
 			if (rs.isEmpty())
 			{
-				v.nowUrban = &urbans.choice();
-
-				//乗り物種類の変更
-				v.vehicleType = vehicleData.choice().id();
+				f.nowUrban = &urbans.choice();
 				continue;
 			}
 
@@ -85,45 +82,38 @@ void	updateGroups()
 			}
 			if (itemType == -1)
 			{
-				v.nowUrban = &urbans.choice();
-
-				//乗り物種類の変更
-				v.vehicleType = vehicleData.choice().id();
+				f.nowUrban = &urbans.choice();
 				continue;
 			}
 
-			v.route = nullptr;
-			v.routeProgress = 0;
-			v.sleepTimer = 0;
-			v.chain.clear();
-			v.period = (2.0 * r->movingCost / v.data().speed + 1.0);	//周回に要する時間
-			v.chain.rings.emplace_back(0, Code::Move, u1->id());
-			v.chain.rings.emplace_back(1, Code::Sell, 0);
-			v.chain.rings.emplace_back(2, Code::Move, u2->id());
-			v.chain.rings.emplace_back(3, Code::Buy, itemType);
-			v.chain.rings.emplace_back(4, Code::Jump, 0);
-			v.chain.rings.emplace_back(5, Code::None, 0);
-			v.chain.rings.emplace_back(6, Code::None, 0);
-			v.chain.rings.emplace_back(7, Code::None, 0);
-			v.chain.rings.emplace_back(8, Code::None, 0);
-			v.chain.rings.emplace_back(9, Code::None, 0);
+			f.route = nullptr;
+			f.routeProgress = 0;
+			f.sleepTimer = 0;
+			f.chain.clear();
+			f.period = (2.0 * r->movingCost / f.data.speed + 1.0);	//周回に要する時間
+			f.chain.rings.emplace_back(0, Code::Move, u1->id());
+			f.chain.rings.emplace_back(1, Code::Sell, 0);
+			f.chain.rings.emplace_back(2, Code::Move, u2->id());
+			f.chain.rings.emplace_back(3, Code::Buy, itemType);
+			f.chain.rings.emplace_back(4, Code::Jump, 0);
+			for (int i = int(f.chain.rings.size()); i < 10; i++) f.chain.rings.emplace_back(i, Code::None, 0);
 			bool flag = true;
-			v.exportLog = Export(u2, u1, itemType, 50 / v.period);
+			f.exportLog = Export(u2, u1, itemType, 50 / f.period);
 			for (auto& e : exports)
 			{
 				if (e.from == u2 && e.to == u1&& e.itemType == itemType)
 				{
-					e.numItemPerDay += 50 / v.period;
+					e.numItemPerDay += 50 / f.period;
 					flag = false;
 					break;
 				}
 			}
-			if (flag) exports.emplace_back(v.exportLog);
+			if (flag) exports.emplace_back(f.exportLog);
 
-			v.timer = 0;
+			f.timer = 0;
 
 			//販売価格の設定
-			v.wallet().price = u2->cost(itemType);
+			f.wallet().price = u2->cost(itemType);
 		}
 	}
 }

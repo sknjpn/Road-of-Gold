@@ -35,6 +35,7 @@ Urban::Urban(const JSONValue& _json)
 	{
 		double k = Random(1.0);
 		return 2.0* pow(k, 5) + 1.0*k + 0.4;
+		//return k;
 	};
 
 	//Citizens‚ÆCustomers‚Ì’Ç‰Á
@@ -50,7 +51,7 @@ Urban::Urban(const JSONValue& _json)
 	customers.sort_by([](Customer& _x, Customer& _y) { return _x.rate < _y.rate; });
 }
 Pos		Urban::pos() const { return nodes.at(joinedNodeID).pos; }
-Circle	Urban::shape() const { return Circle(pos().mPos, 0.01); }
+Circle	Urban::shape() const { return Circle(pos().mPos, 0.015); }
 bool	Urban::mouseOver() const
 {
 	return shape().mouseOver();

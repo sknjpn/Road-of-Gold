@@ -5,8 +5,7 @@
 #include"Wallet.h"
 #include"Energy.h"
 #include"Sandglass.h"
-#include"Seller.h"
-#include"Buyer.h"
+#include"Trader.h"
 #include"Customer.h"
 
 struct Node;
@@ -55,5 +54,6 @@ struct Urban
 extern Array<Urban> urbans;
 
 void	updateUrbans();
-void	drawUrbans();
+void	drawUrbanIcon();
+void	drawUrbanName();
 Urban*	getUrban(const String& _name);
