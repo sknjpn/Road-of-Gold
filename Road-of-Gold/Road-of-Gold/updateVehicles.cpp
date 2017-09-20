@@ -69,14 +69,11 @@ void	updateVehicles()
 				}
 				exports.remove_if([](const Export& e) { return e.numItemPerDay == 0; });
 				v.chain.clear();
+				for (auto& u : urbans) u.buyers.remove_if([&v](const Buyer& b) { return b.walletID == v.walletID; });
 
-				for (auto& u : urbans)
-				{
-					u.buyers.remove_if([&v](const Buyer& b) { return b.walletID == v.walletID; });
-				}
 				break;
 			}
-			else if(v.chain.update(&v)) break;	//error‚Ìê‡’Eo
+			else if (v.chain.update(&v)) break;	//error‚Ìê‡’Eo
 		}
 	}
 }

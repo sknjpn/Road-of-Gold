@@ -327,7 +327,7 @@ void	drawUI()
 				switch (ring.code)
 				{
 				case Code::Move:
-					if (int(sv.chain.readerPos) == i && !sv.chain.isError) RectF(rect2.pos, rect2.w*sv.routeProgress * sv.data().speed / sv.route->movingCost, rect2.h).draw(Color(Palette::Orange, 192));
+					if (int(sv.chain.readerPos) == i && sv.route != nullptr) RectF(rect2.pos, rect2.w*sv.routeProgress * sv.data().speed / sv.route->movingCost, rect2.h).draw(Color(Palette::Orange, 192));
 					break;
 				case Code::Buy:
 					if (int(sv.chain.readerPos) == i) RectF(rect2.pos, rect2.w*(0.5 - sv.sleepTimer) / 0.5, rect2.h).draw(Color(Palette::Orange, 192));
@@ -412,37 +412,36 @@ void	drawUI()
 				(*ui.fonts[16])(ring.codeText()).drawAt(rect1.center());
 				(*ui.fonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
 			}
-
-			//コピー１
+		}
+		//コピー１
+		{
+			Rect rect(0, 296, 240, 24);
+			if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
+			rect.drawFrame(2, fColor);
+			(*ui.fonts[16])(L"Copy→").drawAt(rect.center());
+			if (rect.leftClicked())
 			{
-				Rect rect(0, 296, 240, 24);
-				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
-				rect.drawFrame(2, fColor);
-				(*ui.fonts[16])(L"Copy→").drawAt(rect.center());
-				if (rect.leftClicked())
-				{
-					ui.newChain = sv.chain;
-					ui.newChain.isError = false;
-					ui.newChain.readerPos = 0;
-				}
+				ui.newChain = sv.chain;
+				ui.newChain.isError = false;
+				ui.newChain.readerPos = 0;
 			}
-			//コピー２
-			{
-				Rect rect(0, 320, 240, 24);
-				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
-				rect.drawFrame(2, fColor);
-				(*ui.fonts[16])(L"Copy←").drawAt(rect.center());
-				if (rect.leftClicked()) sv.chain = ui.newChain;
-			}
-			//設定
-			{
-				Rect rect(0, 344, 240, 24);
-				if (sv.planFixed) rect.draw(Palette::Red);
-				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
-				rect.drawFrame(2, fColor);
-				(*ui.fonts[16])(L"事業固定").drawAt(rect.center());
-				if (rect.leftClicked()) sv.planFixed = !sv.planFixed;
-			}
+		}
+		//コピー２
+		{
+			Rect rect(0, 320, 240, 24);
+			if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
+			rect.drawFrame(2, fColor);
+			(*ui.fonts[16])(L"Copy←").drawAt(rect.center());
+			if (rect.leftClicked()) sv.chain = ui.newChain;
+		}
+		//設定
+		{
+			Rect rect(0, 344, 240, 24);
+			if (sv.planFixed) rect.draw(Palette::Red);
+			if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
+			rect.drawFrame(2, fColor);
+			(*ui.fonts[16])(L"事業固定").drawAt(rect.center());
+			if (rect.leftClicked()) sv.planFixed = !sv.planFixed;
 		}
 	}
 	else if (ui.selectedUrbanID != -1)

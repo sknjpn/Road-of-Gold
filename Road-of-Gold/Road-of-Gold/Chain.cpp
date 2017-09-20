@@ -74,7 +74,7 @@ bool	Chain::update(Vehicle* _v)
 					break;
 				}
 			}
-			if (_v->route == nullptr) isError = true;
+			if (_v->route == nullptr) readerPos++;
 			break;
 		case Code::Wait:
 			_v->sleepTimer = ring.value / 24.0;

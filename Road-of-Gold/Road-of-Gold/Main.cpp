@@ -61,19 +61,15 @@ void Main()
 		updateScuttles();
 		selectItem();
 
-		if (planet.timeSpeed > 0)
-		{
-			updatePlanet();
-			updateGroups();
-			updateVehicles();
-			updateUrbans();
-		}
+		updatePlanet();
+		updateGroups();
+		updateVehicles();
+		updateUrbans();
 
 		drawPlanet();
 		drawRotues();
 		drawVehicles();
 		drawUrbans();
-		drawGroups();
 		drawUI();
 		drawScuttles();
 	}
