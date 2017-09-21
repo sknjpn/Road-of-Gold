@@ -22,9 +22,12 @@ void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color
 }
 void	drawUI()
 {
+	ui.keyControlBlocked = false;
+	if (ui.fleetNameTextBox.isActive()) ui.keyControlBlocked = true;
+
 	//Export
-	if (KeyE.down()) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
-	if (KeyR.down()) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;
+	if (KeyE.down() && !ui.keyControlBlocked) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
+	if (KeyR.down() && !ui.keyControlBlocked) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;
 	if (ui.drawExportImportPowerEnabled)
 	{
 		for (int i = 0; i < 2; ++i)
@@ -116,8 +119,8 @@ void	drawUI()
 		}
 	}
 
-	if (KeyR.down()) ui.useRouteMenu = !ui.useRouteMenu;
-	if (KeyU.down()) ui.useUrbanMenu = !ui.useUrbanMenu;
+	if (KeyR.down() && !ui.keyControlBlocked) ui.useRouteMenu = !ui.useRouteMenu;
+	if (KeyU.down() && !ui.keyControlBlocked) ui.useUrbanMenu = !ui.useUrbanMenu;
 	if (ui.useUrbanMenu)
 	{
 		const auto fColor = Palette::Skyblue;
@@ -245,7 +248,19 @@ void	drawUI()
 		{
 			Rect rect(240, 32);
 			rect.drawFrame(2, fColor);
-			(*ui.fonts[24])(sf.name).drawAt(rect.center());
+			if (rect.leftClicked())
+			{
+				ui.fleetNameTextBox.setText(sf.name);
+				ui.fleetNameTextBox.setActive(true);
+			}
+			if (ui.fleetNameTextBox.isActive())
+			{
+				ui.fleetNameTextBox.update();
+				ui.fleetNameTextBox.draw();
+				sf.name = ui.fleetNameTextBox.getText();
+			}
+			else (*ui.fonts[24])(sf.name).drawAt(rect.center());
+
 		}
 
 		//ユニットセレクト
@@ -255,6 +270,7 @@ void	drawUI()
 			rect1.drawFrame(2, fColor);
 			if (rect1.leftClicked())
 			{
+				ui.fleetNameTextBox.setActive(false);
 				if (KeyShift.pressed()) ui.selectedFleetID -= 100;
 				else if (KeyControl.pressed()) ui.selectedFleetID -= 10;
 				else ui.selectedFleetID--;
@@ -267,6 +283,7 @@ void	drawUI()
 			rect2.drawFrame(2, fColor);
 			if (rect2.leftClicked())
 			{
+				ui.fleetNameTextBox.setActive(false);
 				if (KeyShift.pressed()) ui.selectedFleetID += 100;
 				else if (KeyControl.pressed()) ui.selectedFleetID += 10;
 				else ui.selectedFleetID++;

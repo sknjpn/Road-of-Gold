@@ -17,13 +17,16 @@ struct UI
 	bool	drawExportImportPowerEnabled;
 	Route*	selectedRoute;
 	Chain	newChain;
+	TextBox	fleetNameTextBox;
+	bool	keyControlBlocked;
 
 	//autoCode
 	int		destinationUrbanID;
 	int		transportItemType;
 
 	UI()
-		: transportItemType(0)
+		: keyControlBlocked(false)
+		, transportItemType(0)
 		, destinationUrbanID(0)
 		, urbanDrawState(0)
 		, useRouteMenu(false)

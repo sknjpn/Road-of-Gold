@@ -7,7 +7,7 @@
 #include"BiomeData.h"
 
 Fleet::Fleet(int _ownVehicleType, Urban* _nowUrban)
-	: name(Format(L"‘æ", id() + 1, L"‘D’c"))
+	: name(Format(L"‘D’c"))
 	, chain()
 	, walletID(getNewWalletID())
 	, sleepTimer(0)

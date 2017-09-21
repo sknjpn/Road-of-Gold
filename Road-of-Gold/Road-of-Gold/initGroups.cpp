@@ -31,6 +31,7 @@ void	initGroups()
 				{
 					flag = true;
 					fleets.emplace_back(i, u);
+					fleets.back().name = Format(L"‘æ", fleets.size(), L"‘D’c");
 					break;
 				}
 			}
