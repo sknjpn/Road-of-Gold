@@ -1,5 +1,6 @@
 #pragma once
 #include"united.h"
+#include"ColorPalette.h"
 
 struct ItemData
 {
@@ -9,6 +10,7 @@ struct ItemData
 	TextBox	valueTextBox;
 	TextBox iconTextBox;
 	TextBox colorTextBox;
+	ColorPalette	colorPalette;
 	Image	iconImage;
 	Texture	iconTexture;
 
@@ -20,6 +22,7 @@ struct ItemData
 		, colorTextBox(textBoxFont, 288, 24 * 9, 120, _j[L"Color"].getString())
 		, iconImage(_j[L"Icon"].getString())
 		, iconTexture(iconImage)
+		, colorPalette(720, 120)
 	{}
 	ItemData()
 		: nameTextBox(textBoxFont, 288, 24, 120, L"newItem")
@@ -27,6 +30,7 @@ struct ItemData
 		, valueTextBox(textBoxFont, 288, 24 * 5, 120, L"0")
 		, iconTextBox(textBoxFont, 288, 24 * 7, 360)
 		, colorTextBox(textBoxFont, 288, 24 * 9, 120, L"#FF0000")
+		, colorPalette(720, 120)
 	{}
 	String	name() const { return nameTextBox.getText(); }
 };
@@ -64,7 +68,7 @@ struct SetItemData : MyApp::Scene
 		}
 
 		//左メニューキー操作
-		if(false)
+		if (false)
 		{
 			if (KeyW.down() && getData().selectedSceneID > 0)
 			{
@@ -116,7 +120,7 @@ struct SetItemData : MyApp::Scene
 		}
 
 		//Tabキー対応
-		if(KeyTab.down())
+		if (KeyTab.down())
 		{
 			auto& i = itemData[getData().selectedItemType];
 			if (i.nameTextBox.isActive())
@@ -184,6 +188,13 @@ struct SetItemData : MyApp::Scene
 
 		}
 
+		//ColorPalette
+		{
+			auto& i = itemData[getData().selectedItemType];
+			if (i.colorPalette.update()) i.colorTextBox.setText(L"#" + i.colorPalette.color().toHex());
+			i.colorPalette.draw();
+		}
+
 		{
 			Rect rect(720, 72, 120, 24);
 			if (rect.mouseOver()) rect.draw(Palette::Orange);
@@ -195,5 +206,7 @@ struct SetItemData : MyApp::Scene
 			rect.drawFrame(2);
 			font16(L"項目の削除").drawAt(rect.center());
 		}
+
+
 	}
 };

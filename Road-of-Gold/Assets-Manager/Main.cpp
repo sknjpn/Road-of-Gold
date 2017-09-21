@@ -103,6 +103,7 @@ void Main()
 	Window::SetTitle(L"Assets-Manager");
 	Window::Resize(1280, 720);
 
+
 	MyApp manager;
 	manager
 		.add<SetItemData>(itemList[0])
