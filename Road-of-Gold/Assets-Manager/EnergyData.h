@@ -55,7 +55,7 @@ struct SetEnergyData : MyApp::Scene
 		}
 
 		//左メニューキー操作
-		if(false)
+		if (false)
 		{
 			if (KeyW.down() && getData().selectedSceneID > 0)
 			{
@@ -122,6 +122,20 @@ struct SetEnergyData : MyApp::Scene
 				e.nameTextBox.setActive(true);
 			}
 			else e.nameTextBox.setActive(true);
+		}
+
+		//クリップボード
+		if (KeyControl.pressed() && KeyV.down())
+		{
+			auto& e = energyData[getData().selectedEnergyType];
+			String string;
+
+			Clipboard::GetText(string);
+			if (string)
+			{
+				if (e.nameTextBox.isActive()) e.nameTextBox.setText(string);
+				if (e.iconTextBox.isActive()) e.iconTextBox.setText(string);
+			}
 		}
 
 		//アイテムの更新＆描画

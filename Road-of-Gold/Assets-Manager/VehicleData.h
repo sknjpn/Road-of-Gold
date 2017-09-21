@@ -62,7 +62,7 @@ struct SetVehicleData : MyApp::Scene
 		}
 
 		//左メニューキー操作
-		if(false)
+		if (false)
 		{
 			if (KeyW.down() && getData().selectedSceneID > 0)
 			{
@@ -116,77 +116,95 @@ struct SetVehicleData : MyApp::Scene
 		//Tabキー対応
 		if (KeyTab.down())
 		{
-			auto& i = vehicleData[getData().selectedVehicleType];
-			if (i.nameTextBox.isActive())
+			auto& v = vehicleData[getData().selectedVehicleType];
+			if (v.nameTextBox.isActive())
 			{
-				i.nameTextBox.setActive(false);
-				i.speedTextBox.setActive(true);
+				v.nameTextBox.setActive(false);
+				v.speedTextBox.setActive(true);
 			}
-			else if (i.speedTextBox.isActive())
+			else if (v.speedTextBox.isActive())
 			{
-				i.speedTextBox.setActive(false);
-				i.volumeTextBox.setActive(true);
+				v.speedTextBox.setActive(false);
+				v.volumeTextBox.setActive(true);
 			}
-			else if (i.volumeTextBox.isActive())
+			else if (v.volumeTextBox.isActive())
 			{
-				i.volumeTextBox.setActive(false);
-				i.iconTextBox.setActive(true);
+				v.volumeTextBox.setActive(false);
+				v.iconTextBox.setActive(true);
 			}
-			else if (i.iconTextBox.isActive())
+			else if (v.iconTextBox.isActive())
 			{
-				i.iconTextBox.setActive(false);
-				i.rangeTextBox.setActive(true);
+				v.iconTextBox.setActive(false);
+				v.rangeTextBox.setActive(true);
 			}
-			else if (i.rangeTextBox.isActive())
+			else if (v.rangeTextBox.isActive())
 			{
-				i.rangeTextBox.setActive(false);
-				i.isShipTextBox.setActive(true);
+				v.rangeTextBox.setActive(false);
+				v.isShipTextBox.setActive(true);
 			}
-			else if (i.isShipTextBox.isActive())
+			else if (v.isShipTextBox.isActive())
 			{
-				i.isShipTextBox.setActive(false);
-				i.nameTextBox.setActive(true);
+				v.isShipTextBox.setActive(false);
+				v.nameTextBox.setActive(true);
 			}
-			else i.nameTextBox.setActive(true);
+			else v.nameTextBox.setActive(true);
 		}
-		
+
+		//クリップボード
+		if (KeyControl.pressed() && KeyV.down())
+		{
+			auto& v = vehicleData[getData().selectedVehicleType];
+			String string;
+
+			Clipboard::GetText(string);
+			if (string)
+			{
+				if (v.nameTextBox.isActive()) v.nameTextBox.setText(string);
+				if (v.speedTextBox.isActive()) v.speedTextBox.setText(string);
+				if (v.volumeTextBox.isActive()) v.volumeTextBox.setText(string);
+				if (v.iconTextBox.isActive()) v.iconTextBox.setText(string);
+				if (v.rangeTextBox.isActive()) v.rangeTextBox.setText(string);
+				if (v.isShipTextBox.isActive()) v.isShipTextBox.setText(string);
+			}
+		}
+
 		//アイテムの更新＆描画
 		{
-			auto& i = vehicleData[getData().selectedVehicleType];
+			auto& v = vehicleData[getData().selectedVehicleType];
 
 			font16(L"ユニット名").drawAt(348, 12);
-			i.nameTextBox.update();
-			i.nameTextBox.draw();
+			v.nameTextBox.update();
+			v.nameTextBox.draw();
 
 			font16(L"航行速度(小数)").drawAt(348, 60);
-			i.speedTextBox.update();
-			i.speedTextBox.draw();
+			v.speedTextBox.update();
+			v.speedTextBox.draw();
 
 			font16(L"積載容量").drawAt(348, 108);
-			i.volumeTextBox.update();
-			i.volumeTextBox.draw();
-			i.volumeTextBox.setText(Format(ParseInt<int32>(i.volumeTextBox.getText(), Arg::radix = 10)));
+			v.volumeTextBox.update();
+			v.volumeTextBox.draw();
+			v.volumeTextBox.setText(Format(ParseInt<int32>(v.volumeTextBox.getText(), Arg::radix = 10)));
 
 			font16(L"アイコンファイル").drawAt(348, 156);
-			auto beforeFilePath = i.iconTextBox.getText();
-			i.iconTextBox.update();
-			i.iconTextBox.draw();
-			if (DragDrop::HasNewFilePaths()) i.iconTextBox.setText(DragDrop::GetDroppedFilePaths().front().path);
-			if (beforeFilePath != i.iconTextBox.getText())
+			auto beforeFilePath = v.iconTextBox.getText();
+			v.iconTextBox.update();
+			v.iconTextBox.draw();
+			if (DragDrop::HasNewFilePaths()) v.iconTextBox.setText(DragDrop::GetDroppedFilePaths().front().path);
+			if (beforeFilePath != v.iconTextBox.getText())
 			{
-				i.iconImage = Image(i.iconTextBox.getText());
-				i.iconTexture = Texture(i.iconImage);
+				v.iconImage = Image(v.iconTextBox.getText());
+				v.iconTexture = Texture(v.iconImage);
 			}
 			Rect(432, 24, 128, 128).draw(DragDrop::DragOver() ? Palette::Gray : Color(0, 0)).drawFrame(4);
-			if (i.iconTexture) i.iconTexture.resize(128, 128).draw(432, 24);
+			if (v.iconTexture) v.iconTexture.resize(128, 128).draw(432, 24);
 
 			font16(L"航続距離(小数)").drawAt(348, 204);
-			i.rangeTextBox.update();
-			i.rangeTextBox.draw();
+			v.rangeTextBox.update();
+			v.rangeTextBox.draw();
 
 			font16(L"船かどうか(bool)").drawAt(492, 204);
-			i.isShipTextBox.update();
-			i.isShipTextBox.draw();
+			v.isShipTextBox.update();
+			v.isShipTextBox.draw();
 
 		}
 

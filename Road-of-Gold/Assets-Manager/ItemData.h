@@ -151,6 +151,23 @@ struct SetItemData : MyApp::Scene
 			else i.nameTextBox.setActive(true);
 		}
 
+		//クリップボード
+		if (KeyControl.pressed() && KeyV.down())
+		{
+			auto& i = itemData[getData().selectedItemType];
+			String string;
+
+			Clipboard::GetText(string);
+			if (string)
+			{
+				if (i.nameTextBox.isActive()) i.nameTextBox.setText(string);
+				if (i.volumeTextBox.isActive()) i.volumeTextBox.setText(string);
+				if (i.valueTextBox.isActive()) i.valueTextBox.setText(string);
+				if (i.iconTextBox.isActive()) i.iconTextBox.setText(string);
+				if (i.colorTextBox.isActive()) i.colorTextBox.setText(string);
+			}
+		}
+
 		//アイテムの更新＆描画
 		{
 			auto& i = itemData[getData().selectedItemType];
