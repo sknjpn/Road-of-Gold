@@ -104,3 +104,37 @@ bool	Fleet::mouseOver() const
 
 Wallet&	Fleet::wallet() const { return wallets[walletID]; }
 int		Fleet::id() const { return int(this - &fleets.front()); }
+bool	Fleet::canMoveTo(const Urban& _u)
+{
+	if (nowUrban == &_u) return true;
+	
+	Array<bool>	urbanFlags(urbans.size(), false);
+	auto f = [this](Route* r) {
+		return r->isSeaRoute == data.isShip && r->movingCost < data.range;
+	};
+
+	urbanFlags[nowUrban->id()] = true;
+
+	for (;;)
+	{
+		bool flag = true;
+
+		for (auto& u : urbans)
+		{
+			if (urbanFlags[u.id()]) continue;
+
+			for (auto* r : u.ownRoutes)
+			{
+				if (f(r) && urbanFlags[r->toUrban->id()])
+				{
+					if (&u == &_u) return true;
+					urbanFlags[u.id()] = true;
+					flag = false;
+				}
+			}
+		}
+		if (flag) break;
+	}
+
+	return false;
+}
