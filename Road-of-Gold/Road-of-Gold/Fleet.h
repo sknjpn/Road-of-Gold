@@ -34,7 +34,8 @@ struct Fleet
 	Wallet&	wallet() const;
 	bool	mouseOver() const;
 	int		id() const;
-	bool	canMoveTo(const Urban& _u);
+	bool	canMoveTo(const Urban& _u) const;
+	void	setMoveTo(const Urban& _u);
 };
 
 extern Array<Fleet>	fleets;

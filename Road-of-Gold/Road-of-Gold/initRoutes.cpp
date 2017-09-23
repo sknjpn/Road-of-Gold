@@ -4,21 +4,21 @@
 #include"Path.h"
 #include"BiomeData.h"
 
-struct VirtualNode
-{
-	bool	isAdded;
-	int		fromNodeID;
-	double	cost;
-
-	VirtualNode()
-		: isAdded(false)
-		, fromNodeID(-1)
-		, cost(0)
-	{}
-};
-
 void	initRoutes()
 {
+	struct VirtualNode
+	{
+		bool	isAdded;
+		int		fromNodeID;
+		double	cost;
+
+		VirtualNode()
+			: isAdded(false)
+			, fromNodeID(-1)
+			, cost(0)
+		{}
+	};
+
 	Stopwatch	stopwatch(true);
 	Array<int>	tempNodeIDs;
 	Array<VirtualNode>	virtualNodes;

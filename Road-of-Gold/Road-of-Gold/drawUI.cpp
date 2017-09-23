@@ -499,6 +499,9 @@ void	drawUI()
 					ui.newChain.rings.emplace_back(0, Code::Move, sf.nowUrban->id());
 					ui.newChain.rings.emplace_back(1, Code::Move, ui.destinationUrbanID);
 					for (int i = int(ui.newChain.rings.size()); i < 10; i++) ui.newChain.rings.emplace_back(i, Code::None, 0);
+
+					//test
+					sf.setMoveTo(urbans[ui.destinationUrbanID]);
 				}
 			}
 			{
