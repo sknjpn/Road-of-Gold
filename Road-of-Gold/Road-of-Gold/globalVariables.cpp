@@ -8,7 +8,7 @@
 #include"UI.h"
 #include"Export.h"
 #include"Scuttle.h"
-#include"Incident.h"
+
 #include"Nation.h"
 #include"Fleet.h"
 
@@ -31,7 +31,6 @@ Array<Wallet>	wallets;
 Array<Vehicle>	vehicles;
 Array<Export>	exports;
 Array<Scuttle>	scuttles;
-Array<Incident>	incidents;
 Array<Nation>	nations;
 Array<Fleet>	fleets;
 Array<EnergyData>	energyData;

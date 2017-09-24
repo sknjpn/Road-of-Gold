@@ -10,6 +10,8 @@
 #include"Data.h"
 #include"Fleet.h"
 #include"VehicleData.h"
+#include<lua.hpp>
+#include<luaconf.h>
 
 void Main()
 {
@@ -44,6 +46,9 @@ void Main()
 	Output << L"MainLoopの開始";
 
 	auto bgmItems = FileSystem::DirectoryContents(L"assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == L"mp3"; });
+
+	lua_getglobal(planet.incidentsLua, "init");
+	lua_pcall(planet.incidentsLua, 0, 0, 0);
 
 	while (System::Update())
 	{
