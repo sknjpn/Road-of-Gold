@@ -1,6 +1,6 @@
 #include"Planet.h"
 #include"Urban.h"
-#include"UI.h"
+#include"Display.h"
 
 void	drawUrbanIcon()
 {
@@ -27,9 +27,9 @@ void	drawUrbanName()
 		{
 			for (double angle = 0; angle < 360_deg; angle += 5_deg)
 			{
-				(*ui.fonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96).movedBy(Vec2(4, 0).rotated(angle)), Palette::White);
+				(*display.fonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96).movedBy(Vec2(4, 0).rotated(angle)), Palette::White);
 			}
-			(*ui.fonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96), Palette::Black);
+			(*display.fonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96), Palette::Black);
 		}
 	}
 }

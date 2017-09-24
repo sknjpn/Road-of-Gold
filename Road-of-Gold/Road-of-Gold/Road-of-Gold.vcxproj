@@ -259,7 +259,7 @@ call copy.bat</Command>
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="TinyCamera.h" />
     <ClInclude Include="Trader.h" />
-    <ClInclude Include="UI.h" />
+    <ClInclude Include="Display.h" />
     <ClInclude Include="Urban.h" />
     <ClInclude Include="Vehicle.h" />
     <ClInclude Include="VehicleData.h" />
@@ -267,6 +267,8 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chain.cpp" />
+    <ClCompile Include="Display.cpp" />
+    <ClCompile Include="drawDisplay.cpp" />
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Shelf.cpp" />
@@ -276,7 +278,6 @@ call copy.bat</Command>
     <ClCompile Include="drawPlanet.cpp" />
     <ClCompile Include="drawRoutes.cpp" />
     <ClCompile Include="drawScuttles.cpp" />
-    <ClCompile Include="drawUI.cpp" />
     <ClCompile Include="drawUrbans.cpp" />
     <ClCompile Include="drawVehicles.cpp" />
     <ClCompile Include="Energy.cpp" />
@@ -304,11 +305,16 @@ call copy.bat</Command>
     </ClCompile>
     <ClCompile Include="TinyCamera.cpp" />
     <ClCompile Include="Traders.cpp" />
+    <ClCompile Include="updateAllUrbansInfo.cpp" />
+    <ClCompile Include="updateExportRelationsInfo.cpp" />
+    <ClCompile Include="updateFleetInfo.cpp" />
     <ClCompile Include="updateFleets.cpp" />
+    <ClCompile Include="updateFleetsInfo.cpp" />
     <ClCompile Include="updateGroups.cpp" />
     <ClCompile Include="updatePlanet.cpp" />
     <ClCompile Include="updateScuttles.cpp" />
     <ClCompile Include="updateTimeSpeed.cpp" />
+    <ClCompile Include="updateUrbanInfo.cpp" />
     <ClCompile Include="updateUrbans.cpp" />
     <ClCompile Include="Urban.cpp" />
     <ClCompile Include="Vehicle.cpp" />

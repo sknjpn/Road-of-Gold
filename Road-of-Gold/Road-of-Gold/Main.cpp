@@ -4,7 +4,7 @@
 #include"Node.h"
 #include"Planet.h"
 #include"Route.h"
-#include"UI.h"
+#include"Display.h"
 #include"Sound.h"
 #include"Scuttle.h"
 #include"Data.h"
@@ -31,11 +31,11 @@ void Main()
 	{
 		size_t size = 1024;
 		fonts.reserve(size);
-		ui.fonts.reserve(size);
+		display.fonts.reserve(size);
 		for (auto i : step(size)) fonts.emplace_back(i);
-		for (auto i : step(size)) ui.fonts.emplace_back(&fonts.at(i));
+		for (auto i : step(size)) display.fonts.emplace_back(&fonts.at(i));
 	}
-	ui.fleetNameTextBox = TextBox(*ui.fonts[22], 0, 0, 240);
+	display.fleetNameTextBox = TextBox(*display.fonts[22], 0, 0, 240);
 
 	initSounds();
 
@@ -52,13 +52,14 @@ void Main()
 
 	while (System::Update())
 	{
+
 		if (!bgm.isPlaying() && !bgmItems.isEmpty())
 		{
 			bgm = Audio(bgmItems.choice());
 			bgm.play();
 		}
 
-		if (KeyB.down() && !ui.keyControlBlocked)
+		if (KeyB.down() && !display.keyControlBlocked)
 		{
 			for (int j = 0; j < 100; j++)
 			{
@@ -84,7 +85,6 @@ void Main()
 		tinyCamera.update();
 		updateTimeSpeed();
 		updateScuttles();
-		selectItem();
 
 		updatePlanet();
 		updateGroups();
@@ -98,5 +98,16 @@ void Main()
 		drawUrbanName();
 		drawUI();
 		drawScuttles();
+
+		if (KeyF11.down())
+		{
+			if (Window::GetState().fullScreen)
+			{
+				INIReader iniReader(L"assets/config.ini");
+				Graphics::SetFullScreen(false, iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
+			}
+			else Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
+			System::Update();
+		}
 	}
 }

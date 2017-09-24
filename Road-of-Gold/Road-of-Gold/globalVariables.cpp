@@ -5,7 +5,7 @@
 #include"Planet.h"
 #include"Route.h"
 #include"Wallet.h"
-#include"UI.h"
+#include"Display.h"
 #include"Export.h"
 #include"Scuttle.h"
 
@@ -18,7 +18,8 @@
 #include"VehicleData.h"
 #include"ItemData.h"
 
-UI			ui;
+Display			display;
+DisplayUrban	displayUrban;
 Planet		planet;
 TinyCamera	tinyCamera;
 JSONReader	incidentsJson;

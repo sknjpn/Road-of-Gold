@@ -3,7 +3,7 @@
 #include"ItemData.h"
 #include"VehicleData.h"
 #include"Vehicle.h"
-#include"UI.h"
+#include"Display.h"
 
 void	drawFleets()
 {
@@ -28,10 +28,10 @@ void	drawFleets()
 			auto pos = f.pos();
 			RectF rect(pos*r, Size(160, 24));
 			
-			if (ui.selectedFleets.include(&f)) rect.draw(Palette::Lightgreen).drawFrame(4, Palette::White);
+			if (display.selectedFleets.include(&f)) rect.draw(Palette::Lightgreen).drawFrame(4, Palette::White);
 			else rect.draw(Palette::Darkgreen).drawFrame(4, Palette::Green);
 
-			(*ui.fonts[16])(f.name).draw(rect.pos.movedBy(4, 1));
+			(*display.fonts[16])(f.name).draw(rect.pos.movedBy(4, 1));
 		}
 	}
 }

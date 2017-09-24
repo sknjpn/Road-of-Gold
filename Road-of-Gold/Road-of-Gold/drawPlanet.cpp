@@ -1,5 +1,5 @@
 #include"Planet.h"
-#include"UI.h"
+#include"Display.h"
 
 void	drawPlanet()
 {

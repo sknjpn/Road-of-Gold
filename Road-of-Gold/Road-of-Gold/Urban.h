@@ -50,6 +50,7 @@ struct Urban
 	bool	hasRoute() const;
 	bool	hasSeaRoute() const;
 	bool	hasLandRoute() const;
+	int		numCitizens(int _citizenType) const;
 };
 
 extern Array<Urban> urbans;

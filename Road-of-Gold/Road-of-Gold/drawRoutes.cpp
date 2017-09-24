@@ -3,15 +3,15 @@
 #include"TinyCamera.h"
 #include"Route.h"
 #include"Urban.h"
-#include"UI.h"
+#include"Display.h"
 
 void	drawRotues()
 {
-	if (ui.selectedUrbanID != -1)
+	if (display.selectedUrban != nullptr)
 	{
-		for (auto* r : urbans[ui.selectedUrbanID].ownRoutes) drawRotue(*r, Color(Palette::White, 128));
+		for (auto* r : display.selectedUrban->ownRoutes) drawRotue(*r, Color(Palette::White, 128));
 
-		if (ui.selectedRoute != nullptr) drawRotue(*ui.selectedRoute, Palette::Red);
+		if (display.selectedRoute != nullptr) drawRotue(*display.selectedRoute, Palette::Red);
 	}
 }
 void	drawRotue(const Route& _r, const Color& _color)
