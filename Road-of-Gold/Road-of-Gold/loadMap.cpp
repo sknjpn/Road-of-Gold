@@ -2,7 +2,7 @@
 #include"Node.h"
 #include"Urban.h"
 #include"BiomeData.h"
-#include"Incident.h"
+
 #include"Scuttle.h"
 #include"Group.h"
 #include"Nation.h"
@@ -10,6 +10,7 @@
 #include"Route.h"
 #include<thread>
 #include"Data.h"
+#include<lua.hpp>
 
 bool	selectMap()
 {
@@ -42,6 +43,9 @@ bool	selectMap()
 }
 void	loadMap(const FilePath& _path)
 {
+	//mapPathの登録
+	planet.mapPath = _path.removed(FileSystem::CurrentPath());
+
 	//MapImageの作成or読み込み
 	auto mapImageFunc = [&_path]() {
 		{
@@ -102,10 +106,16 @@ void	loadMap(const FilePath& _path)
 	initRoutes();
 
 	//Incidentsデータのロード
-	if (FileSystem::Exists(_path + L"Incidents.json"))
+	if (FileSystem::Exists(_path + L"Incidents.lua"))
 	{
-		incidentsJson = JSONReader(_path + L"Incidents.json");
-		for (auto json : incidentsJson.arrayView()) incidents.emplace_back(json);
+		auto* lua = planet.incidentsLua;
+		const auto& filePath = String(_path + L"Incidents.lua").narrow().c_str();
+
+		if (luaL_loadfile(lua, filePath) || lua_pcall(planet.incidentsLua, 0, 0, 0))
+		{
+			Output << L"Incidents.luaの読み込みに失敗";
+			Output << CharacterSet::FromUTF8(lua_tostring(lua, -1));
+		}
 	}
 
 	//Groupsデータのロード

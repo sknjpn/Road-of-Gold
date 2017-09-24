@@ -1,10 +1,12 @@
 #include"Planet.h"
-#include"Incident.h"
+
+#include<lua.hpp>
 
 void	updatePlanet()
 {
-	if (planet.sandglass.update())
-	{
-		for (auto& i : incidents) i.update();
-	}
+	planet.sandglass.update();
+
+	//Lua
+	lua_getglobal(planet.incidentsLua, "update");
+	lua_pcall(planet.incidentsLua, 0, 0, 0);
 }

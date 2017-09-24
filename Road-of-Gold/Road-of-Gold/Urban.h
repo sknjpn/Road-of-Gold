@@ -46,6 +46,7 @@ struct Urban
 	Circle	shape() const;
 	bool	mouseOver() const;
 	bool	leftClicked() const;
+	bool	rightClicked() const;
 	bool	hasRoute() const;
 	bool	hasSeaRoute() const;
 	bool	hasLandRoute() const;

@@ -10,6 +10,8 @@
 #include"Data.h"
 #include"Fleet.h"
 #include"VehicleData.h"
+#include<lua.hpp>
+#include<luaconf.h>
 
 void Main()
 {
@@ -33,6 +35,7 @@ void Main()
 		for (auto i : step(size)) fonts.emplace_back(i);
 		for (auto i : step(size)) ui.fonts.emplace_back(&fonts.at(i));
 	}
+	ui.fleetNameTextBox = TextBox(*ui.fonts[22], 0, 0, 240);
 
 	initSounds();
 
@@ -44,6 +47,9 @@ void Main()
 
 	auto bgmItems = FileSystem::DirectoryContents(L"assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == L"mp3"; });
 
+	lua_getglobal(planet.incidentsLua, "init");
+	lua_pcall(planet.incidentsLua, 0, 0, 0);
+
 	while (System::Update())
 	{
 		if (!bgm.isPlaying() && !bgmItems.isEmpty())
@@ -52,7 +58,7 @@ void Main()
 			bgm.play();
 		}
 
-		if (KeyB.down())
+		if (KeyB.down() && !ui.keyControlBlocked)
 		{
 			for (int j = 0; j < 100; j++)
 			{

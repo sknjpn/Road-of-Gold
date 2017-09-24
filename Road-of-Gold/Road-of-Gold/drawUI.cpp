@@ -22,9 +22,58 @@ void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color
 }
 void	drawUI()
 {
+	ui.keyControlBlocked = false;
+	if (ui.fleetNameTextBox.isActive()) ui.keyControlBlocked = true;
+
+	//selectedRegion
+	if (MouseL.down()) ui.selectedRegion.pos = Cursor::Pos();
+	if (MouseL.pressed())
+	{
+		ui.selectedRegion.size = Cursor::Pos() - ui.selectedRegion.pos;
+		ui.selectedRegion.draw(Color(Palette::Red, 128)).drawFrame(2, Palette::Red);
+
+	}
+	if (MouseL.up())
+	{
+		ui.selectedFleets.clear();
+		if (ui.selectedFleetID == -1 && ui.selectedUrbanID == -1)
+		{
+			if (ui.selectedRegion.size.x < 0) { ui.selectedRegion.pos.x += ui.selectedRegion.size.x; ui.selectedRegion.size.x = -ui.selectedRegion.size.x; }
+			if (ui.selectedRegion.size.y < 0) { ui.selectedRegion.pos.y += ui.selectedRegion.size.y; ui.selectedRegion.size.y = -ui.selectedRegion.size.y; }
+			for (int i = 0; i < 2; ++i)
+			{
+				for (auto& f : fleets)
+				{
+					if (ui.selectedRegion.intersects(tinyCamera.getMat3x2(i).transform(f.pos()))) ui.selectedFleets.emplace_back(&f);
+				}
+			}
+		}
+	}
+	if (ui.selectedUrbanID != -1 || ui.selectedFleetID != -1) ui.selectedFleets.clear();
+	if (!ui.selectedFleets.isEmpty())
+	{
+		//右クリック移動
+		for (int i = 0; i < 2; ++i)
+		{
+			auto t = tinyCamera.createTransformer(i);
+			for (auto& u : urbans)
+			{
+				if (u.rightClicked())
+				{
+					for (auto* f : ui.selectedFleets)
+					{
+						//test
+						f->chain.clear();
+						f->setMoveTo(u);
+						f->planFixed = true;
+					}
+				}
+			}
+		}
+	}
 	//Export
-	if (KeyE.down()) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
-	if (KeyR.down()) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;
+	if (KeyE.down() && !ui.keyControlBlocked) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
+	if (KeyR.down() && !ui.keyControlBlocked) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;
 	if (ui.drawExportImportPowerEnabled)
 	{
 		for (int i = 0; i < 2; ++i)
@@ -116,8 +165,8 @@ void	drawUI()
 		}
 	}
 
-	if (KeyR.down()) ui.useRouteMenu = !ui.useRouteMenu;
-	if (KeyU.down()) ui.useUrbanMenu = !ui.useUrbanMenu;
+	if (KeyR.down() && !ui.keyControlBlocked) ui.useRouteMenu = !ui.useRouteMenu;
+	if (KeyU.down() && !ui.keyControlBlocked) ui.useUrbanMenu = !ui.useUrbanMenu;
 	if (ui.useUrbanMenu)
 	{
 		const auto fColor = Palette::Skyblue;
@@ -235,6 +284,22 @@ void	drawUI()
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
 
+		//右クリック移動
+		for (int i = 0; i < 2; ++i)
+		{
+			auto t = tinyCamera.createTransformer(i);
+			for (auto& u : urbans)
+			{
+				if (u.rightClicked())
+				{
+					//test
+					sf.chain.clear();
+					sf.setMoveTo(u);
+					sf.planFixed = true;
+				}
+			}
+		}
+
 		//全体枠
 		{
 			Rect rect(480, Window::Size().y);
@@ -245,7 +310,19 @@ void	drawUI()
 		{
 			Rect rect(240, 32);
 			rect.drawFrame(2, fColor);
-			(*ui.fonts[24])(sf.name).drawAt(rect.center());
+			if (rect.leftClicked())
+			{
+				ui.fleetNameTextBox.setText(sf.name);
+				ui.fleetNameTextBox.setActive(true);
+			}
+			if (ui.fleetNameTextBox.isActive())
+			{
+				ui.fleetNameTextBox.update();
+				ui.fleetNameTextBox.draw();
+				sf.name = ui.fleetNameTextBox.getText();
+			}
+			else (*ui.fonts[24])(sf.name).drawAt(rect.center());
+
 		}
 
 		//ユニットセレクト
@@ -255,6 +332,7 @@ void	drawUI()
 			rect1.drawFrame(2, fColor);
 			if (rect1.leftClicked())
 			{
+				ui.fleetNameTextBox.setActive(false);
 				if (KeyShift.pressed()) ui.selectedFleetID -= 100;
 				else if (KeyControl.pressed()) ui.selectedFleetID -= 10;
 				else ui.selectedFleetID--;
@@ -267,6 +345,7 @@ void	drawUI()
 			rect2.drawFrame(2, fColor);
 			if (rect2.leftClicked())
 			{
+				ui.fleetNameTextBox.setActive(false);
 				if (KeyShift.pressed()) ui.selectedFleetID += 100;
 				else if (KeyControl.pressed()) ui.selectedFleetID += 10;
 				else ui.selectedFleetID++;

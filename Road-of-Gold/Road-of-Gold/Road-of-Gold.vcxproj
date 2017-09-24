@@ -208,6 +208,7 @@ call copy.bat</Command>
     <Text Include="engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="dll_x64\d3d\d3dcompiler_47.dll" />
     <None Include="dll_x64\tobii\tobii_stream_engine.dll" />
     <None Include="dll_x86\d3d\d3dcompiler_47.dll" />
@@ -245,7 +246,6 @@ call copy.bat</Command>
     <ClInclude Include="EnergyData.h" />
     <ClInclude Include="Export.h" />
     <ClInclude Include="Group.h" />
-    <ClInclude Include="Incident.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="Nation.h" />
     <ClInclude Include="Node.h" />
@@ -268,6 +268,7 @@ call copy.bat</Command>
   <ItemGroup>
     <ClCompile Include="Chain.cpp" />
     <ClCompile Include="Fleet.cpp" />
+    <ClCompile Include="Planet.cpp" />
     <ClCompile Include="Shelf.cpp" />
     <ClCompile Include="Casket.cpp" />
     <ClCompile Include="Citizen.cpp" />
@@ -282,7 +283,6 @@ call copy.bat</Command>
     <ClCompile Include="Export.cpp" />
     <ClCompile Include="globalVariables.cpp" />
     <ClCompile Include="Group.cpp" />
-    <ClCompile Include="Incident.cpp" />
     <ClCompile Include="initGroups.cpp" />
     <ClCompile Include="initNodes.cpp" />
     <ClCompile Include="initRoutes.cpp" />
@@ -317,11 +317,15 @@ call copy.bat</Command>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
     <Import Project="..\packages\boost.1.65.1.0\build\native\boost.targets" Condition="Exists('..\packages\boost.1.65.1.0\build\native\boost.targets')" />
+    <Import Project="..\packages\lua.redist.5.3.4\build\native\lua.redist.targets" Condition="Exists('..\packages\lua.redist.5.3.4\build\native\lua.redist.targets')" />
+    <Import Project="..\packages\lua.5.3.4\build\native\lua.targets" Condition="Exists('..\packages\lua.5.3.4\build\native\lua.targets')" />
   </ImportGroup>
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>このプロジェクトは、このコンピューター上にない NuGet パッケージを参照しています。それらのパッケージをダウンロードするには、[NuGet パッケージの復元] を使用します。詳細については、http://go.microsoft.com/fwlink/?LinkID=322105 を参照してください。見つからないファイルは {0} です。</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\boost.1.65.1.0\build\native\boost.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\boost.1.65.1.0\build\native\boost.targets'))" />
+    <Error Condition="!Exists('..\packages\lua.redist.5.3.4\build\native\lua.redist.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\lua.redist.5.3.4\build\native\lua.redist.targets'))" />
+    <Error Condition="!Exists('..\packages\lua.5.3.4\build\native\lua.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\lua.5.3.4\build\native\lua.targets'))" />
   </Target>
 </Project>

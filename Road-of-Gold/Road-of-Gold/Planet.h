@@ -3,17 +3,19 @@
 #include"TinyCamera.h"
 #include"Sandglass.h"
 
+struct lua_State;
+
 struct Planet
 {
 	Sandglass	sandglass;
 	Texture		mapTexture;
 	double		timeSpeed;
+	lua_State*	incidentsLua;	//イベント処理用lua
+	Array<Audio>	audios;
+	FilePath	mapPath;
+	Audio		bgm;
 
-	Planet()
-		: mapTexture()
-		, timeSpeed(0)
-		, sandglass()
-	{}
+	Planet();
 };
 
 extern Planet	planet;

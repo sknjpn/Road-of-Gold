@@ -56,7 +56,7 @@ struct SetCitizenData : MyApp::Scene
 		}
 
 		//左メニューキー操作
-		if(false)
+		if (false)
 		{
 			if (KeyW.down() && getData().selectedSceneID > 0)
 			{
@@ -137,6 +137,23 @@ struct SetCitizenData : MyApp::Scene
 				c.nameTextBox.setActive(true);
 			}
 			else c.nameTextBox.setActive(true);
+		}
+
+		//クリップボード
+		if (KeyControl.pressed() && KeyV.down())
+		{
+			auto& c = citizenData[getData().selectedCitizenType];
+			String string;
+
+			Clipboard::GetText(string);
+			if (string)
+			{
+				if (c.nameTextBox.isActive()) c.nameTextBox.setText(string);
+				if (c.wageTextBox.isActive()) c.wageTextBox.setText(string);
+				if (c.needEnergyTextBox.isActive()) c.needEnergyTextBox.setText(string);
+				if (c.productNameTextBox.isActive()) c.productNameTextBox.setText(string);
+				if (c.numProductTextBox.isActive()) c.numProductTextBox.setText(string);
+			}
 		}
 
 		//市民の更新＆描画

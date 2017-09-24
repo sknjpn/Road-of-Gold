@@ -191,6 +191,7 @@ call copy.bat</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ColorPalette.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -241,6 +242,7 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CitizenData.h" />
+    <ClInclude Include="ColorPalette.h" />
     <ClInclude Include="EnergyData.h" />
     <ClInclude Include="ItemData.h" />
     <ClInclude Include="stdafx.h" />

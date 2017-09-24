@@ -27,6 +27,7 @@ void	selectItem()
 
 		//Fleet‚Ì‘I‘ð
 		ui.selectedFleetID = -1;
+		ui.fleetNameTextBox.setActive(false);
 		if (ui.selectedUrbanID == -1)
 		{
 			for (int i = 0; i < 2; ++i) {

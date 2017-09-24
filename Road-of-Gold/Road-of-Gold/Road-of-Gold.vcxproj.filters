@@ -160,6 +160,7 @@
       <Filter>Resource Files\dll_x86\d3d</Filter>
     </None>
     <None Include="packages.config" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pos.h">
@@ -178,9 +179,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Incident.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Group.h">
@@ -323,9 +321,6 @@
     <ClCompile Include="initGroups.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Incident.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Group.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -384,6 +379,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="updateFleets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Planet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

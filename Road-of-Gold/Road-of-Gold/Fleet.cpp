@@ -7,7 +7,7 @@
 #include"BiomeData.h"
 
 Fleet::Fleet(int _ownVehicleType, Urban* _nowUrban)
-	: name(Format(L"‘æ", id() + 1, L"‘D’c"))
+	: name(Format(L"‘D’c"))
 	, chain()
 	, walletID(getNewWalletID())
 	, sleepTimer(0)
@@ -104,3 +104,110 @@ bool	Fleet::mouseOver() const
 
 Wallet&	Fleet::wallet() const { return wallets[walletID]; }
 int		Fleet::id() const { return int(this - &fleets.front()); }
+bool	Fleet::canMoveTo(const Urban& _u) const
+{
+	if (nowUrban == &_u) return true;
+	
+	Array<bool>	urbanFlags(urbans.size(), false);
+	auto f = [this](Route* r) {
+		return r->isSeaRoute == data.isShip && r->movingCost < data.range;
+	};
+
+	urbanFlags[nowUrban->id()] = true;
+
+	for (;;)
+	{
+		bool flag = true;
+
+		for (auto& u : urbans)
+		{
+			if (urbanFlags[u.id()]) continue;
+
+			for (auto* r : u.ownRoutes)
+			{
+				if (f(r) && urbanFlags[r->toUrban->id()])
+				{
+					if (&u == &_u) return true;
+					urbanFlags[u.id()] = true;
+					flag = false;
+				}
+			}
+		}
+		if (flag) break;
+	}
+
+	return false;
+}
+void	Fleet::setMoveTo(const Urban& _u)
+{
+	chain.clear();
+	if (nowUrban == &_u) return;
+
+	struct VirtualUrban
+	{
+		int		fromUrbanID;
+		double	cost;
+
+		VirtualUrban()
+			: fromUrbanID(-1)
+			, cost(0)
+		{}
+	};
+
+	Array<VirtualUrban>	virtualUrbans(urbans.size());
+	auto f = [this](Route* r) {
+		return r->isSeaRoute == data.isShip && r->movingCost < data.range;
+	};
+
+	Urban* startUrban = nowUrban;
+	if (route != nullptr) startUrban = route->toUrban;
+	chain.rings.emplace_back(chain.rings.size(), Code::Move, startUrban->id());
+
+	virtualUrbans[_u.id()].fromUrbanID = _u.id();
+
+	for (;;)
+	{
+		bool flag = true;
+
+		for (auto& u : urbans)
+		{
+			auto& vu = virtualUrbans[u.id()];
+			if (vu.fromUrbanID == -1)
+			{
+				for (auto* r : u.ownRoutes)
+				{
+					if (f(r) && virtualUrbans[r->toUrban->id()].fromUrbanID!=-1)
+					{
+						vu.fromUrbanID = r->toUrban->id();
+						vu.cost = virtualUrbans[r->toUrban->id()].cost + r->movingCost;
+						flag = false;
+						break;
+					}
+				}
+			}
+			else
+			{
+				for (auto* r : u.ownRoutes)
+				{
+					if (f(r) && virtualUrbans[r->toUrban->id()].fromUrbanID != -1 && vu.cost > virtualUrbans[r->toUrban->id()].cost + r->movingCost)
+					{
+						vu.fromUrbanID = r->toUrban->id();
+						vu.cost = virtualUrbans[r->toUrban->id()].cost + r->movingCost;
+						flag = false;
+					}
+				}
+			}
+		}
+		if (flag) break;
+	}
+	if (virtualUrbans[startUrban->id()].fromUrbanID != -1)
+	{
+		int now = startUrban->id();
+		for (;;)
+		{
+			now = virtualUrbans[now].fromUrbanID;
+			chain.rings.emplace_back(chain.rings.size(), Code::Move, now);
+			if (now == _u.id()) break;
+		}
+	}
+}

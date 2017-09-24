@@ -3,6 +3,7 @@
 #include"Chain.h"
 
 struct Route;
+struct Fleet;
 
 struct UI
 {
@@ -17,13 +18,17 @@ struct UI
 	bool	drawExportImportPowerEnabled;
 	Route*	selectedRoute;
 	Chain	newChain;
-
+	TextBox	fleetNameTextBox;
+	bool	keyControlBlocked;
+	RectF	selectedRegion;
+	Array<Fleet*> selectedFleets;
 	//autoCode
 	int		destinationUrbanID;
 	int		transportItemType;
 
 	UI()
-		: transportItemType(0)
+		: keyControlBlocked(false)
+		, transportItemType(0)
 		, destinationUrbanID(0)
 		, urbanDrawState(0)
 		, useRouteMenu(false)
@@ -34,6 +39,7 @@ struct UI
 		, drawExportLineEnabled(false)
 		, drawExportImportPowerEnabled(false)
 		, selectedRoute(nullptr)
+		, selectedRegion()
 	{}
 };
 
