@@ -178,7 +178,7 @@ Planet::Planet()
 			else
 			{
 				urban->energies.remove_if([&energyType](Energy& e) { return e.energyType == energyType; });
-				urban->energies.emplace_back(energyType, lua_tointeger(l, 3));
+				urban->energies.emplace_back(energyType, int(lua_tointeger(l, 3)));
 				lua_pushboolean(l, true);
 			}
 		}

@@ -23,12 +23,14 @@ void	drawFleets()
 		double r = 5000.0;
 		const auto transformer = tinyCamera.createTransformer(i,r);
 
-		for (const auto& f : fleets)
+		for (auto& f : fleets)
 		{
 			auto pos = f.pos();
-
 			RectF rect(pos*r, Size(160, 24));
-			rect.draw(Palette::Darkgreen).drawFrame(4, Palette::Green);
+			
+			if (ui.selectedFleets.include(&f)) rect.draw(Palette::Lightgreen).drawFrame(4, Palette::White);
+			else rect.draw(Palette::Darkgreen).drawFrame(4, Palette::Green);
+
 			(*ui.fonts[16])(f.name).draw(rect.pos.movedBy(4, 1));
 		}
 	}

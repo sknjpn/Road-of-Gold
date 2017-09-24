@@ -25,6 +25,52 @@ void	drawUI()
 	ui.keyControlBlocked = false;
 	if (ui.fleetNameTextBox.isActive()) ui.keyControlBlocked = true;
 
+	//selectedRegion
+	if (MouseL.down()) ui.selectedRegion.pos = Cursor::Pos();
+	if (MouseL.pressed())
+	{
+		ui.selectedRegion.size = Cursor::Pos() - ui.selectedRegion.pos;
+		ui.selectedRegion.draw(Color(Palette::Red, 128)).drawFrame(2, Palette::Red);
+
+	}
+	if (MouseL.up())
+	{
+		ui.selectedFleets.clear();
+		if (ui.selectedFleetID == -1 && ui.selectedUrbanID == -1)
+		{
+			if (ui.selectedRegion.size.x < 0) { ui.selectedRegion.pos.x += ui.selectedRegion.size.x; ui.selectedRegion.size.x = -ui.selectedRegion.size.x; }
+			if (ui.selectedRegion.size.y < 0) { ui.selectedRegion.pos.y += ui.selectedRegion.size.y; ui.selectedRegion.size.y = -ui.selectedRegion.size.y; }
+			for (int i = 0; i < 2; ++i)
+			{
+				for (auto& f : fleets)
+				{
+					if (ui.selectedRegion.intersects(tinyCamera.getMat3x2(i).transform(f.pos()))) ui.selectedFleets.emplace_back(&f);
+				}
+			}
+		}
+	}
+	if (ui.selectedUrbanID != -1 || ui.selectedFleetID != -1) ui.selectedFleets.clear();
+	if (!ui.selectedFleets.isEmpty())
+	{
+		//右クリック移動
+		for (int i = 0; i < 2; ++i)
+		{
+			auto t = tinyCamera.createTransformer(i);
+			for (auto& u : urbans)
+			{
+				if (u.rightClicked())
+				{
+					for (auto* f : ui.selectedFleets)
+					{
+						//test
+						f->chain.clear();
+						f->setMoveTo(u);
+						f->planFixed = true;
+					}
+				}
+			}
+		}
+	}
 	//Export
 	if (KeyE.down() && !ui.keyControlBlocked) ui.drawExportLineEnabled = !ui.drawExportLineEnabled;
 	if (KeyR.down() && !ui.keyControlBlocked) ui.drawExportImportPowerEnabled = !ui.drawExportImportPowerEnabled;
@@ -237,6 +283,22 @@ void	drawUI()
 
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Color(Palette::Darkcyan, 192);
+
+		//右クリック移動
+		for (int i = 0; i < 2; ++i)
+		{
+			auto t = tinyCamera.createTransformer(i);
+			for (auto& u : urbans)
+			{
+				if (u.rightClicked())
+				{
+					//test
+					sf.chain.clear();
+					sf.setMoveTo(u);
+					sf.planFixed = true;
+				}
+			}
+		}
 
 		//全体枠
 		{
@@ -499,9 +561,6 @@ void	drawUI()
 					ui.newChain.rings.emplace_back(0, Code::Move, sf.nowUrban->id());
 					ui.newChain.rings.emplace_back(1, Code::Move, ui.destinationUrbanID);
 					for (int i = int(ui.newChain.rings.size()); i < 10; i++) ui.newChain.rings.emplace_back(i, Code::None, 0);
-
-					//test
-					sf.setMoveTo(urbans[ui.destinationUrbanID]);
 				}
 			}
 			{

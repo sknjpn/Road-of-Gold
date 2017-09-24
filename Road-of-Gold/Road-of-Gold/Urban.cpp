@@ -58,7 +58,11 @@ bool	Urban::mouseOver() const
 }
 bool	Urban::leftClicked() const
 {
-	return shape().mouseOver() && MouseL.down();
+	return shape().leftClicked();
+}
+bool	Urban::rightClicked() const
+{
+	return shape().rightClicked();
 }
 int		Urban::id() const
 {
