@@ -55,6 +55,9 @@
     <Filter Include="Resource Files\dll_x86\tobii">
       <UniqueIdentifier>{00092991-0e64-42e3-be02-06c90ba3a9cb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Display">
+      <UniqueIdentifier>{e318e8a8-6538-4b44-821c-b9995bd3e167}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Icon.ico">
@@ -160,7 +163,6 @@
       <Filter>Resource Files\dll_x86\d3d</Filter>
     </None>
     <None Include="packages.config" />
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pos.h">
@@ -223,9 +225,6 @@
     <ClInclude Include="Urban.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="UI.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="TinyCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -254,6 +253,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Fleet.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -333,13 +335,7 @@
     <ClCompile Include="Energy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="drawVehicles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="drawUrbans.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="drawUI.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="drawScuttles.cpp">
@@ -363,9 +359,6 @@
     <ClCompile Include="Wallet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SelectItem.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="updateTimeSpeed.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -383,6 +376,24 @@
     </ClCompile>
     <ClCompile Include="Planet.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="drawFleets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RouteMaker.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="updateDisplay.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayUrban.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayFleets.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Selecter.cpp">
+      <Filter>Source Files\Display</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

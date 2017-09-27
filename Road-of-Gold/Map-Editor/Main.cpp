@@ -7,6 +7,7 @@
 #include"BiomeData.h"
 #include"VehicleData.h"
 #include"ItemData.h"
+#include"River.h"
 /*
 Road of Gold専用マップエディタ
 */
@@ -38,7 +39,6 @@ void	addTexture(const FilePath& _path, const String& _name)
 	textureAssets.emplace_back(Texture(_path), _name);
 }
 
-Array<Node*>	river;
 
 void Main()
 {
@@ -71,7 +71,7 @@ void Main()
 		setBiome,
 		setUrban,
 		saveAndLoad,
-		help,
+		setRiver,
 	} uiMode = UIMode::setBiome;
 
 	bool	drawOutlineEnabled = true;
@@ -135,34 +135,13 @@ void Main()
 			if (planet.coverTexture) planet.coverTexture.resize(360_deg, 180_deg).drawAt(0, 0, ColorF(Palette::White, planet.coverRate));
 		}
 
-		if (KeyR.down())
-		{
-			river.clear();
-			for (int i = 0; i < 1000; i++)
+		//川の描画
+		for (int i = 0; i < 2; ++i) {
+			const auto t1 = tinyCamera.createTransformer(i);
+
+			for (auto& r : rivers)
 			{
-				auto& n = nodes.choice();
-				if (biomeData[n.biomeType].isSea && n.paths.any([](const Path& p) { return !biomeData[p.getChild().biomeType].isSea; }))
-				{
-					river.emplace_back(&n);
-					break;
-				}
-			}
-			if (!river.isEmpty())
-			{
-				for (int i = 0; i < 1000; i++)
-				{
-					auto* n = &river.back()->paths.choice().getChild();
-					if (!biomeData[n->biomeType].isSea && !river.include(n)) river.emplace_back(n);
-				}
-			}
-		}
-		if (river.size() >= 2)
-		{
-			LineString ls;
-			for (auto* n : river) ls.emplace_back(n->pos.mPos);
-			for (int i = 0; i < 2; ++i) {
-				const auto t1 = tinyCamera.createTransformer(i);
-				ls.draw(0.0025, biomeData[0].color);
+				r.draw();
 			}
 		}
 
@@ -313,7 +292,7 @@ void Main()
 
 		//UIModeの選択
 		{
-			const Array<String> ns = { L"🌍", L"🏭", L"📂", L"❓" };
+			const Array<String> ns = { L"🌍", L"🏭", L"📂", L"🚤" };
 			for (auto i : step(int(ns.size())))
 			{
 				const int width = 320 / int(ns.size());
@@ -534,9 +513,42 @@ void Main()
 			break;
 		}
 
-		case UIMode::help:
+		case UIMode::setRiver:
 		{
-
+			for (int i = 0; i < int(rivers.size()); i++)
+			{
+				auto& r = rivers[i];
+				Rect rect(32, 64 + i * 24, 128, 24);
+				rect.drawFrame(2, Palette::Skyblue);
+				font16(L"幅", r.width, L"長さ", r.riverPaths.size()).draw(rect.pos.movedBy(4, 0));
+			}
+			if (!uiRect.mouseOver())
+			{
+				if (MouseL.down())
+				{
+					rivers.emplace_back(0.01, nearestNode);
+				}
+				if (MouseL.pressed())
+				{
+					auto& r = rivers.back();
+					if (r.lastNode != nearestNode)
+					{
+						bool flag = false;
+						for (auto& p : r.lastNode->paths)
+						{
+							if (&p.getChild() == nearestNode)
+							{
+								flag = true;
+								r.riverPaths.emplace_back(&p);
+								r.lastNode = nearestNode;
+								break;
+							}
+						}
+						//つなげられない場合、新River生成
+						if (!flag) rivers.emplace_back(0.01, nearestNode);
+					}
+				}
+			}
 			break;
 		}
 

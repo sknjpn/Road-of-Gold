@@ -1,5 +1,5 @@
 #include"TinyCamera.h"
-#include"UI.h"
+#include"Display.h"
 
 TinyCamera::TinyCamera()
 	: restrictedRegion(-180_deg, -90_deg, 360_deg, 90_deg)
@@ -10,6 +10,8 @@ TinyCamera::TinyCamera()
 
 void TinyCamera::update()
 {
+	if (MouseL.pressed()) return;	//マウスが押されている場合は視点をロック
+
 	{
 		//視点移動処理
 		const auto t1 = createTransformer();
@@ -52,7 +54,7 @@ void TinyCamera::update()
 
 	//スライダー
 	const double slidingSpeed = (drawingRegion.size.y / 180_deg)*0.05;
-	const bool useKeyViewControl = true && !ui.keyControlBlocked;
+	const bool useKeyViewControl = true;
 	if ((useKeyViewControl && KeyA.pressed()) || Cursor::Pos().x <= 0) drawingRegion.pos.x -= slidingSpeed;
 	if ((useKeyViewControl && KeyW.pressed()) || Cursor::Pos().y <= 0) drawingRegion.pos.y -= slidingSpeed;
 	if ((useKeyViewControl && KeyD.pressed()) || Cursor::Pos().x >= Window::Size().x - 1) drawingRegion.pos.x += slidingSpeed;

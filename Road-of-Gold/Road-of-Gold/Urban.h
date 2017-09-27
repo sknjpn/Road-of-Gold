@@ -20,6 +20,7 @@ struct Urban
 	int		walletID;
 	int		joinedNodeID;
 	int		averageIncome;
+	bool	isSelected;
 	double	productivity;
 	Nation*	joinedNation;
 	Sandglass	sandglass;
@@ -50,6 +51,7 @@ struct Urban
 	bool	hasRoute() const;
 	bool	hasSeaRoute() const;
 	bool	hasLandRoute() const;
+	int		numCitizens(int _citizenType) const;
 };
 
 extern Array<Urban> urbans;

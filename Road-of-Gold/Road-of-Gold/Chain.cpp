@@ -4,6 +4,7 @@
 #include"Fleet.h"
 #include"Route.h"
 #include"VehicleData.h"
+#include"Route.h"
 
 void	Ring::set(Code _code, int _value)
 {
@@ -14,7 +15,7 @@ String	Ring::valueText() const
 {
 	switch (code)
 	{
-	case Code::None:return Format(adress, L"番地にジャンプ");
+	case Code::None:return Format(L"次の番地に移動");
 	case Code::Move:return Format(urbans[value].name, L"に移動");
 	case Code::Jump:return Format(value, L"番地にジャンプ");
 	case Code::Wait:

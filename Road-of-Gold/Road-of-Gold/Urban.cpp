@@ -14,6 +14,8 @@ Urban::Urban(const JSONValue& _json)
 	, productivity(_json[L"Productivity"].getOr<double>(1.0))
 	, sandglass(0.5 + pos().mPos.x / 360_deg)
 	, walletID(getNewWalletID())
+	, averageIncome(0)
+	, isSelected(false)
 {
 	buyers.reserve(1024);
 	//Shelf
@@ -233,4 +235,8 @@ bool	Urban::hasSeaRoute() const
 bool	Urban::hasLandRoute() const
 {
 	return ownRoutes.any([](const Route* _u) { return !_u->isSeaRoute; });
+}
+int		Urban::numCitizens(int _citizenType) const
+{
+	return int(citizens.count_if([&_citizenType](const Citizen& c) { return c.citizenType == _citizenType; }));
 }

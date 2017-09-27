@@ -4,7 +4,7 @@
 #include"Node.h"
 #include"Planet.h"
 #include"Route.h"
-#include"UI.h"
+#include"Display.h"
 #include"Sound.h"
 #include"Scuttle.h"
 #include"Data.h"
@@ -23,19 +23,18 @@ void Main()
 		else Window::Resize(iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
 	}
 
-	Output << L"WindowSize:", Window::Size();
-	Output << L"FullScreen:", Window::GetState().fullScreen;
+	Output << L"WindowSize:" << Window::Size();
+	Output << L"FullScreen:" << Window::GetState().fullScreen;
 
 	//Fontの展開
-	Array<Font> fonts;
+	Array<Font> efonts;
 	{
 		size_t size = 1024;
-		fonts.reserve(size);
-		ui.fonts.reserve(size);
-		for (auto i : step(size)) fonts.emplace_back(i);
-		for (auto i : step(size)) ui.fonts.emplace_back(&fonts.at(i));
+		globalFonts.reserve(size);
+		efonts.reserve(size);
+		for (auto i : step(size)) efonts.emplace_back(int(i));
+		for (auto i : step(size)) globalFonts.emplace_back(&efonts.at(i));
 	}
-	ui.fleetNameTextBox = TextBox(*ui.fonts[22], 0, 0, 240);
 
 	initSounds();
 
@@ -52,51 +51,40 @@ void Main()
 
 	while (System::Update())
 	{
+
 		if (!bgm.isPlaying() && !bgmItems.isEmpty())
 		{
 			bgm = Audio(bgmItems.choice());
 			bgm.play();
 		}
 
-		if (KeyB.down() && !ui.keyControlBlocked)
+		tinyCamera.update();
+		if (routeMaker.targetFleet == nullptr)
 		{
-			for (int j = 0; j < 100; j++)
-			{
-				for (;;)
-				{
-					auto* u = &urbans.choice();
-					int i = vehicleData.choice().id();
-					bool flag = false;
-					for (auto* r : u->ownRoutes)
-					{
-						if (r->movingCost < vehicleData[i].range || r->isSeaRoute == vehicleData[i].isShip)
-						{
-							flag = true;
-							fleets.emplace_back(i, u);
-							break;
-						}
-					}
-					if (flag) break;
-				}
-			}
+			updateTimeSpeed();
+			updatePlanet();
+			updateGroups();
+			updateFleets();
+			updateUrbans();
 		}
 
-		tinyCamera.update();
-		updateTimeSpeed();
 		updateScuttles();
-		selectItem();
-
-		updatePlanet();
-		updateGroups();
-		updateFleets();
-		updateUrbans();
-
 		drawPlanet();
-		drawRotues();
 		drawFleets();
 		drawUrbanIcon();
 		drawUrbanName();
-		drawUI();
+		updateDisplay();
 		drawScuttles();
+
+		if (KeyF11.down())
+		{
+			if (Window::GetState().fullScreen)
+			{
+				INIReader iniReader(L"assets/config.ini");
+				Graphics::SetFullScreen(false, iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
+			}
+			else Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
+			System::Update();
+		}
 	}
 }

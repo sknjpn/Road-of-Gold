@@ -74,6 +74,7 @@ Planet::Planet()
 	//clearPrint
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
 		ClearPrint();
+		l;	//Œx”ğ‚¯
 		return 0;
 	});
 	lua_setglobal(incidentsLua, "clearPrint");

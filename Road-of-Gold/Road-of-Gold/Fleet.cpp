@@ -63,7 +63,7 @@ double	Fleet::angle() const
 			bn = an;
 		}
 
-		Output << L"ˆÙí", progress;
+		Output << L"ˆÙí" << progress;
 	}
 
 	return 0.0;
@@ -91,23 +91,17 @@ Vec2	Fleet::pos() const
 			bn = an;
 		}
 
-		Output << L"ˆÙí", progress;
+		Output << L"ˆÙí" << progress;
 	}
 
 	return Vec2(0, 0);
 }
-
-bool	Fleet::mouseOver() const
-{
-	return Circle(pos(), 0.005).mouseOver();
-}
-
 Wallet&	Fleet::wallet() const { return wallets[walletID]; }
 int		Fleet::id() const { return int(this - &fleets.front()); }
 bool	Fleet::canMoveTo(const Urban& _u) const
 {
 	if (nowUrban == &_u) return true;
-	
+
 	Array<bool>	urbanFlags(urbans.size(), false);
 	auto f = [this](Route* r) {
 		return r->isSeaRoute == data.isShip && r->movingCost < data.range;
@@ -138,6 +132,74 @@ bool	Fleet::canMoveTo(const Urban& _u) const
 
 	return false;
 }
+void	Fleet::addMoveTo(Urban* _from, Urban* _to)
+{
+	if (_to == _from) return;
+
+	struct VirtualUrban
+	{
+		int		fromUrbanID;
+		double	cost;
+
+		VirtualUrban()
+			: fromUrbanID(-1)
+			, cost(0)
+		{}
+	};
+
+	Array<VirtualUrban>	virtualUrbans(urbans.size());
+	auto f = [this](Route* r) {
+		return r->isSeaRoute == data.isShip && r->movingCost < data.range;
+	};
+
+	virtualUrbans[_to->id()].fromUrbanID = _to->id();
+
+	for (;;)
+	{
+		bool flag = true;
+
+		for (auto& u : urbans)
+		{
+			auto& vu = virtualUrbans[u.id()];
+			if (vu.fromUrbanID == -1)
+			{
+				for (auto* r : u.ownRoutes)
+				{
+					if (f(r) && virtualUrbans[r->toUrban->id()].fromUrbanID != -1)
+					{
+						vu.fromUrbanID = r->toUrban->id();
+						vu.cost = virtualUrbans[r->toUrban->id()].cost + r->movingCost;
+						flag = false;
+						break;
+					}
+				}
+			}
+			else
+			{
+				for (auto* r : u.ownRoutes)
+				{
+					if (f(r) && virtualUrbans[r->toUrban->id()].fromUrbanID != -1 && vu.cost > virtualUrbans[r->toUrban->id()].cost + r->movingCost)
+					{
+						vu.fromUrbanID = r->toUrban->id();
+						vu.cost = virtualUrbans[r->toUrban->id()].cost + r->movingCost;
+						flag = false;
+					}
+				}
+			}
+		}
+		if (flag) break;
+	}
+	if (virtualUrbans[_from->id()].fromUrbanID != -1)
+	{
+		int now = _from->id();
+		for (;;)
+		{
+			now = virtualUrbans[now].fromUrbanID;
+			chain.rings.emplace_back(Code::Move, now);
+			if (now == _to->id()) break;
+		}
+	}
+}
 void	Fleet::setMoveTo(const Urban& _u)
 {
 	chain.clear();
@@ -161,7 +223,7 @@ void	Fleet::setMoveTo(const Urban& _u)
 
 	Urban* startUrban = nowUrban;
 	if (route != nullptr) startUrban = route->toUrban;
-	chain.rings.emplace_back(chain.rings.size(), Code::Move, startUrban->id());
+	chain.rings.emplace_back(Code::Move, startUrban->id());
 
 	virtualUrbans[_u.id()].fromUrbanID = _u.id();
 
@@ -176,7 +238,7 @@ void	Fleet::setMoveTo(const Urban& _u)
 			{
 				for (auto* r : u.ownRoutes)
 				{
-					if (f(r) && virtualUrbans[r->toUrban->id()].fromUrbanID!=-1)
+					if (f(r) && virtualUrbans[r->toUrban->id()].fromUrbanID != -1)
 					{
 						vu.fromUrbanID = r->toUrban->id();
 						vu.cost = virtualUrbans[r->toUrban->id()].cost + r->movingCost;
@@ -206,7 +268,7 @@ void	Fleet::setMoveTo(const Urban& _u)
 		for (;;)
 		{
 			now = virtualUrbans[now].fromUrbanID;
-			chain.rings.emplace_back(chain.rings.size(), Code::Move, now);
+			chain.rings.emplace_back(Code::Move, now);
 			if (now == _u.id()) break;
 		}
 	}

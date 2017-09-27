@@ -5,7 +5,7 @@
 #include"Planet.h"
 #include"Route.h"
 #include"Wallet.h"
-#include"UI.h"
+#include"Display.h"
 #include"Export.h"
 #include"Scuttle.h"
 
@@ -17,12 +17,14 @@
 #include"BiomeData.h"
 #include"VehicleData.h"
 #include"ItemData.h"
-
-UI			ui;
-Planet		planet;
-TinyCamera	tinyCamera;
-JSONReader	incidentsJson;
-
+RouteMaker		routeMaker;
+Selecter		selecter;
+DisplayUrban	displayUrban;
+DisplayFleets	displayFleets;
+Planet			planet;
+TinyCamera		tinyCamera;
+JSONReader		incidentsJson;
+Array<Font*>	globalFonts;
 Array<Node>		nodes;
 Array<Route>	routes;
 Array<Urban>	urbans;

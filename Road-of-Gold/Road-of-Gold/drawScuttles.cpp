@@ -1,5 +1,5 @@
 #include"Scuttle.h"
-#include"UI.h"
+#include"Display.h"
 
 void	drawScuttles()
 {
@@ -13,8 +13,8 @@ void	drawScuttles()
 		s.rect.drawFrame(4, Palette::Black);
 		s.buttonRegion.movedBy(s.rect.pos).draw(Palette::Forestgreen).drawFrame(4, Palette::Black);
 
-		(*ui.fonts[32])(s.title).drawAt(titlePos, Palette::Black);
-		(*ui.fonts[24])(s.button).drawAt(buttonPos, Palette::Black);
-		(*ui.fonts[16])(s.description).drawAt(descriptionPos, Palette::Black);
+		(*globalFonts[32])(s.title).drawAt(titlePos, Palette::Black);
+		(*globalFonts[24])(s.button).drawAt(buttonPos, Palette::Black);
+		(*globalFonts[16])(s.description).drawAt(descriptionPos, Palette::Black);
 	}
 }

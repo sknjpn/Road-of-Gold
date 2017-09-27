@@ -1,6 +1,6 @@
 #include"Planet.h"
 #include"Urban.h"
-#include"UI.h"
+#include"Display.h"
 #include"CitizenData.h"
 #include"ItemData.h"
 #include"Sound.h"

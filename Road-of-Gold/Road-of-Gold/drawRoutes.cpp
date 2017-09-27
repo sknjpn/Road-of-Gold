@@ -3,30 +3,25 @@
 #include"TinyCamera.h"
 #include"Route.h"
 #include"Urban.h"
-#include"UI.h"
+#include"Display.h"
 
-void	drawRotues()
+void	drawRotue(const Route& _r, const Color& _color, double _width)
 {
-	if (ui.selectedUrbanID != -1)
+	LineString lineString;
 	{
-		for (auto* r : urbans[ui.selectedUrbanID].ownRoutes) drawRotue(*r, Color(Palette::White, 128));
-
-		if (ui.selectedRoute != nullptr) drawRotue(*ui.selectedRoute, Palette::Red);
-	}
-}
-void	drawRotue(const Route& _r, const Color& _color)
-{
-	for (int i = 0; i < 2; ++i)
-	{
-		const auto transformer = tinyCamera.createTransformer(i);
 		auto* bn = &nodes[_r.fromUrban->joinedNodeID];
-
+		lineString.emplace_back(bn->pos.mPos);
 		for (int j = 0; j < int(_r.paths.size()); j++)
 		{
 			auto& an = nodes[_r.paths[j]->toID];
 
-			Line(bn->pos.mPos, an.pos.mPos).draw(0.002, _color);
+			lineString.emplace_back(an.pos.mPos);
 			bn = &an;
 		}
+	}
+	for (int i = 0; i < 2; ++i)
+	{
+		const auto transformer = tinyCamera.createTransformer(i);
+		lineString.draw(_width, _color);
 	}
 }

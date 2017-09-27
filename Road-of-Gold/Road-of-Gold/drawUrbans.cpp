@@ -1,6 +1,6 @@
 #include"Planet.h"
 #include"Urban.h"
-#include"UI.h"
+#include"Display.h"
 
 void	drawUrbanIcon()
 {
@@ -10,7 +10,7 @@ void	drawUrbanIcon()
 
 		for (const auto& u : urbans)
 		{
-			const auto color = u.mouseOver() ? Palette::Orange : Palette::Red;
+			const auto color = (u.isSelected && u.mouseOver()) ? Palette::Darkorange : (!MouseL.pressed() && u.mouseOver()) ? Palette::Orange : Palette::Red;
 
 			u.shape().draw(color).drawFrame(0.002, 0.000, Palette::Black);
 		}
@@ -25,11 +25,11 @@ void	drawUrbanName()
 
 		for (const auto& u : urbans)
 		{
-			for (double angle = 0; angle < 360_deg; angle += 5_deg)
+			for (double angle = 0; angle < 360_deg; angle += 10_deg)
 			{
-				(*ui.fonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96).movedBy(Vec2(4, 0).rotated(angle)), Palette::White);
+				(*globalFonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96).movedBy(Vec2(10, 0).rotated(angle)), Palette::White);
 			}
-			(*ui.fonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96), Palette::Black);
+			(*globalFonts[128])(u.name).drawAt((u.pos().mPos*r).movedBy(0, -96), Palette::Black);
 		}
 	}
 }
