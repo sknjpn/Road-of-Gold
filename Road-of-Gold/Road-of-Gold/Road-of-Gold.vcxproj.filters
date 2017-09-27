@@ -163,7 +163,6 @@
       <Filter>Resource Files\dll_x86\d3d</Filter>
     </None>
     <None Include="packages.config" />
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Pos.h">
@@ -378,34 +377,22 @@
     <ClCompile Include="Planet.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="drawDisplay.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="updateUrbanInfo.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="updateAllUrbansInfo.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="updateFleetInfo.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="updateFleetsInfo.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="updateExportRelationsInfo.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="Display.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
-    <ClCompile Include="SelectItem.cpp">
-      <Filter>Source Files\Display</Filter>
-    </ClCompile>
     <ClCompile Include="drawFleets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RouteMaker.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="updateDisplay.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayUrban.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="DisplayFleets.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="Selecter.cpp">
       <Filter>Source Files\Display</Filter>
     </ClCompile>
   </ItemGroup>

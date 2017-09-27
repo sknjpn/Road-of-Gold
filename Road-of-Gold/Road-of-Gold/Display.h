@@ -87,37 +87,8 @@ struct DisplayFleets
 	void	update();
 };
 extern DisplayFleets	displayFleets;
+
 extern Array<Font*>	globalFonts;
 
-/*
-struct Display
-{
-
-	Stopwatch	elapsedTime;	//ï ÇÃUIäJÇ¢ÇΩç€ÇÃåoâﬂéûä‘
-	bool	useRouteMenu;
-	bool	useUrbanMenu;
-	int		urbanDrawState;
-	bool	drawExportLineEnabled;
-	bool	drawExportImportPowerEnabled;
-	Route*	selectedRoute;
-	Chain	newChain;
-	TextBox	fleetNameTextBox;
-	bool	keyControlBlocked;
-	int		destinationUrbanID;
-	int		transportItemType;
-	UIState	uiState;
-	Array<Font*>	globalFonts;
-
-	Display();
-	void	updateSelectItem();
-	void	updateAllUrbansInfo();
-	void	updateFleetInfo();
-	void	updateFleetsInfo();
-	void	updateExportRelationsInfo();
-};
-
-extern Display		display;
-*/
-
-void	drawUI();
+void	updateDisplay();
 void	updateTimeSpeed();

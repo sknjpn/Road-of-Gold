@@ -208,7 +208,6 @@ call copy.bat</Command>
     <Text Include="engine\font\noto\LICENSE_OFL.txt" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="dll_x64\d3d\d3dcompiler_47.dll" />
     <None Include="dll_x64\tobii\tobii_stream_engine.dll" />
     <None Include="dll_x86\d3d\d3dcompiler_47.dll" />
@@ -267,8 +266,7 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chain.cpp" />
-    <ClCompile Include="Display.cpp" />
-    <ClCompile Include="drawDisplay.cpp" />
+    <ClCompile Include="updateDisplay.cpp" />
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="Planet.cpp" />
     <ClCompile Include="RouteMaker.cpp" />
@@ -296,7 +294,7 @@ call copy.bat</Command>
     <ClCompile Include="Route.cpp" />
     <ClCompile Include="Sandglass.cpp" />
     <ClCompile Include="Scuttle.cpp" />
-    <ClCompile Include="SelectItem.cpp" />
+    <ClCompile Include="Selecter.cpp" />
     <ClCompile Include="Sound.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -306,16 +304,13 @@ call copy.bat</Command>
     </ClCompile>
     <ClCompile Include="TinyCamera.cpp" />
     <ClCompile Include="Traders.cpp" />
-    <ClCompile Include="updateAllUrbansInfo.cpp" />
-    <ClCompile Include="updateExportRelationsInfo.cpp" />
-    <ClCompile Include="updateFleetInfo.cpp" />
     <ClCompile Include="updateFleets.cpp" />
-    <ClCompile Include="updateFleetsInfo.cpp" />
+    <ClCompile Include="DisplayFleets.cpp" />
     <ClCompile Include="updateGroups.cpp" />
     <ClCompile Include="updatePlanet.cpp" />
     <ClCompile Include="updateScuttles.cpp" />
     <ClCompile Include="updateTimeSpeed.cpp" />
-    <ClCompile Include="updateUrbanInfo.cpp" />
+    <ClCompile Include="DisplayUrban.cpp" />
     <ClCompile Include="updateUrbans.cpp" />
     <ClCompile Include="Urban.cpp" />
     <ClCompile Include="Vehicle.cpp" />

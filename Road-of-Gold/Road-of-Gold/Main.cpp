@@ -35,7 +35,6 @@ void Main()
 		for (auto i : step(size)) efonts.emplace_back(int(i));
 		for (auto i : step(size)) globalFonts.emplace_back(&efonts.at(i));
 	}
-	//display.fleetNameTextBox = TextBox(*globalFonts[22], 0, 0, 240);
 
 	initSounds();
 
@@ -74,7 +73,7 @@ void Main()
 		drawFleets();
 		drawUrbanIcon();
 		drawUrbanName();
-		drawUI();
+		updateDisplay();
 		drawScuttles();
 
 		if (KeyF11.down())
