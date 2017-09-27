@@ -51,5 +51,5 @@ void	initNodes()
 		}
 	}
 	Output << L"nodes‚¨‚æ‚Ñpaths‚Ì“Ç‚Ýž‚ÝŠ®—¹";
-	Output << L"‘Node”:", nodes.size();
+	Output << L"‘Node”:" << nodes.size();
 }

@@ -91,12 +91,12 @@ void	updateGroups()
 			f.sleepTimer = 0;
 			f.chain.clear();
 			f.period = (2.0 * r->movingCost / f.data.speed + 1.0);	//Žü‰ñ‚É—v‚·‚éŽžŠÔ
-			f.chain.rings.emplace_back(0, Code::Move, u1->id());
-			f.chain.rings.emplace_back(1, Code::Sell, 0);
-			f.chain.rings.emplace_back(2, Code::Move, u2->id());
-			f.chain.rings.emplace_back(3, Code::Buy, itemType);
-			f.chain.rings.emplace_back(4, Code::Jump, 0);
-			for (int i = int(f.chain.rings.size()); i < 10; i++) f.chain.rings.emplace_back(i, Code::None, 0);
+			f.chain.rings.emplace_back(Code::Move, u1->id());
+			f.chain.rings.emplace_back(Code::Sell, 0);
+			f.chain.rings.emplace_back(Code::Move, u2->id());
+			f.chain.rings.emplace_back(Code::Buy, itemType);
+			f.chain.rings.emplace_back(Code::Jump, 0);
+			for (int i = int(f.chain.rings.size()); i < 10; i++) f.chain.rings.emplace_back(Code::None, 0);
 			bool flag = true;
 			f.exportLog = Export(u2, u1, itemType, 50 / f.period);
 			for (auto& e : exports)

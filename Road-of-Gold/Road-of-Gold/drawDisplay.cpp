@@ -22,6 +22,12 @@ void	drawArrow(const Urban& _from, const Urban& _to, double _value, Color _color
 }
 void	drawUI()
 {
+	selecter.update();
+	selecter.draw();
+	displayUrban.update();
+	displayFleets.update();
+	routeMaker.update();
+	/*
 	display.updateSelectItem();
 
 	display.keyControlBlocked = false;
@@ -35,6 +41,7 @@ void	drawUI()
 		display.selectedRegion.draw(Color(Palette::Red, 128)).drawFrame(2, Palette::Red);
 
 	}
+
 	if (MouseL.up())
 	{
 		display.selectedFleets.clear();
@@ -72,6 +79,7 @@ void	drawUI()
 				}
 			}
 		}
+
 	}
 	//Export
 	if (KeyE.down() && !display.keyControlBlocked) display.drawExportLineEnabled = !display.drawExportLineEnabled;
@@ -96,6 +104,7 @@ void	drawUI()
 	}
 
 	//矢印
+
 	if (display.drawExportLineEnabled)
 	{
 		const auto fColor = Palette::Skyblue;
@@ -109,7 +118,7 @@ void	drawUI()
 			{
 				Rect rect(32 + i * 64, 8, 64, 24);
 				rect.draw(bColor).drawFrame(2, fColor);
-				(*display.fonts[16])(data.name).drawAt(rect.center());
+				(*globalFonts[16])(data.name).drawAt(rect.center());
 			}
 			{
 				Rect rect(32 + i * 64, 32, 64, 64);
@@ -188,7 +197,7 @@ void	drawUI()
 			if (display.urbanDrawState == i) rect.draw(Palette::Red);
 			if (rect.leftClicked()) display.urbanDrawState = i;
 			rect.drawFrame(2, fColor);
-			(*display.fonts[16])(list[i]).drawAt(rect.center());
+			(*globalFonts[16])(list[i]).drawAt(rect.center());
 		}
 
 		for (int j = 0; j < int(itemData.size()); j++)
@@ -196,7 +205,7 @@ void	drawUI()
 			Rect rect(160 + j * 64, 0, 64, 20);
 			rect.drawFrame(2, fColor);
 
-			(*display.fonts[12])(itemData[j].name).draw(rect.pos.movedBy(4, 1));
+			(*globalFonts[12])(itemData[j].name).draw(rect.pos.movedBy(4, 1));
 		}
 		for (int i = 0; i < int(urbans.size()); i++)
 		{
@@ -205,7 +214,7 @@ void	drawUI()
 				Rect rect(0, i * 20 + 20, 160, 20);
 				Rect(rect.pos, int(rect.w*u.productivity), rect.h).draw(Palette::Orange);
 				rect.drawFrame(2, fColor);
-				(*display.fonts[12])(u.name).draw(rect.pos.movedBy(4, 1));
+				(*globalFonts[12])(u.name).draw(rect.pos.movedBy(4, 1));
 				if (rect.leftPressed()) u.productivity = (Cursor::Pos() - rect.pos).x / double(rect.w);
 			}
 			for (int j = 0; j < int(itemData.size()); j++)
@@ -224,7 +233,7 @@ void	drawUI()
 				case 4: for (int k = 0; k < 10; k++) sum += b.tradeLog.numConsumption[k]; break;
 				default: break;
 				}
-				auto s = (*display.fonts[12])(sum / 10);
+				auto s = (*globalFonts[12])(sum / 10);
 				s.draw(rect.tr().movedBy(-4 - int(s.region().w), 1));
 			}
 		}
@@ -255,7 +264,7 @@ void	drawUI()
 				auto& r = rs[i];
 				Rect rect(0, 20 * i, 240, 20);
 				rect.drawFrame(2, fColor);
-				(*display.fonts[12])(r->fromUrban->name, L" ", r->toUrban->name, L" ", r->numVehicles, L"隻").draw(rect.pos.movedBy(4, 1));
+				(*globalFonts[12])(r->fromUrban->name, L" ", r->toUrban->name, L" ", r->numVehicles, L"隻").draw(rect.pos.movedBy(4, 1));
 			}
 		}
 		{
@@ -274,7 +283,7 @@ void	drawUI()
 				auto& r = rs[i];
 				Rect rect(240, 20 * i, 240, 20);
 				rect.drawFrame(2, fColor);
-				(*display.fonts[12])(r->fromUrban->name, L" ", r->toUrban->name, L" ", r->numVehicles, L"台").draw(rect.pos.movedBy(4, 1));
+				(*globalFonts[12])(r->fromUrban->name, L" ", r->toUrban->name, L" ", r->numVehicles, L"台").draw(rect.pos.movedBy(4, 1));
 			}
 		}
 	}
@@ -323,7 +332,7 @@ void	drawUI()
 				display.fleetNameTextBox.draw();
 				sf.name = display.fleetNameTextBox.getText();
 			}
-			else (*display.fonts[24])(sf.name).drawAt(rect.center());
+			else (*globalFonts[24])(sf.name).drawAt(rect.center());
 
 		}
 
@@ -340,7 +349,7 @@ void	drawUI()
 				else display.selectedFleetID--;
 				if (display.selectedFleetID < 0) display.selectedFleetID += int(vehicles.size());
 			}
-			(*display.fonts[24])(L"←").drawAt(rect1.center());
+			(*globalFonts[24])(L"←").drawAt(rect1.center());
 
 			Rect rect2(272, 0, 32, 32);
 			if (rect2.mouseOver()) rect2.draw(Palette::Orange);
@@ -353,7 +362,7 @@ void	drawUI()
 				else display.selectedFleetID++;
 				if (display.selectedFleetID >= int(vehicles.size())) display.selectedFleetID -= int(vehicles.size());
 			}
-			(*display.fonts[24])(L"→").drawAt(rect2.center());
+			(*globalFonts[24])(L"→").drawAt(rect2.center());
 
 		}
 
@@ -365,18 +374,18 @@ void	drawUI()
 			if (sf.chain.isError)
 			{
 				rect.draw(Color(Palette::Red, 192));
-				(*display.fonts[16])(L"状態:エラー").draw(rect.pos.movedBy(4, 1));
+				(*globalFonts[16])(L"状態:エラー").draw(rect.pos.movedBy(4, 1));
 			}
 			else if (sf.route != nullptr)
 			{
 				auto* r = sf.route;
 
 				RectF(rect.pos, rect.w*sf.routeProgress * sf.data.speed / r->movingCost, rect.h).draw(Color(Palette::Orange, 192));
-				(*display.fonts[16])(L"状態:航行中:", r->fromUrban->name, L"-", r->toUrban->name, L"間 ", int(100.0*sf.routeProgress * sf.data.speed / r->movingCost), L"%").draw(rect.pos.movedBy(4, 1));
+				(*globalFonts[16])(L"状態:航行中:", r->fromUrban->name, L"-", r->toUrban->name, L"間 ", int(100.0*sf.routeProgress * sf.data.speed / r->movingCost), L"%").draw(rect.pos.movedBy(4, 1));
 			}
 			else if (sf.sleepTimer > 0)
 			{
-				(*display.fonts[16])(L"状態:停止").draw(rect.pos.movedBy(4, 2));
+				(*globalFonts[16])(L"状態:停止").draw(rect.pos.movedBy(4, 2));
 			}
 		}
 
@@ -384,12 +393,12 @@ void	drawUI()
 		{
 			Rect rect(240, 32, 240, 24);
 			rect.drawFrame(2, fColor);
-			if (sf.cargo.numItem == 0) (*display.fonts[16])(L"積載物:").draw(rect.pos.movedBy(4, 1));
+			if (sf.cargo.numItem == 0) (*globalFonts[16])(L"積載物:").draw(rect.pos.movedBy(4, 1));
 			else
 			{
 				int volume = int(sf.data.volume / itemData[sf.cargo.itemType].volume);
 				RectF(rect.pos, rect.w*sf.cargo.numItem / volume, rect.h).draw(Color(Palette::Orange, 192));
-				(*display.fonts[16])(L"積載物:", sf.cargo.data().name, L" ", sf.cargo.numItem, L"個").draw(rect.pos.movedBy(4, 1));
+				(*globalFonts[16])(L"積載物:", sf.cargo.data().name, L" ", sf.cargo.numItem, L"個").draw(rect.pos.movedBy(4, 1));
 			}
 		}
 
@@ -405,7 +414,7 @@ void	drawUI()
 				rect2.drawFrame(2, fColor);
 				rect3.drawFrame(2, fColor);
 				if (int(sf.chain.readerPos) == i) rect1.draw(Color(Palette::Orange, 192));
-				(*display.fonts[16])(i).drawAt(rect3.center());
+				(*globalFonts[16])(i).drawAt(rect3.center());
 				if (int(sf.chain.readerPos) == i)
 				{
 					switch (ring.code)
@@ -424,12 +433,12 @@ void	drawUI()
 						break;
 					}
 				}
-				(*display.fonts[16])(ring.codeText()).drawAt(rect1.center());
-				(*display.fonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
+				(*globalFonts[16])(ring.codeText()).drawAt(rect1.center());
+				(*globalFonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
 				if (sf.chain.isError && int(sf.chain.readerPos) == i)
 				{
 					rect2.draw(Color(Palette::Red, 192));
-					(*display.fonts[16])(L"深刻なエラー").drawAt(rect2.center());
+					(*globalFonts[16])(L"深刻なエラー").drawAt(rect2.center());
 				}
 			}
 		}
@@ -457,7 +466,7 @@ void	drawUI()
 				rect1.drawFrame(2, fColor);
 				rect2.drawFrame(2, fColor);
 				rect3.drawFrame(2, fColor);
-				(*display.fonts[16])(i).drawAt(rect3.center());
+				(*globalFonts[16])(i).drawAt(rect3.center());
 				switch (ring.code)
 				{
 				case Code::Move:
@@ -508,8 +517,8 @@ void	drawUI()
 					}
 					break;
 				}
-				(*display.fonts[16])(ring.codeText()).drawAt(rect1.center());
-				(*display.fonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
+				(*globalFonts[16])(ring.codeText()).drawAt(rect1.center());
+				(*globalFonts[16])(ring.valueText()).draw(rect2.pos.movedBy(4, 1));
 			}
 		}
 
@@ -518,13 +527,13 @@ void	drawUI()
 			{
 				Rect rect(240, 296, 240, 24);
 				rect.drawFrame(2, fColor);
-				(*display.fonts[16])(L"自動コード生成").drawAt(rect.center());
+				(*globalFonts[16])(L"自動コード生成").drawAt(rect.center());
 			}
 			{
 				Rect rect(240, 320, 240, 24);
 				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
-				(*display.fonts[16])(sf.nowUrban->name, L"から", urbans[display.destinationUrbanID].name, L"に移動").drawAt(rect.center());
+				(*globalFonts[16])(sf.nowUrban->name, L"から", urbans[display.destinationUrbanID].name, L"に移動").drawAt(rect.center());
 				if (rect.leftClicked())
 				{
 					display.destinationUrbanID++;
@@ -540,7 +549,7 @@ void	drawUI()
 				Rect rect(240, 344, 240, 24);
 				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
-				(*display.fonts[16])(itemData[display.transportItemType].name, L"を輸送").drawAt(rect.center());
+				(*globalFonts[16])(itemData[display.transportItemType].name, L"を輸送").drawAt(rect.center());
 				if (rect.leftClicked())
 				{
 					display.transportItemType++;
@@ -556,7 +565,7 @@ void	drawUI()
 				Rect rect(240, 368, 240, 24);
 				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
-				(*display.fonts[16])(L"片道移動、輸送なしで生成").drawAt(rect.center());
+				(*globalFonts[16])(L"片道移動、輸送なしで生成").drawAt(rect.center());
 				if (rect.leftClicked())
 				{
 					display.newChain.clear();
@@ -569,7 +578,7 @@ void	drawUI()
 				Rect rect(240, 392, 240, 24);
 				if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 				rect.drawFrame(2, fColor);
-				(*display.fonts[16])(L"往復移動、輸送ありで生成").drawAt(rect.center());
+				(*globalFonts[16])(L"往復移動、輸送ありで生成").drawAt(rect.center());
 				if (rect.leftClicked())
 				{
 					display.newChain.clear();
@@ -587,7 +596,7 @@ void	drawUI()
 			Rect rect(0, 296, 240, 24);
 			if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 			rect.drawFrame(2, fColor);
-			(*display.fonts[16])(L"Copy→").drawAt(rect.center());
+			(*globalFonts[16])(L"Copy→").drawAt(rect.center());
 			if (rect.leftClicked())
 			{
 				display.newChain = sf.chain;
@@ -600,7 +609,7 @@ void	drawUI()
 			Rect rect(0, 320, 240, 24);
 			if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 			rect.drawFrame(2, fColor);
-			(*display.fonts[16])(L"Copy←").drawAt(rect.center());
+			(*globalFonts[16])(L"Copy←").drawAt(rect.center());
 			if (rect.leftClicked())
 			{
 				sf.chain = display.newChain;
@@ -615,7 +624,7 @@ void	drawUI()
 			if (sf.planFixed) rect.draw(Palette::Red);
 			if (rect.mouseOver()) rect.draw(Color(Palette::Orange, 192));
 			rect.drawFrame(2, fColor);
-			(*display.fonts[16])(L"事業固定").drawAt(rect.center());
+			(*globalFonts[16])(L"事業固定").drawAt(rect.center());
 			if (rect.leftClicked()) sf.planFixed = !sf.planFixed;
 		}
 		//艦隊整理
@@ -623,7 +632,7 @@ void	drawUI()
 			{
 				Rect rect(0, 368, 240, 24);
 				rect.drawFrame(2, fColor);
-				(*display.fonts[16])(L"保有機材").drawAt(rect.center());
+				(*globalFonts[16])(L"保有機材").drawAt(rect.center());
 			}
 
 			for (int i = 0; i < int(vehicleData.size()); i++)
@@ -631,12 +640,12 @@ void	drawUI()
 				{
 					Rect rect(0, 392 + 24 * i, 120, 24);
 					rect.drawFrame(2, fColor);
-					(*display.fonts[16])(vehicleData[i].name).draw(rect.pos.movedBy(4, 1));
+					(*globalFonts[16])(vehicleData[i].name).draw(rect.pos.movedBy(4, 1));
 				}
 				{
 					Rect rect(120, 392 + 24 * i, 60, 24);
 					rect.drawFrame(2, fColor);
-					(*display.fonts[16])(L"x", sf.ownVehicles.count_if([&i](Vehicle* v) { return v->vehicleType == i; })).drawAt(rect.center());
+					(*globalFonts[16])(L"x", sf.ownVehicles.count_if([&i](Vehicle* v) { return v->vehicleType == i; })).drawAt(rect.center());
 				}
 			}
 
@@ -645,7 +654,6 @@ void	drawUI()
 	}
 	else if (display.selectedUrban != nullptr)
 	{
-		/*
 		auto& su = urbans[display.selectedUrbanID];
 
 		const auto fColor = Palette::Skyblue;
@@ -661,7 +669,7 @@ void	drawUI()
 		{
 			Rect rect(240, 32);
 			rect.drawFrame(2, fColor);
-			(*display.fonts[24])(su.name).drawAt(rect.center());
+			(*globalFonts[24])(su.name).drawAt(rect.center());
 		}
 
 		//Route
@@ -675,7 +683,7 @@ void	drawUI()
 				{
 					Rect rect(0, p, 240, 24);
 					rect.drawFrame(2, fColor);
-					(*display.fonts[16])(L"海路の一覧").drawAt(rect.center());
+					(*globalFonts[16])(L"海路の一覧").drawAt(rect.center());
 					p += 24;
 				}
 
@@ -690,10 +698,10 @@ void	drawUI()
 					rect.draw(rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, fColor);
 					if (rect.mouseOver()) display.selectedRoute = r;
 
-					const int width = int((*display.fonts[12])(int(r->movingCost * 1000), L"mt").region().w);
-					(*display.fonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
-					(*display.fonts[12])(r->toUrban->name).draw(rect.pos.movedBy(96, 0));
-					(*display.fonts[12])(r->numVehicles, L"隻").draw(rect.pos.movedBy(160, 0));
+					const int width = int((*globalFonts[12])(int(r->movingCost * 1000), L"mt").region().w);
+					(*globalFonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
+					(*globalFonts[12])(r->toUrban->name).draw(rect.pos.movedBy(96, 0));
+					(*globalFonts[12])(r->numVehicles, L"隻").draw(rect.pos.movedBy(160, 0));
 				}
 				p += int(list.size()) * 17;
 			}
@@ -705,7 +713,7 @@ void	drawUI()
 				{
 					Rect rect(0, p, 240, 24);
 					rect.drawFrame(2, fColor);
-					(*display.fonts[16])(L"陸路の一覧").drawAt(rect.center());
+					(*globalFonts[16])(L"陸路の一覧").drawAt(rect.center());
 					p += 24;
 				}
 
@@ -720,10 +728,10 @@ void	drawUI()
 					rect.draw(rect.mouseOver() ? Palette::Orange : Color(0, 0)).drawFrame(2, fColor);
 					if (rect.mouseOver()) display.selectedRoute = r;
 
-					const int width = int((*display.fonts[12])(int(r->movingCost * 1000), L"mt").region().w);
-					(*display.fonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
-					(*display.fonts[12])(r->toUrban->name).draw(rect.pos.movedBy(96, 0));
-					(*display.fonts[12])(r->numVehicles, L"台").draw(rect.pos.movedBy(160, 0));
+					const int width = int((*globalFonts[12])(int(r->movingCost * 1000), L"mt").region().w);
+					(*globalFonts[12])(int(r->movingCost * 1000), L"mt").draw(rect.pos.movedBy(64 - width, 0));
+					(*globalFonts[12])(r->toUrban->name).draw(rect.pos.movedBy(96, 0));
+					(*globalFonts[12])(r->numVehicles, L"台").draw(rect.pos.movedBy(160, 0));
 
 				}
 			}
@@ -739,19 +747,19 @@ void	drawUI()
 				{
 					Rect rect(0, 32 + 17 * i, 80, 17);
 					rect.drawFrame(2, fColor);
-					(*display.fonts[12])(data.name).draw(rect.pos.movedBy(4, 0));
+					(*globalFonts[12])(data.name).draw(rect.pos.movedBy(4, 0));
 				}
 				{
 					Rect rect(80, 32 + 17 * i, 48, 17);
 					rect.drawFrame(2, fColor);
-					const int width = int((*display.fonts[12])(su.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }), L"人").region().size.x);
-					(*display.fonts[12])(su.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }), L"人").draw(rect.pos.movedBy(44 - width, 0));
+					const int width = int((*globalFonts[12])(su.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }), L"人").region().size.x);
+					(*globalFonts[12])(su.citizens.count_if([&i](const Citizen& c) { return c.citizenType == i; }), L"人").draw(rect.pos.movedBy(44 - width, 0));
 				}
 				{
 					Rect rect(128, 32 + 17 * i, 40, 17);
 					rect.drawFrame(2, fColor);
-					const int width = int((*display.fonts[12])(int(je * 100), L"%").region().size.x);
-					(*display.fonts[12])(int(je * 100), L"%").draw(rect.pos.movedBy(36 - width, 0));
+					const int width = int((*globalFonts[12])(int(je * 100), L"%").region().size.x);
+					(*globalFonts[12])(int(je * 100), L"%").draw(rect.pos.movedBy(36 - width, 0));
 				}
 				{
 					int sum = 0, num = 0;
@@ -767,8 +775,8 @@ void	drawUI()
 					{
 						Rect rect(168, 32 + 17 * i, 52, 17);
 						rect.drawFrame(2, fColor);
-						const int width = int((*display.fonts[12])(sum / num, L"G").region().size.x);
-						(*display.fonts[12])(sum / num, L"G").draw(rect.pos.movedBy(48 - width, 0));
+						const int width = int((*globalFonts[12])(sum / num, L"G").region().size.x);
+						(*globalFonts[12])(sum / num, L"G").draw(rect.pos.movedBy(48 - width, 0));
 					}
 				}
 			}
@@ -813,13 +821,13 @@ void	drawUI()
 				{
 					Rect rect(240, i * 88, 240, 24);
 					rect.drawFrame(2, fColor);
-					(*display.fonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
+					(*globalFonts[16])(data.name).draw(rect.pos.movedBy(4, 0));
 					if (!b.baskets.isEmpty())
-						(*display.fonts[16])(b.baskets.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
-					(*display.fonts[16])(b.numItem, L"個").draw(rect.pos.movedBy(128 + 4, 0));
+						(*globalFonts[16])(b.baskets.front().price, L"G").draw(rect.pos.movedBy(64 + 4, 0));
+					(*globalFonts[16])(b.numItem, L"個").draw(rect.pos.movedBy(128 + 4, 0));
 				}
 			}
-		}*/
+		}
 	}
 	displayUrban.update();
 
@@ -827,7 +835,7 @@ void	drawUI()
 	{
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Palette::Greenyellow;
-		const auto& font = *display.fonts[24];
+		const auto& font = *globalFonts[24];
 		const Rect rect(Window::Size().x - 300, 32, 300, 32);
 		rect.draw(bColor).drawFrame(2, fColor);
 		font(L"速度").draw(rect.pos, Palette::Black);
@@ -853,12 +861,12 @@ void	drawUI()
 		if (planet.timeSpeed > 0) Rect(rect.pos + Point(82, 8), Point(182 - int(14 * log2(1 / planet.timeSpeed)), 16)).draw(Palette::Green);
 		for (int i = 0; i < 13; i++) Rect(rect.pos + Point(82 + 14 * i, 8), Point(14, 16)).drawFrame(2, Palette::Black);
 	}
-
+	*/
 	//グローバル時間の表示
 	{
 		const Point pos(Window::Size().x - 300, 0);
 		const auto& s = planet.sandglass;
-		const auto& font = *display.fonts[24];
+		const auto& font = *globalFonts[24];
 		const auto fColor = Palette::Skyblue;
 		const auto bColor = Palette::Greenyellow;
 

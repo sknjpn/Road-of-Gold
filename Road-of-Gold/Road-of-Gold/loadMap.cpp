@@ -23,12 +23,12 @@ bool	selectMap()
 
 	for (;;)
 	{
-		(*display.fonts[32])(L"使用するマップを選択してください").draw();
+		(*globalFonts[32])(L"使用するマップを選択してください").draw();
 		for (int i = 0; i < int(items.size()); i++)
 		{
 			Rect rect(0, 48 + i * 48, Window::Size().x, 48);
 			rect.draw(rect.mouseOver() ? ColorF(Palette::White, 0.5) : Color(0, 0)).drawFrame(2, 0, Palette::White);
-			(*display.fonts[32])(FileSystem::BaseName(items[i])).draw(0, 48 + i * 48);
+			(*globalFonts[32])(FileSystem::BaseName(items[i])).draw(0, 48 + i * 48);
 			if (rect.leftClicked())
 			{
 				thread.join();

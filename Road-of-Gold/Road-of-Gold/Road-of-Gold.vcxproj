@@ -271,6 +271,7 @@ call copy.bat</Command>
     <ClCompile Include="drawDisplay.cpp" />
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="Planet.cpp" />
+    <ClCompile Include="RouteMaker.cpp" />
     <ClCompile Include="Shelf.cpp" />
     <ClCompile Include="Casket.cpp" />
     <ClCompile Include="Citizen.cpp" />
@@ -279,7 +280,7 @@ call copy.bat</Command>
     <ClCompile Include="drawRoutes.cpp" />
     <ClCompile Include="drawScuttles.cpp" />
     <ClCompile Include="drawUrbans.cpp" />
-    <ClCompile Include="drawVehicles.cpp" />
+    <ClCompile Include="drawFleets.cpp" />
     <ClCompile Include="Energy.cpp" />
     <ClCompile Include="Export.cpp" />
     <ClCompile Include="globalVariables.cpp" />

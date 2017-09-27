@@ -30,5 +30,4 @@ struct Route
 extern Array<Route> routes;
 
 void	initRoutes();
-void	drawRotues();
-void	drawRotue(const Route& _r, const Color& _color);
+void	drawRotue(const Route& _r, const Color& _color, double _width);

@@ -1,6 +1,7 @@
 #pragma once
 
 struct Fleet;
+struct Urban;
 
 enum struct Code
 {
@@ -15,13 +16,11 @@ enum struct Code
 
 struct Ring
 {
-	size_t	adress;
 	Code	code;
 	int		value;
 
-	Ring(size_t	_adress, Code _code, int _value)
-		: adress(_adress)
-		, code(_code)
+	Ring(Code _code, int _value)
+		: code(_code)
 		, value(_value)
 	{}
 	String	valueText() const;
@@ -40,4 +39,5 @@ struct Chain
 	bool	update(Fleet* _f);
 	void	clear();
 	Chain&	operator =(const Chain& _chain);
+	Ring&	nowRing() { return rings[readerPos]; }
 };

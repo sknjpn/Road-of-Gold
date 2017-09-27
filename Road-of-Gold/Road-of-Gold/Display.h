@@ -16,6 +16,47 @@ enum struct UIState
 	ExportRelationsInfo,//‘S“sŽsŠÔ‚Ì–fˆÕŠÖŒW
 };
 
+struct RouteMaker
+{
+	struct WayPoint
+	{
+		Urban* urban;
+		Optional<int> buyItemType;
+
+		WayPoint(Urban* _urban)
+			: urban(_urban)
+			, buyItemType(none)
+		{}
+	};
+
+	Fleet*	targetFleet;
+	Array<WayPoint>	wayPoints;
+
+
+	RouteMaker()
+		: targetFleet(nullptr)
+	{}
+	void	set(Fleet* _targetFleet);
+	void	update();
+};
+extern RouteMaker routeMaker;
+
+struct Selecter
+{
+	Urban*	selectedUrban;
+	Array<Fleet*> selectedFleets;
+	Optional<Vec2>	selectedPos;
+
+	Selecter()
+		: selectedUrban(nullptr)
+		, selectedPos(none)
+	{}
+	void	update();
+	void	draw() const;
+	RectF	selectedRegion() const;
+};
+extern Selecter	selecter;
+
 struct DisplayUrban
 {
 	enum struct UrbanInfoState
@@ -25,16 +66,30 @@ struct DisplayUrban
 	} urbanInfoState;
 	Stopwatch	openElapsedTime;	//ŠJ‚¢‚Ä‚©‚ç‚ÌŒo‰ßŽžŠÔ
 	Stopwatch	closeElapsedTime;	//•Â‚¶‚Ä‚©‚ç‚ÌŒo‰ßŽžŠÔ
-	Urban*	selectedUrban;
 
-	void	update();
 	DisplayUrban()
 		: openElapsedTime(MillisecondsF(10000.0), true)
-		, closeElapsedTime(true)
+		, closeElapsedTime(MillisecondsF(10000.0), true)
 	{}
+	void	update();
 };
+extern DisplayUrban	displayUrban;
 
+struct DisplayFleets
+{
+	Stopwatch	openElapsedTime;	//ŠJ‚¢‚Ä‚©‚ç‚ÌŒo‰ßŽžŠÔ
+	Stopwatch	closeElapsedTime;	//•Â‚¶‚Ä‚©‚ç‚ÌŒo‰ßŽžŠÔ
 
+	DisplayFleets()
+		: openElapsedTime(MillisecondsF(10000.0), true)
+		, closeElapsedTime(MillisecondsF(10000.0), true)
+	{}
+	void	update();
+};
+extern DisplayFleets	displayFleets;
+extern Array<Font*>	globalFonts;
+
+/*
 struct Display
 {
 
@@ -42,21 +97,16 @@ struct Display
 	bool	useRouteMenu;
 	bool	useUrbanMenu;
 	int		urbanDrawState;
-	Urban*	selectedUrban;
-	int		selectedFleetID;
-	int		selectedItemType;
 	bool	drawExportLineEnabled;
 	bool	drawExportImportPowerEnabled;
 	Route*	selectedRoute;
 	Chain	newChain;
 	TextBox	fleetNameTextBox;
 	bool	keyControlBlocked;
-	RectF	selectedRegion;
 	int		destinationUrbanID;
 	int		transportItemType;
 	UIState	uiState;
-	Array<Fleet*> selectedFleets;
-	Array<Font*>	fonts;
+	Array<Font*>	globalFonts;
 
 	Display();
 	void	updateSelectItem();
@@ -67,7 +117,7 @@ struct Display
 };
 
 extern Display		display;
-extern DisplayUrban	displayUrban;
+*/
 
 void	drawUI();
 void	updateTimeSpeed();

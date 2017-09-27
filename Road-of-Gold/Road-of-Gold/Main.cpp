@@ -23,19 +23,19 @@ void Main()
 		else Window::Resize(iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
 	}
 
-	Output << L"WindowSize:", Window::Size();
-	Output << L"FullScreen:", Window::GetState().fullScreen;
+	Output << L"WindowSize:" << Window::Size();
+	Output << L"FullScreen:" << Window::GetState().fullScreen;
 
 	//Fontの展開
-	Array<Font> fonts;
+	Array<Font> efonts;
 	{
 		size_t size = 1024;
-		fonts.reserve(size);
-		display.fonts.reserve(size);
-		for (auto i : step(size)) fonts.emplace_back(i);
-		for (auto i : step(size)) display.fonts.emplace_back(&fonts.at(i));
+		globalFonts.reserve(size);
+		efonts.reserve(size);
+		for (auto i : step(size)) efonts.emplace_back(int(i));
+		for (auto i : step(size)) globalFonts.emplace_back(&efonts.at(i));
 	}
-	display.fleetNameTextBox = TextBox(*display.fonts[22], 0, 0, 240);
+	//display.fleetNameTextBox = TextBox(*globalFonts[22], 0, 0, 240);
 
 	initSounds();
 
@@ -59,40 +59,18 @@ void Main()
 			bgm.play();
 		}
 
-		if (KeyB.down() && !display.keyControlBlocked)
+		tinyCamera.update();
+		if (routeMaker.targetFleet == nullptr)
 		{
-			for (int j = 0; j < 100; j++)
-			{
-				for (;;)
-				{
-					auto* u = &urbans.choice();
-					int i = vehicleData.choice().id();
-					bool flag = false;
-					for (auto* r : u->ownRoutes)
-					{
-						if (r->movingCost < vehicleData[i].range || r->isSeaRoute == vehicleData[i].isShip)
-						{
-							flag = true;
-							fleets.emplace_back(i, u);
-							break;
-						}
-					}
-					if (flag) break;
-				}
-			}
+			updateTimeSpeed();
+			updatePlanet();
+			updateGroups();
+			updateFleets();
+			updateUrbans();
 		}
 
-		tinyCamera.update();
-		updateTimeSpeed();
 		updateScuttles();
-
-		updatePlanet();
-		updateGroups();
-		updateFleets();
-		updateUrbans();
-
 		drawPlanet();
-		drawRotues();
 		drawFleets();
 		drawUrbanIcon();
 		drawUrbanName();

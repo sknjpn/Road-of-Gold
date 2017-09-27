@@ -1,5 +1,5 @@
 #include"Display.h"
-
+/*
 
 Display::Display()
 	: keyControlBlocked(false)
@@ -8,8 +8,6 @@ Display::Display()
 	, urbanDrawState(0)
 	, useRouteMenu(false)
 	, useUrbanMenu(false)
-	, selectedUrban(nullptr)
-	, selectedFleetID(-1)
 	, selectedItemType(-1)
 	, drawExportLineEnabled(false)
 	, drawExportImportPowerEnabled(false)
@@ -17,4 +15,4 @@ Display::Display()
 	, selectedRegion()
 	, elapsedTime(true)
 	, uiState(UIState::None)
-{}
+{}*/

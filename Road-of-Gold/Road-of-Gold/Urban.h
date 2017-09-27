@@ -20,6 +20,7 @@ struct Urban
 	int		walletID;
 	int		joinedNodeID;
 	int		averageIncome;
+	bool	isSelected;
 	double	productivity;
 	Nation*	joinedNation;
 	Sandglass	sandglass;

@@ -336,9 +336,6 @@
     <ClCompile Include="Energy.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="drawVehicles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="drawUrbans.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -403,6 +400,12 @@
       <Filter>Source Files\Display</Filter>
     </ClCompile>
     <ClCompile Include="SelectItem.cpp">
+      <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="drawFleets.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RouteMaker.cpp">
       <Filter>Source Files\Display</Filter>
     </ClCompile>
   </ItemGroup>

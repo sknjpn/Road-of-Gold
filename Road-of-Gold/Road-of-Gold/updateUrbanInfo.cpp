@@ -5,47 +5,48 @@
 
 void	DisplayUrban::update()
 {
-	if (selectedUrban != nullptr)
+	if (selecter.selectedUrban != nullptr)
 	{
 		if (KeyRight.down())
 		{
-			if (selectedUrban == &urbans.back()) selectedUrban = &urbans.front();
-			else selectedUrban++;
+			if (selecter.selectedUrban == &urbans.back()) selecter.selectedUrban = &urbans.front();
+			else selecter.selectedUrban++;
 			openElapsedTime.restart();
 		}
 		if (KeyLeft.down())
 		{
-			if (selectedUrban == &urbans.front()) selectedUrban = &urbans.back();
-			else selectedUrban--;
+			if (selecter.selectedUrban == &urbans.front()) selecter.selectedUrban = &urbans.back();
+			else selecter.selectedUrban--;
 			openElapsedTime.restart();
 		}
 	}
 
-	Transformer2D t1;
-	if (selectedUrban == nullptr)  t1 = Transformer2D(Mat3x2::Translate(EaseOut(Easing::Expo, 0.0, -480.0, Min(1.0, closeElapsedTime.ms() / 500.0)), 0));
-	else t1 = Transformer2D(Mat3x2::Translate(EaseOut(Easing::Expo, -480.0, 0.0, Min(1.0, openElapsedTime.ms() / 500.0)), 0));
 	const auto frameColor = Color(20);
 	const auto baseColor = Color(40);
 	const auto fontColor = Color(255);
 	const auto mouseOverColor = Color(70);
-	const auto font16 = (*display.fonts[16]);
-	const auto font24 = (*display.fonts[24]);
-	const auto font36 = (*display.fonts[36]);
+	const auto font16 = (*globalFonts[16]);
+	const auto font24 = (*globalFonts[24]);
+	const auto font36 = (*globalFonts[36]);
 	const auto thickness = 4;
-	auto* su = selectedUrban;
+	auto* su = selecter.selectedUrban;
 	auto conv = [](int value) {
 		if (value < 1000) return Format(value);
-		if (value > 1000) return Format(value / 1000, L"K");
-		if (value > 1000000) return Format(value / 1000000, L"M");
+		if (value < 1000000) return Format(value / 1000, L"K");
+		if (value < 1000000000) return Format(value / 1000000, L"M");
 		else return String(L"HugeValue");
 	};
+	Transformer2D t1;
+	if (selecter.selectedUrban == nullptr)  t1 = Transformer2D(Mat3x2::Translate(EaseOut(Easing::Expo, 0.0, -480.0, Min(1.0, closeElapsedTime.ms() / 500.0)), 0));
+	else t1 = Transformer2D(Mat3x2::Translate(EaseOut(Easing::Expo, -480.0, 0.0, Min(1.0, openElapsedTime.ms() / 500.0)), 0));
+
 
 	//全体枠の表示
 	{
 		const Rect(0, 0, 480, 720).draw(baseColor).drawFrame(thickness, frameColor);
 	}
 
-	if (selectedUrban == nullptr) return;
+	if (selecter.selectedUrban == nullptr) return;
 
 	//都市名の表示
 	{
@@ -133,9 +134,9 @@ void	DisplayUrban::update()
 				typedef std::pair<CitizenData*, double> List;
 
 				Rect rect(16, 180, 320, 320);
-				Circle circle(rect.center(), 160);
+				Circle circle(rect.center(), 130);
 				Array<List> list;
-				
+
 				rect.drawFrame(thickness, frameColor);
 
 				for (auto& cd : citizenData)
@@ -148,17 +149,38 @@ void	DisplayUrban::update()
 					if (l.second < 10_deg) l.first = nullptr;
 				}
 				{
-					for (auto& l : list)
-					{
-						const double startAngle = std::accumulate(list.begin(), list.begin() + int(&l - &list.front()), 0.0, [](double sum, List& l) { return sum + l.second; });
-						const auto color = l.first == nullptr ? Color(80) : HSV(360 * double(l.first->id()) / double(citizenData.size()), 0.5);
-						circle.drawPie(startAngle, l.second, color);
-					}
 					circle.drawFrame(thickness, frameColor);
 					for (auto& l : list)
 					{
 						const double startAngle = std::accumulate(list.begin(), list.begin() + int(&l - &list.front()), 0.0, [](double sum, List& l) { return sum + l.second; });
-						if (l.first != nullptr) font16(l.first->name).drawAt(rect.center().movedBy(Vec2(0, -100).rotated(startAngle + l.second / 2.0)));
+						const auto color = l.first == nullptr ? Color(80) : HSV(360 * double(l.first->id()) / double(citizenData.size()), 0.8, 0.8);
+						const auto centerAngle = startAngle + l.second*0.5;
+						if (l.first != nullptr)
+						{
+							circle.drawPie(startAngle, l.second, color);
+							circle.drawArc(startAngle, l.second, thickness / 2.0, thickness / 2.0, frameColor);
+							Line(circle.center, circle.center.movedBy(Vec2(0, -circle.r).rotated(startAngle))).draw(thickness, frameColor);
+							Line(circle.center, circle.center.movedBy(Vec2(0, -circle.r).rotated(startAngle + l.second))).draw(thickness, frameColor);
+							if (circle.mouseOver() && Abs(-Vec2(Cursor::Pos() - circle.center).getAngle(Vec2::Down()) + 180_deg - centerAngle) < l.second*0.5)
+							{
+								double add = 20;
+								circle.drawArc(startAngle, l.second, 10, add, color);
+								circle.drawArc(startAngle, l.second, -20 + thickness / 2.0, add + thickness / 2.0, frameColor);
+								Line(circle.center, circle.center.movedBy(Vec2(0, -circle.r - add).rotated(startAngle))).draw(thickness, frameColor);
+								Line(circle.center, circle.center.movedBy(Vec2(0, -circle.r - add).rotated(startAngle + l.second))).draw(thickness, frameColor);
+							}
+						}
+					}
+					Circle(circle.center, thickness / 2.0).draw(Palette::Black);
+					for (auto& l : list)
+					{
+						const double startAngle = std::accumulate(list.begin(), list.begin() + int(&l - &list.front()), 0.0, [](double sum, List& l) { return sum + l.second; });
+						if (l.first != nullptr)
+						{
+							Vec2 pos = rect.center().movedBy(Vec2(0, -70).rotated(startAngle + l.second / 2.0));
+							for (double d = 0; d < 360_deg; d += 10_deg) font24(l.first->name).drawAt(pos + Vec2(2, 0).rotated(d), Palette::White);
+							font24(l.first->name).drawAt(pos, Palette::Black);
+						}
 					}
 				}
 			}

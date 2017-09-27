@@ -32,10 +32,13 @@ struct Fleet
 	Vec2	pos() const;
 	double	angle() const;
 	Wallet&	wallet() const;
-	bool	mouseOver() const;
 	int		id() const;
 	bool	canMoveTo(const Urban& _u) const;
 	void	setMoveTo(const Urban& _u);
+	void	addMoveTo(Urban* _from, Urban* _to);
+	bool	mouseOver() const;
+	RectF	shape() const;
+	bool	isInSelectedRegion() const;
 };
 
 extern Array<Fleet>	fleets;

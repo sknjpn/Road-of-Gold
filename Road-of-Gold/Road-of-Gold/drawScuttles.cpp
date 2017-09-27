@@ -13,8 +13,8 @@ void	drawScuttles()
 		s.rect.drawFrame(4, Palette::Black);
 		s.buttonRegion.movedBy(s.rect.pos).draw(Palette::Forestgreen).drawFrame(4, Palette::Black);
 
-		(*display.fonts[32])(s.title).drawAt(titlePos, Palette::Black);
-		(*display.fonts[24])(s.button).drawAt(buttonPos, Palette::Black);
-		(*display.fonts[16])(s.description).drawAt(descriptionPos, Palette::Black);
+		(*globalFonts[32])(s.title).drawAt(titlePos, Palette::Black);
+		(*globalFonts[24])(s.button).drawAt(buttonPos, Palette::Black);
+		(*globalFonts[16])(s.description).drawAt(descriptionPos, Palette::Black);
 	}
 }

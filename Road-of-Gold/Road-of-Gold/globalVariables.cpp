@@ -17,13 +17,14 @@
 #include"BiomeData.h"
 #include"VehicleData.h"
 #include"ItemData.h"
-
-Display			display;
+RouteMaker		routeMaker;
+Selecter		selecter;
 DisplayUrban	displayUrban;
-Planet		planet;
-TinyCamera	tinyCamera;
-JSONReader	incidentsJson;
-
+DisplayFleets	displayFleets;
+Planet			planet;
+TinyCamera		tinyCamera;
+JSONReader		incidentsJson;
+Array<Font*>	globalFonts;
 Array<Node>		nodes;
 Array<Route>	routes;
 Array<Urban>	urbans;
