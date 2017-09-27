@@ -96,7 +96,6 @@ void	updateGroups()
 			f.chain.rings.emplace_back(Code::Move, u2->id());
 			f.chain.rings.emplace_back(Code::Buy, itemType);
 			f.chain.rings.emplace_back(Code::Jump, 0);
-			for (int i = int(f.chain.rings.size()); i < 10; i++) f.chain.rings.emplace_back(Code::None, 0);
 			bool flag = true;
 			f.exportLog = Export(u2, u1, itemType, 50 / f.period);
 			for (auto& e : exports)

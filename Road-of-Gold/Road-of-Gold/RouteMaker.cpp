@@ -4,6 +4,7 @@
 #include"TinyCamera.h"
 #include"ItemData.h"
 #include"Route.h"
+
 void	RouteMaker::update()
 {
 	if (targetFleet == nullptr) return;
