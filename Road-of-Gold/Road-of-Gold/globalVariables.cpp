@@ -8,7 +8,7 @@
 #include"Display.h"
 #include"Export.h"
 #include"Scuttle.h"
-
+#include"River.h"
 #include"Nation.h"
 #include"Fleet.h"
 
@@ -35,6 +35,7 @@ Array<Export>	exports;
 Array<Scuttle>	scuttles;
 Array<Nation>	nations;
 Array<Fleet>	fleets;
+Array<River>	rivers;
 Array<EnergyData>	energyData;
 Array<CitizenData>	citizenData;
 Array<BiomeData>	biomeData;

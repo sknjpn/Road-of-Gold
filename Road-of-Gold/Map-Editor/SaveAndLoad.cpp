@@ -4,6 +4,7 @@
 #include"EnergyData.h"
 #include"Urban.h"
 #include"GlobalVariables.h"
+#include"River.h"
 
 
 bool loadMapData(const FilePath& _path)
@@ -11,6 +12,7 @@ bool loadMapData(const FilePath& _path)
 	if (!FileSystem::IsDirectory(_path)) return false;
 
 	urbans.clear();
+	rivers.clear();
 
 	//バイオームデータのロード
 	if (FileSystem::Exists(_path + L"BiomeData.bin"))
@@ -34,6 +36,15 @@ bool loadMapData(const FilePath& _path)
 		for (auto json : reader.arrayView())
 			urbans.emplace_back(json);
 	}
+
+	//Riversデータのロード
+	if (FileSystem::Exists(_path + L"Rivers.json"))
+	{
+		JSONReader reader(_path + L"Rivers.json");
+		for (auto json : reader.arrayView())
+			rivers.emplace_back(json);
+	}
+	
 
 	textBox.setText(FileSystem::BaseName(_path));
 
@@ -94,6 +105,35 @@ bool saveMapData(const FilePath& _path)
 		}
 		text += L"\r]";
 		TextWriter writer(_path + L"Urbans.json");
+		writer.write(text);
+		writer.close();
+	}
+
+	//Riversデータのセーブ
+	{
+		String text(L"[");
+		for (auto i : step(int(rivers.size())))
+		{
+			auto& r = rivers[i];
+			if (i == 0) text += L"\r\t{";
+			else text += L",\r\t{";
+
+			text += Format(L"\r\t\t\"Width\": ", r.width);
+
+			text += L",\r\t\t\"Paths\": [";
+			text += Format(r.riverPaths.front()->parentNodeID);
+			for (auto* p : r.riverPaths)
+			{
+				text += L",";
+				text += Format(p->childNodeID);
+			}
+
+			text += L"]";
+
+			text += L"\r\t}";
+		}
+		text += L"\r]";
+		TextWriter writer(_path + L"Rivers.json");
 		writer.write(text);
 		writer.close();
 	}

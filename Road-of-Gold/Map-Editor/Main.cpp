@@ -518,9 +518,28 @@ void Main()
 			for (int i = 0; i < int(rivers.size()); i++)
 			{
 				auto& r = rivers[i];
-				Rect rect(32, 64 + i * 24, 128, 24);
-				rect.drawFrame(2, Palette::Skyblue);
-				font16(L"幅", r.width, L"長さ", r.riverPaths.size()).draw(rect.pos.movedBy(4, 0));
+				{
+					Rect rect(32, 64 + i * 24, 320, 24);
+					rect.drawFrame(2, Palette::Skyblue);
+					if (rect.mouseOver()) r.isMouseOver = true;
+					else r.isMouseOver = false;
+					font16(L"幅", r.width, L"長さ", r.riverPaths.size()).draw(rect.pos.movedBy(4, 0));
+				}
+				{
+					Rect rect(184, 64 + i * 24, 120, 24);
+					if (rect.leftPressed()) r.width = (Cursor::PosF().x - 184.0) / 6000.0;
+					Line(rect.pos.movedBy(int(r.width * 6000), 0), rect.pos.movedBy(int(r.width * 6000), 24)).draw(4, Palette::Red);
+					Line(184, 76 + i * 24, 304, 76 + i * 24).draw(4, Palette::Black);
+					rect.drawFrame(2, Palette::Skyblue);
+				}
+				{
+					Rect rect(32 + 320 - 48, 64 + i * 24, 48, 24);
+					if (rect.mouseOver()) rect.draw(Palette::Orange);
+					if (rect.leftClicked()) rivers.erase(rivers.begin() + i);
+					rect.drawFrame(2, Palette::Skyblue);
+					font16(L"削除").drawAt(rect.center());
+
+				}
 			}
 			if (!uiRect.mouseOver())
 			{

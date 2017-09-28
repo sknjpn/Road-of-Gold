@@ -10,6 +10,7 @@
 #include"Data.h"
 #include"Fleet.h"
 #include"VehicleData.h"
+#include"River.h"
 #include<lua.hpp>
 #include<luaconf.h>
 
@@ -70,6 +71,10 @@ void Main()
 
 		updateScuttles();
 		drawPlanet();
+		for (int i = 0; i < 2; ++i) {
+			const auto transformer = tinyCamera.createTransformer(i);
+			for (auto& r : rivers) r.draw();
+		}
 		drawFleets();
 		drawUrbanIcon();
 		drawUrbanName();

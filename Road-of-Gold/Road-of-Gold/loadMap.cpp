@@ -10,6 +10,7 @@
 #include"Route.h"
 #include<thread>
 #include"Data.h"
+#include"River.h"
 #include<lua.hpp>
 
 bool	selectMap()
@@ -103,6 +104,15 @@ void	loadMap(const FilePath& _path)
 			for (auto& b : u.shelves) b.joinedUrban = &u;
 		}
 	}
+	
+	//Riversデータのロード
+	if (FileSystem::Exists(_path + L"Rivers.json"))
+	{
+		JSONReader reader(_path + L"Rivers.json");
+		for (auto json : reader.arrayView()) rivers.emplace_back(json);
+	}
+
+	//Route生成
 	initRoutes();
 
 	//Incidentsデータのロード
@@ -137,6 +147,7 @@ void	loadMap(const FilePath& _path)
 			for (auto& u : n.ownUrbans) u->joinedNation = &n;
 		}
 	}
+
 
 	thread.join();	//mapImage用
 }
