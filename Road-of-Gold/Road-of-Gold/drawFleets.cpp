@@ -23,7 +23,7 @@ void	drawFleets()
 				{
 					if (r->toUrban->id() == ring.value && r->movingCost < sf->data.range && r->isSeaRoute == sf->data.isShip)
 					{
-						drawRotue(*r, Color(Palette::Red, 128), 0.005);
+						r->drawFlag = true;
 						u = r->toUrban;
 					}
 				}

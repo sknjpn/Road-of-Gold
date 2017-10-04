@@ -13,6 +13,7 @@ struct Route
 	double	movingCost;
 	bool	isSeaRoute;
 	int		numVehicles;
+	bool	drawFlag;
 
 	Route(Urban* _fromUrban, Urban* _toUrban, Array<Path*> _paths, bool _isSeaRoute, double _movingCost)
 		: fromUrban(_fromUrban)
@@ -20,11 +21,13 @@ struct Route
 		, isSeaRoute(_isSeaRoute)
 		, movingCost(_movingCost)
 		, numVehicles(0)
+		, drawFlag(false)
 	{
 		paths = _paths;
 	}
 	void	addVehicle();
 	void	pullVehicle();
+	void	draw();
 };
 
 extern Array<Route> routes;

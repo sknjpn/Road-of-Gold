@@ -9,7 +9,6 @@
 #include"Export.h"
 #include"Scuttle.h"
 #include"River.h"
-#include"Nation.h"
 #include"Fleet.h"
 
 #include"EnergyData.h"
@@ -33,7 +32,6 @@ Array<Wallet>	wallets;
 Array<Vehicle>	vehicles;
 Array<Export>	exports;
 Array<Scuttle>	scuttles;
-Array<Nation>	nations;
 Array<Fleet>	fleets;
 Array<River>	rivers;
 Array<EnergyData>	energyData;

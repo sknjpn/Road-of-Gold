@@ -14,7 +14,7 @@ void	initGroups()
 	}
 
 	vehicles.reserve(65536);
-
+	/*
 	INIReader iniReader(L"assets/config.ini");
 	int numVehicles = iniReader.getOr<int>(L"Groups", L"NumVehicles", 0);
 
@@ -37,5 +37,10 @@ void	initGroups()
 			}
 			if (flag) break;
 		}
+	}
+	*/
+	for (int i = 0; i < 300; i++)
+	{
+		urbans.choice().tickets.emplace_back(&groups.front(), vehicleData.choice().id());
 	}
 }

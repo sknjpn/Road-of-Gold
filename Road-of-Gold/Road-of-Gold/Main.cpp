@@ -75,6 +75,14 @@ void Main()
 			const auto transformer = tinyCamera.createTransformer(i);
 			for (auto& r : rivers) r.draw();
 		}
+		for (auto& r : routes)
+		{
+			if (r.drawFlag)
+			{
+				r.drawFlag = false;
+				r.draw();
+			}
+		}
 		drawFleets();
 		drawUrbanIcon();
 		drawUrbanName();

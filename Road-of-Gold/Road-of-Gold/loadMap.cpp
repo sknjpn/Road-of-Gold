@@ -5,7 +5,6 @@
 
 #include"Scuttle.h"
 #include"Group.h"
-#include"Nation.h"
 #include"Display.h"
 #include"Route.h"
 #include<thread>
@@ -72,6 +71,7 @@ void	loadMap(const FilePath& _path)
 	std::thread thread(mapImageFunc);
 
 	//Planetデータのロード
+	if (FileSystem::Exists(_path + L"Planet.json"))
 	{
 		JSONReader reader(_path + L"Planet.json");
 		auto j = reader[L"StartTime"];
@@ -104,7 +104,7 @@ void	loadMap(const FilePath& _path)
 			for (auto& b : u.shelves) b.joinedUrban = &u;
 		}
 	}
-	
+
 	//Riversデータのロード
 	if (FileSystem::Exists(_path + L"Rivers.json"))
 	{
@@ -135,19 +135,6 @@ void	loadMap(const FilePath& _path)
 
 		for (auto j : json.arrayView()) groups.emplace_back(j);
 	}
-
-	//Nationsデータのロード
-	if (FileSystem::Exists(_path + L"Nations.json"))
-	{
-		auto json = JSONReader(_path + L"Nations.json");
-
-		for (auto j : json.arrayView()) nations.emplace_back(j);
-		for (auto& n : nations)
-		{
-			for (auto& u : n.ownUrbans) u->joinedNation = &n;
-		}
-	}
-
 
 	thread.join();	//mapImage用
 }

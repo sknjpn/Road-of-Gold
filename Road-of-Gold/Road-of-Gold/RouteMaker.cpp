@@ -78,8 +78,6 @@ void	RouteMaker::update()
 							break;
 						}
 					}
-					tf->planFixed = true;
-					tf->stopFlag = false;
 				}
 				wayPoints.clear();
 				selecter.selectedFleets.emplace_back(targetFleet);

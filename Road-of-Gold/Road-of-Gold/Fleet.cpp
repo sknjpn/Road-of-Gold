@@ -17,8 +17,6 @@ Fleet::Fleet(int _ownVehicleType, Urban* _nowUrban)
 	, timer(0)
 	, period(0)
 	, exportLog()
-	, stopFlag(false)
-	, planFixed(false)
 	, data()
 {
 	wallet().owner = Owner::Vehicle;

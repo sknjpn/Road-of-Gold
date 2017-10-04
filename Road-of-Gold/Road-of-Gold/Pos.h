@@ -22,3 +22,6 @@ struct Pos
 		set(Vec3(cos(_mPos.x)*cos(_mPos.y), -sin(_mPos.y), sin(_mPos.x)*cos(_mPos.y)));
 	}
 };
+
+//Å’Zƒ‹[ƒg‚Ìü‚ğ•Ô‚·
+Line	getLine(const Pos& p1, const Pos& p2);

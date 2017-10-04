@@ -65,6 +65,8 @@ VehicleData::VehicleData(const JSONValue& _json)
 	, range(_json[L"Range"].getOr<double>(1.0))
 	, isShip(_json[L"IsShip"].getOr<bool>(false))
 	, icon(_json[L"Icon"].getOr<String>(L""))
+	, constructionCost(_json[L"ConstructionCost"].getOr<int>(1000))
+	, tier(_json[L"Tier"].getOr<int>(0))
 {}
 EnergyData*	getEnergyData(const String& _name)
 {
