@@ -14,20 +14,19 @@ void	updateScuttles()
 		}
 		if (target != nullptr)
 		{
-			if (target->buttonRegion.movedBy(target->rect.pos).mouseOver())
-			{
-				//‘ÎÛScuttle‚Ìíœ
-				scuttles.remove_if([target](const Scuttle& s) { return &s == target; });
-			}
-			else
-			{
-				target->isGrabbed = true;
-			}
+			if (target->buttonRegion.movedBy(target->rect.pos).mouseOver()) target->isPushed = true;
+			else target->isGrabbed = true;
 		}
 	}
 	else if (MouseL.up())
 	{
-		for (auto& s : scuttles) s.isGrabbed = false;
+		//‘ÎÛScuttle‚Ìíœ
+		scuttles.remove_if([](const Scuttle& s) { return s.isPushed && s.buttonRegion.movedBy(s.rect.pos).mouseOver(); });
+		for (auto& s : scuttles)
+		{
+			s.isGrabbed = false;
+			s.isPushed = false;
+		}
 	}
 	else if (MouseL.pressed())
 	{

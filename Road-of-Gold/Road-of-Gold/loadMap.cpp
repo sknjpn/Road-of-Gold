@@ -5,11 +5,11 @@
 
 #include"Scuttle.h"
 #include"Group.h"
-#include"Nation.h"
 #include"Display.h"
 #include"Route.h"
 #include<thread>
 #include"Data.h"
+#include"River.h"
 #include<lua.hpp>
 
 bool	selectMap()
@@ -71,6 +71,7 @@ void	loadMap(const FilePath& _path)
 	std::thread thread(mapImageFunc);
 
 	//Planetデータのロード
+	if (FileSystem::Exists(_path + L"Planet.json"))
 	{
 		JSONReader reader(_path + L"Planet.json");
 		auto j = reader[L"StartTime"];
@@ -103,6 +104,15 @@ void	loadMap(const FilePath& _path)
 			for (auto& b : u.shelves) b.joinedUrban = &u;
 		}
 	}
+
+	//Riversデータのロード
+	if (FileSystem::Exists(_path + L"Rivers.json"))
+	{
+		JSONReader reader(_path + L"Rivers.json");
+		for (auto json : reader.arrayView()) rivers.emplace_back(json);
+	}
+
+	//Route生成
 	initRoutes();
 
 	//Incidentsデータのロード
@@ -124,18 +134,6 @@ void	loadMap(const FilePath& _path)
 		auto json = JSONReader(_path + L"Groups.json");
 
 		for (auto j : json.arrayView()) groups.emplace_back(j);
-	}
-
-	//Nationsデータのロード
-	if (FileSystem::Exists(_path + L"Nations.json"))
-	{
-		auto json = JSONReader(_path + L"Nations.json");
-
-		for (auto j : json.arrayView()) nations.emplace_back(j);
-		for (auto& n : nations)
-		{
-			for (auto& u : n.ownUrbans) u->joinedNation = &n;
-		}
 	}
 
 	thread.join();	//mapImage用

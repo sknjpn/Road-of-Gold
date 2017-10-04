@@ -48,25 +48,6 @@ void	updateFleets()
 					break;
 				}
 			}
-			else if (f.stopFlag)	//éñã∆í‚é~
-			{
-				f.stopFlag = false;
-				for (auto& e : exports)
-				{
-					if (e.from == f.exportLog.from &&
-						e.to == f.exportLog.to &&
-						e.itemType == f.exportLog.itemType)
-					{
-						e.numItemPerDay -= f.exportLog.numItemPerDay;
-						break;
-					}
-				}
-				exports.remove_if([](const Export& e) { return e.numItemPerDay == 0; });
-				f.chain.clear();
-				for (auto& u : urbans) u.buyers.remove_if([&f](const Buyer& b) { return b.walletID == f.walletID; });
-
-				break;
-			}
 			else if (f.chain.update(&f)) break;	//errorÇÃèÍçáíEèo
 		}
 	}

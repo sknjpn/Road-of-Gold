@@ -10,8 +10,8 @@ struct Scuttle
 	RectF	titleRegion;
 	RectF	descriptionRegion;
 	RectF	buttonRegion;
-	Audio	audio;
 	Texture	backGround;
+	bool	isPushed;
 
 	Scuttle(String _title, String _description, String _button);
 };

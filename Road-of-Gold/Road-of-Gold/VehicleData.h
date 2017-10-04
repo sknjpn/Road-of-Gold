@@ -8,6 +8,8 @@ struct VehicleData
 	double	range;
 	bool	isShip;
 	Texture	icon;
+	int		constructionCost;
+	int		tier;
 
 	VehicleData(const JSONValue& _json);
 	VehicleData()
@@ -17,6 +19,8 @@ struct VehicleData
 		, range(10.0)
 		, isShip(true)
 		, icon()
+		, constructionCost(1000)
+		, tier(0)
 	{}
 	int		id() const;
 };

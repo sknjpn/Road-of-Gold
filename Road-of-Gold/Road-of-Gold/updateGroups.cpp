@@ -12,6 +12,7 @@ double tmr = 0.0;
 
 void	updateGroups()
 {
+	/*
 	tmr += planet.timeSpeed;
 
 	if (tmr > 0.0)
@@ -115,4 +116,5 @@ void	updateGroups()
 			f.wallet().price = u2->cost(itemType);
 		}
 	}
+	*/
 }

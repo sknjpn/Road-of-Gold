@@ -51,6 +51,15 @@ Urban::Urban(const JSONValue& _json)
 	double sum = std::accumulate(customers.begin(), customers.end(), 0.0, [](double _sum, Customer& _c) { return _sum + _c.rate; });
 	for (auto& c : customers) c.rate /= sum;
 	customers.sort_by([](Customer& _x, Customer& _y) { return _x.rate < _y.rate; });
+
+	//Dockの追加-仮
+	for (int i = 0; i < 5; i++)
+	{
+		if (i < 3) docks.emplace_back(1);
+		else docks.emplace_back(0);
+	}
+
+	tickets.reserve(1000);	//1000チケットまで許可
 }
 Pos		Urban::pos() const { return nodes.at(joinedNodeID).pos; }
 Circle	Urban::shape() const { return Circle(pos().mPos, 0.015); }

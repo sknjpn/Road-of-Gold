@@ -234,6 +234,7 @@ call copy.bat</Command>
   <ItemGroup>
     <ClInclude Include="Chain.h" />
     <ClInclude Include="Fleet.h" />
+    <ClInclude Include="River.h" />
     <ClInclude Include="Shelf.h" />
     <ClInclude Include="BiomeData.h" />
     <ClInclude Include="Casket.h" />
@@ -246,7 +247,6 @@ call copy.bat</Command>
     <ClInclude Include="Export.h" />
     <ClInclude Include="Group.h" />
     <ClInclude Include="ItemData.h" />
-    <ClInclude Include="Nation.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Path.h" />
     <ClInclude Include="Planet.h" />
@@ -266,6 +266,8 @@ call copy.bat</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Chain.cpp" />
+    <ClCompile Include="Pos.cpp" />
+    <ClCompile Include="River.cpp" />
     <ClCompile Include="updateDisplay.cpp" />
     <ClCompile Include="Fleet.cpp" />
     <ClCompile Include="Planet.cpp" />
@@ -275,7 +277,6 @@ call copy.bat</Command>
     <ClCompile Include="Citizen.cpp" />
     <ClCompile Include="Customer.cpp" />
     <ClCompile Include="drawPlanet.cpp" />
-    <ClCompile Include="drawRoutes.cpp" />
     <ClCompile Include="drawScuttles.cpp" />
     <ClCompile Include="drawUrbans.cpp" />
     <ClCompile Include="drawFleets.cpp" />
@@ -289,7 +290,6 @@ call copy.bat</Command>
     <ClCompile Include="loadData.cpp" />
     <ClCompile Include="loadMap.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Nation.cpp" />
     <ClCompile Include="Node.cpp" />
     <ClCompile Include="Route.cpp" />
     <ClCompile Include="Sandglass.cpp" />

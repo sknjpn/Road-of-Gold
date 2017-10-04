@@ -12,7 +12,39 @@ struct Node;
 struct Wallet;
 struct Pos;
 struct Route;
-struct Nation;
+struct Group;
+
+struct Ticket
+{
+	Group*	client;
+	int		vehicleType;
+	bool	isInProcess;
+
+	Ticket(Group* _client, int _vehicleType)
+		: client(_client)
+		, vehicleType(_vehicleType)
+		, isInProcess(false)
+	{}
+};
+
+//ë¢ëDèä
+struct Dock
+{
+	Ticket*	inProcessTicket;
+	double	progress;
+	int		tier;
+
+	Dock()
+		: inProcessTicket(nullptr)
+		, progress(0.0)
+		, tier(0)
+	{}
+	Dock(int _tier)
+		: inProcessTicket(nullptr)
+		, progress(0.0)
+		, tier(_tier)
+	{}
+};
 
 struct Urban
 {
@@ -22,7 +54,6 @@ struct Urban
 	int		averageIncome;
 	bool	isSelected;
 	double	productivity;
-	Nation*	joinedNation;
 	Sandglass	sandglass;
 	Array<Energy>	energies;
 	Array<Citizen>	citizens;
@@ -32,6 +63,8 @@ struct Urban
 	Array<Buyer>	buyers;
 	Array<Shelf>	shelves;
 	Array<Customer>	customers;
+	Array<Dock>		docks;
+	Array<Ticket>	tickets;
 
 	Urban(const JSONValue& _json);
 	void	addEnergy(const String _name, int _num);

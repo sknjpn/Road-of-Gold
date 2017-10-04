@@ -48,13 +48,13 @@ void	initRoutes()
 					auto& vn2 = virtualNodes[p.toID];
 
 					//移動の制限
-					if (k == 0)
+					if (k == 0)	//海上ユニット
 					{
-						if (!n2.isSea() && !n2.hasUrban()) continue;
+						if (!n2.isSea() && !n2.hasUrban() && p.riverWidth == 0) continue;
 					}
-					else
+					else		//陸上ユニット
 					{
-						if (n2.isSea()) continue;
+						if (n2.isSea() || p.riverWidth > 0) continue;
 					}
 
 					double movingCost = p.length * (biomeData[n1.biomeType].movingCost + biomeData[n2.biomeType].movingCost) / 2.0;

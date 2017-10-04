@@ -19,8 +19,6 @@ struct Fleet
 	Urban*	nowUrban;
 	Route*	route;
 	Export	exportLog;
-	bool	stopFlag;	//true‚È‚ç‚ÎŽ–‹Æ‚ð’†’f
-	bool	planFixed;
 	double	timer;	//‰^—pŠúŠÔ
 	double	period;	//ˆêŽü‚·‚é‚Ì‚É—v‚·‚éŽžŠÔ
 	Chain	chain;

@@ -78,8 +78,6 @@ void	RouteMaker::update()
 							break;
 						}
 					}
-					tf->planFixed = true;
-					tf->stopFlag = false;
 				}
 				wayPoints.clear();
 				selecter.selectedFleets.emplace_back(targetFleet);
@@ -99,7 +97,7 @@ void	RouteMaker::update()
 		{
 			auto& wp1 = wayPoints[j];
 			auto& wp2 = wayPoints[j + 1];
-			Line(wp1.urban->pos().mPos, wp2.urban->pos().mPos).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Red, 192));
+			getLine(wp1.urban->pos(), wp2.urban->pos()).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Red, 192));
 		}
 	}
 
@@ -130,10 +128,10 @@ void	RouteMaker::update()
 						if (wp1.urban == targetUrban || flag)
 						{
 							flag = true;
-							Line(wp1.urban->pos().mPos, wp2.urban->pos().mPos).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Skyblue, 192));
+							getLine(wp1.urban->pos(), wp2.urban->pos()).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Skyblue, 192));
 						}
 					}
-					Line(wayPoints.back().urban->pos().mPos, targetUrban->pos().mPos).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Skyblue, 128));
+					getLine(wayPoints.back().urban->pos(), targetUrban->pos()).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Skyblue, 128));
 				}
 			}
 			else
@@ -141,10 +139,10 @@ void	RouteMaker::update()
 				for (int i = 0; i < 2; i++)
 				{
 					auto t1 = tinyCamera.createTransformer(i);
-					Line(wayPoints.back().urban->pos().mPos, targetUrban->pos().mPos).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Red, 128));
+					getLine(wayPoints.back().urban->pos(), targetUrban->pos()).drawArrow(0.01, Vec2(0.05, 0.05), Color(Palette::Red, 128));
 					if (!targetFleet->canMoveTo(*targetUrban))
 					{
-						auto p = (wayPoints.back().urban->pos().mPos + targetUrban->pos().mPos) / 2.0;
+						auto p = getLine(wayPoints.back().urban->pos(), targetUrban->pos()).center();
 						Line(p.movedBy(-0.05, -0.05), p.movedBy(0.05, 0.05)).draw(0.02, Palette::Red);
 						Line(p.movedBy(0.05, -0.05), p.movedBy(-0.05, 0.05)).draw(0.02, Palette::Red);
 					}

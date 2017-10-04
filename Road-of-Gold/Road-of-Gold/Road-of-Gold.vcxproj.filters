@@ -177,9 +177,6 @@
     <ClInclude Include="Node.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Nation.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ItemData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -258,6 +255,9 @@
     <ClInclude Include="Display.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="River.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Vehicle.cpp">
@@ -302,9 +302,6 @@
     <ClCompile Include="Node.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Nation.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -339,9 +336,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="drawScuttles.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="drawRoutes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="drawPlanet.cpp">
@@ -394,6 +388,12 @@
     </ClCompile>
     <ClCompile Include="Selecter.cpp">
       <Filter>Source Files\Display</Filter>
+    </ClCompile>
+    <ClCompile Include="River.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Pos.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

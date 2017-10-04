@@ -4,6 +4,8 @@
 #include"CitizenData.h"
 #include"ItemData.h"
 #include"Sound.h"
+#include"VehicleData.h"
+#include"Fleet.h"
 #include<thread>
 #include<boost\range\numeric.hpp>
 
@@ -171,6 +173,55 @@ void	updateUrban(Urban& u)
 				{
 					u.sellItem(data.product, Max(1, int(1 + c.wallet().price*Random(1.00, 1.10))), c.walletID);
 				}
+			}
+		}
+	}
+
+	//Dockの更新
+	for (auto& d : u.docks)
+	{
+		double ap = planet.timeSpeed;
+
+		for (;;)
+		{
+			if (d.inProcessTicket != nullptr)
+			{
+				auto* t = d.inProcessTicket;
+				if (d.progress + 100.0*ap < vehicleData[t->vehicleType].constructionCost)
+				{
+					d.progress += 100.0*planet.timeSpeed;
+					break;
+				}
+				else
+				{
+					ap -= (vehicleData[t->vehicleType].constructionCost - d.progress) / 100.0;
+
+					//船団の展開
+					fleets.emplace_back(t->vehicleType, &u);
+					fleets.back().name = Format(L"第", fleets.size(), L"船団");
+
+					for (auto& dt : u.docks)
+					{
+						//アドレス調整
+						if (&d != &dt && dt.inProcessTicket != nullptr && dt.inProcessTicket > t) dt.inProcessTicket--;
+					}
+					u.tickets.erase(u.tickets.begin() + (t - &u.tickets.front()));	//対象チケットの消去
+					d.inProcessTicket = nullptr;
+					d.progress = 0.0;
+				}
+			}
+			else
+			{
+				for (auto& t : u.tickets)
+				{
+					if (!t.isInProcess && vehicleData[t.vehicleType].tier <= d.tier)
+					{
+						d.inProcessTicket = &t;
+						t.isInProcess = true;
+						break;
+					}
+				}
+				if (d.inProcessTicket == nullptr) break;
 			}
 		}
 	}

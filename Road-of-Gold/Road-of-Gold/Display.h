@@ -63,6 +63,7 @@ struct DisplayUrban
 	{
 		Worker,
 		Shelves,
+		Docks
 	} urbanInfoState;
 	Stopwatch	openElapsedTime;	//ŠJ‚¢‚Ä‚©‚ç‚ÌŒo‰ßŽžŠÔ
 	Stopwatch	closeElapsedTime;	//•Â‚¶‚Ä‚©‚ç‚ÌŒo‰ßŽžŠÔ
