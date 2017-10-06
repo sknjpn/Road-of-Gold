@@ -197,16 +197,17 @@ void	DisplayUrban::update()
 
 	case UrbanInfoState::Docks:
 	{
+		//チケット
 		for (int i = 0; i < int(su->tickets.size()); i++)
 		{
 			auto& st = su->tickets[i];
 			Rect rect(248, 100 + i * 28, 200, 24);
 
 			rect.draw(Color(60)).drawFrame(2, Color(40));
-			vehicleData[st.vehicleType].icon.resize(24, 24).draw(rect.pos);
-			
+			vehicleData[st.vehicleType].icon.resize(24, 24).draw(rect.pos.movedBy(4,0));
 		}
 
+		//ドック
 		for (int i = 0; i < int(su->docks.size()); i++)
 		{
 			auto& sd = su->docks[i];
@@ -217,8 +218,8 @@ void	DisplayUrban::update()
 			if (sd.inProcessTicket != nullptr)
 			{
 				auto* t = sd.inProcessTicket;
-				Rect(rect.pos, rect.size.x*sd.progress / vehicleData[t->vehicleType].constructionCost, rect.size.y).draw(Palette::Green);
-				vehicleData[t->vehicleType].icon.resize(24, 24).drawAt(rect.center());
+				Rect(rect.pos, int(rect.size.x*sd.progress / t->data().constructionCost), rect.size.y).draw(Palette::Green);
+				t->data().icon.resize(24, 24).drawAt(rect.center());
 				Line(rect.tr().movedBy(0, 16), Vec2(248, 100 + (t - &su->tickets.front()) * 28 + 12)).draw(2, Palette::Red);
 			}
 

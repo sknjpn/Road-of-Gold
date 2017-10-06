@@ -3,6 +3,7 @@
 struct BiomeData
 {
 	String	name;
+	String	nameJP;
 	Color	color;
 	double	movingCost;
 	bool	isSea;
