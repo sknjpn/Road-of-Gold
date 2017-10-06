@@ -13,6 +13,7 @@ struct Wallet;
 struct Pos;
 struct Route;
 struct Group;
+struct VehicleData;
 
 struct Ticket
 {
@@ -25,6 +26,7 @@ struct Ticket
 		, vehicleType(_vehicleType)
 		, isInProcess(false)
 	{}
+	VehicleData&	data() const;
 };
 
 //ë¢ëDèä

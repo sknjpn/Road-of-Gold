@@ -6,8 +6,13 @@
 #include"TinyCamera.h"
 #include"ItemData.h"
 #include"Route.h"
+#include"VehicleData.h"
 #include<numeric>
 
+VehicleData&	Ticket::data() const
+{
+	return vehicleData[vehicleType];
+}
 Urban::Urban(const JSONValue& _json)
 	: name(_json[L"Name"].getString())
 	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))

@@ -39,6 +39,7 @@ void	loadData()
 
 BiomeData::BiomeData(const JSONValue& _json)
 	: name(_json[L"Name"].getOr<String>(L""))
+	, nameJP(_json[L"NameJP"].getOr<String>(L""))
 	, color(_json[L"Color"].getOr<String>(L"#FFFFFF"))
 	, movingCost(_json[L"MovingCost"].getOr<double>(1.0))
 	, isSea(_json[L"IsSea"].getOr<bool>(false))

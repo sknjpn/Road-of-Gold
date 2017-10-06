@@ -187,14 +187,14 @@ void	updateUrban(Urban& u)
 			if (d.inProcessTicket != nullptr)
 			{
 				auto* t = d.inProcessTicket;
-				if (d.progress + 100.0*ap < vehicleData[t->vehicleType].constructionCost)
+				if (d.progress + 100.0*ap < t->data().constructionCost)
 				{
 					d.progress += 100.0*planet.timeSpeed;
 					break;
 				}
 				else
 				{
-					ap -= (vehicleData[t->vehicleType].constructionCost - d.progress) / 100.0;
+					ap -= (t->data().constructionCost - d.progress) / 100.0;
 
 					//‘D’c‚Ì“WŠJ
 					fleets.emplace_back(t->vehicleType, &u);

@@ -309,18 +309,24 @@ void Main()
 			//一覧
 			for (auto i : step(20))
 			{
-				const Rect rect(32, 64 + i * 16, 160, 16);
+				const Rect rect(32, 64 + i * 19, 160, 19);
 				const Color color(selectedBiome == i ? Palette::Red : rect.mouseOver() ? Palette::Orange : Color(0, 0));
 				if (i < int(biomeData.size()))
 				{
 					if (rect.leftClicked()) selectedBiome = i;
-					rect.draw(color);
-					font12(biomeData[i].name).draw(rect.pos.movedBy(12, 0));
+					rect.draw(biomeData[i].color);
+					rect.drawFrame(3, 0, color);
+
+					font12(biomeData[i].nameJP).draw(rect.pos.movedBy(11, 1), Palette::Black);
+					font12(biomeData[i].nameJP).draw(rect.pos.movedBy(13, 1), Palette::Black);
+					font12(biomeData[i].nameJP).draw(rect.pos.movedBy(12, 0), Palette::Black);
+					font12(biomeData[i].nameJP).draw(rect.pos.movedBy(12, 2), Palette::Black);
+					font12(biomeData[i].nameJP).draw(rect.pos.movedBy(12, 1), Palette::White);
 				}
 				else
 				{
 					if (color != Color(0, 0)) rect.draw(Color(color, 128));
-					font12(L"---").draw(rect.pos.movedBy(12, 0));
+					font12(L"---").draw(rect.pos.movedBy(12, 1));
 				}
 				rect.drawFrame(2, Palette::Skyblue);
 			}
@@ -329,7 +335,7 @@ void Main()
 				const Rect rect(192, 64, 160, 40);
 				rect.drawFrame(2, Palette::Skyblue);
 				font16(L"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
-				font12(biomeData[selectedBiome].name).draw(rect.pos.movedBy(4, 22));
+				font12(biomeData[selectedBiome].nameJP).draw(rect.pos.movedBy(4, 22));
 			}
 			//ブラシの選択
 			{
