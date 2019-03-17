@@ -104,10 +104,6 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
-call copy.bat</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -124,10 +120,6 @@ call copy.bat</Command>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
-call copy.bat</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -148,10 +140,6 @@ call copy.bat</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
-call copy.bat</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -172,29 +160,23 @@ call copy.bat</Command>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
-    <PreBuildEvent>
-      <Command>chdir $(SolutionDir)
-call copy.bat</Command>
-    </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp" />
-    <ClCompile Include="stdafx.cpp">
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
-    </ClCompile>
-  </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Engine\Splash.png" />
+    <Image Include="Example\Brick.jpg" />
+    <Image Include="Example\Earth.jpg" />
+    <Image Include="Example\Grass.jpg" />
+    <Image Include="Example\Ground.jpg" />
+    <Image Include="Example\Particle.png" />
+    <Image Include="Example\Siv3D-kun.png" />
+    <Image Include="Example\Well\Well.jpg" />
+    <Image Include="Example\Windmill.png" />
     <Image Include="Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\assets\config.ini" />
     <None Include="Engine\Assets\engine_textures.s3a" />
     <None Include="Engine\Config.ini" />
     <None Include="Engine\dll(x64)\D3D\d3dcompiler_47.dll" />
@@ -256,6 +238,13 @@ call copy.bat</Command>
     <None Include="Engine\Shaders\D3D11\Sprite.vs" />
     <None Include="Engine\Shaders\D3D11\Sprite_Font.ps" />
     <None Include="Engine\Shaders\D3D11\Sprite_Stencil.ps" />
+    <None Include="Example\Hiragana.model" />
+    <None Include="Example\Prokofiev.mid" />
+    <None Include="Example\Test.csv" />
+    <None Include="Example\Test.ini" />
+    <None Include="Example\Test.json" />
+    <None Include="Example\Well\Well.mtl" />
+    <None Include="Example\Well\Well.wavefrontobj" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Engine\dll(x64)\libmpg123\COPYING.txt" />
@@ -263,6 +252,26 @@ call copy.bat</Command>
     <Text Include="Engine\dll(x86)\libmpg123\COPYING.txt" />
     <Text Include="Engine\dll(x86)\SoundTouch\COPYING.TXT" />
     <Text Include="Engine\LogMessages.txt" />
+    <Text Include="Example\Shaders\Blend2D.hlsl" />
+    <Text Include="Example\Shaders\Invert2D.hlsl" />
+    <Text Include="Example\Shaders\Monochrome2D.hlsl" />
+    <Text Include="Example\Shaders\PoissonDisk2D.hlsl" />
+    <Text Include="Example\Shaders\RGBSplit2D.hlsl" />
+    <Text Include="Example\Shaders\Simple2D.hlsl" />
+    <Text Include="Example\Shaders\Simple3D.hlsl" />
+    <Text Include="Example\Shaders\Simple3DForward.hlsl" />
+    <Text Include="Example\Shaders\Swirl2D.hlsl" />
+    <Text Include="Example\Shaders\Terrain3D.hlsl" />
+    <Text Include="Example\Shaders\Wave2DPointSprites.hlsl" />
+    <Text Include="Example\Test.txt" />
+    <Text Include="Example\素材について.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="Example\Sound.mp3" />
+    <Media Include="Example\風の丘.mp3" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Example\YomogiFont.ttf" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BiomeData.h" />
@@ -271,6 +280,15 @@ call copy.bat</Command>
     <ClInclude Include="Pos.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Urban.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

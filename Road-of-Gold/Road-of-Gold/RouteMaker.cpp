@@ -13,7 +13,7 @@ void	RouteMaker::update()
 		Window::ClientRect().drawFrame(16, Color(Palette::Red, 128));
 		Rect rect(Window::ClientRect().size.x, 48);
 		rect.draw(Color(Palette::Red, 128));
-		(*globalFonts[32])(L"ルート作成モード").drawAt(rect.center());
+		(*globalFonts[32])(U"ルート作成モード").drawAt(rect.center());
 	}
 
 	//erase
@@ -55,7 +55,7 @@ void	RouteMaker::update()
 		for (auto& u : urbans) u.isSelected = false;
 		if (targetUrban != nullptr)
 		{
-			if (wayPoints.include_if([&targetUrban](const WayPoint& wp) { return wp.urban == targetUrban; }))
+			if (wayPoints.includes_if([&targetUrban](const WayPoint& wp) { return wp.urban == targetUrban; }))
 			{
 				wayPoints.emplace_back(targetUrban);
 				//chain追加
@@ -114,7 +114,7 @@ void	RouteMaker::update()
 		}
 		if (targetUrban != nullptr)
 		{
-			if (wayPoints.back().urban != targetUrban && wayPoints.include_if([&targetUrban](const WayPoint& wp) { return wp.urban == targetUrban; }))
+			if (wayPoints.back().urban != targetUrban && wayPoints.includes_if([&targetUrban](const WayPoint& wp) { return wp.urban == targetUrban; }))
 			{
 				for (int i = 0; i < 2; i++)
 				{

@@ -18,7 +18,7 @@ void	updateDisplay()
 		const auto& font = *globalFonts[24];
 		const Rect rect(Window::Size().x - 300, 36, 300, 36);
 		rect.draw(bColor).drawFrame(thickness, fColor);
-		font(L"速度").draw(rect.pos);
+		font(U"速度").draw(rect.pos);
 		const auto t1 = Triangle(24).rotated(30_deg).movedBy(rect.pos + Vec2(64, 18));
 		const auto t2 = Triangle(24).rotated(90_deg).movedBy(rect.pos + Vec2(284, 18));
 		const auto c1 = Circle(rect.pos + Vec2(64, 18), 14);
@@ -50,7 +50,7 @@ void	updateDisplay()
 		//年表示
 		{
 			const auto rect = Rect(0, 0, 84, 36).movedBy(pos);
-			const String text = Format(int(s.timer / 360), L"年");
+			const String text = Format(int(s.timer / 360), U"年");
 			const int width = (int)font(text).region().size.x;
 
 			rect.draw(bColor).drawFrame(thickness, fColor);
@@ -60,7 +60,7 @@ void	updateDisplay()
 		//月表示
 		{
 			const auto rect = Rect(84, 0, 54, 36).movedBy(pos);
-			const String text = Format(int(s.timer / 30) % 12 + 1, L"月");
+			const String text = Format(int(s.timer / 30) % 12 + 1, U"月");
 			const int width = (int)font(text).region().size.x;
 
 			rect.draw(bColor).drawFrame(thickness, fColor);
@@ -70,7 +70,7 @@ void	updateDisplay()
 		//日表示
 		{
 			const auto rect = Rect(138, 0, 54, 36).movedBy(pos);
-			const String text = Format(int(s.timer) % 30 + 1, L"日");
+			const String text = Format(int(s.timer) % 30 + 1, U"日");
 			const int width = (int)font(text).region().size.x;
 
 			rect.draw(bColor).drawFrame(thickness, fColor);
@@ -80,7 +80,7 @@ void	updateDisplay()
 		//時表示
 		{
 			const auto rect = Rect(192, 0, 54, 36).movedBy(pos);
-			const String text = Format(int(s.timer * 24) % 24, L"時");
+			const String text = Format(int(s.timer * 24) % 24, U"時");
 			const int width = (int)font(text).region().size.x;
 
 			rect.draw(bColor).drawFrame(thickness, fColor);
@@ -90,7 +90,7 @@ void	updateDisplay()
 		//分表示
 		{
 			const auto rect = Rect(246, 0, 54, 36).movedBy(pos);
-			const String text = Format(int(s.timer * 24 * 60) % 60, L"分");
+			const String text = Format(int(s.timer * 24 * 60) % 60, U"分");
 			const int width = (int)font(text).region().size.x;
 
 			rect.draw(bColor).drawFrame(thickness, fColor);

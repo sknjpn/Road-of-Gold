@@ -13,7 +13,7 @@ struct VehicleData
 
 	VehicleData(const JSONValue& _json);
 	VehicleData()
-		: name(L"hoge")
+		: name(U"hoge")
 		, speed(1.0)
 		, volume(1000)
 		, range(10.0)

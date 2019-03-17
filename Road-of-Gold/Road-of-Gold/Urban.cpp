@@ -14,9 +14,9 @@ VehicleData&	Ticket::data() const
 	return vehicleData[vehicleType];
 }
 Urban::Urban(const JSONValue& _json)
-	: name(_json[L"Name"].getString())
-	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))
-	, productivity(_json[L"Productivity"].getOr<double>(1.0))
+	: name(_json[U"Name"].getString())
+	, joinedNodeID(_json[U"JoinedNodeID"].getOr<int>(-1))
+	, productivity(_json[U"Productivity"].getOr<double>(1.0))
 	, sandglass(0.5 + pos().mPos.x / 360_deg)
 	, walletID(getNewWalletID())
 	, averageIncome(0)
@@ -31,9 +31,9 @@ Urban::Urban(const JSONValue& _json)
 	jobEfficiency.fill(1);
 
 	//資源配置
-	for (auto i : _json[L"Energies"].objectView())
+	for (auto i : _json[U"Energies"].objectView())
 	{
-		if (getEnergyType(i.name) == -1) Output << L"存在しないEnergyが読み込まれました";
+		if (getEnergyType(i.name) == -1) Logger << U"存在しないEnergyが読み込まれました";
 		else energies.emplace_back(getEnergyType(i.name), i.value.getOr<int>(0));
 	}
 
@@ -46,7 +46,7 @@ Urban::Urban(const JSONValue& _json)
 	};
 
 	//CitizensとCustomersの追加
-	for (int i = 0; i < _json[L"NumCitizens"].getOr<int>(0); i++)
+	for (int i = 0; i < _json[U"NumCitizens"].getOr<int>(0); i++)
 	{
 		citizens.emplace_back(0);
 		customers.emplace_back(customersRateFunc());
@@ -134,7 +134,7 @@ int		Urban::cost(int _itemType, int _numItem) const
 		}
 	}
 
-	Output << L"異常な関数呼び出しがされました。Urban::cost()";
+	Logger << U"異常な関数呼び出しがされました。Urban::cost()";
 	return -1;
 }
 void	Urban::buyItem(int _itemType, int _walletID, int _numItem)
@@ -193,7 +193,7 @@ void	TradeLog::addTrade(int _price, int _num)
 {
 	if (_num == 0)
 	{
-		Output << L"異常な関数呼び出しがされました。TradeLog::addTrade()";
+		Logger << U"異常な関数呼び出しがされました。TradeLog::addTrade()";
 		return;
 	}
 	const int n = price.front()*numTrade.front() + _price*_num;

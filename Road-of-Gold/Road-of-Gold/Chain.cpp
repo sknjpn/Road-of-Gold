@@ -15,31 +15,31 @@ String	Ring::valueText() const
 {
 	switch (code)
 	{
-	case Code::None:return Format(L"次の番地に移動");
-	case Code::Move:return Format(urbans[value].name, L"に移動");
-	case Code::Jump:return Format(value, L"番地にジャンプ");
+	case Code::None:return Format(U"次の番地に移動");
+	case Code::Move:return Format(urbans[value].name, U"に移動");
+	case Code::Jump:return Format(value, U"番地にジャンプ");
 	case Code::Wait:
-		if (value >= 24 && value % 24 == 0) return Format(value / 24, L"日待つ");
-		if (value >= 24 && value % 24 != 0) return Format(value / 24, L"日と", value % 24, L"時間待つ");
-		if (value < 24) return Format(value, L"時間待つ");
-	case Code::Buy:	return Format(itemData[value].name, L"を購入");
-	case Code::Sell:return Format(L"アイテムをすべて売却");
-	case Code::ERR:	return Format(L"異常なコード");
-	default:		return Format(L"異常なコード");
+		if (value >= 24 && value % 24 == 0) return Format(value / 24, U"日待つ");
+		if (value >= 24 && value % 24 != 0) return Format(value / 24, U"日と", value % 24, U"時間待つ");
+		if (value < 24) return Format(value, U"時間待つ");
+	case Code::Buy:	return Format(itemData[value].name, U"を購入");
+	case Code::Sell:return Format(U"アイテムをすべて売却");
+	case Code::ERR:	return Format(U"異常なコード");
+	default:		return Format(U"異常なコード");
 	}
 }
 String	Ring::codeText() const
 {
 	switch (code)
 	{
-	case Code::None:return L"None";
-	case Code::Move:return L"Move";
-	case Code::Jump:return L"Jump";
-	case Code::Wait:return L"Wait";
-	case Code::Buy:	return L"Buy";
-	case Code::Sell:return L"Sell";
-	case Code::ERR:	return L"ERR";
-	default:		return L"ERR";
+	case Code::None:return U"None";
+	case Code::Move:return U"Move";
+	case Code::Jump:return U"Jump";
+	case Code::Wait:return U"Wait";
+	case Code::Buy:	return U"Buy";
+	case Code::Sell:return U"SelU";
+	case Code::ERR:	return U"ERR";
+	default:		return U"ERR";
 	}
 }
 void	Chain::clear()

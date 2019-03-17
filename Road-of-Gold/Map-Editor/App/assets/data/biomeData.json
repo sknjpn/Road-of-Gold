@@ -1,0 +1,76 @@
+[
+  {
+    "Name": "Sea",
+    "NameJP": "近海",
+    "Color": "#0F285A",
+    "MovingCost": 2.00,
+    "IsSea": true
+  },
+  {
+    "Name": "Ocean",
+    "NameJP": "海洋",
+    "Color": "#0F1E50",
+    "MovingCost": 3.00,
+    "IsSea": true
+  },
+  {
+    "Name": "Ice",
+    "NameJP": "氷原",
+    "Color": "#FFFFFF",
+    "MovingCost": 20.00
+  },
+  {
+    "Name": "Desert",
+    "NameJP": "砂漠",
+    "Color": "#EEDA82",
+    "MovingCost": 20.00
+  },
+  {
+    "Name": "Savanna",
+    "NameJP": "サバンナ",
+    "Color": "#B1D16E",
+    "MovingCost": 10.00
+  },
+  {
+    "Name": "TropicalRainforest",
+    "NameJP": "熱帯雨林",
+    "Color": "#1D4928",
+    "MovingCost": 50.00
+  },
+  {
+    "Name": "Tundra",
+    "NameJP": "ツンドラ",
+    "Color": "#608370",
+    "MovingCost": 15.00
+  },
+  {
+    "Name": "TemperateRainforest",
+    "NameJP": "温帯雨林",
+    "Color": "#427B19",
+    "MovingCost": 30.00
+  },
+  {
+    "Name": "Grassland",
+    "NameJP": "草原",
+    "Color": "#A4E163",
+    "MovingCost": 6.00
+  },
+  {
+    "Name": "SeasonalForest",
+    "NameJP": "温帯森林",
+    "Color": "#496423",
+    "MovingCost": 20.00
+  },
+  {
+    "Name": "BorealForest",
+    "NameJP": "寒帯森林",
+    "Color": "#5F733E",
+    "MovingCost": 10.00
+  },
+  {
+    "Name": "Woodland",
+    "NameJP": "森林地帯",
+    "Color": "#8BAF5A",
+    "MovingCost": 8.00
+  }
+]

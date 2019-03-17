@@ -16,6 +16,9 @@
     <Filter Include="リソース ファイル\Engine">
       <UniqueIdentifier>{a9da79f3-ee70-4be1-9c59-4659cb4d6c0e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="リソース ファイル\Example">
+      <UniqueIdentifier>{d76b024f-de61-487e-b948-d4fa2f4eb0e7}</UniqueIdentifier>
+    </Filter>
     <Filter Include="リソース ファイル\Engine\Assets">
       <UniqueIdentifier>{40092e96-bcd3-44dc-a03f-9502f704b5f6}</UniqueIdentifier>
     </Filter>
@@ -67,14 +70,12 @@
     <Filter Include="リソース ファイル\Engine\dll%28x86%29\TobiiEyeX">
       <UniqueIdentifier>{a079701e-3fb0-45fa-b67d-4de7e67d8a5c}</UniqueIdentifier>
     </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Main.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="stdafx.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
+    <Filter Include="リソース ファイル\Example\Shaders">
+      <UniqueIdentifier>{d9d4390f-eba9-4e4a-af0c-9f77e488a627}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="リソース ファイル\Example\Well">
+      <UniqueIdentifier>{eb86b9be-05b8-45c6-89c8-f91a5437157c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Resource.rc">
@@ -87,6 +88,30 @@
     </Image>
     <Image Include="Engine\Splash.png">
       <Filter>リソース ファイル\Engine</Filter>
+    </Image>
+    <Image Include="Example\Earth.jpg">
+      <Filter>リソース ファイル\Example</Filter>
+    </Image>
+    <Image Include="Example\Grass.jpg">
+      <Filter>リソース ファイル\Example</Filter>
+    </Image>
+    <Image Include="Example\Ground.jpg">
+      <Filter>リソース ファイル\Example</Filter>
+    </Image>
+    <Image Include="Example\Particle.png">
+      <Filter>リソース ファイル\Example</Filter>
+    </Image>
+    <Image Include="Example\Siv3D-kun.png">
+      <Filter>リソース ファイル\Example</Filter>
+    </Image>
+    <Image Include="Example\Windmill.png">
+      <Filter>リソース ファイル\Example</Filter>
+    </Image>
+    <Image Include="Example\Brick.jpg">
+      <Filter>リソース ファイル\Example</Filter>
+    </Image>
+    <Image Include="Example\Well\Well.jpg">
+      <Filter>リソース ファイル\Example\Well</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
@@ -273,8 +298,26 @@
     <None Include="Engine\Config.ini">
       <Filter>リソース ファイル\Engine</Filter>
     </None>
-    <None Include="..\assets\config.ini">
-      <Filter>リソース ファイル</Filter>
+    <None Include="Example\Hiragana.model">
+      <Filter>リソース ファイル\Example</Filter>
+    </None>
+    <None Include="Example\Prokofiev.mid">
+      <Filter>リソース ファイル\Example</Filter>
+    </None>
+    <None Include="Example\Test.csv">
+      <Filter>リソース ファイル\Example</Filter>
+    </None>
+    <None Include="Example\Test.ini">
+      <Filter>リソース ファイル\Example</Filter>
+    </None>
+    <None Include="Example\Test.json">
+      <Filter>リソース ファイル\Example</Filter>
+    </None>
+    <None Include="Example\Well\Well.mtl">
+      <Filter>リソース ファイル\Example\Well</Filter>
+    </None>
+    <None Include="Example\Well\Well.wavefrontobj">
+      <Filter>リソース ファイル\Example\Well</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -293,17 +336,60 @@
     <Text Include="Engine\LogMessages.txt">
       <Filter>リソース ファイル\Engine</Filter>
     </Text>
+    <Text Include="Example\Test.txt">
+      <Filter>リソース ファイル\Example</Filter>
+    </Text>
+    <Text Include="Example\素材について.txt">
+      <Filter>リソース ファイル\Example</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Blend2D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Invert2D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Monochrome2D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\PoissonDisk2D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\RGBSplit2D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Simple2D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Simple3D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Simple3DForward.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Swirl2D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Terrain3D.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
+    <Text Include="Example\Shaders\Wave2DPointSprites.hlsl">
+      <Filter>リソース ファイル\Example\Shaders</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Planet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Pos.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
+    <Media Include="Example\Sound.mp3">
+      <Filter>リソース ファイル\Example</Filter>
+    </Media>
+    <Media Include="Example\風の丘.mp3">
+      <Filter>リソース ファイル\Example</Filter>
+    </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Example\YomogiFont.ttf">
+      <Filter>リソース ファイル\Example</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
     <ClInclude Include="Urban.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -313,5 +399,22 @@
     <ClInclude Include="Node.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="Planet.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Pos.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

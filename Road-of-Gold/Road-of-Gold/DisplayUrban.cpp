@@ -34,9 +34,9 @@ void	DisplayUrban::update()
 	auto* su = selecter.selectedUrban;
 	auto conv = [](int value) {
 		if (value < 1000) return Format(value);
-		if (value < 1000000) return Format(value / 1000, L"K");
-		if (value < 1000000000) return Format(value / 1000000, L"M");
-		else return String(L"HugeValue");
+		if (value < 1000000) return Format(value / 1000, U"K");
+		if (value < 1000000000) return Format(value / 1000000, U"M");
+		else return String(U"HugeValue");
 	};
 	Transformer2D t1;
 	if (selecter.selectedUrban == nullptr)  t1 = Transformer2D(Mat3x2::Translate(EaseOut(Easing::Expo, 0.0, -480.0, Min(1.0, closeElapsedTime.ms() / 500.0)), 0));
@@ -58,7 +58,7 @@ void	DisplayUrban::update()
 
 	//選択
 	{
-		const Array<String>	list = { L"労働", L"市場", L"造船", L"政治" };
+		const Array<String>	list = { U"労働", U"市場", U"造船", U"政治" };
 		const auto w = int(448 / list.size());
 		{
 			const auto backgroundColor = Color(60);
@@ -102,7 +102,7 @@ void	DisplayUrban::update()
 			{
 				const Rect rect(16, 100, 160, 24);
 				rect.drawFrame(thickness, frameColor);
-				font16(L"基礎情報").drawAt(rect.center(), fontColor);
+				font16(U"基礎情報").drawAt(rect.center(), fontColor);
 			}
 			//人口の描画
 			{
@@ -110,8 +110,8 @@ void	DisplayUrban::update()
 				const Rect rect2(96, 124, 80, 24);
 				rect1.drawFrame(thickness, frameColor);
 				rect2.drawFrame(thickness, frameColor);
-				const String string1(L"総人口");
-				const String string2(Format(conv(int(su->citizens.size())), L"人"));
+				const String string1(U"総人口");
+				const String string2(Format(conv(int(su->citizens.size())), U"人"));
 				font16(string1).drawAt(rect1.center(), fontColor);
 				auto w = (int)font16(string2).region().w;
 				font16(string2).draw(rect2.tr().movedBy(-4 - w, 0), fontColor);
@@ -122,8 +122,8 @@ void	DisplayUrban::update()
 				const Rect rect2(96, 148, 80, 24);
 				rect1.drawFrame(thickness, frameColor);
 				rect2.drawFrame(thickness, frameColor);
-				const String string1(L"市民収入");
-				const String string2 = Format(conv(su->averageIncome), L"G");
+				const String string1(U"市民収入");
+				const String string2 = Format(conv(su->averageIncome), U"G");
 				font16(string1).drawAt(rect1.center(), fontColor);
 				auto w = (int)font16(string2).region().w;
 				font16(string2).draw(rect2.tr().movedBy(-4 - w, 0), fontColor);
@@ -204,7 +204,7 @@ void	DisplayUrban::update()
 			Rect rect(248, 100 + i * 28, 200, 24);
 
 			rect.draw(Color(60)).drawFrame(2, Color(40));
-			vehicleData[st.vehicleType].icon.resize(24, 24).draw(rect.pos.movedBy(4,0));
+			vehicleData[st.vehicleType].icon.resized(24, 24).draw(rect.pos.movedBy(4,0));
 		}
 
 		//ドック
@@ -219,11 +219,11 @@ void	DisplayUrban::update()
 			{
 				auto* t = sd.inProcessTicket;
 				Rect(rect.pos, int(rect.size.x*sd.progress / t->data().constructionCost), rect.size.y).draw(Palette::Green);
-				t->data().icon.resize(24, 24).drawAt(rect.center());
+				t->data().icon.resized(24, 24).drawAt(rect.center());
 				Line(rect.tr().movedBy(0, 16), Vec2(248, 100 + (t - &su->tickets.front()) * 28 + 12)).draw(2, Palette::Red);
 			}
 
-			font24(L"Tier", sd.tier).draw(rect.pos.movedBy(4, 0));
+			font24(U"Tier", sd.tier).draw(rect.pos.movedBy(4, 0));
 			rect.drawFrame(2, Color(40));
 		}
 	}

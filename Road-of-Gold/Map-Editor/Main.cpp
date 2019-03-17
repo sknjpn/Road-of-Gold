@@ -42,17 +42,17 @@ void	addTexture(const FilePath& _path, const String& _name)
 
 void Main()
 {
-	addTexture(L"assets/image/button/minus.png", L"minus");
-	addTexture(L"assets/image/button/minusMouseOver.png", L"minusMouseOver");
-	addTexture(L"assets/image/button/plus.png", L"plus");
-	addTexture(L"assets/image/button/plusMouseOver.png", L"plusMouseOver");
+	addTexture(U"assets/image/button/minus.png", U"minus");
+	addTexture(U"assets/image/button/minusMouseOver.png", U"minusMouseOver");
+	addTexture(U"assets/image/button/plus.png", U"plus");
+	addTexture(U"assets/image/button/plusMouseOver.png", U"plusMouseOver");
 
 	{
-		Window::SetTitle(L"MapEditor");
+		Window::SetTitle(U"MapEditor");
 
-		INIReader iniReader(L"assets/config.ini");
-		if (iniReader.getOr<bool>(L"Window", L"FullScreen", false)) Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
-		else Window::Resize(iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
+		INIData iniReader(U"assets/config.ini");
+		if (iniReader.getOr<bool>(U"Window", U"FullScreen", false)) Graphics::SetFullScreen(true, Size(1920, 1080));
+		else Window::Resize(iniReader.getOr<Size>(U"Window", U"WindowSize", Size(1280, 720)));
 	}
 
 	const Rect uiRect(32, 32, 320, 720 - 64);
@@ -130,9 +130,9 @@ void Main()
 		for (int i = 0; i < 2; ++i) {
 			const auto t1 = tinyCamera.createTransformer(i);
 
-			planet.mapTexture.resize(360_deg, 180_deg).drawAt(0, 0);
-			if (drawOutlineEnabled) planet.outlineTexture.resize(360_deg, 180_deg).drawAt(0, 0);
-			if (planet.coverTexture) planet.coverTexture.resize(360_deg, 180_deg).drawAt(0, 0, ColorF(Palette::White, planet.coverRate));
+			planet.mapTexture.resized(360_deg, 180_deg).drawAt(0, 0);
+			if (drawOutlineEnabled) planet.outlineTexture.resized(360_deg, 180_deg).drawAt(0, 0);
+			if (planet.coverTexture) planet.coverTexture.resized(360_deg, 180_deg).drawAt(0, 0, ColorF(Palette::White, planet.coverRate));
 		}
 
 		//川の描画
@@ -292,7 +292,7 @@ void Main()
 
 		//UIModeの選択
 		{
-			const Array<String> ns = { L"🌍", L"🏭", L"📂", L"🚤" };
+			const Array<String> ns = { U"🌍", U"🏭", U"📂", U"🚤" };
 			for (auto i : step(int(ns.size())))
 			{
 				const int width = 320 / int(ns.size());
@@ -326,7 +326,7 @@ void Main()
 				else
 				{
 					if (color != Color(0, 0)) rect.draw(Color(color, 128));
-					font12(L"---").draw(rect.pos.movedBy(12, 1));
+					font12(U"---").draw(rect.pos.movedBy(12, 1));
 				}
 				rect.drawFrame(2, Palette::Skyblue);
 			}
@@ -334,15 +334,15 @@ void Main()
 			{
 				const Rect rect(192, 64, 160, 40);
 				rect.drawFrame(2, Palette::Skyblue);
-				font16(L"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
+				font16(U"選択中のバイオーム").draw(rect.pos.movedBy(4, 0));
 				font12(biomeData[selectedBiome].nameJP).draw(rect.pos.movedBy(4, 22));
 			}
 			//ブラシの選択
 			{
 				const Rect rect(192, 104, 160, 128);
 				rect.drawFrame(2, Palette::Skyblue);
-				font16(L"ブラシの選択").draw(rect.pos.movedBy(4, 0));
-				const Array<String> brushName = { L"鉛筆:KeyR", L"筆:KeyF", L"バケツ:KeyV" };
+				font16(U"ブラシの選択").draw(rect.pos.movedBy(4, 0));
+				const Array<String> brushName = { U"鉛筆:KeyR", U"筆:KeyF", U"バケツ:KeyV" };
 				for (auto i : step(int(brushName.size())))
 				{
 					const Rect s(rect.pos.movedBy(6, 26 + i * 20), 16, 16);
@@ -350,8 +350,8 @@ void Main()
 					s.draw(selectedBrush == i ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
 					font12(brushName[i]).draw(s.pos.movedBy(24, 0));
 				}
-				font12(L"太さ:", brushSize).draw(rect.pos.movedBy(4, 94));
-				font12(L"太さはCtrl+Wheelで変更可").draw(rect.pos.movedBy(4, 110));
+				font12(U"太さ:", brushSize).draw(rect.pos.movedBy(4, 94));
+				font12(U"太さはCtrl+Wheelで変更可").draw(rect.pos.movedBy(4, 110));
 			}
 			//生成
 			{
@@ -360,7 +360,7 @@ void Main()
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked()) planet.generateBiome();
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
-				font16(L"マップの自動生成").draw(rect.pos.movedBy(4, 0));
+				font16(U"マップの自動生成").draw(rect.pos.movedBy(4, 0));
 			}
 			//セーブ
 			{
@@ -370,11 +370,11 @@ void Main()
 				const Rect s(rect.pos.movedBy(136, 4), 16, 16);
 				if (s.leftClicked())
 				{
-					FilePath filePath = L"assets/map/" + textBox.getText() + L"/";
+					FilePath filePath = U"assets/map/" + textBox.getText() + U"/";
 					saveMapData(filePath);
 				}
 				s.draw(s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
-				font16(L"セーブ").draw(rect.pos.movedBy(4, 0));
+				font16(U"セーブ").draw(rect.pos.movedBy(4, 0));
 				textBox.update();
 				textBox.draw();
 			}
@@ -400,7 +400,7 @@ void Main()
 				const Rect s(rect.pos.movedBy(2, 2), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::set ? ActionMode::none : ActionMode::set;
 				s.draw(actionMode == ActionMode::set ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
-				font12(L"都市配置モード").draw(rect.pos.movedBy(28, 1));
+				font12(U"都市配置モード").draw(rect.pos.movedBy(28, 1));
 			}
 			{
 				const Rect rect(192, 84, 160, 20);
@@ -408,17 +408,17 @@ void Main()
 				const Rect s(rect.pos.movedBy(2, 2), 16, 16);
 				if (s.leftClicked()) actionMode = actionMode == ActionMode::remove ? ActionMode::none : ActionMode::remove;
 				s.draw(actionMode == ActionMode::remove ? Palette::Red : s.mouseOver() ? Palette::Orange : Palette::White).drawFrame(2, 0, Palette::Black);
-				font12(L"都市削除モード").draw(rect.pos.movedBy(28, 1));
+				font12(U"都市削除モード").draw(rect.pos.movedBy(28, 1));
 			}
 			{
 				urbanNameTextBox.update();
 				if (selectedUrban != nullptr) selectedUrban->name = urbanNameTextBox.getText();
-				else urbanNameTextBox.setText(L"");
+				else urbanNameTextBox.setText(U"");
 				urbanNameTextBox.draw();
 
 				const Rect rect(32, 64, 44, 20);
 				rect.drawFrame(2, Palette::Skyblue);
-				font12(L"都市名").draw(rect.pos.movedBy(4, 1));
+				font12(U"都市名").draw(rect.pos.movedBy(4, 1));
 			}
 			for (auto& i : step(int(energyData.size())))
 			{
@@ -431,7 +431,7 @@ void Main()
 				const Rect rect(104, 104 + i * 20, 100, 20);
 				auto& data = energyData[i];
 
-				data.icon.resize(16, 16).draw(106, 106 + i * 20);
+				data.icon.resized(16, 16).draw(106, 106 + i * 20);
 
 				Point p1(124, 106 + i * 20);
 				Point p2(144, 106 + i * 20);
@@ -448,19 +448,19 @@ void Main()
 					const int width = int(font12(energy).region().size.x);
 					font12(energy).draw(200 - width, 106 + i * 20);
 				}
-				if (Rect(p1, 16, 16).mouseOver()) getTexture(L"minusMouseOver")->resize(16, 16).draw(p1);
-				else getTexture(L"minus")->resize(16, 16).draw(p1);
-				if (Rect(p2, 16, 16).mouseOver()) getTexture(L"plusMouseOver")->resize(16, 16).draw(p2);
-				else getTexture(L"plus")->resize(16, 16).draw(p2);
+				if (Rect(p1, 16, 16).mouseOver()) getTexture(U"minusMouseOver")->resized(16, 16).draw(p1);
+				else getTexture(U"minus")->resized(16, 16).draw(p1);
+				if (Rect(p2, 16, 16).mouseOver()) getTexture(U"plusMouseOver")->resized(16, 16).draw(p2);
+				else getTexture(U"plus")->resized(16, 16).draw(p2);
 
 				rect.drawFrame(2, Palette::Skyblue);
 			}
-			font12(L"Ctrl :  x10").draw(208, 108);
-			font12(L"Shift: x100").draw(208, 124);
+			font12(U"Ctrl :  x10").draw(208, 108);
+			font12(U"Shift: x100").draw(208, 124);
 			if (selectedUrban != nullptr && selectedUrban->energies[0] == 0)
 			{
-				font12(L"都市に農地がない場合").draw(208, 140, Palette::Red);
-				font12(L"資金生産が出来ません").draw(208, 156, Palette::Red);
+				font12(U"都市に農地がない場合").draw(208, 140, Palette::Red);
+				font12(U"資金生産が出来ません").draw(208, 156, Palette::Red);
 			}
 
 
@@ -472,11 +472,11 @@ void Main()
 					selectedUrban->numCitizens = Min(ParseInt<int>(numCitizensTextBox.getText(), Arg::radix = 10), 10000);
 					numCitizensTextBox.setText(Format(selectedUrban->numCitizens));
 				}
-				else numCitizensTextBox.setText(L"");
+				else numCitizensTextBox.setText(U"");
 				numCitizensTextBox.draw();
 				const Rect rect(32, 84, 44, 20);
 				rect.drawFrame(2, Palette::Skyblue);
-				font12(L"人口").draw(rect.pos.movedBy(4, 1));
+				font12(U"人口").draw(rect.pos.movedBy(4, 1));
 
 			}
 			break;
@@ -484,13 +484,13 @@ void Main()
 
 		case UIMode::saveAndLoad:
 		{
-			font16(L"クリックしただけで読み込みが開始されます").draw(32, 64);
+			font16(U"クリックしただけで読み込みが開始されます").draw(32, 64);
 
 			//ロードファイルリストの表示
 			{
-				auto items = FileSystem::DirectoryContents(L"assets/map/");
+				auto items = FileSystem::DirectoryContents(U"assets/map/");
 				items.remove_if([](FilePath& _item) {
-					return !FileSystem::IsDirectory(_item) || !FileSystem::Exists(_item + L"BiomeData.bin");
+					return !FileSystem::IsDirectory(_item) || !FileSystem::Exists(_item + U"BiomeData.bin");
 				});
 				for (auto i : step(int(items.size())))
 				{
@@ -502,9 +502,9 @@ void Main()
 						/*	オートセーブ機能
 						for (int j = 0;; j++)
 						{
-							if (!FileSystem::Exists(Format(L"assets/map/_autosave/", j, L"/")))
+							if (!FileSystem::Exists(Format(U"assets/map/_autosave/", j, U"/")))
 							{
-								saveMapData(Format(L"assets/map/_autosave/", j, L"/"));
+								saveMapData(Format(U"assets/map/_autosave/", j, U"/"));
 								break;
 							}
 						}
@@ -529,7 +529,7 @@ void Main()
 					rect.drawFrame(2, Palette::Skyblue);
 					if (rect.mouseOver()) r.isMouseOver = true;
 					else r.isMouseOver = false;
-					font16(L"幅", r.width, L"長さ", r.riverPaths.size()).draw(rect.pos.movedBy(4, 0));
+					font16(U"幅", r.width, U"長さ", r.riverPaths.size()).draw(rect.pos.movedBy(4, 0));
 				}
 				{
 					Rect rect(184, 64 + i * 24, 120, 24);
@@ -543,7 +543,7 @@ void Main()
 					if (rect.mouseOver()) rect.draw(Palette::Orange);
 					if (rect.leftClicked()) rivers.erase(rivers.begin() + i);
 					rect.drawFrame(2, Palette::Skyblue);
-					font16(L"削除").drawAt(rect.center());
+					font16(U"削除").drawAt(rect.center());
 
 				}
 			}
@@ -583,7 +583,7 @@ void Main()
 		auto items = DragDrop::GetDroppedFilePaths();
 		for (auto item : items)
 		{
-			Output << item.path;
+			Logger << item.path;
 			if (loadMapData(item.path)) break;
 		}
 	}

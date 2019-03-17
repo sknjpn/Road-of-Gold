@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "小帆船",
+    "Speed": 0.25,
+    "Volume": 10000,
+    "Range": 12.0,
+    "IsShip": true,
+    "Icon": "assets/image/vehicle/sailingShip.png",
+    "ConstructionCost" : 1000,
+    "Tier": 1
+  },
+  {
+    "Name": "幌馬車",
+    "Speed": 0.25,
+    "Volume": 5000,
+    "Range": 6.0,
+    "IsShip": false,
+    "Icon": "assets/image/vehicle/coveredWagon.png",
+    "ConstructionCost" : 500,
+    "Tier": 0
+  }
+]

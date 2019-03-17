@@ -11,18 +11,18 @@ struct CitizenData
 	TextBox numProductTextBox;
 
 	CitizenData(JSONValue _j)
-		: nameTextBox(textBoxFont, 288, 24, 120, _j[L"Name"].getString())
-		, wageTextBox(textBoxFont, 288, 24 * 3, 120, Format(_j[L"Wage"].getOr<int>(0)))
-		, needEnergyTextBox(textBoxFont, 288, 24 * 5, 120, _j[L"NeedEnergy"].getString())
-		, productNameTextBox(textBoxFont, 288, 24 * 7, 120, _j[L"Product"][L"ItemName"].getOr<String>(L""))
-		, numProductTextBox(textBoxFont, 288, 24 * 9, 120, Format(_j[L"Product"][L"NumItem"].getOr<int>(0)))
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, _j[U"Name"].getString())
+		, wageTextBox(textBoxFont, Vec2(288, 24 * 3), 120, unspecified, Format(_j[U"Wage"].getOr<int>(0)))
+		, needEnergyTextBox(textBoxFont, Vec2(288, 24 * 5), 120, unspecified, _j[U"NeedEnergy"].getString())
+		, productNameTextBox(textBoxFont, Vec2(288, 24 * 7), 120, unspecified, _j[U"Product"][U"ItemName"].getOr<String>(U""))
+		, numProductTextBox(textBoxFont, Vec2(288, 24 * 9), 120, unspecified, Format(_j[U"Product"][U"NumItem"].getOr<int>(0)))
 	{}
 	CitizenData()
-		: nameTextBox(textBoxFont, 288, 24, 120, L"newCitizen")
-		, wageTextBox(textBoxFont, 288, 24 * 3, 120, L"0")
-		, needEnergyTextBox(textBoxFont, 288, 24 * 5, 120, L"")
-		, productNameTextBox(textBoxFont, 288, 24 * 7, 120, L"")
-		, numProductTextBox(textBoxFont, 288, 24 * 9, 120, L"0")
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, U"newCitizen")
+		, wageTextBox(textBoxFont, Vec2(288, 24 * 3), 120, unspecified, U"0")
+		, needEnergyTextBox(textBoxFont, Vec2(288, 24 * 5), 120, unspecified, U"")
+		, productNameTextBox(textBoxFont, Vec2(288, 24 * 7), 120, unspecified, U"")
+		, numProductTextBox(textBoxFont, Vec2(288, 24 * 9), 120, unspecified, U"0")
 	{}
 	String	name() const { return nameTextBox.getText(); }
 };
@@ -96,7 +96,7 @@ struct SetCitizenData : MyApp::Scene
 			}
 			rect.drawFrame(2);
 
-			font16(L"新市民追加").draw(rect.movedBy(4, 0));
+			font16(U"新市民追加").draw(rect.movedBy(4, 0));
 		}
 
 		if (citizenData.isEmpty()) return;
@@ -160,24 +160,34 @@ struct SetCitizenData : MyApp::Scene
 		{
 			auto& c = citizenData[getData().selectedCitizenType];
 
-			font16(L"市民名").drawAt(348, 12);
+			font16(U"市民名").drawAt(348, 12);
 			c.nameTextBox.update();
 			c.nameTextBox.draw();
 
-			font16(L"賃金").drawAt(348, 60);
+			font16(U"賃金").drawAt(348, 60);
 			c.wageTextBox.update();
 			c.wageTextBox.draw();
 			c.wageTextBox.setText(Format(Max(0, ParseInt<int32>(c.wageTextBox.getText(), Arg::radix = 10))));
 
-			font16(L"必要資源").drawAt(348, 108);
+			font16(U"必要資源").drawAt(348, 108);
 			c.needEnergyTextBox.update();
-			c.needEnergyTextBox.draw(energyIsExist(c.needEnergyTextBox.getText()) ? Palette::White : Palette::Red);
+			{
+				TextBox::Style style;
 
-			font16(L"生産アイテム名").drawAt(348, 156);
+				style.boxColor = energyIsExist(c.needEnergyTextBox.getText()) ? Palette::White : Palette::Red;
+				c.needEnergyTextBox.draw(style);
+			}
+
+			font16(U"生産アイテム名").drawAt(348, 156);
 			c.productNameTextBox.update();
-			c.productNameTextBox.draw(itemIsExist(c.productNameTextBox.getText()) ? Palette::White : Palette::Red);
+			{
+				TextBox::Style style;
 
-			font16(L"アイテム生産数").drawAt(348, 204);
+				style.boxColor = itemIsExist(c.productNameTextBox.getText()) ? Palette::White : Palette::Red;
+				c.productNameTextBox.draw();
+			}
+
+			font16(U"アイテム生産数").drawAt(348, 204);
 			c.numProductTextBox.update();
 			c.numProductTextBox.draw();
 
@@ -193,7 +203,7 @@ struct SetCitizenData : MyApp::Scene
 				if (getData().selectedCitizenType == int(citizenData.size()) && getData().selectedCitizenType > 0) getData().selectedCitizenType--;
 			}
 			rect.drawFrame(2);
-			font16(L"項目の削除").drawAt(rect.center());
+			font16(U"項目の削除").drawAt(rect.center());
 		}
 	}
 };

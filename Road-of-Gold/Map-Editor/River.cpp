@@ -5,7 +5,7 @@ Array<River> rivers;
 
 void	River::draw() const
 {
-	Color color = isMouseOver ? Palette::Red : Color(L"#0F285A");
+	Color color = isMouseOver ? Palette::Red : Color(U"#0F285A");
 	for (auto* p : riverPaths) p->getLine().stretched(-width / 2.0).draw(width, color);
 	for (auto* p : riverPaths)
 	{
@@ -14,11 +14,11 @@ void	River::draw() const
 	}
 }
 River::River(const JSONValue _json)
-	: width(_json[L"Width"].get<double>())
+	: width(_json[U"Width"].get<double>())
 	, isMouseOver(false)
 {
 	Node* n = nullptr;
-	for (auto j : _json[L"Paths"].arrayView())
+	for (auto j : _json[U"Paths"].arrayView())
 	{
 		if (n == nullptr) n = &nodes[j.get<int>()];
 		else

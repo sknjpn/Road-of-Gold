@@ -9,15 +9,15 @@ void	initGroups()
 {
 	if (urbans.isEmpty())
 	{
-		Output << L"“sŽs‚ª‘¶Ý‚µ‚È‚¢‚½‚ß‚ÉŒðˆÕƒ†ƒjƒbƒg“WŠJ‚ÉŽ¸”s‚µ‚Ü‚µ‚½";
+		Logger << U"“sŽs‚ª‘¶Ý‚µ‚È‚¢‚½‚ß‚ÉŒðˆÕƒ†ƒjƒbƒg“WŠJ‚ÉŽ¸”s‚µ‚Ü‚µ‚½";
 		return;
 	}
 
 	vehicles.reserve(65536);
 	fleets.reserve(65536);
 	/*
-	INIReader iniReader(L"assets/config.ini");
-	int numVehicles = iniReader.getOr<int>(L"Groups", L"NumVehicles", 0);
+	INIData iniReader(U"assets/config.ini");
+	int numVehicles = iniReader.getOr<int>(U"Groups", U"NumVehicles", 0);
 
 	for (int j = 0; j < numVehicles; j++)
 	{
@@ -32,7 +32,7 @@ void	initGroups()
 				{
 					flag = true;
 					fleets.emplace_back(i, u);
-					fleets.back().name = Format(L"‘æ", fleets.size(), L"‘D’c");
+					fleets.back().name = Format(U"‘æ", fleets.size(), U"‘D’c");
 					break;
 				}
 			}

@@ -15,10 +15,10 @@ bool loadMapData(const FilePath& _path)
 	rivers.clear();
 
 	//バイオームデータのロード
-	if (FileSystem::Exists(_path + L"BiomeData.bin"))
+	if (FileSystem::Exists(_path + U"BiomeData.bin"))
 	{
 		Array<Node*> list;
-		BinaryReader reader(_path + L"BiomeData.bin");
+		BinaryReader reader(_path + U"BiomeData.bin");
 		for (auto& n : nodes)
 		{
 			reader.read(n.biomeType);
@@ -30,17 +30,17 @@ bool loadMapData(const FilePath& _path)
 	else return false;
 
 	//Urbansデータのロード
-	if (FileSystem::Exists(_path + L"Urbans.json"))
+	if (FileSystem::Exists(_path + U"Urbans.json"))
 	{
-		JSONReader reader(_path + L"Urbans.json");
+		JSONReader reader(_path + U"Urbans.json");
 		for (auto json : reader.arrayView())
 			urbans.emplace_back(json);
 	}
 
 	//Riversデータのロード
-	if (FileSystem::Exists(_path + L"Rivers.json"))
+	if (FileSystem::Exists(_path + U"Rivers.json"))
 	{
-		JSONReader reader(_path + L"Rivers.json");
+		JSONReader reader(_path + U"Rivers.json");
 		for (auto json : reader.arrayView())
 			rivers.emplace_back(json);
 	}
@@ -54,86 +54,86 @@ bool saveMapData(const FilePath& _path)
 {
 	//バイオームデータのセーブ
 	{
-		BinaryWriter writer(_path + L"BiomeData.bin");
+		BinaryWriter writer(_path + U"BiomeData.bin");
 		for (auto& n : nodes) writer.write(n.biomeType);
 	}
 
 	//マップをpngにして保存
 	{
-		planet.image.save(_path + L"MapImage.png");
+		planet.image.save(_path + U"MapImage.png");
 	}
 
 	//Urbansデータのセーブ
 	if (!urbans.isEmpty())
 	{
-		String text(L"[");
+		String text(U"[");
 
 		for (auto i : step(int(urbans.size())))
 		{
 			auto& u = urbans[i];
 
-			if (i == 0) text += L"\r\t{";
-			else text += L",\r\t{";
+			if (i == 0) text += U"\r\t{";
+			else text += U",\r\t{";
 
 			//都市座標の保存
-			text += Format(L"\r\t\t\"JoinedNodeID\": ", u.joinedNodeID);
+			text += Format(U"\r\t\t\"JoinedNodeID\": ", u.joinedNodeID);
 
 			//都市名の保存
-			text += Format(L",\r\t\t\"Name\": \"", u.name, L"\"");
+			text += Format(U",\r\t\t\"Name\": \"", u.name, U"\"");
 
 			//人口の保存
-			text += Format(L",\r\t\t\"NumCitizens\": ", u.numCitizens);
+			text += Format(U",\r\t\t\"NumCitizens\": ", u.numCitizens);
 
 			//生産性の保存
-			//text += Format(L",\r\t\t\t\"Productivity\": ", u.productivity);
+			//text += Format(U",\r\t\t\t\"Productivity\": ", u.productivity);
 
 			//Resourcesデータの保存
-			text += L",\r\t\t\"Energies\": {";
+			text += U",\r\t\t\"Energies\": {";
 			bool isFirst = true;
 			for (auto j : step(energyData.size()))
 			{
 				if (u.energies[j] > 0)
 				{
-					if (isFirst) { text += L"\r\t\t\t\""; isFirst = false; }
-					else text += L",\r\t\t\t\"";
-					text += Format(energyData[j].name, L"\": ", u.energies[j]);
+					if (isFirst) { text += U"\r\t\t\t\""; isFirst = false; }
+					else text += U",\r\t\t\t\"";
+					text += Format(energyData[j].name, U"\": ", u.energies[j]);
 				}
 			}
-			text += L"\r\t\t}";
+			text += U"\r\t\t}";
 
-			text += L"\r\t}";
+			text += U"\r\t}";
 		}
-		text += L"\r]";
-		TextWriter writer(_path + L"Urbans.json");
+		text += U"\r]";
+		TextWriter writer(_path + U"Urbans.json");
 		writer.write(text);
 		writer.close();
 	}
 
 	//Riversデータのセーブ
 	{
-		String text(L"[");
+		String text(U"[");
 		for (auto i : step(int(rivers.size())))
 		{
 			auto& r = rivers[i];
-			if (i == 0) text += L"\r\t{";
-			else text += L",\r\t{";
+			if (i == 0) text += U"\r\t{";
+			else text += U",\r\t{";
 
-			text += Format(L"\r\t\t\"Width\": ", r.width);
+			text += Format(U"\r\t\t\"Width\": ", r.width);
 
-			text += L",\r\t\t\"Paths\": [";
+			text += U",\r\t\t\"Paths\": [";
 			text += Format(r.riverPaths.front()->parentNodeID);
 			for (auto* p : r.riverPaths)
 			{
-				text += L",";
+				text += U",";
 				text += Format(p->childNodeID);
 			}
 
-			text += L"]";
+			text += U"]";
 
-			text += L"\r\t}";
+			text += U"\r\t}";
 		}
-		text += L"\r]";
-		TextWriter writer(_path + L"Rivers.json");
+		text += U"\r]";
+		TextWriter writer(_path + U"Rivers.json");
 		writer.write(text);
 		writer.close();
 	}

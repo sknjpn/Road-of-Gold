@@ -6,7 +6,7 @@ Scuttle::Scuttle(String _title, String _description, String _button)
 	, description(_description)
 	, button(_button)
 	, isPushed(false)
-	, backGround(L"assets/image/scuttle.png")
+	, backGround(U"assets/image/scuttle.png")
 {
 	rect = RectF(640, 480).setCenter(Window::Center());
 	titleRegion = RectF(480, 48).setCenter(320, 40);

@@ -1,0 +1,93 @@
+﻿[
+	{
+		"JoinedNodeID": 12805,
+		"Name": "東京",
+		"NumCitizens": 500,
+		"Energies": {
+			"農地": 300,
+			"香辛料": 400
+		}
+	},
+	{
+		"JoinedNodeID": 5372,
+		"Name": "神戸",
+		"NumCitizens": 600,
+		"Energies": {
+			"農地": 200,
+			"コーヒー": 300
+		}
+	},
+	{
+		"JoinedNodeID": 14395,
+		"Name": "川崎",
+		"NumCitizens": 500,
+		"Energies": {
+			"農地": 300,
+			"絨毯": 200
+		}
+	},
+	{
+		"JoinedNodeID": 6613,
+		"Name": "湘南",
+		"NumCitizens": 400,
+		"Energies": {
+			"農地": 200,
+			"絨毯": 200
+		}
+	},
+	{
+		"JoinedNodeID": 18209,
+		"Name": "金沢",
+		"NumCitizens": 600,
+		"Energies": {
+			"農地": 400,
+			"茶葉": 200,
+			"カカオ": 300
+		}
+	},
+	{
+		"JoinedNodeID": 5608,
+		"Name": "名古屋",
+		"NumCitizens": 600,
+		"Energies": {
+			"農地": 300,
+			"香辛料": 300
+		}
+	},
+	{
+		"JoinedNodeID": 24860,
+		"Name": "神奈川",
+		"NumCitizens": 600,
+		"Energies": {
+			"農地": 300,
+			"金山": 300
+		}
+	},
+	{
+		"JoinedNodeID": 15656,
+		"Name": "仙台",
+		"NumCitizens": 400,
+		"Energies": {
+			"農地": 300,
+			"茶葉": 300
+		}
+	},
+	{
+		"JoinedNodeID": 11100,
+		"Name": "函館",
+		"NumCitizens": 500,
+		"Energies": {
+			"農地": 300,
+			"キツネ": 200
+		}
+	},
+	{
+		"JoinedNodeID": 29433,
+		"Name": "筑波",
+		"NumCitizens": 500,
+		"Energies": {
+			"農地": 200,
+			"ブドウ": 300
+		}
+	}
+]

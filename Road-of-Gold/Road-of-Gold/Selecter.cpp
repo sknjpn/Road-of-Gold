@@ -78,7 +78,7 @@ void	Selecter::update()
 				for (int i = 0; i < 2; ++i) {
 					for (auto& f : fleets)
 					{
-						if (f.isInSelectedRegion() && !newSelectedFleets.include(&f)) newSelectedFleets.emplace_back(&f);
+						if (f.isInSelectedRegion() && !newSelectedFleets.includes(&f)) newSelectedFleets.emplace_back(&f);
 					}
 				}
 				if (selectedFleets != newSelectedFleets)

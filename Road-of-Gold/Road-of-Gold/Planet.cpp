@@ -27,9 +27,9 @@ Planet::Planet()
 
 	//Scuttle追加関数
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
-		const auto& title = CharacterSet::FromUTF8(lua_tostring(l, 1));
-		const auto& document = CharacterSet::FromUTF8(lua_tostring(l, 2));
-		const auto& button = CharacterSet::FromUTF8(lua_tostring(l, 3));
+		const auto& title = Unicode::FromUTF8(lua_tostring(l, 1));
+		const auto& document = Unicode::FromUTF8(lua_tostring(l, 2));
+		const auto& button = Unicode::FromUTF8(lua_tostring(l, 3));
 		scuttles.emplace_back(title, document, button);
 		return 0;
 	});
@@ -40,31 +40,31 @@ Planet::Planet()
 		switch (lua_type(l, 1))
 		{
 		case LUA_TNIL:
-			Print << L"NIL";
+			Print << U"NIU";
 			break;
 		case LUA_TBOOLEAN:
-			Print << L"BOOLEAN :" << (lua_toboolean(l, 1) == 1 ? L"true" : L"false");
+			Print << U"BOOLEAN :" << (lua_toboolean(l, 1) == 1 ? U"true" : U"false");
 			break;
 		case LUA_TLIGHTUSERDATA:
-			Print << L"LIGHTUSERDATA";
+			Print << U"LIGHTUSERDATA";
 			break;
 		case LUA_TNUMBER:
-			Print << L"NUMBER :" << int(lua_tonumber(l, 1));
+			Print << U"NUMBER :" << int(lua_tonumber(l, 1));
 			break;
 		case LUA_TSTRING:
-			Print << L"STRING :" << CharacterSet::FromUTF8(lua_tostring(l, 1));
+			Print << U"STRING :" << Unicode::FromUTF8(lua_tostring(l, 1));
 			break;
 		case LUA_TTABLE:
-			Print << L"TABLE";
+			Print << U"TABLE";
 			break;
 		case LUA_TFUNCTION:
-			Print << L"FUNCTION";
+			Print << U"FUNCTION";
 			break;
 		case LUA_TUSERDATA:
-			Print << L"USERDATA";
+			Print << U"USERDATA";
 			break;
 		case LUA_TTHREAD:
-			Print << L"THREAD";
+			Print << U"THREAD";
 			break;
 		}
 		return 0;
@@ -79,41 +79,41 @@ Planet::Planet()
 	});
 	lua_setglobal(incidentsLua, "clearPrint");
 
-	//Output
+	//Logger
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
 		switch (lua_type(l, 1))
 		{
 		case LUA_TNIL:
-			Output << L"NIL";
+			Logger << U"NIU";
 			break;
 		case LUA_TBOOLEAN:
-			Output << L"BOOLEAN :" << (lua_toboolean(l, 1) == 1 ? L"true" : L"false");
+			Logger << U"BOOLEAN :" << (lua_toboolean(l, 1) == 1 ? U"true" : U"false");
 			break;
 		case LUA_TLIGHTUSERDATA:
-			Output << L"LIGHTUSERDATA";
+			Logger << U"LIGHTUSERDATA";
 			break;
 		case LUA_TNUMBER:
-			Output << L"NUMBER :" << int(lua_tonumber(l, 1));
+			Logger << U"NUMBER :" << int(lua_tonumber(l, 1));
 			break;
 		case LUA_TSTRING:
-			Output << L"STRING :" << CharacterSet::FromUTF8(lua_tostring(l, 1));
+			Logger << U"STRING :" << Unicode::FromUTF8(lua_tostring(l, 1));
 			break;
 		case LUA_TTABLE:
-			Output << L"TABLE";
+			Logger << U"TABLE";
 			break;
 		case LUA_TFUNCTION:
-			Output << L"FUNCTION";
+			Logger << U"FUNCTION";
 			break;
 		case LUA_TUSERDATA:
-			Output << L"USERDATA";
+			Logger << U"USERDATA";
 			break;
 		case LUA_TTHREAD:
-			Output << L"THREAD";
+			Logger << U"THREAD";
 			break;
 		}
 		return 0;
 	});
-	lua_setglobal(incidentsLua, "output");
+	lua_setglobal(incidentsLua, "Logger");
 
 
 	//マップディレクトリを渡す
@@ -125,7 +125,7 @@ Planet::Planet()
 
 	//音の再生
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
-		planet.audios.emplace_back(CharacterSet::FromUTF8(lua_tostring(l, 1)));
+		planet.audios.emplace_back(Unicode::FromUTF8(lua_tostring(l, 1)));
 		planet.audios.back().play();
 		lua_pushboolean(l, planet.audios.back().isPlaying());
 		return 1;
@@ -134,7 +134,7 @@ Planet::Planet()
 
 	//BGMの設定
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
-		planet.bgm = Audio(CharacterSet::FromUTF8(lua_tostring(l, 1)));
+		planet.bgm = Audio(Unicode::FromUTF8(lua_tostring(l, 1)));
 		planet.bgm.setLoop(true);
 		planet.bgm.setVolume(lua_isnumber(l, 2) ? lua_tonumber(l, 2) : 1.0);
 		planet.bgm.play();
@@ -145,11 +145,11 @@ Planet::Planet()
 
 	//getNumEnergy(energyType,urban)
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
-		auto* urban = getUrban(CharacterSet::FromUTF8(lua_tostring(l, 2)));
+		auto* urban = getUrban(Unicode::FromUTF8(lua_tostring(l, 2)));
 		if (urban == nullptr) lua_pushinteger(l, 0);
 		else
 		{
-			int energyType = getEnergyType(CharacterSet::FromUTF8(lua_tostring(l, 1)));
+			int energyType = getEnergyType(Unicode::FromUTF8(lua_tostring(l, 1)));
 			if (energyType == -1) lua_pushinteger(l, 0);
 			else
 			{
@@ -170,11 +170,11 @@ Planet::Planet()
 
 	//setEnergy(energyType,urban,num)
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
-		auto* urban = getUrban(CharacterSet::FromUTF8(lua_tostring(l, 2)));
+		auto* urban = getUrban(Unicode::FromUTF8(lua_tostring(l, 2)));
 		if (urban == nullptr) lua_pushboolean(l, false);
 		else
 		{
-			int energyType = getEnergyType(CharacterSet::FromUTF8(lua_tostring(l, 1)));
+			int energyType = getEnergyType(Unicode::FromUTF8(lua_tostring(l, 1)));
 			if (energyType == -1) lua_pushboolean(l, false);
 			else
 			{
@@ -189,11 +189,11 @@ Planet::Planet()
 	
 	//getNumProductionPerDay(itemType,urban)
 	lua_pushcfunction(incidentsLua, [](lua_State* l) {
-		auto* urban = getUrban(CharacterSet::FromUTF8(lua_tostring(l, 2)));
+		auto* urban = getUrban(Unicode::FromUTF8(lua_tostring(l, 2)));
 		if (urban == nullptr) lua_pushinteger(l, 0);
 		else
 		{
-			int itemType = getItemType(CharacterSet::FromUTF8(lua_tostring(l, 1)));
+			int itemType = getItemType(Unicode::FromUTF8(lua_tostring(l, 1)));
 			if (itemType == -1) lua_pushinteger(l, 0);
 			else lua_pushinteger(l, urban->shelves[itemType].tradeLog.numProduction[1]);
 		}

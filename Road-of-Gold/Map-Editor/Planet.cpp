@@ -57,8 +57,8 @@ void	Planet::setCoverImage()
 			item = DragDrop::GetDroppedFilePaths().front();
 			tex = Texture(item.path);
 		}
-		tex.resize(Window::Size()).draw();
-		Array<String> slist = { L"カバーのみを行う", L"バイオーム色が一致する場合適用", L"最も近いバイオームに設定" };
+		tex.resized(Window::Size()).draw();
+		Array<String> slist = { U"カバーのみを行う", U"バイオーム色が一致する場合適用", U"最も近いバイオームに設定" };
 		for (int i = 0; i < int(slist.size()); i++)
 		{
 			Rect rect(0, i * 32, 720, 32);

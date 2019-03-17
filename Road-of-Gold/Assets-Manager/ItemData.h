@@ -15,21 +15,21 @@ struct ItemData
 	Texture	iconTexture;
 
 	ItemData(JSONValue _j)
-		: nameTextBox(textBoxFont, 288, 24, 120, _j[L"Name"].getString())
-		, volumeTextBox(textBoxFont, 288, 24 * 3, 120, Format(_j[L"Volume"].get<int>()))
-		, valueTextBox(textBoxFont, 288, 24 * 5, 120, Format(_j[L"Value"].get<int>()))
-		, iconTextBox(textBoxFont, 288, 24 * 7, 360, _j[L"Icon"].getString())
-		, colorTextBox(textBoxFont, 288, 24 * 9, 120, _j[L"Color"].getString())
-		, iconImage(_j[L"Icon"].getString())
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, _j[U"Name"].getString())
+		, volumeTextBox(textBoxFont, Vec2(288, 24 * 3), 120, unspecified, Format(_j[U"Volume"].get<int>()))
+		, valueTextBox(textBoxFont, Vec2(288, 24 * 5), 120, unspecified, Format(_j[U"Value"].get<int>()))
+		, iconTextBox(textBoxFont, Vec2(288, 24 * 7), 360, unspecified, _j[U"Icon"].getString())
+		, colorTextBox(textBoxFont, Vec2(288, 24 * 9), 120, unspecified, _j[U"Color"].getString())
+		, iconImage(_j[U"Icon"].getString())
 		, iconTexture(iconImage)
 		, colorPalette(720, 120)
 	{}
 	ItemData()
-		: nameTextBox(textBoxFont, 288, 24, 120, L"newItem")
-		, volumeTextBox(textBoxFont, 288, 24 * 3, 120, L"1")
-		, valueTextBox(textBoxFont, 288, 24 * 5, 120, L"0")
-		, iconTextBox(textBoxFont, 288, 24 * 7, 360)
-		, colorTextBox(textBoxFont, 288, 24 * 9, 120, L"#FF0000")
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, U"newItem")
+		, volumeTextBox(textBoxFont, Vec2(288, 24 * 3), 120, unspecified, U"1")
+		, valueTextBox(textBoxFont, Vec2(288, 24 * 5), 120, unspecified, U"0")
+		, iconTextBox(textBoxFont, Vec2(288, 24 * 7), 360, unspecified)
+		, colorTextBox(textBoxFont, Vec2(288, 24 * 9), 120, unspecified, U"#FF0000")
 		, colorPalette(720, 120)
 	{}
 	String	name() const { return nameTextBox.getText(); }
@@ -108,7 +108,7 @@ struct SetItemData : MyApp::Scene
 			}
 			rect.drawFrame(2);
 
-			font16(L"新アイテム追加").draw(rect.movedBy(4, 0));
+			font16(U"新アイテム追加").draw(rect.movedBy(4, 0));
 		}
 
 		if (itemData.isEmpty()) return;
@@ -172,21 +172,21 @@ struct SetItemData : MyApp::Scene
 		{
 			auto& i = itemData[getData().selectedItemType];
 
-			font16(L"アイテム名").drawAt(348, 12);
+			font16(U"アイテム名").drawAt(348, 12);
 			i.nameTextBox.update();
 			i.nameTextBox.draw();
 
-			font16(L"アイテム容量").drawAt(348, 60);
+			font16(U"アイテム容量").drawAt(348, 60);
 			i.volumeTextBox.update();
 			i.volumeTextBox.draw();
 			i.volumeTextBox.setText(Format(ParseInt<int32>(i.volumeTextBox.getText(), Arg::radix = 10)));
 
-			font16(L"アイテム価値").drawAt(348, 108);
+			font16(U"アイテム価値").drawAt(348, 108);
 			i.valueTextBox.update();
 			i.valueTextBox.draw();
 			i.valueTextBox.setText(Format(ParseInt<int32>(i.valueTextBox.getText(), Arg::radix = 10)));
 
-			font16(L"アイコンファイル").drawAt(348, 156);
+			font16(U"アイコンファイル").drawAt(348, 156);
 			auto beforeFilePath = i.iconTextBox.getText();
 			i.iconTextBox.update();
 			i.iconTextBox.draw();
@@ -197,9 +197,9 @@ struct SetItemData : MyApp::Scene
 				i.iconTexture = Texture(i.iconImage);
 			}
 			Rect(432, 24, 128, 128).draw(DragDrop::DragOver() ? Palette::Gray : Color(0, 0)).drawFrame(4, Color(i.colorTextBox.getText()));
-			if (i.iconTexture) i.iconTexture.resize(128, 128).draw(432, 24);
+			if (i.iconTexture) i.iconTexture.resized(128, 128).draw(432, 24);
 
-			font16(L"アイテムカラー").drawAt(348, 204);
+			font16(U"アイテムカラー").drawAt(348, 204);
 			i.colorTextBox.update();
 			i.colorTextBox.draw();
 
@@ -208,7 +208,7 @@ struct SetItemData : MyApp::Scene
 		//ColorPalette
 		{
 			auto& i = itemData[getData().selectedItemType];
-			if (i.colorPalette.update()) i.colorTextBox.setText(L"#" + i.colorPalette.color().toHex());
+			if (i.colorPalette.update()) i.colorTextBox.setText(U"#" + i.colorPalette.color().toHex());
 			i.colorPalette.draw();
 		}
 
@@ -221,7 +221,7 @@ struct SetItemData : MyApp::Scene
 				if (getData().selectedItemType == int(itemData.size()) && getData().selectedItemType > 0) getData().selectedItemType--;
 			}
 			rect.drawFrame(2);
-			font16(L"項目の削除").drawAt(rect.center());
+			font16(U"項目の削除").drawAt(rect.center());
 		}
 
 

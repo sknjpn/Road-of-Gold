@@ -6,7 +6,7 @@ bool	Planet::loadVoronoiMap()
 {
 	//Node‚Ì“Ç‚İ‚İ
 	{
-		BinaryReader reader(L"assets/nodeMap/nodeMap.bin");
+		BinaryReader reader(U"assets/nodeMap/nodeMap.bin");
 		if (!reader) return false;	//“Ç‚İ‚İ¸”s
 
 		int	nodesSize, pathsSize;
@@ -35,7 +35,7 @@ bool	Planet::loadVoronoiMap()
 
 	//VoronoiMap‚Ì“Ç‚İ‚İ
 	{
-		Image reader(L"assets/nodeMap/voronoiMap.png");
+		Image reader(U"assets/nodeMap/voronoiMap.png");
 		if (!reader.isEmpty())
 		{
 			voronoiMap.resize(reader.size());

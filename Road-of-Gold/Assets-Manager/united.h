@@ -3,10 +3,10 @@
 
 Array<String>	itemList =
 {
-	L"itemData.json",
-	L"citizenData.json",
-	L"energyData.json",
-	L"vehicleData.json"
+	U"itemData.json",
+	U"citizenData.json",
+	U"energyData.json",
+	U"vehicleData.json"
 };
 
 struct GameData

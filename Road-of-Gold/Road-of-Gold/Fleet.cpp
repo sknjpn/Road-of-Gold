@@ -7,7 +7,7 @@
 #include"BiomeData.h"
 
 Fleet::Fleet(int _ownVehicleType, Urban* _nowUrban)
-	: name(Format(L"‘D’c"))
+	: name(Format(U"‘D’c"))
 	, chain()
 	, walletID(getNewWalletID())
 	, sleepTimer(0)
@@ -61,7 +61,7 @@ double	Fleet::angle() const
 			bn = an;
 		}
 
-		Output << L"ˆÙí" << progress;
+		Logger << U"ˆÙí" << progress;
 	}
 
 	return 0.0;
@@ -89,7 +89,7 @@ Vec2	Fleet::pos() const
 			bn = an;
 		}
 
-		Output << L"ˆÙí" << progress;
+		Logger << U"ˆÙí" << progress;
 	}
 
 	return Vec2(0, 0);

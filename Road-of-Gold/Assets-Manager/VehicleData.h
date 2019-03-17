@@ -14,22 +14,22 @@ struct VehicleData
 	Texture	iconTexture;
 
 	VehicleData(JSONValue _j)
-		: nameTextBox(textBoxFont, 288, 24, 120, _j[L"Name"].getString())
-		, speedTextBox(textBoxFont, 288, 24 * 3, 120, Format(_j[L"Speed"].get<double>()))
-		, volumeTextBox(textBoxFont, 288, 24 * 5, 120, Format(_j[L"Volume"].get<int>()))
-		, iconTextBox(textBoxFont, 288, 24 * 7, 360, _j[L"Icon"].getString())
-		, rangeTextBox(textBoxFont, 288, 24 * 9, 120, Format(_j[L"Range"].get<double>()))
-		, isShipTextBox(textBoxFont, 432, 24 * 9, 120, Format(_j[L"IsShip"].get<bool>()))
-		, iconImage(_j[L"Icon"].getString())
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, _j[U"Name"].getString())
+		, speedTextBox(textBoxFont, Vec2(288, 24 * 3), 120, unspecified, Format(_j[U"Speed"].get<double>()))
+		, volumeTextBox(textBoxFont, Vec2(288, 24 * 5), 120, unspecified, Format(_j[U"Volume"].get<int>()))
+		, iconTextBox(textBoxFont, Vec2(288, 24 * 7), 360, unspecified, _j[U"Icon"].getString())
+		, rangeTextBox(textBoxFont, Vec2(288, 24 * 9), 120, unspecified, Format(_j[U"Range"].get<double>()))
+		, isShipTextBox(textBoxFont, Vec2(432, 24 * 9), 120, unspecified, Format(_j[U"IsShip"].get<bool>()))
+		, iconImage(_j[U"Icon"].getString())
 		, iconTexture(iconImage)
 	{}
 	VehicleData()
-		: nameTextBox(textBoxFont, 288, 24, 120, L"newVehicle")
-		, speedTextBox(textBoxFont, 288, 24 * 3, 120, L"1.0")
-		, volumeTextBox(textBoxFont, 288, 24 * 5, 120, L"100")
-		, iconTextBox(textBoxFont, 288, 24 * 7, 360)
-		, rangeTextBox(textBoxFont, 288, 24 * 9, 120, L"10.0")
-		, isShipTextBox(textBoxFont, 432, 24 * 9, 120, L"true")
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, U"newVehicle")
+		, speedTextBox(textBoxFont, Vec2(288, 24 * 3), 120, unspecified, U"1.0")
+		, volumeTextBox(textBoxFont, Vec2(288, 24 * 5), 120, unspecified, U"100")
+		, iconTextBox(textBoxFont, Vec2(288, 24 * 7), 360, unspecified)
+		, rangeTextBox(textBoxFont, Vec2(288, 24 * 9), 120, unspecified, U"10.0")
+		, isShipTextBox(textBoxFont, Vec2(432, 24 * 9), 120, unspecified, U"true")
 	{}
 	String	name() const { return nameTextBox.getText(); }
 };
@@ -102,7 +102,7 @@ struct SetVehicleData : MyApp::Scene
 			}
 			rect.drawFrame(2);
 
-			font16(L"新アイテム追加").draw(rect.movedBy(4, 0));
+			font16(U"新アイテム追加").draw(rect.movedBy(4, 0));
 		}
 
 		if (vehicleData.isEmpty()) return;
@@ -172,20 +172,20 @@ struct SetVehicleData : MyApp::Scene
 		{
 			auto& v = vehicleData[getData().selectedVehicleType];
 
-			font16(L"ユニット名").drawAt(348, 12);
+			font16(U"ユニット名").drawAt(348, 12);
 			v.nameTextBox.update();
 			v.nameTextBox.draw();
 
-			font16(L"航行速度(小数)").drawAt(348, 60);
+			font16(U"航行速度(小数)").drawAt(348, 60);
 			v.speedTextBox.update();
 			v.speedTextBox.draw();
 
-			font16(L"積載容量").drawAt(348, 108);
+			font16(U"積載容量").drawAt(348, 108);
 			v.volumeTextBox.update();
 			v.volumeTextBox.draw();
 			v.volumeTextBox.setText(Format(ParseInt<int32>(v.volumeTextBox.getText(), Arg::radix = 10)));
 
-			font16(L"アイコンファイル").drawAt(348, 156);
+			font16(U"アイコンファイル").drawAt(348, 156);
 			auto beforeFilePath = v.iconTextBox.getText();
 			v.iconTextBox.update();
 			v.iconTextBox.draw();
@@ -196,13 +196,13 @@ struct SetVehicleData : MyApp::Scene
 				v.iconTexture = Texture(v.iconImage);
 			}
 			Rect(432, 24, 128, 128).draw(DragDrop::DragOver() ? Palette::Gray : Color(0, 0)).drawFrame(4);
-			if (v.iconTexture) v.iconTexture.resize(128, 128).draw(432, 24);
+			if (v.iconTexture) v.iconTexture.resized(128, 128).draw(432, 24);
 
-			font16(L"航続距離(小数)").drawAt(348, 204);
+			font16(U"航続距離(小数)").drawAt(348, 204);
 			v.rangeTextBox.update();
 			v.rangeTextBox.draw();
 
-			font16(L"船かどうか(bool)").drawAt(492, 204);
+			font16(U"船かどうか(bool)").drawAt(492, 204);
 			v.isShipTextBox.update();
 			v.isShipTextBox.draw();
 
@@ -217,7 +217,7 @@ struct SetVehicleData : MyApp::Scene
 				if (getData().selectedVehicleType == int(vehicleData.size()) && getData().selectedVehicleType > 0) getData().selectedVehicleType--;
 			}
 			rect.drawFrame(2);
-			font16(L"項目の削除").drawAt(rect.center());
+			font16(U"項目の削除").drawAt(rect.center());
 		}
 	}
 };

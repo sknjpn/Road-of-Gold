@@ -198,7 +198,7 @@ void	updateUrban(Urban& u)
 
 					//‘D’c‚Ì“WŠJ
 					fleets.emplace_back(t->vehicleType, &u);
-					fleets.back().name = Format(L"‘æ", fleets.size(), L"‘D’c");
+					fleets.back().name = Format(U"‘æ", fleets.size(), U"‘D’c");
 
 					for (auto& dt : u.docks)
 					{

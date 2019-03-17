@@ -17,13 +17,13 @@ bool	selectMap()
 	std::thread thread(initNodes);
 	loadData();
 
-	auto items = FileSystem::DirectoryContents(L"assets/map/").filter([](const FilePath& _path) {
-		return FileSystem::IsDirectory(_path) && FileSystem::Exists(_path + L"BiomeData.bin");
+	auto items = FileSystem::DirectoryContents(U"assets/map/").filter([](const FilePath& _path) {
+		return FileSystem::IsDirectory(_path) && FileSystem::Exists(_path + U"BiomeData.bin");
 	});
 
 	for (;;)
 	{
-		(*globalFonts[32])(L"使用するマップを選択してください").draw();
+		(*globalFonts[32])(U"使用するマップを選択してください").draw();
 		for (int i = 0; i < int(items.size()); i++)
 		{
 			Rect rect(0, 48 + i * 48, Window::Size().x, 48);
@@ -49,11 +49,11 @@ void	loadMap(const FilePath& _path)
 	//MapImageの作成or読み込み
 	auto mapImageFunc = [&_path]() {
 		{
-			if (FileSystem::Exists(_path + L"MapImage.png")) planet.mapTexture = Texture(_path + L"MapImage.png");
+			if (FileSystem::Exists(_path + U"MapImage.png")) planet.mapTexture = Texture(_path + U"MapImage.png");
 			else
 			{
 				//VoronoiMapの読み込み
-				Image image(L"assets/nodeMap/voronoiMap.png");
+				Image image(U"assets/nodeMap/voronoiMap.png");
 				auto size = image.size();
 
 				for (auto p : step(size))
@@ -71,18 +71,18 @@ void	loadMap(const FilePath& _path)
 	std::thread thread(mapImageFunc);
 
 	//Planetデータのロード
-	if (FileSystem::Exists(_path + L"Planet.json"))
+	if (FileSystem::Exists(_path + U"Planet.json"))
 	{
-		JSONReader reader(_path + L"Planet.json");
-		auto j = reader[L"StartTime"];
+		JSONReader reader(_path + U"Planet.json");
+		auto j = reader[U"StartTime"];
 
 		//時間設定
-		planet.sandglass.set(j[L"Year"].getOr<int>(0), j[L"Month"].getOr<int>(1), j[L"Day"].getOr<int>(1));
+		planet.sandglass.set(j[U"Year"].getOr<int>(0), j[U"Month"].getOr<int>(1), j[U"Day"].getOr<int>(1));
 	}
 
 	//バイオームデータのロード
 	{
-		BinaryReader reader(_path + L"BiomeData.bin");
+		BinaryReader reader(_path + U"BiomeData.bin");
 
 		for (auto& n : nodes)
 		{
@@ -94,9 +94,9 @@ void	loadMap(const FilePath& _path)
 	}
 
 	//Urbansデータのロード
-	if (FileSystem::Exists(_path + L"Urbans.json"))
+	if (FileSystem::Exists(_path + U"Urbans.json"))
 	{
-		JSONReader reader(_path + L"Urbans.json");
+		JSONReader reader(_path + U"Urbans.json");
 
 		for (auto json : reader.arrayView()) urbans.emplace_back(json);
 		for (auto& u : urbans)
@@ -106,9 +106,9 @@ void	loadMap(const FilePath& _path)
 	}
 
 	//Riversデータのロード
-	if (FileSystem::Exists(_path + L"Rivers.json"))
+	if (FileSystem::Exists(_path + U"Rivers.json"))
 	{
-		JSONReader reader(_path + L"Rivers.json");
+		JSONReader reader(_path + U"Rivers.json");
 		for (auto json : reader.arrayView()) rivers.emplace_back(json);
 	}
 
@@ -116,22 +116,22 @@ void	loadMap(const FilePath& _path)
 	initRoutes();
 
 	//Incidentsデータのロード
-	if (FileSystem::Exists(_path + L"Incidents.lua"))
+	if (FileSystem::Exists(_path + U"Incidents.lua"))
 	{
 		auto* lua = planet.incidentsLua;
-		const auto& filePath = String(_path + L"Incidents.lua").narrow().c_str();
+		const auto& filePath = String(_path + U"Incidents.lua").narrow().c_str();
 
 		if (luaL_loadfile(lua, filePath) || lua_pcall(planet.incidentsLua, 0, 0, 0))
 		{
-			Output << L"Incidents.luaの読み込みに失敗";
-			Output << CharacterSet::FromUTF8(lua_tostring(lua, -1));
+			Logger << U"Incidents.luaの読み込みに失敗";
+			Logger << Unicode::FromUTF8(lua_tostring(lua, -1));
 		}
 	}
 
 	//Groupsデータのロード
-	if (FileSystem::Exists(_path + L"Groups.json"))
+	if (FileSystem::Exists(_path + U"Groups.json"))
 	{
-		auto json = JSONReader(_path + L"Groups.json");
+		auto json = JSONReader(_path + U"Groups.json");
 
 		for (auto j : json.arrayView()) groups.emplace_back(j);
 	}

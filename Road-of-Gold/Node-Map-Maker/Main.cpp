@@ -28,7 +28,7 @@ void Main()
 
 	while (!KeyEnter.pressed() && System::Update())
 	{
-		font(L"処理を開始するにはEnterキーを押してください。").draw();
+		font(U"処理を開始するにはEnterキーを押してください。").draw();
 	}
 
 	for (int i = 0; i < 200; ++i)
@@ -76,7 +76,7 @@ void Main()
 								if (t.ms() > 16)
 								{
 									t.restart();
-									font(i, L"回").draw();
+									font(i, U"回").draw();
 									const Transformer2D t1(Mat3x2::Scale(200).translated(Window::Center()));
 									for (auto& n1 : nodes)
 									{
@@ -165,7 +165,7 @@ void Main()
 					auto t1 = Transformer2D(Mat3x2::Scale(Window::Size().x / double(_sizeX)));
 					Window::SetTitle(double(count) / double(_sizeX*_sizeX / 2));
 					//tex.fill(image.getAsImage(Rect(Size(2048, 2048))));
-					//tex.resize(Window::Size()).draw();
+					//tex.resized(Window::Size()).draw();
 					if (!System::Update()) return;
 					timer.restart();
 				}
@@ -220,7 +220,7 @@ void Main()
 				paths.emplace_back(&p);
 		}
 		Window::SetTitle(paths.size());
-		BinaryWriter writer(L"assets/nodeMap/nodeMap.bin");
+		BinaryWriter writer(U"assets/nodeMap/nodeMap.bin");
 		writer.write(int(nodes.size()));
 		for (int i = 0; i < int(nodes.size()); ++i)
 		{
@@ -241,7 +241,7 @@ void Main()
 
 		for (auto p : step(Size(image.size().x / size.x, image.size().y / size.y)))
 		{
-			image.saveImg(Rect(Point(p.x*size.x, p.y*size.y), size), Format(L"assets/VoronoiMap_", p.x, L"_", p.y, L".png"));
+			image.saveImg(Rect(Point(p.x*size.x, p.y*size.y), size), Format(U"assets/VoronoiMap_", p.x, U"_", p.y, U".png"));
 		}
 	}
 

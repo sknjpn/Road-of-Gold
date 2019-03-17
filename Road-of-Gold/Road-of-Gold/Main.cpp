@@ -17,15 +17,15 @@
 void Main()
 {
 	{
-		Window::SetTitle(L"Road of Gold");
+		Window::SetTitle(U"Road of Gold");
 
-		INIReader iniReader(L"assets/config.ini");
-		if (iniReader.getOr<bool>(L"Window", L"FullScreen", false)) Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
-		else Window::Resize(iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
+		INIData iniReader(U"assets/config.ini");
+		if (iniReader.getOr<bool>(U"Window", U"FullScreen", false)) Graphics::SetFullScreen(true, Size(1920, 1080));
+		else Window::Resize(iniReader.getOr<Size>(U"Window", U"WindowSize", Size(1280, 720)));
 	}
 
-	Output << L"WindowSize:" << Window::Size();
-	Output << L"FullScreen:" << Window::GetState().fullScreen;
+	Logger << U"WindowSize:" << Window::Size();
+	Logger << U"FullScreen:" << Window::GetState().fullScreen;
 
 	//Fontの展開
 	Array<Font> efonts;
@@ -43,9 +43,9 @@ void Main()
 
 	initGroups();
 
-	Output << L"MainLoopの開始";
+	Logger << U"MainLoopの開始";
 
-	auto bgmItems = FileSystem::DirectoryContents(L"assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == L"mp3"; });
+	auto bgmItems = FileSystem::DirectoryContents(U"assets/BGM/").filter([](const String& s) { return FileSystem::IsFile(s) && FileSystem::Extension(s) == U"mp3"; });
 
 	lua_getglobal(planet.incidentsLua, "init");
 	lua_pcall(planet.incidentsLua, 0, 0, 0);
@@ -93,10 +93,10 @@ void Main()
 		{
 			if (Window::GetState().fullScreen)
 			{
-				INIReader iniReader(L"assets/config.ini");
-				Graphics::SetFullScreen(false, iniReader.getOr<Size>(L"Window", L"WindowSize", Size(1280, 720)));
+				INIData iniReader(U"assets/config.ini");
+				Graphics::SetFullScreen(false, iniReader.getOr<Size>(U"Window", U"WindowSize", Size(1280, 720)));
 			}
-			else Graphics::SetFullScreen(true, Graphics::EnumOutputs().front().displayModes.back().size);
+			else Graphics::SetFullScreen(true, Size(1920, 1080));
 			System::Update();
 		}
 	}

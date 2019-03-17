@@ -34,9 +34,9 @@ void	River::draw() const
 	}
 }
 River::River(const JSONValue _json)
-	: width(_json[L"Width"].get<double>())
+	: width(_json[U"Width"].get<double>())
 {
-	for (auto j : _json[L"Paths"].arrayView())
+	for (auto j : _json[U"Paths"].arrayView())
 	{
 		riverNodes.emplace_back(&nodes[j.get<int>()]);
 	}

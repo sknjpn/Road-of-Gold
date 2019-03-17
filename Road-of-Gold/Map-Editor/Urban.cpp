@@ -2,7 +2,7 @@
 #include"EnergyData.h"
 #include"Node.h"
 Urban::Urban(int _joinedNodeID)
-	: name(L"hogeTown")
+	: name(U"hogeTown")
 	, joinedNodeID(_joinedNodeID)
 	, numCitizens(1)
 	, productivity(1.0)
@@ -10,7 +10,7 @@ Urban::Urban(int _joinedNodeID)
 	energies.resize(energyData.size(), 0);
 }
 Urban::Urban()
-	: name(L"hogeTown")
+	: name(U"hogeTown")
 	, joinedNodeID(-1)
 	, numCitizens(1)
 	, productivity(1.0)
@@ -18,16 +18,16 @@ Urban::Urban()
 	energies.resize(energyData.size(), 0);
 }
 Urban::Urban(const JSONValue _json)
-	: name(_json[L"Name"].getString())
-	, joinedNodeID(_json[L"JoinedNodeID"].getOr<int>(-1))
-	, productivity(_json[L"Productivity"].getOr<double>(1.0))
-	, numCitizens(_json[L"NumCitizens"].getOr<int>(1))
+	: name(_json[U"Name"].getString())
+	, joinedNodeID(_json[U"JoinedNodeID"].getOr<int>(-1))
+	, productivity(_json[U"Productivity"].getOr<double>(1.0))
+	, numCitizens(_json[U"NumCitizens"].getOr<int>(1))
 {
 	//Ž‘Œ¹”z’u
 	energies.resize(energyData.size(), 0);
-	for (auto i : _json[L"Energies"].objectView())
+	for (auto i : _json[U"Energies"].objectView())
 	{
-		if (getEnergyType(i.name) == -1) Output << L"‘¶Ý‚µ‚È‚¢Energy‚ª“Ç‚Ýž‚Ü‚ê‚Ü‚µ‚½";
+		if (getEnergyType(i.name) == -1) Logger << U"‘¶Ý‚µ‚È‚¢Energy‚ª“Ç‚Ýž‚Ü‚ê‚Ü‚µ‚½";
 		else energies.at(getEnergyType(i.name)) = i.value.getOr<int>(0);
 	}
 }

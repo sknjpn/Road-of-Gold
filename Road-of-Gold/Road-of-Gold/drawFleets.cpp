@@ -43,7 +43,7 @@ void	drawFleets()
 		{
 			auto pos = f.pos();
 
-			f.ownVehicles.front()->data().icon.resize(0.005).rotate(f.angle()).drawAt(pos);
+			f.ownVehicles.front()->data().icon.resized(0.005).rotated(f.angle()).drawAt(pos);
 
 		}
 	}
@@ -56,7 +56,7 @@ void	drawFleets()
 				const auto transformer = tinyCamera.createTransformer(i);
 				f.shape().draw(Palette::Lightgreen).drawFrame(4 / 5000.0, Palette::White);
 			}
-			else if (selecter.selectedFleets.include(&f))
+			else if (selecter.selectedFleets.includes(&f))
 			{
 				const auto transformer = tinyCamera.createTransformer(i);
 				f.shape().draw(Palette::Red).drawFrame(4 / 5000.0, Palette::Pink);

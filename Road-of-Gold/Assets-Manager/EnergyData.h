@@ -10,14 +10,14 @@ struct EnergyData
 	Texture	iconTexture;
 
 	EnergyData(JSONValue _j)
-		: nameTextBox(textBoxFont, 288, 24, 120, _j[L"Name"].getString())
-		, iconTextBox(textBoxFont, 288, 24 * 7, 360, _j[L"Icon"].getString())
-		, iconImage(_j[L"Icon"].getString())
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, _j[U"Name"].getString())
+		, iconTextBox(textBoxFont, Vec2(288, 24 * 7), 360, unspecified, _j[U"Icon"].getString())
+		, iconImage(_j[U"Icon"].getString())
 		, iconTexture(iconImage)
 	{}
 	EnergyData()
-		: nameTextBox(textBoxFont, 288, 24, 120, L"newItem")
-		, iconTextBox(textBoxFont, 288, 24 * 7, 360)
+		: nameTextBox(textBoxFont, Vec2(288, 24), 120, unspecified, U"newItem")
+		, iconTextBox(textBoxFont, Vec2(288, 24 * 7), 360, unspecified)
 	{}
 	String	name() const { return nameTextBox.getText(); }
 };
@@ -96,7 +96,7 @@ struct SetEnergyData : MyApp::Scene
 			}
 			rect.drawFrame(2);
 
-			font16(L"新資源追加").draw(rect.movedBy(4, 0));
+			font16(U"新資源追加").draw(rect.movedBy(4, 0));
 		}
 
 		if (energyData.isEmpty()) return;
@@ -142,11 +142,11 @@ struct SetEnergyData : MyApp::Scene
 		{
 			auto& e = energyData[getData().selectedEnergyType];
 
-			font16(L"資源名").drawAt(348, 12);
+			font16(U"資源名").drawAt(348, 12);
 			e.nameTextBox.update();
 			e.nameTextBox.draw();
 
-			font16(L"アイコンファイル").drawAt(348, 156);
+			font16(U"アイコンファイル").drawAt(348, 156);
 			auto beforeFilePath = e.iconTextBox.getText();
 			e.iconTextBox.update();
 			e.iconTextBox.draw();
@@ -157,7 +157,7 @@ struct SetEnergyData : MyApp::Scene
 				e.iconTexture = Texture(e.iconImage);
 			}
 			Rect(432, 24, 128, 128).draw(DragDrop::DragOver() ? Palette::Gray : Color(0, 0)).drawFrame(4);
-			if (e.iconTexture) e.iconTexture.resize(128, 128).draw(432, 24);
+			if (e.iconTexture) e.iconTexture.resized(128, 128).draw(432, 24);
 		}
 
 		{
@@ -169,7 +169,7 @@ struct SetEnergyData : MyApp::Scene
 				if (getData().selectedEnergyType == int(energyData.size()) && getData().selectedEnergyType > 0) getData().selectedEnergyType--;
 			}
 			rect.drawFrame(2);
-			font16(L"項目の削除").drawAt(rect.center());
+			font16(U"項目の削除").drawAt(rect.center());
 		}
 	}
 };

@@ -14,9 +14,9 @@ void	DisplayFleets::update()
 	const auto thickness = 4;
 	auto conv = [](int value) {
 		if (value < 1000) return Format(value);
-		if (value > 1000) return Format(value / 1000, L"K");
-		if (value > 1000000) return Format(value / 1000000, L"M");
-		else return String(L"HugeValue");
+		if (value > 1000) return Format(value / 1000, U"K");
+		if (value > 1000000) return Format(value / 1000000, U"M");
+		else return String(U"HugeValue");
 	};
 	Transformer2D t1;
 	if (selecter.selectedFleets.isEmpty())  t1 = Transformer2D(Mat3x2::Translate(EaseOut(Easing::Expo, 0.0, -480.0, Min(1.0, closeElapsedTime.ms() / 500.0)), 0));
@@ -32,7 +32,7 @@ void	DisplayFleets::update()
 	{
 		Rect rect(8, 8, 464, 88);
 		rect.draw(Color(80)).drawFrame(thickness, Color(60));
-		font36(L"船団運用指示").drawAt(rect.center());
+		font36(U"船団運用指示").drawAt(rect.center());
 	}
 
 	if (selecter.selectedFleets.isEmpty()) return;
@@ -75,15 +75,15 @@ void	DisplayFleets::update()
 			{
 				Rect rect(16, 168, 216, 36);
 				rect.drawFrame(thickness, Color(60));
-				font24(L"船団データ").drawAt(rect.center());
+				font24(U"船団データ").drawAt(rect.center());
 			}
 			{
 				Rect rect(16, 204, 104, 24);
 				rect.drawFrame(thickness, Color(60));
-				font16(L"航続距離").drawAt(rect.center());
+				font16(U"航続距離").drawAt(rect.center());
 			}
 			{
-				auto f = font16(sf->data.range*1000.0, L"mt");
+				auto f = font16(sf->data.range*1000.0, U"mt");
 				Rect rect(120, 204, 112, 24);
 				rect.drawFrame(thickness, Color(60));
 				f.draw(rect.tr().movedBy(-4 - int(f.region().w), 0));
@@ -91,7 +91,7 @@ void	DisplayFleets::update()
 			{
 				Rect rect(16, 228, 104, 24);
 				rect.drawFrame(thickness, Color(60));
-				font16(L"移動速度").drawAt(rect.center());
+				font16(U"移動速度").drawAt(rect.center());
 			}
 			{
 				auto f = font16(sf->data.speed);
@@ -102,7 +102,7 @@ void	DisplayFleets::update()
 			{
 				Rect rect(16, 252, 104, 24);
 				rect.drawFrame(thickness, Color(60));
-				font16(L"貨物容量").drawAt(rect.center());
+				font16(U"貨物容量").drawAt(rect.center());
 			}
 			{
 				auto f = font16(sf->data.volume);
@@ -116,7 +116,7 @@ void	DisplayFleets::update()
 			{
 				Rect rect(16, 284, 216, 36);
 				rect.drawFrame(thickness, Color(60));
-				font24(L"所属船").drawAt(rect.center());
+				font24(U"所属船").drawAt(rect.center());
 			}
 			int j = 0;
 			for (int i = 0; i < int(vehicleData.size()); i++)
@@ -131,7 +131,7 @@ void	DisplayFleets::update()
 					}
 					{
 						Rect rect(120, 320 + j * 24, 112, 24);
-						auto f = font16(num, L"隻");
+						auto f = font16(num, U"隻");
 						rect.drawFrame(thickness, Color(60));
 						f.draw(rect.tr().movedBy(-4 - int(f.region().w), 0));
 					}
@@ -152,7 +152,7 @@ void	DisplayFleets::update()
 					closeElapsedTime.restart();
 					return;
 				}
-				font24(L"ルート作成").drawAt(rect.center());
+				font24(U"ルート作成").drawAt(rect.center());
 			}
 
 		}
@@ -210,7 +210,7 @@ void	DisplayFleets::update()
 					selecter.selectedFleets.emplace_back(sf);
 					return;
 				}
-				font16(L"選択").drawAt(rect.center(), fontColor);
+				font16(U"選択").drawAt(rect.center(), fontColor);
 			}
 			//船団の個別
 			{
@@ -221,8 +221,8 @@ void	DisplayFleets::update()
 					if (size > 0)
 					{
 						auto p = Vec2(256 + j * 64, 128 + i * 56);
-						vehicleData[k].icon.resize(24, 24).draw(p);
-						font16(L"x", size).draw(p.movedBy(32.0, 0.0));
+						vehicleData[k].icon.resized(24, 24).draw(p);
+						font16(U"x", size).draw(p.movedBy(32.0, 0.0));
 						j++;
 					}
 				}

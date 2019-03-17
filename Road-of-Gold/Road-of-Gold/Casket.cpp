@@ -10,8 +10,8 @@ Casket::Casket(int _itemType, int _numItem)
 	, numItem(_numItem)
 {}
 Casket::Casket(const JSONValue& _json)
-	: numItem(_json[L"NumItem"].getOr<int>(0))
-	, itemType(getItemType(_json[L"ItemName"].getString()))
+	: numItem(_json[U"NumItem"].getOr<int>(0))
+	, itemType(getItemType(_json[U"ItemName"].getString()))
 {}
 ItemData&	Casket::data() const { return itemData[itemType]; }
 bool	Casket::isEmpty() const { return numItem == 0; }

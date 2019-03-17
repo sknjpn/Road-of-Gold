@@ -15,58 +15,58 @@ void	loadData()
 {
 	JSONReader json;
 
-	json.open(L"assets/data/itemData.json");
+	json.open(U"assets/data/itemData.json");
 	for (auto j : json.arrayView()) itemData.emplace_back(j);
-	Output << L"ItemData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << itemData.size();
+	Logger << U"ItemData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << itemData.size();
 
-	json.open(L"assets/data/biomeData.json");
+	json.open(U"assets/data/biomeData.json");
 	for (auto j : json.arrayView()) biomeData.emplace_back(j);
-	Output << L"BiomeData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << biomeData.size();
+	Logger << U"BiomeData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << biomeData.size();
 
-	json.open(L"assets/data/energyData.json");
+	json.open(U"assets/data/energyData.json");
 	for (auto j : json.arrayView()) energyData.emplace_back(j);
-	Output << L"EnergyData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << energyData.size();
+	Logger << U"EnergyData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << energyData.size();
 
-	json.open(L"assets/data/citizenData.json");
+	json.open(U"assets/data/citizenData.json");
 	for (auto j : json.arrayView()) citizenData.emplace_back(j);
-	Output << L"CitizenData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << citizenData.size();
+	Logger << U"CitizenData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << citizenData.size();
 
-	json.open(L"assets/data/vehicleData.json");
+	json.open(U"assets/data/vehicleData.json");
 	for (auto j : json.arrayView()) vehicleData.emplace_back(j);
-	Output << L"VehicleData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << vehicleData.size();
+	Logger << U"VehicleData‚Ì“Ç‚Ýž‚ÝŠ®—¹ size = " << vehicleData.size();
 }
 
 CitizenData::CitizenData(const JSONValue& _json)
-	: name(_json[L"Name"].getOr<String>(L""))
-	, wage(_json[L"Wage"].getOr<int>(0))
-	, product(_json[L"Product"])
-	, needEnergyType(getEnergyType(_json[L"NeedEnergy"].getString()))
+	: name(_json[U"Name"].getOr<String>(U""))
+	, wage(_json[U"Wage"].getOr<int>(0))
+	, product(_json[U"Product"])
+	, needEnergyType(getEnergyType(_json[U"NeedEnergy"].getString()))
 {}
 BiomeData::BiomeData(const JSONValue& _json)
-	: name(_json[L"Name"].getOr<String>(L""))
-	, color(_json[L"Color"].getOr<String>(L"#FFFFFF"))
-	, movingCost(_json[L"MovingCost"].getOr<double>(1.0))
-	, isSea(_json[L"IsSea"].getOr<bool>(false))
+	: name(_json[U"Name"].getOr<String>(U""))
+	, color(_json[U"Color"].getOr<String>(U"#FFFFFF"))
+	, movingCost(_json[U"MovingCost"].getOr<double>(1.0))
+	, isSea(_json[U"IsSea"].getOr<bool>(false))
 {}
 EnergyData::EnergyData(const JSONValue& _json)
-	: name(_json[L"Name"].getOr<String>(L""))
+	: name(_json[U"Name"].getOr<String>(U""))
 {}
 ItemData::ItemData(const JSONValue& _json)
-	: name(_json[L"Name"].getOr<String>(L""))
-	, value(_json[L"Value"].getOr<int>(0))
-	, volume(_json[L"Volume"].getOr<int>(0))
-	, color(_json[L"Color"].getOr<String>(L"#FFFFFF"))
-	, icon(_json[L"Icon"].getOr<String>(L""))
+	: name(_json[U"Name"].getOr<String>(U""))
+	, value(_json[U"Value"].getOr<int>(0))
+	, volume(_json[U"Volume"].getOr<int>(0))
+	, color(_json[U"Color"].getOr<String>(U"#FFFFFF"))
+	, icon(_json[U"Icon"].getOr<String>(U""))
 {}
 VehicleData::VehicleData(const JSONValue& _json)
-	: name(_json[L"Name"].getOr<String>(L""))
-	, speed(_json[L"Speed"].getOr<double>(1.0))
-	, volume(_json[L"Volume"].getOr<int>(100))
-	, range(_json[L"Range"].getOr<double>(1.0))
-	, isShip(_json[L"IsShip"].getOr<bool>(false))
-	, icon(_json[L"Icon"].getOr<String>(L""))
-	, constructionCost(_json[L"ConstructionCost"].getOr<int>(1000))
-	, tier(_json[L"Tier"].getOr<int>(0))
+	: name(_json[U"Name"].getOr<String>(U""))
+	, speed(_json[U"Speed"].getOr<double>(1.0))
+	, volume(_json[U"Volume"].getOr<int>(100))
+	, range(_json[U"Range"].getOr<double>(1.0))
+	, isShip(_json[U"IsShip"].getOr<bool>(false))
+	, icon(_json[U"Icon"].getOr<String>(U""))
+	, constructionCost(_json[U"ConstructionCost"].getOr<int>(1000))
+	, tier(_json[U"Tier"].getOr<int>(0))
 {}
 EnergyData*	getEnergyData(const String& _name)
 {

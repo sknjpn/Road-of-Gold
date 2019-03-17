@@ -6,5 +6,5 @@ Group::Group()
 	: walletID(getNewWalletID())
 {}
 Group::Group(const JSONValue& _json)
-	: name(_json[L"Name"].getString())
+	: name(_json[U"Name"].getString())
 {}
