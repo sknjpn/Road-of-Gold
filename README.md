@@ -1,4 +1,4 @@
-# [ダウンロードはこちらからどうぞ](https://github.com/SKN-JP/Road_of_Gold/wiki/%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89)
+### [ダウンロードはこちらからどうぞ](https://github.com/sknjpn/Road-of-Gold/releases)
 # Road of Goldとは
 オープンソースで開発中の本格的な惑星規模の経済シミュレーションゲームです。<br>
 プレイヤーは商会の一つとして経済に参加し、活動することができます。<br>
